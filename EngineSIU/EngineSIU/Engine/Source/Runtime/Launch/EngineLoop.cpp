@@ -176,6 +176,7 @@ void FEngineLoop::Tick()
         }
 
 
+    
         //TODO 카메라 촬영 테스트용코드 후에 Player클래스 등으로 옮길 것
         bool bIsRightMouseButtonCurrentlyPressed = (GetAsyncKeyState(VK_LSHIFT) & 0x8000) != 0;
 
@@ -192,6 +193,9 @@ void FEngineLoop::Tick()
 
 
         const float DeltaTime = static_cast<float>(ElapsedTime / 1000.f);
+
+        PlayerCam->UpdateShutterAnimation(DeltaTime);
+
 
         GEngine->Tick(DeltaTime);
         LevelEditor->Tick(DeltaTime);

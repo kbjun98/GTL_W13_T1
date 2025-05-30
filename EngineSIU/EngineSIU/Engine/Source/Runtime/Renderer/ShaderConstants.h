@@ -237,6 +237,14 @@ struct alignas(16) FConstantBufferCameraVignette
     FVector Padding;
 };
 
+struct alignas(16) FConstantBufferShutter
+{
+    float apertureProgress; // 0.0 (완전히 열림) ~ 1.0 (완전히 닫힘)
+    float aspectRatio; // 화면 가로/세로 비율 (셔터 모양 보정용)
+    FVector2D shutterPadding; // 16바이트 정렬용
+};
+
+
 struct alignas(16) FConstantBufferLetterBox
 {
     FLinearColor LetterBoxColor = FLinearColor(0.0f, 0.0f, 0.0f, 1.0f);
