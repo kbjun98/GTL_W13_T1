@@ -495,3 +495,8 @@ void FRenderer::RenderViewport(const std::shared_ptr<FEditorViewportClient>& Vie
     QUICK_GPU_SCOPE_CYCLE_COUNTER(SlatePass_GPU, *GPUTimingManager)
     SlateRenderPass->Render(Viewport);
 }
+
+FPostProcessRenderPass* FRenderer::GetPostProcessRenderPass()
+{
+    return PostProcessRenderPass;
+}
