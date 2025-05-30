@@ -199,7 +199,7 @@ int UStaticMeshComponent::CheckRayIntersection(
         FVector HitNormal = FVector::ZeroVector;
         if (IntersectRayTriangle(InRayOrigin, InRayDirection, V0, V1, V2, HitDistance, HitNormal))
         {
-            if (OutHitDistance < HitDistance)
+            if (HitDistance < OutHitDistance)
             {
                 OutHitDistance = HitDistance;
                 OutHitNormal = HitNormal;
