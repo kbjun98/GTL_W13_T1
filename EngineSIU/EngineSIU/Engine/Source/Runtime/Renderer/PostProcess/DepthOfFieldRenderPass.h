@@ -1,14 +1,20 @@
-﻿#pragma once
+#pragma once
 
 #include "RenderPassBase.h"
 
+class FRenderTargetRHI;
 struct ID3D11SamplerState;
 
 class FDepthOfFieldRenderPass : public FRenderPassBase
 {
+private:
+    FRenderTargetRHI* RenderTargetRHI_PostProcess;
+
 public:
     FDepthOfFieldRenderPass() = default;
     virtual ~FDepthOfFieldRenderPass() override = default;
+
+    FRenderTargetRHI* GetPostProcessSource();
 
     virtual void Initialize(FDXDBufferManager* InBufferManager, FGraphicsDevice* InGraphics, FDXDShaderManager* InShaderManage) override;
     virtual void PrepareRenderArr() override;

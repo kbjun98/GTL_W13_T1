@@ -1,4 +1,4 @@
-﻿#include "DepthOfFieldRenderPass.h"
+#include "DepthOfFieldRenderPass.h"
 
 #include "RendererHelpers.h"
 #include "ShaderConstants.h"
@@ -7,6 +7,11 @@
 #include "Engine/Engine.h"
 #include "UnrealEd/EditorViewportClient.h"
 #include "World/World.h"
+
+FRenderTargetRHI* FDepthOfFieldRenderPass::GetPostProcessSource()
+{
+    return RenderTargetRHI_PostProcess;
+}
 
 void FDepthOfFieldRenderPass::Initialize(FDXDBufferManager* InBufferManager, FGraphicsDevice* InGraphics, FDXDShaderManager* InShaderManage)
 {
@@ -362,7 +367,7 @@ void FDepthOfFieldRenderPass::CleanUpBlur(const std::shared_ptr<FEditorViewportC
 void FDepthOfFieldRenderPass::PrepareComposite(const std::shared_ptr<FEditorViewportClient>& Viewport)
 {
     FViewportResource* ViewportResource = Viewport->GetViewportResource();
-    FRenderTargetRHI* RenderTargetRHI_PostProcess = ViewportResource->GetRenderTarget(EResourceType::ERT_DepthOfField_Result);
+    RenderTargetRHI_PostProcess = ViewportResource->GetRenderTarget(EResourceType::ERT_DepthOfField_Result);
     Graphics->DeviceContext->OMSetRenderTargets(1, &RenderTargetRHI_PostProcess->RTV, nullptr);
     
     FRenderTargetRHI* RenderTargetRHI_Scene = ViewportResource->GetRenderTarget(EResourceType::ERT_Scene);
