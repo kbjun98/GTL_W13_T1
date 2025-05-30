@@ -6,7 +6,7 @@
 
 PlayerCamera::PlayerCamera()
 {
-    FSoundManager::GetInstance().LoadSound("Shutter", "Contents/Rabbit/Shutter.mp3");
+    FSoundManager::GetInstance().LoadSound("Shutter", "Contents/Rabbit/Sound/Shutter.mp3");
 }
 
 void PlayerCamera::TakePicture()
