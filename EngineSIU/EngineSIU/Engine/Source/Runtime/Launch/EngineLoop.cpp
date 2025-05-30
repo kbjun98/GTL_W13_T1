@@ -25,6 +25,8 @@ UPrimitiveDrawBatch FEngineLoop::PrimitiveDrawBatch;
 FResourceManager FEngineLoop::ResourceManager;
 uint32 FEngineLoop::TotalAllocationBytes = 0;
 uint32 FEngineLoop::TotalAllocationCount = 0;
+PlayerCamera* FEngineLoop::PlayerCam;
+
 
 FEngineLoop::FEngineLoop()
     : AppWnd(nullptr)
@@ -175,7 +177,7 @@ void FEngineLoop::Tick()
 
 
         //TODO 카메라 촬영 테스트용코드 후에 Player클래스 등으로 옮길 것
-        bool bIsRightMouseButtonCurrentlyPressed = (GetAsyncKeyState(VK_RBUTTON) & 0x8000) != 0;
+        bool bIsRightMouseButtonCurrentlyPressed = (GetAsyncKeyState(VK_LSHIFT) & 0x8000) != 0;
 
         // FEngineLoop 클래스의 멤버 변수를 사용한다고 가정: m_bWasRightMouseButtonPressedLastFrame
         // 만약 Tick 함수 내의 static 변수를 사용한다면: bWasRightMouseButtonPressedLastFrame
