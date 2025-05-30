@@ -41,6 +41,8 @@ void AGameMode::PostSpawnInitialize()
                 }
             });
     }
+
+    HandleStartingNewPlayer();
 }
 
 UObject* AGameMode::Duplicate(UObject* InOuter)
@@ -102,4 +104,43 @@ void AGameMode::Reset()
 {
     bGameRunning = false;
     bGameEnded = true;
+}
+
+void AGameMode::HandleStartingNewPlayer()
+{
+    UWorld* World = GEngine->ActiveWorld;
+    for (const auto Iter : TObjectRange<APlayer>())
+    {
+        if (Iter->GetWorld() == World)
+        {
+            World->SetMainPlayer(Iter);
+            break;
+        }
+    }
+
+    if (World->GetMainPlayer() == nullptr)
+    {
+        SpawnDefaultPlayer();
+    }
+
+    SpawnPlayerController();
+    World->GetPlayerController()->Possess(World->GetMainPlayer());
+}
+
+APlayerController* AGameMode::SpawnPlayerController()
+{
+    APlayerController* PlayerController = GEngine->ActiveWorld->SpawnActor<APlayerController>();
+    PlayerController->SetActorLabel(TEXT("OBJ_PLAYER_CONTROLLER"));
+    PlayerController->SetActorTickInEditor(false);
+    GEngine->ActiveWorld->SetPlayerController(PlayerController);
+    return PlayerController;
+}
+
+APlayer* AGameMode::SpawnDefaultPlayer()
+{
+    APlayer* TempPlayer = GEngine->ActiveWorld->SpawnActor<APlayer>();
+    TempPlayer->SetActorLabel(TEXT("OBJ_PLAYER"));
+    TempPlayer->SetActorTickInEditor(false);
+    GEngine->ActiveWorld->SetMainPlayer(TempPlayer);
+    return TempPlayer;
 }

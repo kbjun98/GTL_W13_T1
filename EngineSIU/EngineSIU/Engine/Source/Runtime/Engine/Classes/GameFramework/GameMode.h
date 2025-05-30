@@ -7,6 +7,8 @@ DECLARE_MULTICAST_DELEGATE(FOnGameStart);
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnGameEnd, bool);
 
 class UCameraComponent;
+class APlayerController;
+class APlayer;
 
 struct FGameInfo
 {
@@ -42,6 +44,10 @@ public:
     virtual void Tick(float DeltaTime) override;
 
     void Reset();
+
+    void HandleStartingNewPlayer();
+    APlayerController* SpawnPlayerController();
+    APlayer* SpawnDefaultPlayer();
 
     FOnGameInit OnGameInit;
     FOnGameStart OnGameStart;
