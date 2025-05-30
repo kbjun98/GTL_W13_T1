@@ -4,10 +4,10 @@
 
 class PlayerCamera
 {
-private:
-
+public:
     PlayerCamera();
 
+private:
     TArray<FRenderTargetRHI*> Pictures;
 
 public:

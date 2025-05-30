@@ -6,6 +6,7 @@
 #include "UnrealEd/PrimitiveDrawBatch.h"
 #include "Stats/ProfilerStatsManager.h"
 #include "Stats/GPUTimingManager.h"
+#include <PlayerCamera.h>
 
 
 class FSlateAppMessageHandler;
@@ -59,6 +60,9 @@ private:
     SLevelEditor* LevelEditor;
     UnrealEd* UnrealEditor;
     FDXDBufferManager* BufferManager; //TODO: UEngine으로 옮겨야함.
+
+    //TOD 테스트용임 후에 Player쪽으로 옮길것
+    PlayerCamera* PlayerCam;
 
     bool bIsExit = false;
     // @todo Option으로 선택 가능하도록

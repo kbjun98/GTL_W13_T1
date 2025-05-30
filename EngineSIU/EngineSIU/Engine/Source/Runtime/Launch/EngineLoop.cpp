@@ -52,6 +52,7 @@ int32 FEngineLoop::Init(HINSTANCE hInstance)
     UIManager = new UImGuiManager;
     AppMessageHandler = std::make_unique<FSlateAppMessageHandler>();
     LevelEditor = new SLevelEditor();
+    PlayerCam = new PlayerCamera();
 
     UnrealEditor->Initialize();
     GraphicDevice.Initialize(AppWnd);
