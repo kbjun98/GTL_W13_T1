@@ -43,12 +43,6 @@ void AGameMode::PostSpawnInitialize()
     }
 }
 
-void AGameMode::InitializeComponent()
-{
-    //ULuaScriptComponent* LuaScriptComp = this->AddComponent<ULuaScriptComponent>();
-    //RootComponent = this->AddComponent<USceneComponent>("USceneComponent_0");
-}
-
 UObject* AGameMode::Duplicate(UObject* InOuter)
 {
     AGameMode* NewActor = Cast<AGameMode>(Super::Duplicate(InOuter));

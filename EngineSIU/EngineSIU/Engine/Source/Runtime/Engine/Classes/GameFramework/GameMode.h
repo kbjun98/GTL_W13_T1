@@ -25,7 +25,6 @@ public:
 
     virtual void PostSpawnInitialize() override;
     
-    void InitializeComponent();
     virtual UObject* Duplicate(UObject* InOuter) override;
 
     //virtual void BeginPlay() override;
