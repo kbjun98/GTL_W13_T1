@@ -626,4 +626,10 @@ struct FMath
     {
         return Value - FloorToDouble(Value);
     }
+
+    template<typename T>
+    static bool InRange(const T& Value, const T& Min, const T& Max)
+    {
+        return Value >= Min && Value <= Max;
+    }
 };
