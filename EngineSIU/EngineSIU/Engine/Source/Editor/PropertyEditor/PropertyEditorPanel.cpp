@@ -54,8 +54,14 @@ PropertyEditorPanel::PropertyEditorPanel()
 
 // Pictures TArray에서 SRV를 가져와서 ImGui로 렌더링하는 개선된 코드
 
+// Pictures TArray에서 SRV를 가져와서 ImGui로 렌더링하는 개선된 코드
+
 void RenderPictureGallery()
 {
+    static bool showLargeView = false;
+    static int32 selectedPhotoIndex = -1;
+    static const FRenderTargetRHI* selectedPicture = nullptr;
+
     TArray<FRenderTargetRHI*> Pictures;
     Pictures = FEngineLoop::PlayerCam->GetPictures();
 
@@ -64,6 +70,38 @@ void RenderPictureGallery()
         ImGui::Text("No pictures available.");
         ImGui::Separator();
         return;
+    }
+
+    // 큰 화면 보기 모달
+    if (showLargeView && selectedPicture && selectedPicture->SRV)
+    {
+        ImGui::SetNextWindowSize(ImVec2(800, 600), ImGuiCond_FirstUseEver);
+        if (ImGui::Begin("Picture Viewer", &showLargeView, ImGuiWindowFlags_NoCollapse))
+        {
+            ImVec2 windowSize = ImGui::GetContentRegionAvail();
+            float maxSize = FMath::Min(windowSize.x, windowSize.y) - 20.0f;
+
+            // 중앙 배치
+            ImVec2 imageSize(maxSize, maxSize);
+            ImVec2 cursorPos = ImGui::GetCursorPos();
+            ImVec2 centerPos = ImVec2(
+                cursorPos.x + (windowSize.x - imageSize.x) * 0.5f,
+                cursorPos.y + (windowSize.y - imageSize.y) * 0.5f
+            );
+            ImGui::SetCursorPos(centerPos);
+
+            ImGui::Image(reinterpret_cast<ImTextureID>(selectedPicture->SRV), imageSize);
+
+            // 닫기 버튼 (우상단)
+            ImGui::SetCursorPos(ImVec2(windowSize.x - 80, 10));
+            if (ImGui::Button("Close", ImVec2(70, 30)))
+            {
+                showLargeView = false;
+                selectedPicture = nullptr;
+                selectedPhotoIndex = -1;
+            }
+        }
+        ImGui::End();
     }
 
     // 썸네일 설정
@@ -93,10 +131,11 @@ void RenderPictureGallery()
 
         if (ImGui::ImageButton("##thumbnail", reinterpret_cast<ImTextureID>(picturePtr->SRV), ImVec2(THUMBNAIL_SIZE, THUMBNAIL_SIZE), UV0, UV1))
         {
-            // 클릭 시 처리
-            //UE_LOG(LogTemp, Log, TEXT("Picture %d clicked"), photoIdx + 1);
+            // 클릭 시 큰 화면으로 보기
+            showLargeView = true;
+            selectedPhotoIndex = photoIdx;
+            selectedPicture = picturePtr;
         }
-
 
         ImGui::PopID();
 
