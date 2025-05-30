@@ -52,6 +52,71 @@ PropertyEditorPanel::PropertyEditorPanel()
     SetSupportedWorldTypes(EWorldTypeBitFlag::Editor| EWorldTypeBitFlag::PIE);
 }
 
+// Pictures TArray에서 SRV를 가져와서 ImGui로 렌더링하는 개선된 코드
+
+void RenderPictureGallery()
+{
+    TArray<FRenderTargetRHI*> Pictures;
+    Pictures = FEngineLoop::PlayerCam->GetPictures();
+
+    if (Pictures.Num() <= 0)
+    {
+        ImGui::Text("No pictures available.");
+        ImGui::Separator();
+        return;
+    }
+
+    // 썸네일 설정
+    constexpr float THUMBNAIL_SIZE = 128.0f;
+    constexpr ImVec2 UV0(0.0f, 0.0f);
+    constexpr ImVec2 UV1(1.0f, 1.0f);
+
+    // 한 줄에 표시할 썸네일 개수 계산
+    const float availableWidth = ImGui::GetContentRegionAvail().x;
+    const float itemSpacing = ImGui::GetStyle().ItemSpacing.x;
+    const int photosPerLine = FMath::Max(1, static_cast<int>(availableWidth / (THUMBNAIL_SIZE + itemSpacing)));
+
+    int validPhotoCount = 0;
+
+    for (int32 photoIdx = 0; photoIdx < Pictures.Num(); ++photoIdx)
+    {
+        const FRenderTargetRHI* picturePtr = Pictures[photoIdx];
+
+        // 유효성 검사
+        if (!picturePtr || !picturePtr->SRV)
+        {
+            continue;
+        }
+
+        // 썸네일 렌더링 (고정 크기)
+        ImGui::PushID(photoIdx);
+
+        if (ImGui::ImageButton("##thumbnail", reinterpret_cast<ImTextureID>(picturePtr->SRV), ImVec2(THUMBNAIL_SIZE, THUMBNAIL_SIZE), UV0, UV1))
+        {
+            // 클릭 시 처리
+            //UE_LOG(LogTemp, Log, TEXT("Picture %d clicked"), photoIdx + 1);
+        }
+
+
+        ImGui::PopID();
+
+        // 줄바꿈 처리
+        validPhotoCount++;
+        if (validPhotoCount % photosPerLine != 0 && photoIdx < Pictures.Num() - 1)
+        {
+            ImGui::SameLine();
+        }
+    }
+
+    // 사진이 하나도 유효하지 않은 경우
+    if (validPhotoCount == 0)
+    {
+        ImGui::Text("No valid pictures to display.");
+    }
+
+    ImGui::Separator();
+}
+
 void PropertyEditorPanel::Render()
 {
     UEditorEngine* Engine = Cast<UEditorEngine>(GEngine);
@@ -78,6 +143,9 @@ void PropertyEditorPanel::Render()
 
     /* Render Start */
     ImGui::Begin("Detail", nullptr, PanelFlags);
+
+
+    RenderPictureGallery();
 
     AActor* SelectedActor = Engine->GetSelectedActor();
     USceneComponent* SelectedComponent = Engine->GetSelectedComponent();
