@@ -1,4 +1,4 @@
-﻿#include "PostProcessRenderPass.h"
+#include "PostProcessRenderPass.h"
 
 #include "CameraEffectRenderPass.h"
 #include "EngineBaseTypes.h"
@@ -55,6 +55,11 @@ void FPostProcessRenderPass::Render(const std::shared_ptr<FEditorViewportClient>
     }
     
     CleanUpRender(Viewport);
+}
+
+FDepthOfFieldRenderPass* FPostProcessRenderPass::GetDepthOfFieldRenderPass()
+{
+    return DepthOfFieldRenderPass;
 }
 
 void FPostProcessRenderPass::PrepareRender(const std::shared_ptr<FEditorViewportClient>& Viewport)
