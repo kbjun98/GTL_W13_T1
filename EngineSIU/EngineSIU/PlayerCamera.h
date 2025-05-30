@@ -5,9 +5,15 @@
 class PlayerCamera
 {
 private:
-    TArray<FRenderTargetRHI> Pictures;
+
+    PlayerCamera();
+
+    TArray<FRenderTargetRHI*> Pictures;
 
 public:
     void TakePicture();
+    void ReleasePictures();
+
+    TArray<FRenderTargetRHI*> GetPictures();
 };
 
