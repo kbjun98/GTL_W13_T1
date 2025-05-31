@@ -9,6 +9,9 @@ void ARabbitController::SetupInputComponent()
     InputComponent->BindAction("S", [this](float DeltaTime) { MoveForward(-DeltaTime); });
     InputComponent->BindAction("D", [this](float DeltaTime) { MoveRight(DeltaTime); });
     InputComponent->BindAction("A", [this](float DeltaTime) { MoveRight(-DeltaTime); });
+
+    InputComponent->BindAxis("Turn", [this](float DeltaTime) { RotateYaw(DeltaTime); });
+    InputComponent->BindAxis("LookUp", [this](float DeltaTime) { RotatePitch(DeltaTime); });
 }
 
 void ARabbitController::MoveForward(float DeltaTime)

@@ -13,5 +13,6 @@ public:
     void RotatePitch(float DeltaTime);
 private:
     float MoveSpeed = 100.0f; // 이동 속도  
+    float RotateSpeed = 100.0f; // 회전 속도
 };
 
