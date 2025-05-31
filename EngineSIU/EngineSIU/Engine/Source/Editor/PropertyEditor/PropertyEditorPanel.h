@@ -24,6 +24,7 @@ class UHeightFogComponent;
 class AEditorPlayer;
 class UStaticMeshComponent;
 class UMaterial;
+class APawn;
 
 // 헬퍼 함수 예시
 template<typename Getter, typename Setter>
@@ -59,7 +60,7 @@ private:
 
     void RenderForSceneComponent(USceneComponent* SceneComponent, AEditorPlayer* Player) const;
     void RenderForCameraComponent(UCameraComponent* InCameraComponent);
-    void RenderForPlayerActor(APlayer* InPlayerActor);
+    void RenderForPlayerActor(APawn* InPlayerActor);
     void RenderForActor(AActor* SelectedActor, USceneComponent* TargetComponent) const;
     
     /* Static Mesh Settings */
