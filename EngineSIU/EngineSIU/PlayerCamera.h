@@ -16,10 +16,14 @@ private:
     float CurrentApertureProgress = 0.0f;
 
     bool CanTakePicture = true;
-    float TakePictureCoolTime;
-    float TakePictureCoolTimeInit = 5;
+    float CameraCoolTime;
+    float CameraCoolTimeInit = 5;
 
 public:
+
+    float GetCameraCoolTime();
+    float GetCameraCoolTimeInit();
+
     void TakePicture();
     void ReleasePictures();
 

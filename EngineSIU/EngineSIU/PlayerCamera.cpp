@@ -14,12 +14,22 @@ PlayerCamera::PlayerCamera()
 {
     FSoundManager::GetInstance().LoadSound("Shutter", "Contents/Rabbit/Sound/Shutter.mp3");
     FSoundManager::GetInstance().LoadSound("Error", "Contents/Rabbit/Sound/Error.mp3");
-    TakePictureCoolTime = TakePictureCoolTimeInit;
+    CameraCoolTime = CameraCoolTimeInit;
 }
 
 PlayerCamera::~PlayerCamera()
 {
     ReleasePictures();
+}
+
+float PlayerCamera::GetCameraCoolTime()
+{
+    return CameraCoolTime;
+}
+
+float PlayerCamera::GetCameraCoolTimeInit()
+{
+    return CameraCoolTimeInit;
 }
 
 void PlayerCamera::TakePicture()
@@ -70,12 +80,12 @@ void PlayerCamera::Tick(float DeltaTime)
 {
     if (!CanTakePicture)
     {
-        TakePictureCoolTime -= DeltaTime;
+        CameraCoolTime -= DeltaTime;
 
-        if (TakePictureCoolTime <= 0)
+        if (CameraCoolTime <= 0)
         {
             CanTakePicture = true;
-            TakePictureCoolTime = TakePictureCoolTimeInit;
+            CameraCoolTime = CameraCoolTimeInit;
         }
     }
 
