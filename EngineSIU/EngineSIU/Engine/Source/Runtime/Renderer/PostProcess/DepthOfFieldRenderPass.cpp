@@ -8,71 +8,6 @@
 #include "UnrealEd/EditorViewportClient.h"
 #include "World/World.h"
 
-//현재 RenderTargetRHI 바탕으로 깊은 복사해서 Return
-FRenderTargetRHI* FDepthOfFieldRenderPass::GetPostProcessSource()
-{
-    // 0. 원본 및 Graphics 객체 유효성 검사
-    if (!RenderTargetRHI_PostProcess || !RenderTargetRHI_PostProcess->Texture2D ||
-        !Graphics || !Graphics->Device || !Graphics->DeviceContext) // Graphics 포인터 및 내부 Device/Context 유효성 검사
-    {
-        // 필요한 정보가 없으면 nullptr 반환
-        // (오류 로그를 남기는 것이 좋습니다)
-        return nullptr;
-    }
-
-    // 1. 새로운 FRenderTargetRHI 객체를 힙에 할당
-    FRenderTargetRHI* destination = new (std::nothrow) FRenderTargetRHI();
-    if (!destination)
-    {
-        // 메모리 할당 실패
-        return nullptr;
-    }
-
-    // 2. 원본 텍스처 디스크립션 가져오기
-    D3D11_TEXTURE2D_DESC texDesc;
-    RenderTargetRHI_PostProcess->Texture2D->GetDesc(&texDesc);
-
-    // 3. 새로운 텍스처 생성 (깊은 복사 대상)
-    HRESULT hr = Graphics->Device->CreateTexture2D(&texDesc, nullptr, &destination->Texture2D);
-    if (FAILED(hr) || !destination->Texture2D)
-    {
-        delete destination; // 실패 시 할당된 FRenderTargetRHI 객체 메모리 해제
-        return nullptr;
-    }
-
-    // 4. 원본 텍스처 내용을 새 텍스처로 복사 (GPU 상에서 깊은 복사)
-    Graphics->DeviceContext->CopyResource(destination->Texture2D, RenderTargetRHI_PostProcess->Texture2D);
-
-    // 5. 새로 복사된 텍스처에 대한 SRV 생성
-    if (destination->Texture2D)
-    {
-        D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
-        srvDesc.Format = texDesc.Format;
-        srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-        srvDesc.Texture2D.MostDetailedMip = 0;
-        srvDesc.Texture2D.MipLevels = (texDesc.MipLevels == 0) ? -1 : texDesc.MipLevels; // 모든 밉 레벨 또는 명시적 값
-
-        hr = Graphics->Device->CreateShaderResourceView(destination->Texture2D, &srvDesc, &destination->SRV);
-        if (FAILED(hr))
-        {
-            destination->Release(); // Texture2D 해제 포함
-            delete destination;
-            return nullptr;
-        }
-    }
-    else // 이 경우는 거의 발생하지 않아야 함
-    {
-        delete destination;
-        return nullptr;
-    }
-
-    // destination->RTV는 nullptr로 유지됩니다.
-
-    // 성공적으로 깊은 복사된 FRenderTargetRHI 객체의 포인터 반환
-    return destination;
-
-}
-
 void FDepthOfFieldRenderPass::Initialize(FDXDBufferManager* InBufferManager, FGraphicsDevice* InGraphics, FDXDShaderManager* InShaderManage)
 {
     FRenderPassBase::Initialize(InBufferManager, InGraphics, InShaderManage);
@@ -427,7 +362,7 @@ void FDepthOfFieldRenderPass::CleanUpBlur(const std::shared_ptr<FEditorViewportC
 void FDepthOfFieldRenderPass::PrepareComposite(const std::shared_ptr<FEditorViewportClient>& Viewport)
 {
     FViewportResource* ViewportResource = Viewport->GetViewportResource();
-    RenderTargetRHI_PostProcess = ViewportResource->GetRenderTarget(EResourceType::ERT_DepthOfField_Result);
+    FRenderTargetRHI* RenderTargetRHI_PostProcess = ViewportResource->GetRenderTarget(EResourceType::ERT_DepthOfField_Result);
     Graphics->DeviceContext->OMSetRenderTargets(1, &RenderTargetRHI_PostProcess->RTV, nullptr);
     
     FRenderTargetRHI* RenderTargetRHI_Scene = ViewportResource->GetRenderTarget(EResourceType::ERT_Scene);

@@ -6,6 +6,16 @@
 #include "Renderer/ShaderConstants.h"
 #include "UnrealClient.h"
 #include "D3D11RHI/DXDShaderManager.h"
+#include <Engine/Contents/GameFramework/RabbitPawn.h>
+
+void FCameraEffectRenderPass::PrepareRenderArr()
+{
+    //TODO 일단 플레이어로 가정
+    for (auto Rabbit : TObjectRange<ARabbitPawn>())
+    {
+        CurrentApertureProgress= Rabbit->GetPlayerCamera()->GetCurrentApertureProgress();
+    }
+}
 
 void FCameraEffectRenderPass::Initialize(FDXDBufferManager* InBufferManager, FGraphicsDevice* InGraphics, FDXDShaderManager* InShaderManager)
 {
@@ -30,9 +40,8 @@ void FCameraEffectRenderPass::UpdateCameraEffectConstant(const std::shared_ptr<F
     FConstantBufferLetterBox LetterBoxParams;
     FConstantBufferShutter ShutterParams;
 
-	
+    ShutterParams.apertureProgress = CurrentApertureProgress;
 
-    ShutterParams.apertureProgress = FEngineLoop::PlayerCam->GetCurrentApertureProgress();
     ShutterParams.aspectRatio = Viewport->AspectRatio;
 
     LetterBoxParams.ScreenAspectRatio = Viewport->AspectRatio;
