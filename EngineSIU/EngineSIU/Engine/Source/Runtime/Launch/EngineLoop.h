@@ -46,8 +46,6 @@ public:
     static FResourceManager ResourceManager;
     static uint32 TotalAllocationBytes;
     static uint32 TotalAllocationCount;
-    //TOD 테스트용임 후에 Player쪽으로 옮길것
-    static PlayerCamera* PlayerCam;
 
     HWND AppWnd;
 

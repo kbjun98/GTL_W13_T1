@@ -25,7 +25,6 @@ UPrimitiveDrawBatch FEngineLoop::PrimitiveDrawBatch;
 FResourceManager FEngineLoop::ResourceManager;
 uint32 FEngineLoop::TotalAllocationBytes = 0;
 uint32 FEngineLoop::TotalAllocationCount = 0;
-PlayerCamera* FEngineLoop::PlayerCam;
 
 
 FEngineLoop::FEngineLoop()
@@ -104,8 +103,6 @@ int32 FEngineLoop::Init(HINSTANCE hInstance)
     FSoundManager::GetInstance().LoadSound("sizzle", "Contents/Sounds/sizzle.mp3");
     //FSoundManager::GetInstance().PlaySound("fishdream");
 
-    //TOD 테스트용 객체생성 후에 Player등으로 옮길 것
-    PlayerCam = new PlayerCamera();
 
     UpdateUI();
 
@@ -175,27 +172,7 @@ void FEngineLoop::Tick()
             }
         }
 
-
-    
-        //TODO 카메라 촬영 테스트용코드 후에 Player클래스 등으로 옮길 것
-        bool bIsRightMouseButtonCurrentlyPressed = (GetAsyncKeyState(VK_LSHIFT) & 0x8000) != 0;
-
-        // FEngineLoop 클래스의 멤버 변수를 사용한다고 가정: m_bWasRightMouseButtonPressedLastFrame
-        // 만약 Tick 함수 내의 static 변수를 사용한다면: bWasRightMouseButtonPressedLastFrame
-        if (bIsRightMouseButtonCurrentlyPressed && !m_bWasRightMouseButtonPressedLastFrame) // 또는 !bWasRightMouseButtonPressedLastFrame
-        {
-            PlayerCam->TakePicture();
-        }
-
-        // 현재 프레임의 마우스 오른쪽 버튼 상태를 다음 프레임을 위해 저장
-        m_bWasRightMouseButtonPressedLastFrame = bIsRightMouseButtonCurrentlyPressed; // 또는 bWasRightMouseButtonPressedLastFrame = ..
- 
-
-
         const float DeltaTime = static_cast<float>(ElapsedTime / 1000.f);
-
-        PlayerCam->Tick(DeltaTime);
-
 
         GEngine->Tick(DeltaTime);
         LevelEditor->Tick(DeltaTime);
@@ -207,7 +184,7 @@ void FEngineLoop::Tick()
         EngineProfiler.Render(GraphicDevice.DeviceContext, GraphicDevice.ScreenWidth, GraphicDevice.ScreenHeight);
 
         UIManager->EndFrame();
-
+        FSoundManager::GetInstance().Update();
         // Pending 처리된 오브젝트 제거
         GUObjectArray.ProcessPendingDestroyObjects();
 
@@ -224,7 +201,7 @@ void FEngineLoop::Tick()
             ElapsedTime = (static_cast<double>(EndTime.QuadPart - StartTime.QuadPart) * 1000.f / static_cast<double>(Frequency.QuadPart));
         } while (ElapsedTime < TargetFrameTime);
     }
-    FSoundManager::GetInstance().Update();
+ 
 }
 
 void FEngineLoop::GetClientSize(uint32& OutWidth, uint32& OutHeight) const
