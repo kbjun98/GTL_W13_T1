@@ -18,9 +18,11 @@ void PlayerCamera::TakePicture()
 {
     const auto Source = FEngineLoop::Renderer.GetPostProcessRenderPass()->GetDepthOfFieldRenderPass()->GetPostProcessSource();
 
+    assert(Source);
+
     if (Source)
     {
-        Pictures.Add(Source);
+        PicturesRHI.Add(Source);
         FSoundManager::GetInstance().PlaySound("Shutter");
         TriggerShutterEffect();
     }
@@ -28,15 +30,17 @@ void PlayerCamera::TakePicture()
 
 void PlayerCamera::ReleasePictures()
 {
-    for (auto Picture : Pictures)
+    for (auto Picture : PicturesRHI)
     {
         Picture->Release();
     }
+
+    PicturesRHI.Empty();
 }
 
 TArray<FRenderTargetRHI*> PlayerCamera::GetPicturesRHI() const
 {
-    return Pictures;
+    return PicturesRHI;
 }
 
 void PlayerCamera::TriggerShutterEffect()

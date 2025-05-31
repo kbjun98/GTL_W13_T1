@@ -9,7 +9,7 @@ public:
     ~PlayerCamera();
 
 private:
-    TArray<FRenderTargetRHI*> Pictures;
+    TArray<FRenderTargetRHI*> PicturesRHI;
     bool  bIsShutterAnimating = false;
     float ShutterTimer = 0.0f;
     const float ShutterDuration = 0.2f; // 예: 0.25초
