@@ -32,6 +32,8 @@ void ARabbitController::SetupInputComponent()
 
 void ARabbitController::MoveForward(float DeltaTime)
 {
+    if (CurrentInputMode == EInputMode::UIOnly) return;
+
     if (ARabbitPawn* RabbitPawn = Cast<ARabbitPawn>(PossessedPawn))
     {
         RabbitPawn->MoveForward(DeltaTime);
@@ -40,6 +42,8 @@ void ARabbitController::MoveForward(float DeltaTime)
 
 void ARabbitController::MoveRight(float DeltaTime)
 {
+    if (CurrentInputMode == EInputMode::UIOnly) return;
+
     if (ARabbitPawn* RabbitPawn = Cast<ARabbitPawn>(PossessedPawn))
     {
         RabbitPawn->MoveRight(DeltaTime);
@@ -48,6 +52,8 @@ void ARabbitController::MoveRight(float DeltaTime)
 
 void ARabbitController::RotateYaw(float DeltaTime)
 {
+    if (CurrentInputMode == EInputMode::UIOnly) return;
+
     if (ARabbitPawn* RabbitPawn = Cast<ARabbitPawn>(PossessedPawn))
     {
         RabbitPawn->RotateYaw(DeltaTime);
@@ -56,6 +62,8 @@ void ARabbitController::RotateYaw(float DeltaTime)
 
 void ARabbitController::RotatePitch(float DeltaTime)
 {
+    if (CurrentInputMode == EInputMode::UIOnly) return;
+
     if (ARabbitPawn* RabbitPawn = Cast<ARabbitPawn>(PossessedPawn))
     {
         RabbitPawn->RotatePitch(DeltaTime);
