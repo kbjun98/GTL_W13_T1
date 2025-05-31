@@ -5,11 +5,24 @@ void ARabbitController::SetupInputComponent()
 {
 
     Super::SetupInputComponent();
+        InputComponent->BindAction("W", [this](float DeltaTime) { MoveForward(DeltaTime); });
+        InputComponent->BindAction("S", [this](float DeltaTime) { MoveForward(-DeltaTime); });
+        InputComponent->BindAction("D", [this](float DeltaTime) { MoveRight(DeltaTime); });
+        InputComponent->BindAction("A", [this](float DeltaTime) { MoveRight(-DeltaTime); });
+}
+
+void ARabbitController::MoveForward(float DeltaTime)
+{
     if (ARabbitPawn* RabbitPawn = Cast<ARabbitPawn>(PossessedPawn))
     {
-        InputComponent->BindAction("W", [RabbitPawn](float DeltaTime) { RabbitPawn->MoveForward(DeltaTime); });
-        InputComponent->BindAction("S", [RabbitPawn](float DeltaTime) { RabbitPawn->MoveForward(-DeltaTime); });
-        InputComponent->BindAction("D", [RabbitPawn](float DeltaTime) { RabbitPawn->MoveRight(DeltaTime); });
-        InputComponent->BindAction("A", [RabbitPawn](float DeltaTime) { RabbitPawn->MoveRight(-DeltaTime); });
+        RabbitPawn->MoveForward(DeltaTime);
+    }
+}
+
+void ARabbitController::MoveRight(float DeltaTime)
+{
+    if (ARabbitPawn* RabbitPawn = Cast<ARabbitPawn>(PossessedPawn))
+    {
+        RabbitPawn->MoveRight(DeltaTime);
     }
 }

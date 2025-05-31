@@ -11,7 +11,7 @@
 #include "GameFramework/GameMode.h"
 #include "Classes/Components/TextComponent.h"
 #include "GameFramework/Pawn.h"
-
+#include "Engine/Contents/GameFramework/RabbitGameMode.h"
 class UEditorEngine;
 
 UWorld::~UWorld()
@@ -72,7 +72,8 @@ void UWorld::BeginPlay()
 {
     if (!GameMode && this->WorldType == EWorldType::PIE)
     {
-        GameMode = this->SpawnActor<AGameMode>();
+        //GameMode = this->SpawnActor<AGameMode>();
+        GameMode = this->SpawnActor<ARabbitGameMode>();
         GameMode->SetActorLabel(TEXT("OBJ_GAMEMODE"));
 
         GameMode->InitGame();

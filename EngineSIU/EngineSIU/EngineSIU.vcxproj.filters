@@ -1644,6 +1644,7 @@
     <ClCompile Include="Engine\Source\Runtime\Engine\Classes\GameFramework\PawnMovementComponent.cpp" />
     <ClCompile Include="Engine\Contents\GameFramework\RabbitController.cpp" />
     <ClCompile Include="Engine\Contents\GameFramework\RabbitPawn.cpp" />
+    <ClCompile Include="Engine\Contents\GameFramework\RabbitGameMode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="EngineSIU.natvis" />
@@ -1770,6 +1771,7 @@
     <ClInclude Include="Engine\Source\Runtime\Engine\Classes\GameFramework\PawnMovementComponent.h" />
     <ClInclude Include="Engine\Contents\GameFramework\RabbitController.h" />
     <ClInclude Include="Engine\Contents\GameFramework\RabbitPawn.h" />
+    <ClInclude Include="Engine\Contents\GameFramework\RabbitGameMode.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\CompositingShader.hlsl" />

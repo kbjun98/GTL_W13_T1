@@ -8,5 +8,8 @@ public:
     virtual ~ARabbitController() override = default;
 protected:
     virtual void SetupInputComponent() override;
+private:
+    void MoveForward(float DeltaTime);
+    void MoveRight(float DeltaTime);
 };
 
