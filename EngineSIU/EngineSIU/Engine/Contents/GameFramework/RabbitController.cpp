@@ -1,6 +1,23 @@
 #include "RabbitController.h"
 #include "Engine/Contents/GameFramework/RabbitPawn.h"
 #include "UObject/Casts.h"
+#include "Windows/WindowsCursor.h"
+void ARabbitController::SetInputMode(EInputMode NewInputMode)
+{
+    CurrentInputMode = NewInputMode;
+    switch (CurrentInputMode)
+    {
+    case EInputMode::UIOnly:
+        FWindowsCursor::SetShowMouseCursor(true);
+        break;
+    case EInputMode::GameOnly:
+        FWindowsCursor::SetShowMouseCursor(false);
+        break;
+    case EInputMode::GameAndUI:
+        FWindowsCursor::SetShowMouseCursor(true);
+        break;
+    }
+}
 void ARabbitController::SetupInputComponent()
 {
 
