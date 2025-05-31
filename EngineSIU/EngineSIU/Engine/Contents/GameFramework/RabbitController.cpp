@@ -77,12 +77,17 @@ void ARabbitController::SetInputMode(EInputMode NewInputMode)
     {
     case EInputMode::UIOnly:
         FWindowsCursor::SetShowMouseCursor(true);
+        FWindowsCursor::LockToWindow(false);
+        FWindowsCursor::SetPosition(MousePinPosition.X, MousePinPosition.Y);
         break;
     case EInputMode::GameOnly:
         FWindowsCursor::SetShowMouseCursor(false);
+        FWindowsCursor::LockToWindow(true);
+        MousePinPosition = FWindowsCursor::GetPosition();
         break;
     case EInputMode::GameAndUI:
         FWindowsCursor::SetShowMouseCursor(true);
+        FWindowsCursor::LockToWindow(false);
         break;
     }
 }
@@ -92,13 +97,9 @@ void ARabbitController::OnESCPressed()
     if (CurrentInputMode == EInputMode::UIOnly)
     {
         SetInputMode(EInputMode::GameOnly);
-        MousePinPosition = FWindowsCursor::GetPosition();
-        FWindowsCursor::LockToWindow(true);
     }
     else
     {
         SetInputMode(EInputMode::UIOnly);
-        FWindowsCursor::SetPosition(MousePinPosition.X, MousePinPosition.Y);
-        FWindowsCursor::LockToWindow(false);
     }
 }
