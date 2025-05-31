@@ -1649,6 +1649,7 @@
     <ClCompile Include="Engine\Contents\Navigation\PathFinder.cpp" />
     <ClCompile Include="Engine\Contents\Components\GridMapComponent.cpp" />
     <ClCompile Include="Engine\Contents\Actors\GridMapActor.cpp" />
+    <ClCompile Include="Engine\Source\Runtime\Engine\Classes\GameFramework\AIController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="EngineSIU.natvis" />
@@ -1780,6 +1781,7 @@
     <ClInclude Include="Engine\Contents\Navigation\PathFinder.h" />
     <ClInclude Include="Engine\Contents\Components\GridMapComponent.h" />
     <ClInclude Include="Engine\Contents\Actors\GridMapActor.h" />
+    <ClInclude Include="Engine\Source\Runtime\Engine\Classes\GameFramework\AIController.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\CompositingShader.hlsl" />
