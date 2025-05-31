@@ -114,7 +114,7 @@ void AGameMode::HandleStartingNewPlayer()
     UWorld* World = GEngine->ActiveWorld;
     for (const auto Iter : TObjectRange<APawn>())
     {
-        if (Iter->GetWorld() == World)
+        if (Iter->GetWorld() == World && Iter->GetClass()->IsChildOf(DefaultPawnClass))
         {
             World->SetMainPlayer(Iter);
             break;
@@ -140,7 +140,7 @@ APlayerController* AGameMode::SpawnPlayerController()
 
 APawn* AGameMode::SpawnDefaultPlayer()
 {
-    APawn* TempPlayer = GEngine->ActiveWorld->SpawnActor<APawn>();
+    APawn* TempPlayer = Cast<APawn>(GEngine->ActiveWorld->SpawnActor(DefaultPawnClass));
     TempPlayer->SetActorLabel(TEXT("OBJ_PLAYER"));
     TempPlayer->SetActorTickInEditor(false);
     GEngine->ActiveWorld->SetMainPlayer(TempPlayer);
