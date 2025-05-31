@@ -28,6 +28,10 @@ private:
 
     void SetInputMode(EInputMode NewInputMode);
     void OnESCPressed();
+
+    void TakePicture();
+
+
 private:
     EInputMode CurrentInputMode = EInputMode::GameOnly;
     FVector2D MousePinPosition;
