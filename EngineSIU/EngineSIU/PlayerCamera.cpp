@@ -1,9 +1,6 @@
 #include "PlayerCamera.h"
 #include <EngineLoop.h>
-#include "PostProcess/PostProcessRenderPass.h"
-#include "PostProcess/DepthOfFieldRenderPass.h"
 #include "SoundManager.h"
-#include <UObject/Object.h>
 #include "LevelEditor/SLevelEditor.h"
 #include "UnrealEd/EditorViewportClient.h"
 #include "Components/PrimitiveComponent.h"
@@ -22,6 +19,72 @@ PlayerCamera::~PlayerCamera()
     ReleasePictures();
 }
 
+FRenderTargetRHI* PlayerCamera::CopyRHI(FRenderTargetRHI* InputRHI)
+{
+    auto Device = GEngineLoop.GraphicDevice.Device;
+    auto DeviceContext = GEngineLoop.GraphicDevice.DeviceContext;
+
+    // 0. 원본 및 Graphics 객체 유효성 검사
+    if (!InputRHI || !InputRHI->Texture2D)
+    {
+        // 필요한 정보가 없으면 nullptr 반환
+        // (오류 로그를 남기는 것이 좋습니다)
+        return nullptr;
+    }
+
+    // 1. 새로운 FRenderTargetRHI 객체를 힙에 할당
+    FRenderTargetRHI* destination = new (std::nothrow) FRenderTargetRHI();
+    if (!destination)
+    {
+        // 메모리 할당 실패
+        return nullptr;
+    }
+
+    // 2. 원본 텍스처 디스크립션 가져오기
+    D3D11_TEXTURE2D_DESC texDesc;
+    InputRHI->Texture2D->GetDesc(&texDesc);
+
+    // 3. 새로운 텍스처 생성 (깊은 복사 대상)
+ 
+    HRESULT hr = Device->CreateTexture2D(&texDesc, nullptr, &destination->Texture2D);
+    if (FAILED(hr) || !destination->Texture2D)
+    {
+        delete destination; // 실패 시 할당된 FRenderTargetRHI 객체 메모리 해제
+        return nullptr;
+    }
+
+    // 4. 원본 텍스처 내용을 새 텍스처로 복사 (GPU 상에서 깊은 복사)
+    DeviceContext->CopyResource(destination->Texture2D, InputRHI->Texture2D);
+
+    // 5. 새로 복사된 텍스처에 대한 SRV 생성
+    if (destination->Texture2D)
+    {
+        D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+        srvDesc.Format = texDesc.Format;
+        srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+        srvDesc.Texture2D.MostDetailedMip = 0;
+        srvDesc.Texture2D.MipLevels = (texDesc.MipLevels == 0) ? -1 : texDesc.MipLevels; // 모든 밉 레벨 또는 명시적 값
+
+        hr = GEngineLoop.GraphicDevice.Device->CreateShaderResourceView(destination->Texture2D, &srvDesc, &destination->SRV);
+        if (FAILED(hr))
+        {
+            destination->Release(); // Texture2D 해제 포함
+            delete destination;
+            return nullptr;
+        }
+    }
+    else // 이 경우는 거의 발생하지 않아야 함
+    {
+        delete destination;
+        return nullptr;
+    }
+
+    // destination->RTV는 nullptr로 유지됩니다.
+
+    // 성공적으로 깊은 복사된 FRenderTargetRHI 객체의 포인터 반환
+    return destination;
+}
+
 float PlayerCamera::GetCameraCoolTime()
 {
     return CameraCoolTime;
@@ -32,6 +95,7 @@ float PlayerCamera::GetCameraCoolTimeInit()
     return CameraCoolTimeInit;
 }
 
+
 void PlayerCamera::TakePicture()
 {
     if (!CanTakePicture)
@@ -39,8 +103,9 @@ void PlayerCamera::TakePicture()
         FSoundManager::GetInstance().PlaySound("Error");
         return;
     }
-
-    const auto Source = FEngineLoop::Renderer.GetPostProcessRenderPass()->GetDepthOfFieldRenderPass()->GetPostProcessSource();
+    auto Source =  GEngineLoop.GetLevelEditor()->GetActiveViewportClient()->GetViewportResource()->GetRenderTarget(EResourceType::ERT_DepthOfField_Result);
+    
+    Source = CopyRHI(Source);
 
     assert(Source);
 

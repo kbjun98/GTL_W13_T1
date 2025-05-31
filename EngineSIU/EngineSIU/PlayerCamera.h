@@ -20,6 +20,7 @@ private:
     float CameraCoolTimeInit = 5;
 
 public:
+    FRenderTargetRHI* CopyRHI(FRenderTargetRHI* InputRHI);
 
     float GetCameraCoolTime();
     float GetCameraCoolTimeInit();
