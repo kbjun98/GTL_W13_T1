@@ -24,6 +24,10 @@ public:
 
     UPawnMovementComponent* GetMovementComponent() const;
 
+    FVector ConsumeMovementInputVector();
+
 protected:
     FVector ControlledInputVector;
+
+    FVector LastControlledInputVector;
 };

@@ -1,6 +1,8 @@
 #pragma once
 #include "GameFramework/Pawn.h"
 
+class URabbitMovementComponent;
+
 class ARabbitPawn : public APawn
 {
     DECLARE_CLASS(ARabbitPawn, APawn)
@@ -13,6 +15,8 @@ public:
     virtual void Tick(float DeltaTime) override;
     
 private:
-    UPawnMovementComponent* MovementComponent;
+    URabbitMovementComponent* MovementComponent;
+
+    float HalfHeight = 40.f;
 };
 

@@ -1,14 +1,22 @@
 #include "RabbitPawn.h"
-#include "GameFramework/PawnMovementComponent.h"
+
+#include "PhysicsManager.h"
+#include "Camera/CameraComponent.h"
+#include "Components/SphereComponent.h"
+#include "RabbitMovementComponent.h"
 
 void ARabbitPawn::PostSpawnInitialize()
 {
     APawn::PostSpawnInitialize();
 
+    USphereComponent* Collision = AddComponent<USphereComponent>("Collision_0");
+    Collision->SetRadius(HalfHeight);
+    RootComponent = Collision;
     
+    UCameraComponent* Camera = AddComponent<UCameraComponent>("Camera_0");
+    Camera->SetupAttachment(RootComponent);
     
-    // 무브먼트 컴포넌트는 마지막에 추가
-    MovementComponent = AddComponent<UPawnMovementComponent>("PawnMoveComp_0");
+    MovementComponent = AddComponent<URabbitMovementComponent>("RabbitMoveComp_0");
 }
 
 void ARabbitPawn::Tick(float DeltaTime)

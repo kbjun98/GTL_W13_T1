@@ -15,6 +15,8 @@ public:
 
     void SetRadius(float InRadius) { SphereRadius = InRadius; }
     float GetRadius() const { return SphereRadius; }
+
+    virtual void CreatePhysXGameObject() override;
     
 private:
     float SphereRadius = 1.f;

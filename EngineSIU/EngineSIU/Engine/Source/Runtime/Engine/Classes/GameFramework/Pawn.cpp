@@ -5,19 +5,12 @@
 APawn::APawn()
     : Controller(nullptr)
     , ControlledInputVector(FVector::ZeroVector)
+    ,LastControlledInputVector(FVector::ZeroVector)
 {}
 
 void APawn::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-
-    if (UPawnMovementComponent* MoveComp = GetMovementComponent())
-    {
-        FVector Delta = ControlledInputVector * MoveComp->MaxSpeed * DeltaTime;
-        MoveComp->MoveUpdatedComponent(Delta, GetActorRotation());
-    }
-
-    ControlledInputVector = FVector::ZeroVector;
 }
 
 void APawn::PossessedBy(APlayerController* NewController)
@@ -37,4 +30,11 @@ void APawn::AddMovementInput(const FVector& WorldDirection, float ScaleValue)
 UPawnMovementComponent* APawn::GetMovementComponent() const
 {
     return GetComponentByClass<UPawnMovementComponent>();
+}
+
+FVector APawn::ConsumeMovementInputVector()
+{
+    LastControlledInputVector = ControlledInputVector;
+    ControlledInputVector = FVector::ZeroVector;
+    return LastControlledInputVector;
 }
