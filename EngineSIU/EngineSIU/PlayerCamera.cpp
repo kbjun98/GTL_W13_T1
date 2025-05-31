@@ -41,7 +41,7 @@ void PlayerCamera::TriggerShutterEffect()
     CurrentApertureProgress = 0.0f; // 시작 시점은 이미 0이거나, 여기서 명시적으로 0으로 설정
 }
 
-void PlayerCamera::UpdateShutterAnimation(float deltaTime)
+void PlayerCamera::UpdateShutterAnimation(float DeltaTime)
 {
     if (!bIsShutterAnimating) {
         // 애니메이션 중이 아니면 항상 열린 상태로 설정 (선택적)
@@ -49,25 +49,29 @@ void PlayerCamera::UpdateShutterAnimation(float deltaTime)
         return;
     }
 
-    ShutterTimer += deltaTime/1.5f;
-    float normalizedTime = ShutterTimer / ShutterDuration;
+    ShutterTimer += DeltaTime /1.0f;
+    float NormalizedTime = ShutterTimer / ShutterDuration;
 
-    if (normalizedTime < 0.4f) {
-        CurrentApertureProgress = (normalizedTime / 0.4f);
+    if (NormalizedTime < 0.4f) 
+    {
+        CurrentApertureProgress = (NormalizedTime / 0.4f);
     }
-    else if (normalizedTime < 0.6f) {
+    else if (NormalizedTime < 0.6f)
+    {
         CurrentApertureProgress = 1.0f;
     }
-    else if (normalizedTime < 1.0f) {
-        CurrentApertureProgress = 1.0f - ((normalizedTime - 0.6f) / 0.4f);
+    else if (NormalizedTime < 1.0f)
+    {
+        CurrentApertureProgress = 1.0f - ((NormalizedTime - 0.6f) / 0.4f);
     }
-    else {
+    else 
+    {
         CurrentApertureProgress = 0.0f;
         bIsShutterAnimating = false;
     }
+
     CurrentApertureProgress = std::max(0.0f, std::min(1.0f, CurrentApertureProgress));
 
-    std::cout << CurrentApertureProgress << std:: endl;
 }
 
 float PlayerCamera::GetCurrentApertureProgress()
