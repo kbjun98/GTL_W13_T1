@@ -6,10 +6,14 @@ class ARabbitController : public APlayerController
 public:
     ARabbitController() = default;
     virtual ~ARabbitController() override = default;
+    
 protected:
     virtual void SetupInputComponent() override;
+    
 private:
-    void MoveForward(float DeltaTime);
-    void MoveRight(float DeltaTime);
+    void MoveForward();
+    void MoveBack();
+    void MoveRight();
+    void MoveLeft();
 };
 

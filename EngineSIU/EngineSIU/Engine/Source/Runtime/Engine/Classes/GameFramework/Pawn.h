@@ -3,17 +3,27 @@
 
 class APlayerController;
 class UInputComponent;
+class UPawnMovementComponent;
 
 class APawn : public AActor
 {
     DECLARE_CLASS(APawn, AActor)
 
 public:
-    APawn() = default;
+    APawn();
 
     virtual void Tick(float DeltaTime) override;
+    
     virtual void PossessedBy(APlayerController* NewController);
+    
     virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent);
 
-    APlayerController* Controller = nullptr; // 이 Pawn을 소유하는 PlayerController
+    APlayerController* Controller;
+
+    void AddMovementInput(const FVector& WorldDirection, float ScaleValue = 1.f);
+
+    UPawnMovementComponent* GetMovementComponent() const;
+
+protected:
+    FVector ControlledInputVector;
 };

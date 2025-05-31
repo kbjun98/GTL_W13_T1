@@ -37,7 +37,7 @@ public:
     
     virtual void BindAction(const FString& Key, const std::function<void(float)>& Callback);
 
-    APawn* GetPossessedPawn() const { return PossessedPawn; }
+    APawn* GetPawn() const { return PossessedPawn; }
     
     // 카메라 관련 함수
     AActor* GetViewTarget() const;

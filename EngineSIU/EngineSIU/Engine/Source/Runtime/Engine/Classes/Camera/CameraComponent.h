@@ -15,8 +15,8 @@ public:
     void FollowMainPlayer();
 
     float ViewFOV = 70.0f;
-    float NearClip = 0.1f;
-    float FarClip = 1000.0f;
+    float NearClip = 10.f;
+    float FarClip = 10000.0f;
 
     float DistanceBehind = 10.f;
     float CameraHeight = 15.f;

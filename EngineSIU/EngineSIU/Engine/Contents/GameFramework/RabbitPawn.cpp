@@ -1,20 +1,17 @@
 #include "RabbitPawn.h"
+#include "GameFramework/PawnMovementComponent.h"
+
+void ARabbitPawn::PostSpawnInitialize()
+{
+    APawn::PostSpawnInitialize();
+
+    
+    
+    // 무브먼트 컴포넌트는 마지막에 추가
+    MovementComponent = AddComponent<UPawnMovementComponent>("PawnMoveComp_0");
+}
 
 void ARabbitPawn::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-}
-
-void ARabbitPawn::MoveForward(float DeltaTime)
-{
-    FVector Delta = FVector(1, 0, 0) * MoveSpeed * DeltaTime;
-    FRotator Rotation = GetActorRotation();
-    GetRootComponent()->MoveComponent(Delta, Rotation, false);
-}
-
-void ARabbitPawn::MoveRight(float DeltaTime)
-{
-    FVector Delta = FVector(0, 1, 0) * MoveSpeed * DeltaTime;
-    FRotator Rotation = GetActorRotation();
-    GetRootComponent()->MoveComponent(Delta, Rotation, false);
 }
