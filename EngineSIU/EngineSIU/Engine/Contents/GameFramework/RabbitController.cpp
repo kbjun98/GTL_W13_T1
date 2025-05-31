@@ -92,9 +92,13 @@ void ARabbitController::OnESCPressed()
     if (CurrentInputMode == EInputMode::UIOnly)
     {
         SetInputMode(EInputMode::GameOnly);
+        MousePinPosition = FWindowsCursor::GetPosition();
+        FWindowsCursor::LockToWindow(true);
     }
     else
     {
         SetInputMode(EInputMode::UIOnly);
+        FWindowsCursor::SetPosition(MousePinPosition.X, MousePinPosition.Y);
+        FWindowsCursor::LockToWindow(false);
     }
 }

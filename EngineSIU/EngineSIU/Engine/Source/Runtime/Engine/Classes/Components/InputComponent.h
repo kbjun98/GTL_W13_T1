@@ -39,6 +39,7 @@ private:
     TArray<FDelegateHandle> BindMouseMoveDelegateHandles;
     TArray<FDelegateHandle> BindMouseDownDelegateHandles;
     TArray<FDelegateHandle> BindMouseUpDelegateHandles;
+    TArray<FDelegateHandle> BindRawMouseMoveDelegateHandles;
 
     TSet<EKeys::Type> PressedKeys;
 };

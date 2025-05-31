@@ -30,5 +30,6 @@ private:
     void OnESCPressed();
 private:
     EInputMode CurrentInputMode = EInputMode::GameOnly;
+    FVector2D MousePinPosition;
 };
 

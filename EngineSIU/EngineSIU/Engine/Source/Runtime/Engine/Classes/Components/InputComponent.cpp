@@ -29,7 +29,6 @@ void UInputComponent::BindInputDelegate()
 
     BindMouseMoveDelegateHandles.Add(Handler->OnMouseMoveDelegate.AddLambda([this](const FPointerEvent& InMouseEvent)
         {
-            MouseDelta = InMouseEvent.GetCursorDelta();
         }));
 
     BindMouseDownDelegateHandles.Add(Handler->OnMouseDownDelegate.AddLambda([this](const FPointerEvent& InMouseEvent)
@@ -41,6 +40,12 @@ void UInputComponent::BindInputDelegate()
         {
             InputMouse(InMouseEvent);
         }));
+
+    BindRawMouseMoveDelegateHandles.Add(Handler->OnRawMouseInputDelegate.AddLambda([this](const FPointerEvent& InMouseEvent)
+        {
+            MouseDelta = InMouseEvent.GetCursorDelta();
+        }));
+
 }
 
 void UInputComponent::UnPossess()
@@ -73,12 +78,17 @@ void UInputComponent::ClearBindDelegate()
     {
         Handler->OnMouseUpDelegate.Remove(DelegateHandle);
     }
+    for (FDelegateHandle DelegateHandle : BindRawMouseMoveDelegateHandles)
+    {
+        Handler->OnRawMouseInputDelegate.Remove(DelegateHandle);
+    }
 
     BindKeyDownDelegateHandles.Empty();
     BindKeyUpDelegateHandles.Empty();
     BindMouseMoveDelegateHandles.Empty();
     BindMouseDownDelegateHandles.Empty();
     BindMouseUpDelegateHandles.Empty();
+    BindRawMouseMoveDelegateHandles.Empty();
 }
 
 void UInputComponent::InputKey(const FKeyEvent& InKeyEvent)
