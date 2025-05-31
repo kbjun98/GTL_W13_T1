@@ -15,7 +15,9 @@ class ARabbitController : public APlayerController
 public:
     ARabbitController() = default;
     virtual ~ARabbitController() override = default;
-    void SetInputMode(EInputMode NewInputMode);
+
+    virtual void BeginPlay() override;
+    virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 protected:
     virtual void SetupInputComponent() override;
 private:
@@ -23,6 +25,9 @@ private:
     void MoveRight(float DeltaTime);
     void RotateYaw(float DeltaTime);
     void RotatePitch(float DeltaTime);
+
+    void SetInputMode(EInputMode NewInputMode);
+    void OnESCPressed();
 private:
     EInputMode CurrentInputMode = EInputMode::GameOnly;
 };
