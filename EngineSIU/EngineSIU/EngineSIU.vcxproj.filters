@@ -1641,6 +1641,7 @@
     <ClCompile Include="Engine\Source\Runtime\Engine\Classes\PhysicsEngine\PhysicsAsset.cpp" />
     <ClCompile Include="Engine\Source\Runtime\Engine\World\PhysicsViewerWorld.cpp" />
     <ClCompile Include="PlayerCamera.cpp" />
+    <ClCompile Include="Engine\Source\Editor\PropertyEditor\RabbitGameUIPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="EngineSIU.natvis" />
@@ -1764,6 +1765,7 @@
     <ClInclude Include="Engine\Source\Runtime\Engine\Classes\PhysicsEngine\PhysicsAsset.h" />
     <ClInclude Include="Engine\Source\Runtime\Engine\World\PhysicsViewerWorld.h" />
     <ClInclude Include="PlayerCamera.h" />
+    <ClInclude Include="Engine\Source\Editor\PropertyEditor\RabbitGameUIPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\CompositingShader.hlsl" />

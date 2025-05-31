@@ -8,6 +8,7 @@
 #include "PropertyEditor/SkeletalMeshViewerPanel.h"
 #include "PropertyEditor/PhysicsAssetViewerPanel.h"
 #include "World/World.h"
+#include <PropertyEditor/RabbitGameUIPanel.h>
 void UnrealEd::Initialize()
 {
     auto ControlPanel = std::make_shared<ControlEditorPanel>();
@@ -28,6 +29,9 @@ void UnrealEd::Initialize()
 
     auto PhysicsAssetPanel = std::make_shared<PhysicsAssetViewerPanel>();
     Panels["PhysicsAssetViewerPanel"] = PhysicsAssetPanel;
+
+    auto RabbitGameUI = std::make_shared<RabbitGameUIPanel>();
+    Panels["RabbitGameUIPanel"] = RabbitGameUI;
 }
 
 void UnrealEd::Render() const
@@ -65,6 +69,9 @@ void UnrealEd::Render() const
     case EWorldType::Inactive:
         currentMask = EWorldTypeBitFlag::Inactive;
         break;
+    case EWorldType::RabbitGameUI:
+        currentMask = EWorldTypeBitFlag::RabbitGameUI;
+        break;
     default:
         currentMask = EWorldTypeBitFlag::None;
         break;
@@ -72,6 +79,7 @@ void UnrealEd::Render() const
     }
     for (const auto& Panel : Panels)
     {
+
         if (HasFlag(Panel.Value->GetSupportedWorldTypes(), currentMask))
         {
             Panel.Value->Render();

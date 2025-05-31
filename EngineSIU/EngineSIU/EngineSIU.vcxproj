@@ -443,6 +443,7 @@ xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\FBX\lib\x64\$
     <None Include="Shaders\DepthOfFieldShader.hlsl" />
     <None Include="Shaders\FullScreenQuadVertexShader.hlsl" />
     <ClCompile Include="PlayerCamera.cpp" />
+    <ClCompile Include="Engine\Source\Editor\PropertyEditor\RabbitGameUIPanel.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <None Include="Shaders\CompositingShader.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -853,6 +854,7 @@ xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\FBX\lib\x64\$
     <ClInclude Include="Engine\Source\Runtime\Engine\Classes\Particles\Acceleration\ParticleModuleAcceleration.h" />
     <ClInclude Include="Engine\Source\Runtime\Engine\Classes\Particles\Acceleration\ParticleModuleAccelerationBase.h" />
     <ClInclude Include="PlayerCamera.h" />
+    <ClInclude Include="Engine\Source\Editor\PropertyEditor\RabbitGameUIPanel.h" />
     <ClInclude Include="SoundManager.h" />
     <None Include="Shaders\EditorShaderConstants.hlsli">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

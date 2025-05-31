@@ -56,105 +56,7 @@ PropertyEditorPanel::PropertyEditorPanel()
 
 // Pictures TArray에서 SRV를 가져와서 ImGui로 렌더링하는 개선된 코드
 
-void RenderPictureGallery()
-{
-    static bool showLargeView = false;
-    static int32 selectedPhotoIndex = -1;
-    static const FRenderTargetRHI* selectedPicture = nullptr;
 
-    TArray<FRenderTargetRHI*> Pictures;
-    Pictures = FEngineLoop::PlayerCam->GetPicturesRHI();
-
-    if (Pictures.Num() <= 0)
-    {
-        ImGui::Text("No pictures available.");
-        ImGui::Separator();
-        return;
-    }
-
-    // 큰 화면 보기 모달
-    if (showLargeView && selectedPicture && selectedPicture->SRV)
-    {
-        ImGui::SetNextWindowSize(ImVec2(800, 600), ImGuiCond_FirstUseEver);
-        if (ImGui::Begin("Picture Viewer", &showLargeView, ImGuiWindowFlags_NoCollapse))
-        {
-            ImVec2 windowSize = ImGui::GetContentRegionAvail();
-            float maxSize = FMath::Min(windowSize.x, windowSize.y) - 20.0f;
-
-            // 중앙 배치
-            ImVec2 imageSize(maxSize, maxSize);
-            ImVec2 cursorPos = ImGui::GetCursorPos();
-            ImVec2 centerPos = ImVec2(
-                cursorPos.x + (windowSize.x - imageSize.x) * 0.5f,
-                cursorPos.y + (windowSize.y - imageSize.y) * 0.5f
-            );
-            ImGui::SetCursorPos(centerPos);
-
-            ImGui::Image(reinterpret_cast<ImTextureID>(selectedPicture->SRV), imageSize);
-
-            // 닫기 버튼 (우상단)
-            ImGui::SetCursorPos(ImVec2(windowSize.x - 80, 10));
-            if (ImGui::Button("Close", ImVec2(70, 30)))
-            {
-                showLargeView = false;
-                selectedPicture = nullptr;
-                selectedPhotoIndex = -1;
-            }
-        }
-        ImGui::End();
-    }
-
-    // 썸네일 설정
-    constexpr float THUMBNAIL_SIZE = 128.0f;
-    constexpr ImVec2 UV0(0.0f, 0.0f);
-    constexpr ImVec2 UV1(1.0f, 1.0f);
-
-    // 한 줄에 표시할 썸네일 개수 계산
-    const float availableWidth = ImGui::GetContentRegionAvail().x;
-    const float itemSpacing = ImGui::GetStyle().ItemSpacing.x;
-    const int photosPerLine = FMath::Max(1, static_cast<int>(availableWidth / (THUMBNAIL_SIZE + itemSpacing)));
-
-    int validPhotoCount = 0;
-
-    for (int32 photoIdx = 0; photoIdx < Pictures.Num(); ++photoIdx)
-    {
-        const FRenderTargetRHI* picturePtr = Pictures[photoIdx];
-
-        // 유효성 검사
-        if (!picturePtr || !picturePtr->SRV)
-        {
-            continue;
-        }
-
-        // 썸네일 렌더링 (고정 크기)
-        ImGui::PushID(photoIdx);
-
-        if (ImGui::ImageButton("##thumbnail", reinterpret_cast<ImTextureID>(picturePtr->SRV), ImVec2(THUMBNAIL_SIZE, THUMBNAIL_SIZE), UV0, UV1))
-        {
-            // 클릭 시 큰 화면으로 보기
-            showLargeView = true;
-            selectedPhotoIndex = photoIdx;
-            selectedPicture = picturePtr;
-        }
-
-        ImGui::PopID();
-
-        // 줄바꿈 처리
-        validPhotoCount++;
-        if (validPhotoCount % photosPerLine != 0 && photoIdx < Pictures.Num() - 1)
-        {
-            ImGui::SameLine();
-        }
-    }
-
-    // 사진이 하나도 유효하지 않은 경우
-    if (validPhotoCount == 0)
-    {
-        ImGui::Text("No valid pictures to display.");
-    }
-
-    ImGui::Separator();
-}
 
 void PropertyEditorPanel::Render()
 {
@@ -183,8 +85,6 @@ void PropertyEditorPanel::Render()
     /* Render Start */
     ImGui::Begin("Detail", nullptr, PanelFlags);
 
-
-    RenderPictureGallery();
 
     AActor* SelectedActor = Engine->GetSelectedActor();
     USceneComponent* SelectedComponent = Engine->GetSelectedComponent();
