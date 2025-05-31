@@ -3,10 +3,18 @@
 #include "PostProcess/PostProcessRenderPass.h"
 #include "PostProcess/DepthOfFieldRenderPass.h"
 #include "SoundManager.h"
+#include <UObject/Object.h>
+#include "LevelEditor/SLevelEditor.h"
+#include "UnrealEd/EditorViewportClient.h"
+#include "Components/PrimitiveComponent.h"
+#include <UObject/UObjectIterator.h>
+#include <Actors/Player.h>
 
 PlayerCamera::PlayerCamera()
 {
     FSoundManager::GetInstance().LoadSound("Shutter", "Contents/Rabbit/Sound/Shutter.mp3");
+    FSoundManager::GetInstance().LoadSound("Error", "Contents/Rabbit/Sound/Error.mp3");
+    TakePictureCoolTime = TakePictureCoolTimeInit;
 }
 
 PlayerCamera::~PlayerCamera()
@@ -16,6 +24,12 @@ PlayerCamera::~PlayerCamera()
 
 void PlayerCamera::TakePicture()
 {
+    if (!CanTakePicture)
+    {
+        FSoundManager::GetInstance().PlaySound("Error");
+        return;
+    }
+
     const auto Source = FEngineLoop::Renderer.GetPostProcessRenderPass()->GetDepthOfFieldRenderPass()->GetPostProcessSource();
 
     assert(Source);
@@ -25,6 +39,8 @@ void PlayerCamera::TakePicture()
         PicturesRHI.Add(Source);
         FSoundManager::GetInstance().PlaySound("Shutter");
         TriggerShutterEffect();
+        CheckObject();
+        CanTakePicture = false;
     }
 }
 
@@ -50,9 +66,22 @@ void PlayerCamera::TriggerShutterEffect()
     CurrentApertureProgress = 0.0f; // 시작 시점은 이미 0이거나, 여기서 명시적으로 0으로 설정
 }
 
-void PlayerCamera::UpdateShutterAnimation(float DeltaTime)
+void PlayerCamera::Tick(float DeltaTime)
 {
-    if (!bIsShutterAnimating) {
+    if (!CanTakePicture)
+    {
+        TakePictureCoolTime -= DeltaTime;
+
+        if (TakePictureCoolTime <= 0)
+        {
+            CanTakePicture = true;
+            TakePictureCoolTime = TakePictureCoolTimeInit;
+        }
+    }
+
+
+    if (!bIsShutterAnimating) 
+    {
         // 애니메이션 중이 아니면 항상 열린 상태로 설정 (선택적)
         CurrentApertureProgress = 0.0f; 
         return;
@@ -91,4 +120,49 @@ const float PlayerCamera::GetCurrentApertureProgress() const
 void PlayerCamera::SetCurrentApertureProgress(float value)
 {
     CurrentApertureProgress = value;
+}
+
+void PlayerCamera::CheckObject()
+{
+    auto PerspectiveCamera = GEngineLoop.GetLevelEditor()->GetActiveViewportClient()->PerspectiveCamera;
+
+    FVector CameraForward = PerspectiveCamera.GetForwardVector().GetSafeNormal();
+    FVector CameraPosition = PerspectiveCamera.GetLocation();
+
+    float MaxRange = 100.f; // 최대 거리
+    float CosHalfFOV = FMath::Cos(FMath::DegreesToRadians(30.f)); // 느슨한 시야각 (총 30도)
+
+    UPrimitiveComponent* bestHitComponent = nullptr;
+    float minWorldHitDistance = MaxRange + 1.0f;
+
+    for (auto currentComponent : TObjectRange<UPrimitiveComponent>()) {
+        if (!currentComponent)
+            continue;
+
+        FVector ObjectLocation = currentComponent->GetComponentLocation();
+        FVector ToObject = ObjectLocation - CameraPosition;
+        float DistanceToObject = ToObject.Length();
+
+        if (DistanceToObject > MaxRange)
+            continue;
+
+        FVector ToObjectDir = ToObject.GetSafeNormal();
+        float Dot = FVector::DotProduct(CameraForward, ToObjectDir);
+
+        if (Dot >= CosHalfFOV) {
+            // 시야각 안에 있고, 더 가까운 오브젝트인지 확인
+            if (DistanceToObject < minWorldHitDistance) {
+                minWorldHitDistance = DistanceToObject;
+                bestHitComponent = currentComponent;
+            }
+        }
+    }
+
+    if (bestHitComponent) {
+        std::cout << "Object in FOV: " << (void*)bestHitComponent
+            << " at distance: " << minWorldHitDistance << std::endl;
+    }
+    else {
+        std::cout << "No object found in loose FOV range." << std::endl;
+    }
 }

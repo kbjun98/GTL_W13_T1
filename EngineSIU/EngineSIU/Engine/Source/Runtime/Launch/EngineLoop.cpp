@@ -194,7 +194,7 @@ void FEngineLoop::Tick()
 
         const float DeltaTime = static_cast<float>(ElapsedTime / 1000.f);
 
-        PlayerCam->UpdateShutterAnimation(DeltaTime);
+        PlayerCam->Tick(DeltaTime);
 
 
         GEngine->Tick(DeltaTime);
