@@ -28,6 +28,26 @@ void ARabbitController::SetupInputComponent()
     InputComponent->BindAxis("LookUp", [this](float DeltaTime) { RotatePitch(DeltaTime); });
 
     InputComponent->BindAction("ESC_Pressed", [this](float DeltaTime) { OnESCPressed(); });
+
+    //마우스 클릭
+    //InputComponent->BindAction("L_Pressed", [this](float DeltaTime) {
+    //    UE_LOG(ELogLevel::Display, TEXT("Left Mouse Button Pressed"));
+    //    });
+    //InputComponent->BindAction("R_Pressed", [this](float DeltaTime) {
+    //    UE_LOG(ELogLevel::Display, TEXT("Right Mouse Button Pressed"));
+    //    });
+    //InputComponent->BindAction("L_Released", [this](float DeltaTime) {
+    //    UE_LOG(ELogLevel::Display, TEXT("Left Mouse Button Released"));
+    //    });
+    //InputComponent->BindAction("R_Released", [this](float DeltaTime) {
+    //    UE_LOG(ELogLevel::Display, TEXT("Right Mouse Button Released"));
+    //    });
+    //InputComponent->BindAction("L_Pressing", [this](float DeltaTime) {
+    //    UE_LOG(ELogLevel::Display, TEXT("Left Mouse Button Pressing"));
+    //    });
+    //InputComponent->BindAction("R_Pressing", [this](float DeltaTime) {
+    //    UE_LOG(ELogLevel::Display, TEXT("Right Mouse Button Pressing"));
+    //    });
 }
 
 void ARabbitController::MoveForward(float DeltaTime)

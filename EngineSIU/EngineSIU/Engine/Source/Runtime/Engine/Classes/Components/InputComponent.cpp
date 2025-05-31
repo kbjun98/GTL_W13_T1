@@ -176,10 +176,12 @@ void UInputComponent::InputMouse(const FPointerEvent& InMouseEvent)
         if (InMouseEvent.GetInputEvent() == IE_Pressed)
         {
             PressedKeys.Add(EKeys::RightMouseButton);
+            KeyBindDelegate[FString("R_Pressed")].Broadcast(0);
         }
         else if (InMouseEvent.GetInputEvent() == IE_Released)
         {
             PressedKeys.Remove(EKeys::RightMouseButton);
+            KeyBindDelegate[FString("R_Released")].Broadcast(0);
         }
     }
     else if (InMouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
@@ -187,10 +189,12 @@ void UInputComponent::InputMouse(const FPointerEvent& InMouseEvent)
         if (InMouseEvent.GetInputEvent() == IE_Pressed)
         {
             PressedKeys.Add(EKeys::LeftMouseButton);
+            KeyBindDelegate[FString("L_Pressed")].Broadcast(0);
         }
         else if (InMouseEvent.GetInputEvent() == IE_Released)
         {
             PressedKeys.Remove(EKeys::LeftMouseButton);
+            KeyBindDelegate[FString("L_Released")].Broadcast(0);
         }
     }
     else if (InMouseEvent.GetEffectingButton() == EKeys::MiddleMouseButton)
@@ -204,6 +208,7 @@ void UInputComponent::InputMouse(const FPointerEvent& InMouseEvent)
             PressedKeys.Remove(EKeys::MiddleMouseButton);
         }
     }
+
 }
 
 void UInputComponent::ProcessKeyInput(float DeltaTime)
@@ -227,6 +232,14 @@ void UInputComponent::ProcessKeyInput(float DeltaTime)
     if (PressedKeys.Contains(EKeys::Escape))
     {
         KeyBindDelegate[FString("ESC")].Broadcast(DeltaTime);
+    }
+    if (PressedKeys.Contains(EKeys::LeftMouseButton))
+    {
+        KeyBindDelegate[FString("L_Pressing")].Broadcast(DeltaTime);
+    }
+    if (PressedKeys.Contains(EKeys::RightMouseButton))
+    {
+        KeyBindDelegate[FString("R_Pressing")].Broadcast(DeltaTime);
     }
 }
 
