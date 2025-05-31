@@ -274,8 +274,6 @@ void UEditorEngine::StartPIE()
 
     SetPhysXScene(PIEWorld);
     
-    BindEssentialObjects();
-    
     PIEWorld->BeginPlay();
     // 여기서 Actor들의 BeginPlay를 해줄지 안에서 해줄 지 고민.
     // WorldList.Add(GetWorldContextFromWorld(PIEWorld));
@@ -538,34 +536,6 @@ void UEditorEngine::StartPhysicsAssetViewer(FName PreviewMeshKey, FName PhysicsA
     }
 }
 
-void UEditorEngine::BindEssentialObjects()
-{
-    for (const auto Iter: TObjectRange<APlayer>())
-    {
-        if (Iter->GetWorld() == ActiveWorld)
-        {
-            ActiveWorld->SetMainPlayer(Iter);
-            break;
-        }
-    }
-    
-    //실수로 안만들면 넣어주기
-    if (ActiveWorld->GetMainPlayer() == nullptr)
-    {
-        APlayer* TempPlayer = ActiveWorld->SpawnActor<APlayer>();
-        TempPlayer->SetActorLabel(TEXT("OBJ_PLAYER"));
-        TempPlayer->SetActorTickInEditor(false);
-        ActiveWorld->SetMainPlayer(TempPlayer);
-    }
-    
-    //무조건 PIE들어갈때 만들어주기
-    APlayerController* PlayerController = ActiveWorld->SpawnActor<APlayerController>();
-    PlayerController->SetActorLabel(TEXT("OBJ_PLAYER_CONTROLLER"));
-    PlayerController->SetActorTickInEditor(false);
-    ActiveWorld->SetPlayerController(PlayerController);
-    
-    ActiveWorld->GetPlayerController()->Possess(ActiveWorld->GetMainPlayer());
-}
 
 void UEditorEngine::SetPhysXScene(UWorld* World)
 {

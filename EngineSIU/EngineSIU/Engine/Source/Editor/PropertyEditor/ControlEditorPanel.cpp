@@ -30,6 +30,7 @@
 #include "Actors/DirectionalLightActor.h"
 #include "Actors/SpotLightActor.h"
 #include "Actors/AmbientLightActor.h"
+#include "Engine/Contents/GameFramework/RabbitPawn.h"
 
 #include "Actors/CubeActor.h"
 #include "Actors/SphereActor.h"
@@ -371,6 +372,7 @@ void ControlEditorPanel::CreateModifyButton(const ImVec2 ButtonSize, ImFont* Ico
             { .Label = "CapsuleCol",        .OBJ = OBJ_CAPSULE_COLLISION },
             { .Label = "SkeletalMeshActor", .OBJ = OBJ_SKELETALMESH },
             { .Label = "SequencerPlayer",   .OBJ = OBJ_SEQUENCERPLAYER },
+            { .Label = "RabbitPawn",        .OBJ = OBJ_RABBITPAWN },
         };
 
         for (const auto& primitive : primitives)
@@ -494,6 +496,11 @@ void ControlEditorPanel::CreateModifyButton(const ImVec2 ButtonSize, ImFont* Ico
                 {
                     SpawnedActor = World->SpawnActor<ASequencerPlayer>();
                     SpawnedActor->SetActorLabel(TEXT("OBJ_SEQUENCERPLAYER"));
+                }
+                case OBJ_RABBITPAWN:
+                {
+                    SpawnedActor = World->SpawnActor<ARabbitPawn>();
+                    SpawnedActor->SetActorLabel(TEXT("OBJ_RABBITPAWN"));
                 }
                 case OBJ_CAMERA:
                 case OBJ_PLAYER:

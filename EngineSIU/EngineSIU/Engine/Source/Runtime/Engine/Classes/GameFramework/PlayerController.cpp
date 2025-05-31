@@ -4,7 +4,7 @@
 #include "Engine/Engine.h"
 #include "UObject/UObjectIterator.h"
 #include "World/World.h"
-
+#include "GameFramework/Pawn.h"
 
 void APlayerController::PostSpawnInitialize()
 {
@@ -60,25 +60,26 @@ void APlayerController::SetViewTarget(class AActor* NewViewTarget, struct FViewT
     }
 }
 
-void APlayerController::Possess(AActor* InActor)
+void APlayerController::Possess(APawn* InPawn)
 {
-    PossessedActor = InActor;
+    PossessedPawn = InPawn;
     bHasPossessed = true;
 
     if (InputComponent)
     {
         InputComponent->SetPossess();
     }
+    InPawn->SetupPlayerInputComponent(InputComponent);
 }
 
 void APlayerController::UnPossess()
 {
-    if (!bHasPossessed && PossessedActor == nullptr)
+    if (!bHasPossessed && PossessedPawn == nullptr)
     {
         return;
     }
     
-    PossessedActor = nullptr;
+    PossessedPawn = nullptr;
     bHasPossessed = false;
 
     if (InputComponent)

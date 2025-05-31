@@ -1,18 +1,21 @@
 #pragma once
 #include "Actor.h"
 #include "Delegates/DelegateCombination.h"
+#include "Template/SubclassOf.h"
 
 DECLARE_MULTICAST_DELEGATE(FOnGameInit);
 DECLARE_MULTICAST_DELEGATE(FOnGameStart);
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnGameEnd, bool);
 
 class UCameraComponent;
+class APlayerController;
+class APlayer;
+class APawn;
 
 struct FGameInfo
 {
     float TotalGameTime = 0.0f;
     float ElapsedGameTime = 0.0f;
-    uint32 CoinScore = 0;
 };
 
 class AGameMode : public AActor
@@ -20,12 +23,11 @@ class AGameMode : public AActor
     DECLARE_CLASS(AGameMode, AActor)
     
 public:
-    AGameMode() = default;
+    AGameMode();
     virtual ~AGameMode() override = default;
 
     virtual void PostSpawnInitialize() override;
     
-    void InitializeComponent();
     virtual UObject* Duplicate(UObject* InOuter) override;
 
     //virtual void BeginPlay() override;
@@ -44,12 +46,18 @@ public:
 
     void Reset();
 
+    void HandleStartingNewPlayer();
+    APlayerController* SpawnPlayerController();
+    APawn* SpawnDefaultPlayer();
+
     FOnGameInit OnGameInit;
     FOnGameStart OnGameStart;
     FOnGameEnd OnGameEnd;
 
     FGameInfo GameInfo;
-    
+
+    TSubclassOf<APawn> DefaultPawnClass; // 기본 플레이어 Pawn 클래스
+    TSubclassOf<APlayerController> PlayerControllerClass; // 플레이어 컨트롤러 클래스
 private:
     bool bGameRunning = false; // 내부 
     bool bGameEnded = true;

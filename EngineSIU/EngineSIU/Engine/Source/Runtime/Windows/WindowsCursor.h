@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "HAL/PlatformType.h"
 #include "Math/Vector.h"
 
@@ -47,6 +47,8 @@ struct FWindowsCursor
     /** Cursor의 표시 여부를 설정합니다. */
     static void SetShowMouseCursor(bool ShowCursor);
 
+    /** 마우스를 화면 안에 락(고정)합니다. */
+    static void LockToWindow(bool bLock);
 private:
     /** Cursor의 표시 여부 */
     static bool bShowCursor;

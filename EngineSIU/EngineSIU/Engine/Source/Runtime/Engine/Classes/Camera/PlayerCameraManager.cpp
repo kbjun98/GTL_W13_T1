@@ -4,6 +4,7 @@
 #include "GameFramework/PlayerController.h"
 #include "Camera/CameraModifier_CameraShake.h"
 #include "World/World.h"
+#include "GameFramework/Pawn.h"
 
 bool FTViewTarget::Equal(const FTViewTarget& OtherTarget) const
 {
@@ -21,9 +22,9 @@ void FTViewTarget::CheckViewTarget(APlayerController* OwningController)
     if (Target != nullptr)
     {
         // PossessActor가 있을때
-        if (OwningController->GetPossessedActor() && !OwningController->GetPossessedActor()->IsActorBeingDestroyed() )
+        if (OwningController->GetPossessedPawn() && !OwningController->GetPossessedPawn()->IsActorBeingDestroyed() )
         {
-            OwningController->PlayerCameraManager->AssignViewTarget(OwningController->GetPossessedActor(), *this);
+            OwningController->PlayerCameraManager->AssignViewTarget(OwningController->GetPossessedPawn(), *this);
         }
         else
         {
@@ -46,7 +47,7 @@ AActor* FTViewTarget::GetTargetActor() const
 
     if (APlayerController* Controller = Cast<APlayerController>(Target))
     {
-        return Controller->GetPossessedActor();
+        return Controller->GetPossessedPawn();
     }
 
     return nullptr;
@@ -305,7 +306,7 @@ void APlayerCameraManager::SetViewTarget(class AActor* NewTarget, struct FViewTa
 
 		BlendTimeToGo = TransitionParams.BlendTime;
 
-		AssignViewTarget(PCOwner->GetPossessedActor(), ViewTarget);
+		AssignViewTarget(PCOwner->GetPossessedPawn(), ViewTarget);
 		AssignViewTarget(NewTarget, PendingViewTarget, TransitionParams);
 
 	}

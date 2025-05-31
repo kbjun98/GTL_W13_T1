@@ -428,6 +428,7 @@ xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\FBX\lib\x64\$
     <ClCompile Include="Engine\Source\ThirdParty\ImGui\include\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Engine\Source\ThirdParty\tinyfiledialogs\include\tinyfiledialogs.cpp" />
     <ClCompile Include="LuaScripts\LuaScriptComponent.cpp" />
+    <ClCompile Include="Engine\Source\Runtime\Engine\Classes\GameFramework\UMovementComponent.cpp" />
     <None Include="Shaders\ParticleSpriteVertexShader.hlsl" />
     <None Include="Shaders\ParticleSpritePixelShader.hlsl" />
     <ClCompile Include="Engine\Source\Runtime\Engine\Classes\Particles\Velocity\ParticleModuleVelocity.cpp" />
@@ -442,6 +443,10 @@ xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\FBX\lib\x64\$
     <None Include="Shaders\GaussianBlurShader.hlsl" />
     <None Include="Shaders\DepthOfFieldShader.hlsl" />
     <None Include="Shaders\FullScreenQuadVertexShader.hlsl" />
+    <ClCompile Include="Engine\Source\Runtime\Engine\Classes\GameFramework\PawnMovementComponent.cpp" />
+    <ClCompile Include="Engine\Contents\GameFramework\RabbitController.cpp" />
+    <ClCompile Include="Engine\Contents\GameFramework\RabbitPawn.cpp" />
+    <ClCompile Include="Engine\Contents\GameFramework\RabbitGameMode.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <None Include="Shaders\CompositingShader.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -851,7 +856,12 @@ xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\FBX\lib\x64\$
     <ClInclude Include="Engine\Source\Runtime\Engine\Classes\Particles\Velocity\ParticleModuleVelocityOverLife.h" />
     <ClInclude Include="Engine\Source\Runtime\Engine\Classes\Particles\Acceleration\ParticleModuleAcceleration.h" />
     <ClInclude Include="Engine\Source\Runtime\Engine\Classes\Particles\Acceleration\ParticleModuleAccelerationBase.h" />
+    <ClInclude Include="Engine\Source\Runtime\Engine\Classes\GameFramework\PawnMovementComponent.h" />
+    <ClInclude Include="Engine\Contents\GameFramework\RabbitController.h" />
+    <ClInclude Include="Engine\Contents\GameFramework\RabbitPawn.h" />
+    <ClInclude Include="Engine\Contents\GameFramework\RabbitGameMode.h" />
     <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="Engine\Source\Runtime\Engine\Classes\GameFramework\UMovementComponent.h" />
     <None Include="Shaders\EditorShaderConstants.hlsli">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
