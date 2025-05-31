@@ -30,9 +30,7 @@ void ARabbitController::SetupInputComponent()
     InputComponent->BindAction("ESC_Pressed", [this](float DeltaTime) { OnESCPressed(); });
 
     //마우스 클릭
-    //InputComponent->BindAction("L_Pressed", [this](float DeltaTime) {
-    //    UE_LOG(ELogLevel::Display, TEXT("Left Mouse Button Pressed"));
-    //    });
+    InputComponent->BindAction("L_Pressed", [this](float DeltaTime) {TakePicture();});
     //InputComponent->BindAction("R_Pressed", [this](float DeltaTime) {
     //    UE_LOG(ELogLevel::Display, TEXT("Right Mouse Button Pressed"));
     //    });
@@ -121,5 +119,15 @@ void ARabbitController::OnESCPressed()
     else
     {
         SetInputMode(EInputMode::UIOnly);
+    }
+}
+
+void ARabbitController::TakePicture()
+{
+    if (CurrentInputMode == EInputMode::UIOnly) return;
+
+    if (ARabbitPawn* RabbitPawn = Cast<ARabbitPawn>(PossessedPawn))
+    {
+        RabbitPawn->GetPlayerCamera()->TakePicture();
     }
 }

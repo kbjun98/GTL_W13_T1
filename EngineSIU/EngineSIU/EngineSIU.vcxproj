@@ -443,6 +443,8 @@ xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\FBX\lib\x64\$
     <None Include="Shaders\GaussianBlurShader.hlsl" />
     <None Include="Shaders\DepthOfFieldShader.hlsl" />
     <None Include="Shaders\FullScreenQuadVertexShader.hlsl" />
+    <ClCompile Include="PlayerCamera.cpp" />
+    <ClCompile Include="Engine\Source\Editor\PropertyEditor\RabbitGameUIPanel.cpp" />
     <ClCompile Include="Engine\Source\Runtime\Engine\Classes\GameFramework\PawnMovementComponent.cpp" />
     <ClCompile Include="Engine\Contents\GameFramework\RabbitController.cpp" />
     <ClCompile Include="Engine\Contents\GameFramework\RabbitPawn.cpp" />
@@ -856,6 +858,8 @@ xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\FBX\lib\x64\$
     <ClInclude Include="Engine\Source\Runtime\Engine\Classes\Particles\Velocity\ParticleModuleVelocityOverLife.h" />
     <ClInclude Include="Engine\Source\Runtime\Engine\Classes\Particles\Acceleration\ParticleModuleAcceleration.h" />
     <ClInclude Include="Engine\Source\Runtime\Engine\Classes\Particles\Acceleration\ParticleModuleAccelerationBase.h" />
+    <ClInclude Include="PlayerCamera.h" />
+    <ClInclude Include="Engine\Source\Editor\PropertyEditor\RabbitGameUIPanel.h" />
     <ClInclude Include="Engine\Source\Runtime\Engine\Classes\GameFramework\PawnMovementComponent.h" />
     <ClInclude Include="Engine\Contents\GameFramework\RabbitController.h" />
     <ClInclude Include="Engine\Contents\GameFramework\RabbitPawn.h" />

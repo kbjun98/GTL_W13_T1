@@ -27,6 +27,15 @@ cbuffer LetterBoxConstants : register(b2)
     float2 Padding3;
 }
 
+
+// HLSL에 추가
+cbuffer ShutterConstants : register(b3) // 기존 b0, b1, b2 다음으로
+{
+    float apertureProgress; // 0.0 (완전히 열림) ~ 1.0 (완전히 닫힘)
+    float aspectRatio; // 화면 가로/세로 비율 (셔터 모양 보정용)
+    float2 shutterPadding; // 16바이트 정렬용
+};
+
 struct PS_Input
 {
     float4 Position : SV_POSITION;
@@ -102,6 +111,25 @@ float4 mainPS(PS_Input Input) : SV_Target
     
     // Camera Fade
     FinalColor = lerp(FinalColor, FadeColor, FadeAmount);
+    
+    if (apertureProgress > 0.001f) // 셔터가 조금이라도 닫혀있다면
+    {
+        float2 shutterUV = UV - float2(0.5f, 0.5f); // 셔터 중심을 화면 중앙으로
+        shutterUV.x *= aspectRatio; // 셔터 모양을 위한 화면 비율 보정 (cbuffer aspectRatio 사용)
+
+        float distFromShutterCenter = length(shutterUV);
+        float maxShutterRadius = 0.707f; // 셔터가 화면 모서리에 닿는 반지름 (대략)
+        float currentApertureRadius = maxShutterRadius * (1.0f - apertureProgress);
+
+        if (distFromShutterCenter > currentApertureRadius)
+        {
+            // 셔터 바깥쪽은 검은색 (또는 원하는 셔터 색상)
+            // 알파는 1로 하여 완전히 덮도록 함.
+            FinalColor = float4(0.0f, 0.0f, 0.0f, 1.0f);
+        }
+        // else: 셔터 안쪽은 기존 FinalColor (비네팅, 페이드 등이 적용된 색상) 유지
+    }
+    
     
     return FinalColor;
 }
