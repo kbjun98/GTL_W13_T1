@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "Engine/Engine.h"
 #include "Engine/World/World.h"
+#include "GameFramework/Pawn.h"
 
 void AGameMode::PostSpawnInitialize()
 {
@@ -108,8 +109,10 @@ void AGameMode::Reset()
 
 void AGameMode::HandleStartingNewPlayer()
 {
+    SpawnPlayerController();
+
     UWorld* World = GEngine->ActiveWorld;
-    for (const auto Iter : TObjectRange<APlayer>())
+    for (const auto Iter : TObjectRange<APawn>())
     {
         if (Iter->GetWorld() == World)
         {
@@ -123,7 +126,6 @@ void AGameMode::HandleStartingNewPlayer()
         SpawnDefaultPlayer();
     }
 
-    SpawnPlayerController();
     World->GetPlayerController()->Possess(World->GetMainPlayer());
 }
 
@@ -136,9 +138,9 @@ APlayerController* AGameMode::SpawnPlayerController()
     return PlayerController;
 }
 
-APlayer* AGameMode::SpawnDefaultPlayer()
+APawn* AGameMode::SpawnDefaultPlayer()
 {
-    APlayer* TempPlayer = GEngine->ActiveWorld->SpawnActor<APlayer>();
+    APawn* TempPlayer = GEngine->ActiveWorld->SpawnActor<APawn>();
     TempPlayer->SetActorLabel(TEXT("OBJ_PLAYER"));
     TempPlayer->SetActorTickInEditor(false);
     GEngine->ActiveWorld->SetMainPlayer(TempPlayer);

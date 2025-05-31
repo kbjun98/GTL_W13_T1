@@ -331,7 +331,7 @@ void PropertyEditorPanel::RenderForCameraComponent(UCameraComponent* InCameraCom
     
 }
 
-void PropertyEditorPanel::RenderForPlayerActor(APlayer* InPlayerActor)
+void PropertyEditorPanel::RenderForPlayerActor(APawn* InPlayerActor)
 {
     if (ImGui::Button("SetMainPlayer"))
     {

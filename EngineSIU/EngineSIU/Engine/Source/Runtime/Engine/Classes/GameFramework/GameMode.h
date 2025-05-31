@@ -48,7 +48,7 @@ public:
 
     void HandleStartingNewPlayer();
     APlayerController* SpawnPlayerController();
-    APlayer* SpawnDefaultPlayer();
+    APawn* SpawnDefaultPlayer();
 
     FOnGameInit OnGameInit;
     FOnGameStart OnGameStart;

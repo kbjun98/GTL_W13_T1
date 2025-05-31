@@ -10,6 +10,7 @@
 #include "UnrealEd/SceneManager.h"
 #include "GameFramework/GameMode.h"
 #include "Classes/Components/TextComponent.h"
+#include "GameFramework/Pawn.h"
 
 class UEditorEngine;
 
@@ -181,7 +182,7 @@ UWorld* UWorld::GetWorld() const
     return const_cast<UWorld*>(this);
 }
 
-APlayer* UWorld::GetMainPlayer() const
+APawn* UWorld::GetMainPlayer() const
 {
     if (MainPlayer)
     {
@@ -189,7 +190,7 @@ APlayer* UWorld::GetMainPlayer() const
     }
     
     //메인플레이어 설정안하면 있는거중 한개
-    for (const auto Iter: TObjectRange<APlayer>())
+    for (const auto Iter: TObjectRange<APawn>())
     {
         if (Iter->GetWorld() == GEngine->ActiveWorld)
         {
