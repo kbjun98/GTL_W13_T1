@@ -2,22 +2,8 @@
 
 void UInputComponent::ProcessInput(float DeltaTime)
 {
-    if (PressedKeys.Contains(EKeys::W))
-    {
-        KeyBindDelegate[FString("W")].Broadcast(DeltaTime);
-    }
-    if (PressedKeys.Contains(EKeys::A))
-    {
-        KeyBindDelegate[FString("A")].Broadcast(DeltaTime);
-    }
-    if (PressedKeys.Contains(EKeys::S))
-    {
-        KeyBindDelegate[FString("S")].Broadcast(DeltaTime);
-    }
-    if (PressedKeys.Contains(EKeys::D))
-    {
-        KeyBindDelegate[FString("D")].Broadcast(DeltaTime);
-    }
+    ProcessKeyInput(DeltaTime);
+    ProcessAxisInput(DeltaTime);
 }
 
 void UInputComponent::SetPossess()
@@ -40,7 +26,21 @@ void UInputComponent::BindInputDelegate()
     {
         InputKey(InKeyEvent);
     }));
-    
+
+    BindMouseMoveDelegateHandles.Add(Handler->OnMouseMoveDelegate.AddLambda([this](const FPointerEvent& InMouseEvent)
+        {
+            MouseDelta = InMouseEvent.GetCursorDelta();
+        }));
+
+    BindMouseDownDelegateHandles.Add(Handler->OnMouseDownDelegate.AddLambda([this](const FPointerEvent& InMouseEvent)
+        {
+            InputMouse(InMouseEvent);
+        }));
+
+    BindMouseUpDelegateHandles.Add(Handler->OnMouseUpDelegate.AddLambda([this](const FPointerEvent& InMouseEvent)
+        {
+            InputMouse(InMouseEvent);
+        }));
 }
 
 void UInputComponent::UnPossess()
@@ -61,9 +61,24 @@ void UInputComponent::ClearBindDelegate()
     {
         Handler->OnKeyUpDelegate.Remove(DelegateHandle);
     }
+    for (FDelegateHandle DelegateHandle : BindMouseMoveDelegateHandles)
+    {
+        Handler->OnMouseMoveDelegate.Remove(DelegateHandle);
+    }
+    for (FDelegateHandle DelegateHandle : BindMouseDownDelegateHandles)
+    {
+        Handler->OnMouseDownDelegate.Remove(DelegateHandle);
+    }
+    for (FDelegateHandle DelegateHandle : BindMouseUpDelegateHandles)
+    {
+        Handler->OnMouseUpDelegate.Remove(DelegateHandle);
+    }
     
     BindKeyDownDelegateHandles.Empty();
     BindKeyUpDelegateHandles.Empty();
+    BindMouseMoveDelegateHandles.Empty();
+    BindMouseDownDelegateHandles.Empty();
+    BindMouseUpDelegateHandles.Empty();
 }
 
 void UInputComponent::InputKey(const FKeyEvent& InKeyEvent)
@@ -124,6 +139,77 @@ void UInputComponent::InputKey(const FKeyEvent& InKeyEvent)
     }
 }
 
+void UInputComponent::InputMouse(const FPointerEvent& InMouseEvent)
+{
+    if (InMouseEvent.GetEffectingButton() == EKeys::RightMouseButton)
+    {
+        if (InMouseEvent.GetInputEvent() == IE_Pressed)
+        {
+            PressedKeys.Add(EKeys::RightMouseButton);
+        }
+        else if (InMouseEvent.GetInputEvent() == IE_Released)
+        {
+            PressedKeys.Remove(EKeys::RightMouseButton);
+        }
+    }
+    else if (InMouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
+    {
+        if (InMouseEvent.GetInputEvent() == IE_Pressed)
+        {
+            PressedKeys.Add(EKeys::LeftMouseButton);
+        }
+        else if (InMouseEvent.GetInputEvent() == IE_Released)
+        {
+            PressedKeys.Remove(EKeys::LeftMouseButton);
+        }
+    }
+    else if (InMouseEvent.GetEffectingButton() == EKeys::MiddleMouseButton)
+    {
+        if (InMouseEvent.GetInputEvent() == IE_Pressed)
+        {
+            PressedKeys.Add(EKeys::MiddleMouseButton);
+        }
+        else if (InMouseEvent.GetInputEvent() == IE_Released)
+        {
+            PressedKeys.Remove(EKeys::MiddleMouseButton);
+        }
+    }
+}
+
+void UInputComponent::ProcessKeyInput(float DeltaTime)
+{
+    if (PressedKeys.Contains(EKeys::W))
+    {
+        KeyBindDelegate[FString("W")].Broadcast(DeltaTime);
+    }
+    if (PressedKeys.Contains(EKeys::A))
+    {
+        KeyBindDelegate[FString("A")].Broadcast(DeltaTime);
+    }
+    if (PressedKeys.Contains(EKeys::S))
+    {
+        KeyBindDelegate[FString("S")].Broadcast(DeltaTime);
+    }
+    if (PressedKeys.Contains(EKeys::D))
+    {
+        KeyBindDelegate[FString("D")].Broadcast(DeltaTime);
+    }
+}
+
+void UInputComponent::ProcessAxisInput(float DeltaTime)
+{
+    if (MouseDelta.X != 0.0f)
+    {
+        AxisBindDelegate[FString("Turn")].Broadcast(MouseDelta.X * DeltaTime);
+    }
+    if (MouseDelta.Y != 0.0f)
+    {
+        AxisBindDelegate[FString("LookUp")].Broadcast(MouseDelta.Y * DeltaTime);
+    }
+
+    MouseDelta = FVector2D::ZeroVector; // Reset after processing
+}
+
 
 void UInputComponent::BindAction(const FString& Key, const std::function<void(float)>& Callback)
 {
@@ -136,4 +222,17 @@ void UInputComponent::BindAction(const FString& Key, const std::function<void(fl
     {
         Callback(DeltaTime);
     });
+}
+
+void UInputComponent::BindAxis(const FString& Key, const std::function<void(float)>& Callback)
+{
+    if (Callback == nullptr)
+    {
+        return;
+    }
+
+    AxisBindDelegate[Key].AddLambda([this, Callback](float DeltaTime)
+        {
+            Callback(DeltaTime);
+        });
 }
