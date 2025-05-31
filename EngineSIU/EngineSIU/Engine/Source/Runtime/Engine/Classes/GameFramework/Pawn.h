@@ -16,9 +16,4 @@ public:
     virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent);
 
     APlayerController* Controller = nullptr; // 이 Pawn을 소유하는 PlayerController
-private:
-    void MoveForward(float DeltaTime);
-    void MoveRight(float DeltaTime);
-private:
-    float MoveSpeed = 100.0f; // 이동 속도  
 };
