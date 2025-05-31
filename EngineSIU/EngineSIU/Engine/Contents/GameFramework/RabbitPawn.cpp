@@ -18,3 +18,11 @@ void ARabbitPawn::MoveRight(float DeltaTime)
     FRotator Rotation = GetActorRotation();
     GetRootComponent()->MoveComponent(Delta, Rotation, false);
 }
+
+void ARabbitPawn::RotateYaw(float DeltaTime)
+{
+}
+
+void ARabbitPawn::RotatePitch(float DeltaTime)
+{
+}

@@ -11,5 +11,7 @@ protected:
 private:
     void MoveForward(float DeltaTime);
     void MoveRight(float DeltaTime);
+    void RotateYaw(float DeltaTime);
+    void RotatePitch(float DeltaTime);
 };
 

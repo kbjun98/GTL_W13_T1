@@ -9,6 +9,8 @@ public:
 public:
     void MoveForward(float DeltaTime);
     void MoveRight(float DeltaTime);
+    void RotateYaw(float DeltaTime);
+    void RotatePitch(float DeltaTime);
 private:
     float MoveSpeed = 100.0f; // 이동 속도  
 };
