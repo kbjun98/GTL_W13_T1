@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "Engine/Engine.h"
 #include "Engine/World/World.h"
+#include "GameFramework/Pawn.h"
 
 void AGameMode::PostSpawnInitialize()
 {
@@ -41,12 +42,8 @@ void AGameMode::PostSpawnInitialize()
                 }
             });
     }
-}
 
-void AGameMode::InitializeComponent()
-{
-    //ULuaScriptComponent* LuaScriptComp = this->AddComponent<ULuaScriptComponent>();
-    //RootComponent = this->AddComponent<USceneComponent>("USceneComponent_0");
+    HandleStartingNewPlayer();
 }
 
 UObject* AGameMode::Duplicate(UObject* InOuter)
@@ -108,4 +105,44 @@ void AGameMode::Reset()
 {
     bGameRunning = false;
     bGameEnded = true;
+}
+
+void AGameMode::HandleStartingNewPlayer()
+{
+    SpawnPlayerController();
+
+    UWorld* World = GEngine->ActiveWorld;
+    for (const auto Iter : TObjectRange<APawn>())
+    {
+        if (Iter->GetWorld() == World)
+        {
+            World->SetMainPlayer(Iter);
+            break;
+        }
+    }
+
+    if (World->GetMainPlayer() == nullptr)
+    {
+        SpawnDefaultPlayer();
+    }
+
+    World->GetPlayerController()->Possess(World->GetMainPlayer());
+}
+
+APlayerController* AGameMode::SpawnPlayerController()
+{
+    APlayerController* PlayerController = GEngine->ActiveWorld->SpawnActor<APlayerController>();
+    PlayerController->SetActorLabel(TEXT("OBJ_PLAYER_CONTROLLER"));
+    PlayerController->SetActorTickInEditor(false);
+    GEngine->ActiveWorld->SetPlayerController(PlayerController);
+    return PlayerController;
+}
+
+APawn* AGameMode::SpawnDefaultPlayer()
+{
+    APawn* TempPlayer = GEngine->ActiveWorld->SpawnActor<APawn>();
+    TempPlayer->SetActorLabel(TEXT("OBJ_PLAYER"));
+    TempPlayer->SetActorTickInEditor(false);
+    GEngine->ActiveWorld->SetMainPlayer(TempPlayer);
+    return TempPlayer;
 }
