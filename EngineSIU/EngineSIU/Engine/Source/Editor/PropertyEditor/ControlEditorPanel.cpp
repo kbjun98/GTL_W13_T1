@@ -30,7 +30,7 @@
 #include "Actors/DirectionalLightActor.h"
 #include "Actors/SpotLightActor.h"
 #include "Actors/AmbientLightActor.h"
-#include "Engine/Contents/Character/RabbitPawn.h"
+#include "Engine/Contents/GameFramework/RabbitPawn.h"
 
 #include "Actors/CubeActor.h"
 #include "Actors/SphereActor.h"

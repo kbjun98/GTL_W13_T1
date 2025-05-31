@@ -1,5 +1,5 @@
 #include "RabbitController.h"
-#include "Engine/Contents/Character/RabbitPawn.h"
+#include "Engine/Contents/GameFramework/RabbitPawn.h"
 #include "UObject/Casts.h"
 void ARabbitController::SetupInputComponent()
 {
