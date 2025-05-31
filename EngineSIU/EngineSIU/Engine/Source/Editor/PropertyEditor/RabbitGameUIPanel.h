@@ -14,5 +14,13 @@ public:
 private:
     void OnResize(HWND hWnd) override;
     void RenderGallery();
+    bool RegisterPlayerCamera();
+
+    std::shared_ptr<PlayerCamera> PlayerCam;
+
+    bool showLargeView = false;
+    int32 selectedPhotoIndex = -1;
+    const FRenderTargetRHI* selectedPicture = nullptr;
+
 };
 
