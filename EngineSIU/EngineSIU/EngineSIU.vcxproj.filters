@@ -1645,6 +1645,10 @@
     <ClCompile Include="Engine\Contents\GameFramework\RabbitController.cpp" />
     <ClCompile Include="Engine\Contents\GameFramework\RabbitPawn.cpp" />
     <ClCompile Include="Engine\Contents\GameFramework\RabbitGameMode.cpp" />
+    <ClCompile Include="Engine\Contents\Navigation\MapData.cpp" />
+    <ClCompile Include="Engine\Contents\Navigation\PathFinder.cpp" />
+    <ClCompile Include="Engine\Contents\Components\GridMapComponent.cpp" />
+    <ClCompile Include="Engine\Contents\Actors\GridMapActor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="EngineSIU.natvis" />
@@ -1772,6 +1776,10 @@
     <ClInclude Include="Engine\Contents\GameFramework\RabbitController.h" />
     <ClInclude Include="Engine\Contents\GameFramework\RabbitPawn.h" />
     <ClInclude Include="Engine\Contents\GameFramework\RabbitGameMode.h" />
+    <ClInclude Include="Engine\Contents\Navigation\MapData.h" />
+    <ClInclude Include="Engine\Contents\Navigation\PathFinder.h" />
+    <ClInclude Include="Engine\Contents\Components\GridMapComponent.h" />
+    <ClInclude Include="Engine\Contents\Actors\GridMapActor.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\CompositingShader.hlsl" />
@@ -1804,5 +1812,8 @@
     <None Include="Shaders\GaussianBlurShader.hlsl" />
     <None Include="Shaders\DepthOfFieldShader.hlsl" />
     <None Include="Shaders\FullScreenQuadVertexShader.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Engine\Contents\Resources\Map.txt" />
   </ItemGroup>
 </Project>
