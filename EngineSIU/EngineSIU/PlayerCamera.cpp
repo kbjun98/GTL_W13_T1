@@ -9,9 +9,14 @@ PlayerCamera::PlayerCamera()
     FSoundManager::GetInstance().LoadSound("Shutter", "Contents/Rabbit/Sound/Shutter.mp3");
 }
 
+PlayerCamera::~PlayerCamera()
+{
+    ReleasePictures();
+}
+
 void PlayerCamera::TakePicture()
 {
-    auto Source = FEngineLoop::Renderer.GetPostProcessRenderPass()->GetDepthOfFieldRenderPass()->GetPostProcessSource();
+    const auto Source = FEngineLoop::Renderer.GetPostProcessRenderPass()->GetDepthOfFieldRenderPass()->GetPostProcessSource();
 
     if (Source)
     {
@@ -29,7 +34,7 @@ void PlayerCamera::ReleasePictures()
     }
 }
 
-TArray<FRenderTargetRHI*> PlayerCamera::GetPictures()
+TArray<FRenderTargetRHI*> PlayerCamera::GetPicturesRHI() const
 {
     return Pictures;
 }
@@ -49,7 +54,7 @@ void PlayerCamera::UpdateShutterAnimation(float DeltaTime)
         return;
     }
 
-    ShutterTimer += DeltaTime /1.0f;
+    ShutterTimer += DeltaTime;
     float NormalizedTime = ShutterTimer / ShutterDuration;
 
     if (NormalizedTime < 0.4f) 
@@ -74,7 +79,7 @@ void PlayerCamera::UpdateShutterAnimation(float DeltaTime)
 
 }
 
-float PlayerCamera::GetCurrentApertureProgress()
+const float PlayerCamera::GetCurrentApertureProgress() const
 {
     return CurrentApertureProgress;
 }

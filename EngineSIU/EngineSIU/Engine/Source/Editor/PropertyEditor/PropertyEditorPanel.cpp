@@ -63,7 +63,7 @@ void RenderPictureGallery()
     static const FRenderTargetRHI* selectedPicture = nullptr;
 
     TArray<FRenderTargetRHI*> Pictures;
-    Pictures = FEngineLoop::PlayerCam->GetPictures();
+    Pictures = FEngineLoop::PlayerCam->GetPicturesRHI();
 
     if (Pictures.Num() <= 0)
     {
