@@ -23,7 +23,7 @@ class AGameMode : public AActor
     DECLARE_CLASS(AGameMode, AActor)
     
 public:
-    AGameMode() = default;
+    AGameMode();
     virtual ~AGameMode() override = default;
 
     virtual void PostSpawnInitialize() override;
@@ -57,7 +57,7 @@ public:
     FGameInfo GameInfo;
 
     TSubclassOf<APawn> DefaultPawnClass; // 기본 플레이어 Pawn 클래스
-    
+    TSubclassOf<APlayerController> PlayerControllerClass; // 플레이어 컨트롤러 클래스
 private:
     bool bGameRunning = false; // 내부 
     bool bGameEnded = true;
