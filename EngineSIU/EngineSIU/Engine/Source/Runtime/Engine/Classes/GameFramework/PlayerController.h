@@ -5,6 +5,7 @@
 #include "Classes/Components/InputComponent.h"
 
 class APlayerCameraManager;
+class APawn;
 
 class APlayerController : public AActor
 {
@@ -30,13 +31,13 @@ public:
 
     void SetViewTarget(class AActor* NewViewTarget, struct FViewTargetTransitionParams TransitionParams);
 
-    virtual void Possess(AActor* InActor);
+    virtual void Possess(APawn* InPawn);
 
     virtual void UnPossess();
     
     virtual void BindAction(const FString& Key, const std::function<void(float)>& Callback);
 
-    AActor* GetPossessedActor() const { return PossessedActor; }
+    APawn* GetPossessedPawn() const { return PossessedPawn; }
     
     // 카메라 관련 함수
     AActor* GetViewTarget() const;
@@ -54,7 +55,7 @@ protected:
 
     virtual void SetupInputComponent();
 
-    AActor* PossessedActor = nullptr;
+    APawn* PossessedPawn = nullptr;
 
     bool bHasPossessed = false;
 };

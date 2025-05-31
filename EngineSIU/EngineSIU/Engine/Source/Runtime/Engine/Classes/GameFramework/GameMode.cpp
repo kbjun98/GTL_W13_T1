@@ -8,6 +8,14 @@
 #include "Engine/World/World.h"
 #include "GameFramework/Pawn.h"
 
+AGameMode::AGameMode()
+    : DefaultPawnClass(APawn::StaticClass())
+    , PlayerControllerClass(APlayerController::StaticClass())
+    , bGameRunning(false)
+    , bGameEnded(true)
+{
+}
+
 void AGameMode::PostSpawnInitialize()
 {
     AActor::PostSpawnInitialize();
@@ -131,7 +139,7 @@ void AGameMode::HandleStartingNewPlayer()
 
 APlayerController* AGameMode::SpawnPlayerController()
 {
-    APlayerController* PlayerController = GEngine->ActiveWorld->SpawnActor<APlayerController>();
+    APlayerController* PlayerController = Cast<APlayerController>(GEngine->ActiveWorld->SpawnActor(PlayerControllerClass));
     PlayerController->SetActorLabel(TEXT("OBJ_PLAYER_CONTROLLER"));
     PlayerController->SetActorTickInEditor(false);
     GEngine->ActiveWorld->SetPlayerController(PlayerController);
