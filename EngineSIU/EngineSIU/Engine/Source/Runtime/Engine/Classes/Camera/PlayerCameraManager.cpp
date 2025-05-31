@@ -66,7 +66,7 @@ APlayerCameraManager::APlayerCameraManager()
     ViewRollMax = 89.9f;
 
     F_Stop = 2.8f;
-    SensorWidth = 24.576f; // mm
+    SensorWidth = 36.f; // mm
     FocalDistance = 0.f; // cm
 }
 

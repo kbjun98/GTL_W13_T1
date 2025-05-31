@@ -2,7 +2,7 @@
 #include "ShaderRegisters.hlsl"
 
 #define CAMERA_NEAR 0.1f
-#define CAMERA_FAR  500.0f
+#define CAMERA_FAR  10000.0f
 
 float4 mainPS(PS_INPUT_CommonMesh Input) : SV_Target
 {

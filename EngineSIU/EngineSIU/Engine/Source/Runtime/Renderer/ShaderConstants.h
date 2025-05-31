@@ -249,11 +249,11 @@ struct alignas(16) FConstantBufferLetterBox
 struct FDepthOfFieldConstant
 {
     float F_Stop = 2.8f;
-    float SensorWidth = 24.576f; // mm
+    float SensorWidth = 36.f; // mm
     float FocalDistance = 0.f; // cm
     float FocalLength = 0.f; // mm
 
-    float CoCScaleFactor = 2.f;
+    float CoCScaleFactor = 100.f;
     float InFocusThreshold = 0.0f;
     float DOFPadding1 = 0.f;
     float DOFPadding2 = 0.f;

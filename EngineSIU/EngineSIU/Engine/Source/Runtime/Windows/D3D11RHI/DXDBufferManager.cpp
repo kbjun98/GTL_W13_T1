@@ -207,10 +207,10 @@ void FDXDBufferManager::CreateQuadBuffer()
 {
     const TArray<QuadVertex> Vertices =
     {
-        { {-1.0f,  1.0f, 0.0f}, {0.0f, 0.0f} },
-        { { 1.0f,  1.0f, 0.0f}, {1.0f, 0.0f} },
-        { { 1.0f, -1.0f, 0.0f}, {1.0f, 1.0f} },
-        { {-1.0f, -1.0f, 0.0f}, {0.0f, 1.0f} },
+        { {-30.0f,  30.0f, 0.0f}, {0.0f, 0.0f} },
+        { { 30.0f,  30.0f, 0.0f}, {1.0f, 0.0f} },
+        { { 30.0f, -30.0f, 0.0f}, {1.0f, 1.0f} },
+        { {-30.0f, -30.0f, 0.0f}, {0.0f, 1.0f} },
     };
 
     FVertexInfo VertexInfo;

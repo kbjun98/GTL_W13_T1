@@ -1,5 +1,6 @@
 #pragma once
 #include "Actor.h"
+#include "Pawn.h"
 #include "Delegates/DelegateCombination.h"
 #include "Template/SubclassOf.h"
 
@@ -56,7 +57,7 @@ public:
 
     FGameInfo GameInfo;
 
-    TSubclassOf<APawn> DefaultPawnClass; // 기본 플레이어 Pawn 클래스
+    TSubclassOf<APawn> DefaultPawnClass = APawn::StaticClass(); // 기본 플레이어 Pawn 클래스
     
 private:
     bool bGameRunning = false; // 내부 

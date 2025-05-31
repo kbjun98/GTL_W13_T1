@@ -79,10 +79,10 @@ int UBillboardComponent::CheckRayIntersection(const FVector& InRayOrigin, const 
     
     TArray<FVector> Vertices =
     {
-        FVector(-1.0f,  1.0f, 0.0f),
-        FVector(1.0f,  1.0f, 0.0f),
-        FVector(1.0f, -1.0f, 0.0f),
-        FVector(-1.0f, -1.0f, 0.0f),
+        FVector(-30.0f,  30.0f, 0.0f),
+        FVector( 30.0f,  30.0f, 0.0f),
+        FVector( 30.0f, -30.0f, 0.0f),
+        FVector(-30.0f, -30.0f, 0.0f),
     };
 
     return CheckPickingOnNDC(Vertices, OutHitDistance) ? 1 : 0;
