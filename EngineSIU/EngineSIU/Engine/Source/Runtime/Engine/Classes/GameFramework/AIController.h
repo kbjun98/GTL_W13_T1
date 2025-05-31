@@ -10,7 +10,7 @@ public:
     AAIController() = default;
     virtual ~AAIController() = default;
     virtual void Tick(float DeltaTime) override;
-    virtual void MoveTo(FVector& InDestination);
+    virtual void MoveTo(const FVector& InDestination);
     virtual void OnMoveCompleted();
 protected:
     FVector Destination;
