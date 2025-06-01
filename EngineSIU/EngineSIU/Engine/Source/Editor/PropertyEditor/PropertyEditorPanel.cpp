@@ -489,7 +489,17 @@ void PropertyEditorPanel::RenderForStaticMesh(UStaticMeshComponent* StaticMeshCo
                 }
             }
             ImGui::EndCombo();
+        }    
+
+        const char* PhotoTypeNames[] = { "None", "ECarrotField", "ERabbit"};
+        int32 CurrentIndex = static_cast<int32>(StaticMeshComp->GetPhotoType());
+
+        if (ImGui::Combo("PhotoType", &CurrentIndex, PhotoTypeNames, IM_ARRAYSIZE(PhotoTypeNames)))
+        {
+            EPhotoType NewType = static_cast<EPhotoType>(CurrentIndex);
+            StaticMeshComp->SetPhotoType(NewType);
         }
+
 
         ImGui::TreePop();
     }
