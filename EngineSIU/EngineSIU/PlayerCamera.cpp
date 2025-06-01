@@ -209,7 +209,7 @@ void PlayerCamera::CheckObject()
 
 
     float MaxRange = 100.f; // 최대 거리
-    float CosHalfFOV = FMath::Cos(FMath::DegreesToRadians(30.f)); // 느슨한 시야각 (총 30도)
+    float FOV = FMath::Cos(FMath::DegreesToRadians(45.f)); // 느슨한 시야각 (총 30도)
 
     UPrimitiveComponent* bestHitComponent = nullptr;
     float minWorldHitDistance = MaxRange + 1.0f;
@@ -228,7 +228,7 @@ void PlayerCamera::CheckObject()
         FVector ToObjectDir = ToObject.GetSafeNormal();
         float Dot = FVector::DotProduct(PlayerForward, ToObjectDir);
 
-        if (Dot >= CosHalfFOV) {
+        if (Dot >= FOV) {
             // 시야각 안에 있고, 더 가까운 오브젝트인지 확인
             if (DistanceToObject < minWorldHitDistance) {
                 minWorldHitDistance = DistanceToObject;
