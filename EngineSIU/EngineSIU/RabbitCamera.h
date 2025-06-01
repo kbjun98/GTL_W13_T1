@@ -2,11 +2,13 @@
 
 #include "UnrealClient.h"
 
-class PlayerCamera
+class UPrimitiveComponent;
+
+class RabbitCamera
 {
 public:
-    PlayerCamera();
-    ~PlayerCamera();
+    RabbitCamera();
+    ~RabbitCamera();
 
 private:
     TArray<FRenderTargetRHI*> PicturesRHI;
@@ -20,20 +22,27 @@ private:
     float CameraCoolTimeInit = 5;
 
 public:
-    FRenderTargetRHI* CopyRHI(FRenderTargetRHI* InputRHI);
+    void ReleasePictures();
+    void Tick(float deltaTime);
+
 
     float GetCameraCoolTime();
     float GetCameraCoolTimeInit();
-
-    void TakePicture();
-    void ReleasePictures();
-
-    TArray<FRenderTargetRHI*> GetPicturesRHI() const;
-    void TriggerShutterEffect();
-    void Tick(float deltaTime);
-
     const float GetCurrentApertureProgress() const;
     void SetCurrentApertureProgress(float value);
-    void CheckObject();
+
+    void TakePicture();
+
+    TArray<FRenderTargetRHI*> GetPicturesRHI() const;
+
+
+private:
+    FRenderTargetRHI* CopySource(FRenderTargetRHI* InputRHI);
+    FRenderTargetRHI* CaptureFrame();
+    UPrimitiveComponent* CheckSubject();
+    void TriggerShutterEffect();
+    bool ValidateTakePicture();
+    void StorePicture(FRenderTargetRHI* Picture);
+    
 };
 
