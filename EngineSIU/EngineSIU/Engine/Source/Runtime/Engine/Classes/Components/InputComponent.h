@@ -16,7 +16,7 @@ public:
     UInputComponent() = default;
     virtual ~UInputComponent() override = default;
     void BindAction(const FString& Key, const std::function<void(float)>& Callback);
-
+    void BindAxis(const FString& Key, const std::function<void(float)>& Callback);
     void ProcessInput(float DeltaTime);
     
     void SetPossess();
@@ -25,11 +25,21 @@ public:
     void ClearBindDelegate();
     // Possess가 풀렸다가 다시 왔을때 원래 바인딩 돼있던 애들 일괄적으로 다시 바인딩해줘야할수도 있음.
     void InputKey(const FKeyEvent& InKeyEvent);
-
+    void InputMouse(const FPointerEvent& InMouseEvent);
+private:
+    void ProcessKeyInput(float DeltaTime);
+    void ProcessAxisInput(float DeltaTime);
 private:
     TMap<FString, FOneFloatDelegate> KeyBindDelegate;
-    TArray<FDelegateHandle> BindKeyDownDelegateHandles;
+    TMap<FString, FOneFloatDelegate> AxisBindDelegate;
+    FVector2D MouseDelta;
+
+    TArray<FDelegateHandle> BindKeyDownDelegateHandles  ;
     TArray<FDelegateHandle> BindKeyUpDelegateHandles;
+    TArray<FDelegateHandle> BindMouseMoveDelegateHandles;
+    TArray<FDelegateHandle> BindMouseDownDelegateHandles;
+    TArray<FDelegateHandle> BindMouseUpDelegateHandles;
+    TArray<FDelegateHandle> BindRawMouseMoveDelegateHandles;
 
     TSet<EKeys::Type> PressedKeys;
 };

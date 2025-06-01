@@ -26,6 +26,7 @@ FResourceManager FEngineLoop::ResourceManager;
 uint32 FEngineLoop::TotalAllocationBytes = 0;
 uint32 FEngineLoop::TotalAllocationCount = 0;
 
+
 FEngineLoop::FEngineLoop()
     : AppWnd(nullptr)
     , UIManager(nullptr)
@@ -52,6 +53,7 @@ int32 FEngineLoop::Init(HINSTANCE hInstance)
     UIManager = new UImGuiManager;
     AppMessageHandler = std::make_unique<FSlateAppMessageHandler>();
     LevelEditor = new SLevelEditor();
+  
 
     UnrealEditor->Initialize();
     GraphicDevice.Initialize(AppWnd);
@@ -101,6 +103,7 @@ int32 FEngineLoop::Init(HINSTANCE hInstance)
     FSoundManager::GetInstance().LoadSound("sizzle", "Contents/Sounds/sizzle.mp3");
     //FSoundManager::GetInstance().PlaySound("fishdream");
 
+
     UpdateUI();
 
     return 0;
@@ -133,6 +136,8 @@ void FEngineLoop::Render() const
     }
     
 }
+
+bool m_bWasRightMouseButtonPressedLastFrame;
 
 void FEngineLoop::Tick()
 {
@@ -179,7 +184,7 @@ void FEngineLoop::Tick()
         EngineProfiler.Render(GraphicDevice.DeviceContext, GraphicDevice.ScreenWidth, GraphicDevice.ScreenHeight);
 
         UIManager->EndFrame();
-
+        FSoundManager::GetInstance().Update();
         // Pending 처리된 오브젝트 제거
         GUObjectArray.ProcessPendingDestroyObjects();
 
@@ -196,7 +201,7 @@ void FEngineLoop::Tick()
             ElapsedTime = (static_cast<double>(EndTime.QuadPart - StartTime.QuadPart) * 1000.f / static_cast<double>(Frequency.QuadPart));
         } while (ElapsedTime < TargetFrameTime);
     }
-    FSoundManager::GetInstance().Update();
+ 
 }
 
 void FEngineLoop::GetClientSize(uint32& OutWidth, uint32& OutHeight) const

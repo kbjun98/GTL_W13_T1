@@ -30,4 +30,31 @@ UObject* ARabbitPawn::Duplicate(UObject* InOuter)
 void ARabbitPawn::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+    PlayerCam->Tick(DeltaTime);
+}
+
+void ARabbitPawn::PostSpawnInitialize()
+{
+    Super::PostSpawnInitialize();
+
+    PlayerCam = std::make_shared<PlayerCamera>();
+}
+
+void ARabbitPawn::RotateYaw(float DeltaTime)
+{
+    FRotator Rotation = GetActorRotation();
+    Rotation.Yaw += RotateSpeed * DeltaTime;
+    SetActorRotation(Rotation);
+}
+
+void ARabbitPawn::RotatePitch(float DeltaTime)
+{
+    FRotator Rotation = GetActorRotation();
+    Rotation.Pitch = FMath::Clamp(Rotation.Pitch - RotateSpeed * DeltaTime, -89.0f, 89.0f);
+    SetActorRotation(Rotation);
+}
+
+std::shared_ptr<PlayerCamera> ARabbitPawn::GetPlayerCamera()
+{
+    return PlayerCam;
 }

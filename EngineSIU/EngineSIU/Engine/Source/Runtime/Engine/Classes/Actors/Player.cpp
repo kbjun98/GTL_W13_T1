@@ -263,6 +263,8 @@ int AEditorPlayer::RayIntersectsObject(const FVector& PickPosition, USceneCompon
         // 레이 방향은 카메라의 정면 방향 (평행)
         FVector OrthoRayDir = GEngineLoop.GetLevelEditor()->GetActiveViewportClient()->OrthogonalCamera.GetForwardVector().GetSafeNormal();
 
+
+
         // 객체의 로컬 좌표계로 변환
         FMatrix LocalMatrix = FMatrix::Inverse(WorldMatrix);
         FVector LocalRayOrigin = LocalMatrix.TransformPosition(RayOrigin);

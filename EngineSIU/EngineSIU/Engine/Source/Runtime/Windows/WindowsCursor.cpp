@@ -1,4 +1,4 @@
-﻿#include "WindowsCursor.h"
+#include "WindowsCursor.h"
 
 #include "Define.h"
 #include "UObject/Object.h"
@@ -145,5 +145,30 @@ void FWindowsCursor::SetShowMouseCursor(bool ShowCursor)
     {
         ::ShowCursor(ShowCursor);
         bShowCursor = ShowCursor;
+    }
+}
+
+void FWindowsCursor::LockToWindow(bool bLock)
+{
+    if (bLock)
+    {
+        // 윈도우 클라이언트 영역을 구해서 ClipCursor로 제한
+        RECT Rect;
+        HWND hWnd = GEngineLoop.AppWnd;
+        GetClientRect(hWnd, &Rect);
+        POINT ul = { Rect.left, Rect.top };
+        POINT lr = { Rect.right, Rect.bottom };
+        ClientToScreen(hWnd, &ul);
+        ClientToScreen(hWnd, &lr);
+        Rect.left = ul.x;
+        Rect.top = ul.y;
+        Rect.right = lr.x;
+        Rect.bottom = lr.y;
+        ClipCursor(&Rect);
+    }
+    else
+    {
+        // 락 해제
+        ClipCursor(NULL);
     }
 }
