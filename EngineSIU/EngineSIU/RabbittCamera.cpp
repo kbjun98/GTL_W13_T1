@@ -235,10 +235,10 @@ UPrimitiveComponent* RabbitCamera::CheckSubject()
     float MaxRange = 100.f; // 최대 거리
     float FOV = FMath::Cos(FMath::DegreesToRadians(45.f)); // 느슨한 시야각 (총 30도)
 
-    UPrimitiveComponent* HitComponent = nullptr;
+    UStaticMeshComponent* HitComponent = nullptr;
     float MinHitDistance = MaxRange + 1.0f;
 
-    for (auto CurrentComponent : TObjectRange<UPrimitiveComponent>()) {
+    for (auto CurrentComponent : TObjectRange<UStaticMeshComponent>()) {
         if (!CurrentComponent)
             continue;
 
