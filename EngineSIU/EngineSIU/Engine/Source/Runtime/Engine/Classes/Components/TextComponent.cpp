@@ -101,8 +101,11 @@ void UTextComponent::SetRowColumnCount(int CellsPerRow, int CellsPerColumn)
     ColumnCount = CellsPerColumn;
 }
 
-int UTextComponent::CheckRayIntersection(const FVector& InRayOrigin, const FVector& InRayDirection, float& OutHitDistance) const
+int UTextComponent::CheckRayIntersection(const FVector& InRayOrigin, const FVector& InRayDirection, float& OutHitDistance, FVector& OutHitNormal) const
 {
+    OutHitDistance = 0.f;
+    OutHitNormal = FVector::ZeroVector;
+    
     if (!(ShowFlags::GetInstance().CurrentFlags & static_cast<uint64>(EEngineShowFlags::SF_BillboardText)))
     {
         return 0;

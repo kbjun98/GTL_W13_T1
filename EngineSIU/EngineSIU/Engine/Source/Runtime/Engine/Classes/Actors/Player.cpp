@@ -103,25 +103,27 @@ void AEditorPlayer::Input()
 
 void AEditorPlayer::ProcessGizmoIntersection(UStaticMeshComponent* Component, const FVector& PickPosition, FEditorViewportClient* InActiveViewport, bool& bIsPickedGizmo)
 {
-    int maxIntersect = 0;
-    float minDistance = FLT_MAX;
+    int MaxIntersect = 0;
+    float MinDistance = FLT_MAX;
     float Distance = 0.0f;
     int currentIntersectCount = 0;
-    if (!Component) return;
+    if (!Component)
+    {
+        return;
+    }
+    
     if (RayIntersectsObject(PickPosition, Component, Distance, currentIntersectCount))
     {
-        if (Distance < minDistance)
+        if (Distance < MinDistance)
         {
-            minDistance = Distance;
-            maxIntersect = currentIntersectCount;
-            //GetWorld()->SetPickingGizmo(iter);
+            MinDistance = Distance;
+            MaxIntersect = currentIntersectCount;
             InActiveViewport->SetPickedGizmoComponent(Component);
             bIsPickedGizmo = true;
         }
-        else if (abs(Distance - minDistance) < FLT_EPSILON && currentIntersectCount > maxIntersect)
+        else if (abs(Distance - MinDistance) < FLT_EPSILON && currentIntersectCount > MaxIntersect)
         {
-            maxIntersect = currentIntersectCount;
-            //GetWorld()->SetPickingGizmo(iter);
+            MaxIntersect = currentIntersectCount;
             InActiveViewport->SetPickedGizmoComponent(Component);
             bIsPickedGizmo = true;
         }
@@ -253,22 +255,24 @@ int AEditorPlayer::RayIntersectsObject(const FVector& PickPosition, USceneCompon
     if (bIsOrtho)
     {
         // 오쏘 모드: ScreenToViewSpace()에서 계산된 pickPosition이 클립/뷰 좌표라고 가정
-        FMatrix inverseView = FMatrix::Inverse(ViewMatrix);
+        FMatrix InverseView = FMatrix::Inverse(ViewMatrix);
         // pickPosition을 월드 좌표로 변환
-        FVector worldPickPos = inverseView.TransformPosition(PickPosition);  
+        FVector WorldPickPos = InverseView.TransformPosition(PickPosition);  
         // 오쏘에서는 픽킹 원점은 unproject된 픽셀의 위치
-        FVector rayOrigin = worldPickPos;
+        FVector RayOrigin = WorldPickPos;
         // 레이 방향은 카메라의 정면 방향 (평행)
-        FVector orthoRayDir = GEngineLoop.GetLevelEditor()->GetActiveViewportClient()->OrthogonalCamera.GetForwardVector().GetSafeNormal();
+        FVector OrthoRayDir = GEngineLoop.GetLevelEditor()->GetActiveViewportClient()->OrthogonalCamera.GetForwardVector().GetSafeNormal();
 
 
 
         // 객체의 로컬 좌표계로 변환
         FMatrix LocalMatrix = FMatrix::Inverse(WorldMatrix);
-        FVector LocalRayOrigin = LocalMatrix.TransformPosition(rayOrigin);
-        FVector LocalRayDir = (LocalMatrix.TransformPosition(rayOrigin + orthoRayDir) - LocalRayOrigin).GetSafeNormal();
+        FVector LocalRayOrigin = LocalMatrix.TransformPosition(RayOrigin);
+        FVector LocalRayDir = (LocalMatrix.TransformPosition(RayOrigin + OrthoRayDir) - LocalRayOrigin).GetSafeNormal();
+
+        FVector HitNormal = FVector::ZeroVector;
         
-        IntersectCount = Component->CheckRayIntersection(LocalRayOrigin, LocalRayDir, HitDistance);
+        IntersectCount = Component->CheckRayIntersection(LocalRayOrigin, LocalRayDir, HitDistance, HitNormal);
         return IntersectCount;
     }
     else
@@ -280,8 +284,10 @@ int AEditorPlayer::RayIntersectsObject(const FVector& PickPosition, USceneCompon
         // 퍼스펙티브 모드의 기존 로직 사용
         FVector TransformedPick = InverseMatrix.TransformPosition(PickPosition);
         FVector RayDirection = (TransformedPick - PickRayOrigin).GetSafeNormal();
+
+        FVector HitNormal = FVector::ZeroVector;
         
-        IntersectCount = Component->CheckRayIntersection(PickRayOrigin, RayDirection, HitDistance);
+        IntersectCount = Component->CheckRayIntersection(PickRayOrigin, RayDirection, HitDistance, HitNormal);
 
         if (IntersectCount > 0)
         {

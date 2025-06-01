@@ -1,5 +1,6 @@
 #include "PawnMovementComponent.h"
 #include "GameFramework/Pawn.h"
+
 UObject* UPawnMovementComponent::Duplicate(UObject* InOuter)
 {
     UPawnMovementComponent* NewComponent = Cast<UPawnMovementComponent>(Super::Duplicate(InOuter));
@@ -13,5 +14,4 @@ UObject* UPawnMovementComponent::Duplicate(UObject* InOuter)
 void UPawnMovementComponent::TickComponent(float DeltaTime)
 {
     Super::TickComponent(DeltaTime);
-    // Pawn Movement Logic을 여기에 추가
 }

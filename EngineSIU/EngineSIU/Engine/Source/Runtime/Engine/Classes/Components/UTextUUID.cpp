@@ -6,7 +6,7 @@ UTextUUID::UTextUUID()
     SetRelativeLocation(FVector(0.0f, 0.0f, -0.5f));
 }
 
-int UTextUUID::CheckRayIntersection(const FVector& InRayOrigin, const FVector& InRayDirection, float& OutHitDistance) const
+int UTextUUID::CheckRayIntersection(const FVector& InRayOrigin, const FVector& InRayDirection, float& OutHitDistance, FVector& OutHitNormal) const
 {
     return 0;
 }

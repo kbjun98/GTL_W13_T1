@@ -146,7 +146,9 @@ void UStaticMeshComponent::GetUsedMaterials(TArray<UMaterial*>& Out) const
     }
 }
 
-int UStaticMeshComponent::CheckRayIntersection(const FVector& InRayOrigin, const FVector& InRayDirection, float& OutHitDistance) const
+int UStaticMeshComponent::CheckRayIntersection(
+    const FVector& InRayOrigin, const FVector& InRayDirection,
+    float& OutHitDistance, FVector& OutHitNormal) const
 {
     if (!AABB.Intersect(InRayOrigin, InRayDirection, OutHitDistance))
     {
@@ -194,12 +196,16 @@ int UStaticMeshComponent::CheckRayIntersection(const FVector& InRayOrigin, const
         FVector V2 = FVector(Vertices[Idx2].X, Vertices[Idx2].Y, Vertices[Idx2].Z);
 
         float HitDistance = FLT_MAX;
-        if (IntersectRayTriangle(InRayOrigin, InRayDirection, V0, V1, V2, HitDistance))
+        FVector HitNormal = FVector::ZeroVector;
+        if (IntersectRayTriangle(InRayOrigin, InRayDirection, V0, V1, V2, HitDistance, HitNormal))
         {
-            OutHitDistance = FMath::Min(HitDistance, OutHitDistance);
+            if (HitDistance < OutHitDistance)
+            {
+                OutHitDistance = HitDistance;
+                OutHitNormal = HitNormal;
+            }
             IntersectionNum++;
         }
-
     }
     return IntersectionNum;
 }
