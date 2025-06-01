@@ -236,31 +236,51 @@ UPrimitiveComponent* RabbitCamera::CheckSubject()
     float FOV = FMath::Cos(FMath::DegreesToRadians(45.f)); // 느슨한 시야각 (총 30도)
 
     UStaticMeshComponent* HitComponent = nullptr;
-    float MinHitDistance = MaxRange + 1.0f;
+    float MinHitDistance = MaxRange;
+
+    bool bPrintedOutOfFOV = false;
+    bool bPrintedTooFar = false;
 
     for (auto CurrentComponent : TObjectRange<UStaticMeshComponent>()) {
-        if (!CurrentComponent)
+        if (!CurrentComponent ||
+            CurrentComponent->GetPhotoType() <= EPhotoType::NONE ||
+            CurrentComponent->GetPhotoType() >= EPhotoType::END)
+        {
             continue;
+        }
 
         FVector ObjectLocation = CurrentComponent->GetComponentLocation();
         FVector ToObject = ObjectLocation - PlayerPosition;
         float DistanceToObject = ToObject.Length();
 
         if (DistanceToObject > MaxRange)
+        {
+            if (!bPrintedTooFar)
+            {
+                std::cout << "너무 멀다야\n";
+                bPrintedTooFar = true;
+            }
             continue;
+        }
 
         FVector ToObjectDir = ToObject.GetSafeNormal();
         float Dot = FVector::DotProduct(PlayerForward, ToObjectDir);
 
         if (Dot >= FOV) {
-            // 시야각 안에 있고, 더 가까운 오브젝트인지 확인
             if (DistanceToObject < MinHitDistance) {
                 MinHitDistance = DistanceToObject;
                 HitComponent = CurrentComponent;
             }
         }
+        else
+        {
+            if (!bPrintedOutOfFOV)
+            {
+                std::cout << "거기 아니야~\n";
+                bPrintedOutOfFOV = true;
+            }
+        }
     }
-
 
     return HitComponent;
 }
