@@ -1,7 +1,7 @@
 #pragma once
 #include "GameFramework/Actor.h"
 
-class APlayerController;
+class AController;
 class UInputComponent;
 
 class APawn : public AActor
@@ -12,8 +12,8 @@ public:
     APawn() = default;
 
     virtual void Tick(float DeltaTime) override;
-    virtual void PossessedBy(APlayerController* NewController);
+    virtual void PossessedBy(AController* NewController);
     virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent);
 
-    APlayerController* Controller = nullptr; // 이 Pawn을 소유하는 PlayerController
+    AController* Controller = nullptr; // 이 Pawn을 소유하는 PlayerController
 };

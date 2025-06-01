@@ -3,11 +3,12 @@
 #include "Camera/PlayerCameraManager.h"
 #include "GameFramework/Actor.h" 
 #include "Classes/Components/InputComponent.h"
+#include "Classes/GameFramework/Controller.h"
 
 class APlayerCameraManager;
 class APawn;
 
-class APlayerController : public AActor
+class APlayerController : public AController
 {
     DECLARE_CLASS(APlayerController, AActor)
     

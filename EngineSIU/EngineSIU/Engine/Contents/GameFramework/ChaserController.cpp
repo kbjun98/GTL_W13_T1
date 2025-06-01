@@ -1,5 +1,9 @@
 #include "ChaserController.h"
 #include "Engine/Contents/Actors/GridMapActor.h"
+#include "Engine/Contents/Navigation/PathFinder.h"
+#include "Engine/World/World.h"
+#include "Engine/Contents/GameFramework/ChasePawn.h"
+
 void AChaserController::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
@@ -7,48 +11,46 @@ void AChaserController::Tick(float DeltaTime)
     PathUpdateTimer += DeltaTime;
     if (PathUpdateTimer >= PathUpdateInterval)
     {
+        RequestMove();              // 경로 갱신
         PathUpdateTimer = 0.0f;
-        UpdatePath();
+        
     }
 
+    // 현재 이동 중인 목표를 ChasePawn에 전달.
     if (IsPathValid())
     {
-        if (!ControlledPawn)
-        {
-            ControlledPawn = Cast<AChasePawn>(ControlledActor);
-        }
-
-        if (CurrentPathIndex < CurrentPath.Num())
-        {
-            FGridNode* TargetNode = CurrentPath[CurrentPathIndex];
-            FVector TargetLocation = FVector(0, 0, 0);
-            ControlledPawn->MoveToTarget(TargetLocation, DeltaTime);
-
-            // Target 도달 체크
-            if (FVector::Dist(ControlledPawn->GetActorLocation(), TargetLocation) < CellTolerance)
-            {
-                CurrentPathIndex++;
-            }
-        }
+        // FIXME : NodeGrid에서 FVector 반환하도록 변경.
+        FVector NextTarget = FVector(CurrentPath[CurrentPathIndex]->X, CurrentPath[CurrentPathIndex]->Y, GetActorLocation().Z);
+        ChasePawn->SetTargetLocation(NextTarget);
     }
-}
-
-void AChaserController::StartChasing(const FVector& InDestination)
-{
-    Destination = InDestination;
-    PathUpdateTimer = PathUpdateInterval;
 }
 
 void AChaserController::UpdatePath()
 {
-    if (!ControlledPawn) return;
-    AGridMapActor* GridMapActor = GetControlledGridMapActor();
+    AActor* Player = GetWorld()->GetMainPlayer();
+    if (!Player || !ChasePawn)
+    {
+        UE_LOG(ELogLevel::Warning, "Invalid Player or ChasePawn");
+        return;
+    }
+    AGridMapActor* GridMapActor = GetWorld()->GetActorByClass<AGridMapActor>();
+    FVector StartLocation = GetActorLocation();    
+    FVector TargetLocation = PossessedPawn->GetActorLocation();
 
-    int StartX = static_cast<int>(ControlledPawn->GetActorLocation().X);
-    int StartY = static_cast<int>(ControlledPawn->GetActorLocation().Y);
+    // 경로 계산
+    // TODO 
+    CurrentPath.Empty();
+    FGridNode* Node = new FGridNode();
+    Node->X = TargetLocation.X;
+    Node->Y = TargetLocation.Y;
+    CurrentPath.Add(Node);
 
-    int TargetX = static_cast<int>(Destination.X);
-    int TargetY = static_cast<int>(Destination.Y);
-
-    FGridNode& Startnode = GridMapActor->GridComponent->GetNode(StartX, StartY);
+    CurrentPathIndex = 0;
 }
+
+void AChaserController::SetChasePawn(AChasePawn* InPawn)
+{
+    ChasePawn = InPawn;
+}
+
+

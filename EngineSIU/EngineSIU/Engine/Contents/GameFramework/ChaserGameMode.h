@@ -7,6 +7,6 @@ public:
     AChaserGameMode();
     virtual ~AChaserGameMode() override = default;
     
-    StartMatch();
+    void StartMatch() override;
 };
 

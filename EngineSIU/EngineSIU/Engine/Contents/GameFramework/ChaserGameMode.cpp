@@ -3,20 +3,21 @@
 #include "World/World.h"
 #include "ChaserController.h"
 
+AChaserGameMode::AChaserGameMode()
+{
+    DefaultPawnClass = AChasePawn::StaticClass();
+    PlayerControllerClass = AChaserController::StaticClass();
+}
+
 void AChaserGameMode::StartMatch()
 {
     Super::StartMatch();
 
-    //  추적 AI 생성
-    AChasePawn* Chaser = GetWorld()->SpawnActor<AChasePawn>();
-    AChaserController* AIController = GetWorld()->SpawnActor<AChaserController>();
-    //AIController->Possess(Chaser);
+    // ChaserPawn 생성
+    AChasePawn* ChasePawn = GetWorld()->SpawnActor<AChasePawn>();
+    // ChaserController 생성
+    AChaserController* ChaserController = GetWorld()->SpawnActor<AChaserController>();
 
-    // 플레이어 우치ㅣ를 추적 대상으로 지정
-    APawn* PlayerPawn = GetWorld()->GetMainPlayer();
-    if (PlayerPawn)
-    {
-        AIController->StartChasing(PlayerPawn->GetActorLocation());
-    }
-
+    // Possess
+    ChaserController->Possess(ChasePawn);
 }

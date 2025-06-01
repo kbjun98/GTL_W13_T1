@@ -5,7 +5,7 @@ void APawn::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
 }
 
-void APawn::PossessedBy(APlayerController* NewController)
+void APawn::PossessedBy(AController* NewController)
 {
     Controller = NewController;
 }
