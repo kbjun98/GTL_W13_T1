@@ -112,11 +112,29 @@ void URabbitMovementComponent::PerformMovement(float DeltaTime)
         PxControllerFilters filters;
         
         PxControllerCollisionFlags Flags = Controller->move(disp, 0.f, DeltaTime, filters);
-        bIsGrounded = Flags & PxControllerCollisionFlag::eCOLLISION_DOWN;
-        
         const PxExtendedVec3& Pos = Controller->getPosition();
-        FVector FinalLocation = FVector(Pos.x, Pos.y, Pos.z);
-        UpdatedComponent->SetWorldLocation(FinalLocation);
+        FVector MovedLocation = FVector(Pos.x, Pos.y, Pos.z);
+        
+        bIsGrounded = Flags & PxControllerCollisionFlag::eCOLLISION_DOWN;
+
+        if (!bIsGrounded && (Flags & PxControllerCollisionFlag::eCOLLISION_UP))
+        {
+            if (!bCollisionUp)
+            {
+                bCollisionUp = true;
+                Velocity.Z = 0.f;
+            }
+            if (bGravity)
+            {
+                Velocity.Z -= GravityFactor * DeltaTime;
+            }
+        }
+        else
+        {
+            bCollisionUp = false;
+        }
+
+        UpdatedComponent->SetWorldLocation(MovedLocation);
     }
     else
     {

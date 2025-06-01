@@ -30,10 +30,13 @@ public:
 
 protected:
     bool bGravity;
+    
     float GravityFactor;
-    bool bIsGrounded;
 
     float JumpZVelocity = 600.f;
+    
+    bool bIsGrounded = false;
+    bool bCollisionUp = false;
 
     physx::PxController* Controller;
 };
