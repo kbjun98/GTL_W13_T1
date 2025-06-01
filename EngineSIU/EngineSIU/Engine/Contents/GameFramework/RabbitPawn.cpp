@@ -31,6 +31,21 @@ UObject* ARabbitPawn::Duplicate(UObject* InOuter)
     return NewPawn;
 }
 
+void ARabbitPawn::BeginPlay()
+{
+    APawn::BeginPlay();
+
+    if (UCapsuleComponent* Collision = Cast<UCapsuleComponent>(RootComponent))
+    {
+        Collision->OnComponentBeginOverlap.AddLambda(
+            [](UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Hit)
+            {
+                UE_LOG(ELogLevel::Display, TEXT("Overlap!"));
+            }
+        );
+    }
+}
+
 void ARabbitPawn::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
@@ -97,4 +112,15 @@ void ARabbitPawn::Jump()
     {
         RabbitMoveComp->Jump();
     }
+}
+
+void ARabbitPawn::SetMaxHealth(int32 Value)
+{
+    MaxHealth = Value;
+    CurrentHealth = FMath::Min(CurrentHealth, MaxHealth);
+}
+
+void ARabbitPawn::SetCurrentHealth(int32 Value)
+{
+    CurrentHealth = FMath::Min(Value, MaxHealth);
 }
