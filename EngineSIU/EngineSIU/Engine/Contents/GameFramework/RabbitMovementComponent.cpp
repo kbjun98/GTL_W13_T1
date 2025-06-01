@@ -9,7 +9,7 @@
 
 URabbitMovementComponent::URabbitMovementComponent()
     : bGravity(true)
-    , GravityFactor(9.8f)
+    , GravityFactor(1.8f)
 {}
 
 

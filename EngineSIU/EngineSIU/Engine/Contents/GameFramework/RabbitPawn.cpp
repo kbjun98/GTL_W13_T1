@@ -18,6 +18,8 @@ void ARabbitPawn::PostSpawnInitialize()
     Camera->SetupAttachment(RootComponent);
     
     MovementComponent = AddComponent<URabbitMovementComponent>("RabbitMoveComp_0");
+
+    PlayerCam = std::make_shared<PlayerCamera>();
 }
 
 UObject* ARabbitPawn::Duplicate(UObject* InOuter)
@@ -30,14 +32,11 @@ UObject* ARabbitPawn::Duplicate(UObject* InOuter)
 void ARabbitPawn::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-    PlayerCam->Tick(DeltaTime);
-}
 
-void ARabbitPawn::PostSpawnInitialize()
-{
-    Super::PostSpawnInitialize();
-
-    PlayerCam = std::make_shared<PlayerCamera>();
+    if (PlayerCam)
+    {
+        PlayerCam->Tick(DeltaTime);
+    }
 }
 
 void ARabbitPawn::RotateYaw(float DeltaTime)

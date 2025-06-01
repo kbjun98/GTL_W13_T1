@@ -203,7 +203,10 @@ bool RabbitGameUIPanel::RegisterPlayerCamera()
     for (auto Rabbit : TObjectRange<ARabbitPawn>())
     {
         PlayerCam = Rabbit->GetPlayerCamera();
-        Registered = true;
+        if (PlayerCam)
+        {
+            Registered = true;
+        }
     }
 
     return Registered;

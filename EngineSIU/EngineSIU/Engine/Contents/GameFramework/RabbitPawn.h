@@ -16,8 +16,6 @@ public:
     
     virtual void Tick(float DeltaTime) override;
 
-    virtual void PostSpawnInitialize() override;
-
     void RotateYaw(float DeltaTime);
     void RotatePitch(float DeltaTime);
 
