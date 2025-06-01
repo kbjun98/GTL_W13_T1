@@ -32,6 +32,10 @@ void APlayerController::Tick(float DeltaTime)
         PlayerCameraManager->UpdateCamera(DeltaTime);
     }
 
+    ControlRotation += RotationInput;
+    ControlRotation.Normalize();
+
+    RotationInput = FRotator::ZeroRotator;
 }
 
 void APlayerController::ProcessInput(float DeltaTime) const
@@ -62,6 +66,12 @@ void APlayerController::SetViewTarget(class AActor* NewViewTarget, struct FViewT
 
 void APlayerController::Possess(APawn* InPawn)
 {
+    bHasPossessed = false;
+    if (!InPawn)
+    {
+        return;
+    }
+    
     PossessedPawn = InPawn;
     bHasPossessed = true;
 
@@ -70,6 +80,7 @@ void APlayerController::Possess(APawn* InPawn)
         InputComponent->SetPossess();
     }
     InPawn->SetupPlayerInputComponent(InputComponent);
+    InPawn->PossessedBy(this);
 }
 
 void APlayerController::UnPossess()
@@ -136,4 +147,14 @@ void APlayerController::ClientStopCameraShake(UClass* Shake, bool bImmediately)
     {
         PlayerCameraManager->StopAllInstancesOfCameraShake(Shake, bImmediately);
     }
+}
+
+void APlayerController::AddPitchInput(float Value)
+{
+    RotationInput.Pitch += Value;
+}
+
+void APlayerController::AddYawInput(float Value)
+{
+    RotationInput.Yaw += Value;
 }

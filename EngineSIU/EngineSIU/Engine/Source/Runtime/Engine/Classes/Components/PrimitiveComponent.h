@@ -26,11 +26,6 @@ public:
     virtual void InitializeComponent() override;
     virtual void TickComponent(float DeltaTime) override;
     virtual void EndPhysicsTickComponent(float DeltaTime) override;
-    
-    bool IntersectRayTriangle(
-        const FVector& RayOrigin, const FVector& RayDirection,
-        const FVector& v0, const FVector& v1, const FVector& v2, float& OutHitDistance
-    ) const;
 
     virtual void GetProperties(TMap<FString, FString>& OutProperties) const override;
     virtual void SetProperties(const TMap<FString, FString>& InProperties) override;
@@ -125,7 +120,12 @@ protected:
     virtual void UpdateOverlapsImpl(const TArray<FOverlapInfo>* PendingOverlaps = nullptr, bool bDoNotifies = true, const TArray<const FOverlapInfo>* OverlapsAtEndLocation = nullptr) override;
 
     void ClearComponentOverlaps(bool bDoNotifies, bool bSkipNotifySelf);
-
+    
+    bool IntersectRayTriangle(
+        const FVector& RayOrigin, const FVector& RayDirection,
+        const FVector& V0, const FVector& V1, const FVector& V2,
+        float& OutHitDistance, FVector& OutNormal
+    ) const;
     
 private:
     FString m_Type;

@@ -30,9 +30,8 @@ public:
     
     void SetRowColumnCount(int CellsPerRow, int CellsPerColumn);
 
-    virtual int CheckRayIntersection(const FVector& InRayOrigin, const FVector& InRayDirection, float& OutHitDistance) const override;
+    virtual int CheckRayIntersection(const FVector& InRayOrigin, const FVector& InRayDirection, float& OutHitDistance, FVector& OutHitNormal) const override;
  
-    
     float GetRowCount() const { return RowCount; }
     float GetColumnCount() const { return ColumnCount; }
 

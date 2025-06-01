@@ -1,51 +1,100 @@
 #include "RabbitPawn.h"
 
-void ARabbitPawn::Tick(float DeltaTime)
-{
-    Super::Tick(DeltaTime);
-    PlayerCam->Tick(DeltaTime);
-}
+#include "Camera/CameraComponent.h"
+#include "RabbitMovementComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "GameFramework/PlayerController.h"
+#include "Math/JungleMath.h"
 
 void ARabbitPawn::PostSpawnInitialize()
 {
-    Super::PostSpawnInitialize();
+    APawn::PostSpawnInitialize();
+
+    UCapsuleComponent* Collision = AddComponent<UCapsuleComponent>("Collision_0");
+    Collision->SetHalfHeight(HalfHeight);
+    Collision->SetRadius(Radius);
+    RootComponent = Collision;
+    
+    UCameraComponent* Camera = AddComponent<UCameraComponent>("Camera_0");
+    Camera->SetupAttachment(RootComponent);
+    
+    MovementComponent = AddComponent<URabbitMovementComponent>("RabbitMoveComp_0");
 
     PlayerCam = std::make_shared<PlayerCamera>();
 }
 
-void ARabbitPawn::MoveForward(float DeltaTime)
+UObject* ARabbitPawn::Duplicate(UObject* InOuter)
 {
-    FVector ForwardXY = GetActorForwardVector();
-    ForwardXY.Z = 0.0f; // Z축 이동을 무시하고 XY 평면에서만 이동
-    FVector Delta = ForwardXY * MoveSpeed * DeltaTime;
-    FRotator Rotation = GetActorRotation();
-    GetRootComponent()->MoveComponent(Delta, Rotation, false);
+    ARabbitPawn* NewPawn = Cast<ARabbitPawn>(Super::Duplicate(InOuter));
+    NewPawn->PlayerCam = std::make_shared<PlayerCamera>();
+    
+    return NewPawn;
 }
 
-void ARabbitPawn::MoveRight(float DeltaTime)
+void ARabbitPawn::Tick(float DeltaTime)
 {
-    FVector RightXY = GetActorRightVector();
-    RightXY.Z = 0.0f; // Z축 이동을 무시하고 XY 평면에서만 이동
-    FVector Delta = RightXY * MoveSpeed * DeltaTime;
-    FRotator Rotation = GetActorRotation();
-    GetRootComponent()->MoveComponent(Delta, Rotation, false);
-}
+    Super::Tick(DeltaTime);
 
-void ARabbitPawn::RotateYaw(float DeltaTime)
-{
-    FRotator Rotation = GetActorRotation();
-    Rotation.Yaw += RotateSpeed * DeltaTime;
-    SetActorRotation(Rotation);
-}
+    if (PlayerCam)
+    {
+        PlayerCam->Tick(DeltaTime);
+    }
+    
+    if (Controller)
+    {
+        const FRotator& ControlRotation = Controller->GetControlRotation();
+        SetActorRotation(FRotator(0.f, ControlRotation.Yaw, 0.f));
 
-void ARabbitPawn::RotatePitch(float DeltaTime)
-{
-    FRotator Rotation = GetActorRotation();
-    Rotation.Pitch = FMath::Clamp(Rotation.Pitch - RotateSpeed * DeltaTime, -89.0f, 89.0f);
-    SetActorRotation(Rotation);
+        if (UCameraComponent* Camera = GetComponentByClass<UCameraComponent>())
+        {
+            float NewPitch = ControlRotation.Pitch;
+            if (APlayerCameraManager* CameraManager = Controller->PlayerCameraManager)
+            {
+                NewPitch = FMath::Clamp(
+                    NewPitch,
+                    CameraManager->ViewPitchMin,
+                    CameraManager->ViewPitchMax
+                );
+            }
+            Camera->SetRelativeRotation(FRotator(NewPitch, 0.f, 0.f));
+        }
+    }
 }
 
 std::shared_ptr<PlayerCamera> ARabbitPawn::GetPlayerCamera()
 {
     return PlayerCam;
+}
+
+FVector ARabbitPawn::GetActorForwardVector() const
+{
+    if (Controller)
+    {
+        const FRotator& ControlRotation = Controller->GetControlRotation();
+        FRotator ActualRotation = FRotator(0.f, ControlRotation.Yaw, 0.f);
+        return ActualRotation.ToVector();
+    }
+    return APawn::GetActorForwardVector();
+}
+
+FVector ARabbitPawn::GetActorRightVector() const
+{
+    if (Controller)
+    {
+        const FRotator& ControlRotation = Controller->GetControlRotation();
+        FRotator ActualRotation = FRotator(0.f, ControlRotation.Yaw, 0.f);
+        
+        FVector Right = FVector::RightVector;
+        Right = JungleMath::FVectorRotate(Right, ActualRotation);
+        return Right;
+    }
+    return APawn::GetActorRightVector();
+}
+
+void ARabbitPawn::Jump()
+{
+    if (URabbitMovementComponent* RabbitMoveComp = Cast<URabbitMovementComponent>(GetMovementComponent()))
+    {
+        RabbitMoveComp->Jump();
+    }
 }

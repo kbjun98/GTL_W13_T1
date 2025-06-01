@@ -555,6 +555,8 @@ void UEditorEngine::SetPhysXScene(UWorld* World)
 void UEditorEngine::EndPIE()
 {
     ViewerType = EViewerType::EVT_Editor;
+
+    PhysicsManager->CleanupScene();
     
     if (PIEWorld)
     {

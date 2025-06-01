@@ -231,43 +231,50 @@ void UPrimitiveComponent::EndPhysicsTickComponent(float DeltaTime)
     }
 }
 
-bool UPrimitiveComponent::IntersectRayTriangle(const FVector& RayOrigin, const FVector& RayDirection, const FVector& v0, const FVector& v1, const FVector& v2, float& OutHitDistance) const
+bool UPrimitiveComponent::IntersectRayTriangle(
+    const FVector& RayOrigin, const FVector& RayDirection,
+    const FVector& V0, const FVector& V1, const FVector& V2,
+    float& OutHitDistance, FVector& OutNormal) const
 {
-    const FVector Edge1 = v1 - v0;
-    const FVector Edge2 = v2 - v0;
+    const FVector Edge1 = V1 - V0;
+    const FVector Edge2 = V2 - V0;
     
-    FVector FrayDirection = RayDirection;
-    FVector h = FrayDirection.Cross(Edge2);
-    float a = Edge1.Dot(h);
+    FVector HVector = FVector::CrossProduct(RayDirection, Edge2);
+    float Determinant = FVector::DotProduct(Edge1, HVector);
 
-    if (fabs(a) < SMALL_NUMBER)
+    if (FMath::IsNearlyZero(FMath::Abs(Determinant)))
     {
         return false; // Ray와 삼각형이 평행한 경우
     }
 
-    float f = 1.0f / a;
-    FVector s = RayOrigin - v0;
-    float u = f * s.Dot(h);
-    if (u < 0.0f || u > 1.0f)
+    float InverseDeterminant = 1.0f / Determinant;
+    FVector SVector = RayOrigin - V0;
+    
+    float BarycentricU = InverseDeterminant * FVector::DotProduct(SVector, HVector);
+    if (FMath::InRange(BarycentricU, 0.0f, 1.0f) == false)
     {
         return false;
     }
 
-    FVector q = s.Cross(Edge1);
-    float v = f * FrayDirection.Dot(q);
-    if (v < 0.0f || (u + v) > 1.0f)
+    FVector QVector = FVector::CrossProduct(SVector, Edge1);
+    float BarycentricV = InverseDeterminant * FVector::DotProduct(RayDirection, QVector);
+    if (BarycentricV < 0.0f || (BarycentricU + BarycentricV) > 1.0f)
     {
         return false;
     }
 
-    float t = f * Edge2.Dot(q);
-    if (t > SMALL_NUMBER)
+    float IntersectionT = InverseDeterminant * FVector::DotProduct(Edge2, QVector);
+    if (FMath::IsNearlyZero(IntersectionT) || IntersectionT < 0.f)
     {
-        OutHitDistance = t;
-        return true;
+        return false;
     }
 
-    return false;
+    OutHitDistance = IntersectionT;
+
+    // Calc Normal
+    OutNormal = FVector::CrossProduct(Edge1, Edge2).GetSafeNormal();
+        
+    return true;
 }
 
 void UPrimitiveComponent::GetProperties(TMap<FString, FString>& OutProperties) const
