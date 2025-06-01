@@ -650,6 +650,15 @@ void FPhysicsManager::CreateJoint(const GameObject* Obj1, const GameObject* Obj2
     ConstraintInstance->ConstraintData = Joint;
 }
 
+PxController* FPhysicsManager::CreateCapsuleController(const PxCapsuleControllerDesc& Desc) const
+{
+    if (ControllerManager)
+    {
+        return ControllerManager->createController(Desc);
+    }
+    return nullptr;
+}
+
 void FPhysicsManager::DestroyGameObject(GameObject* GameObject) const
 {
     // TODO: StaticRigidBody 분기 처리 필요
