@@ -1,5 +1,14 @@
 #pragma once
 #include "GameFramework/GameMode.h"
+#include "Components/StaticMeshComponent.h"
+
+enum class EPhotoType
+{
+    NONE,
+    ECarrotField,
+    ERabbit,
+    END,
+};
 
 class ARabbitGameMode : public AGameMode
 {
@@ -11,7 +20,10 @@ public:
 
     /** Actor가 게임에 배치되거나 스폰될 때 호출됩니다. */
     virtual void BeginPlay() override;
-
     void JudgeCapturedPhoto(UPrimitiveComponent* CapturedComp);
+
+    TSet<EPhotoType> CapturedPhotoTypes;
+
+    int32 EPhotoTypeSize;
 };
 
