@@ -16,7 +16,7 @@ public:
     
     virtual void Tick(float DeltaTime) override;
 
-    std::shared_ptr<PlayerCamera> GetPlayerCamera();
+    std::shared_ptr<RabbitCamera> GetPlayerCamera();
 
     virtual FVector GetActorForwardVector() const override;
     virtual FVector GetActorRightVector() const override;
@@ -31,6 +31,6 @@ private:
 
     float RotateSpeed = 100.0f;
 
-    std::shared_ptr<PlayerCamera> PlayerCam = nullptr;
+    std::shared_ptr<RabbitCamera> PlayerCam = nullptr;
 };
 
