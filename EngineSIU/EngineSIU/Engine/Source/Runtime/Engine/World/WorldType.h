@@ -12,7 +12,8 @@ enum class EWorldType
     SkeletalViewer,
     ParticleViewer,
     PhysicsAssetViewer,
-    Inactive
+    Inactive,
+    RabbitGameUI,
 };
 
 // TODO : EWolrldType과 EWorldTypeBitFlag 혼용 중. EWorldTypeBitFlag으로 통일하기 
@@ -28,7 +29,8 @@ enum class EWorldTypeBitFlag
     SkeletalViewer = 1 << 6,
     ParticleViewer = 1 << 7,
     PhysicsAssetViewer = 1 << 8,  
-    Inactive = 1 << 9   
+    Inactive = 1 << 9,
+    RabbitGameUI = 1 << 10
 };
 
 inline EWorldTypeBitFlag operator|(EWorldTypeBitFlag A, EWorldTypeBitFlag B)

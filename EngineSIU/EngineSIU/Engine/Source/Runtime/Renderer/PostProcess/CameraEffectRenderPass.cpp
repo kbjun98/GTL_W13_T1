@@ -6,6 +6,16 @@
 #include "Renderer/ShaderConstants.h"
 #include "UnrealClient.h"
 #include "D3D11RHI/DXDShaderManager.h"
+#include <Engine/Contents/GameFramework/RabbitPawn.h>
+
+void FCameraEffectRenderPass::PrepareRenderArr()
+{
+    //TODO 일단 플레이어로 가정
+    for (auto Rabbit : TObjectRange<ARabbitPawn>())
+    {
+        CurrentApertureProgress= Rabbit->GetPlayerCamera()->GetCurrentApertureProgress();
+    }
+}
 
 void FCameraEffectRenderPass::Initialize(FDXDBufferManager* InBufferManager, FGraphicsDevice* InGraphics, FDXDShaderManager* InShaderManager)
 {
@@ -20,6 +30,7 @@ void FCameraEffectRenderPass::CreateResource()
     BufferManager->CreateBufferGeneric<FConstantBufferCameraFade>("CameraFadeConstantBuffer", nullptr, sizeof(FConstantBufferCameraFade), D3D11_BIND_CONSTANT_BUFFER, D3D11_USAGE_DYNAMIC, D3D11_CPU_ACCESS_WRITE);
     BufferManager->CreateBufferGeneric<FConstantBufferCameraVignette>("CameraVignetteConstantBuffer", nullptr, sizeof(FConstantBufferCameraVignette), D3D11_BIND_CONSTANT_BUFFER, D3D11_USAGE_DYNAMIC, D3D11_CPU_ACCESS_WRITE);
     BufferManager->CreateBufferGeneric<FConstantBufferLetterBox>("LetterBoxConstantBuffer", nullptr, sizeof(FConstantBufferLetterBox), D3D11_BIND_CONSTANT_BUFFER, D3D11_USAGE_DYNAMIC, D3D11_CPU_ACCESS_WRITE);
+    BufferManager->CreateBufferGeneric<FConstantBufferShutter>("ShutterConstants", nullptr, sizeof(FConstantBufferShutter), D3D11_BIND_CONSTANT_BUFFER, D3D11_USAGE_DYNAMIC, D3D11_CPU_ACCESS_WRITE);
 }
 
 void FCameraEffectRenderPass::UpdateCameraEffectConstant(const std::shared_ptr<FEditorViewportClient>& Viewport)
@@ -27,6 +38,12 @@ void FCameraEffectRenderPass::UpdateCameraEffectConstant(const std::shared_ptr<F
     FConstantBufferCameraFade FadeParams;
     FConstantBufferCameraVignette VignetteParams;
     FConstantBufferLetterBox LetterBoxParams;
+    FConstantBufferShutter ShutterParams;
+
+    ShutterParams.apertureProgress = CurrentApertureProgress;
+
+    ShutterParams.aspectRatio = Viewport->AspectRatio;
+
     LetterBoxParams.ScreenAspectRatio = Viewport->AspectRatio;
     LetterBoxParams.LetterBoxAspectRatio = Viewport->AspectRatio;
 
@@ -53,6 +70,7 @@ void FCameraEffectRenderPass::UpdateCameraEffectConstant(const std::shared_ptr<F
     BufferManager->UpdateConstantBuffer<FConstantBufferCameraFade>("CameraFadeConstantBuffer", FadeParams);
     BufferManager->UpdateConstantBuffer<FConstantBufferCameraVignette>("CameraVignetteConstantBuffer", VignetteParams);
     BufferManager->UpdateConstantBuffer<FConstantBufferLetterBox>("LetterBoxConstantBuffer", LetterBoxParams);
+    BufferManager->UpdateConstantBuffer<FConstantBufferShutter>("ShutterConstants", ShutterParams);
 }
 
 void FCameraEffectRenderPass::Render(const std::shared_ptr<FEditorViewportClient>& Viewport)
@@ -89,6 +107,7 @@ void FCameraEffectRenderPass::PrepareRender(const std::shared_ptr<FEditorViewpor
     BufferManager->BindConstantBuffer("CameraFadeConstantBuffer", 0, EShaderStage::Pixel);
     BufferManager->BindConstantBuffer("CameraVignetteConstantBuffer", 1, EShaderStage::Pixel);
     BufferManager->BindConstantBuffer("LetterBoxConstantBuffer", 2, EShaderStage::Pixel);
+	BufferManager->BindConstantBuffer("ShutterConstants", 3, EShaderStage::Pixel);
 }
 
 void FCameraEffectRenderPass::CleanUpRender(const std::shared_ptr<FEditorViewportClient>& Viewport)

@@ -1,4 +1,4 @@
-﻿#include "DepthOfFieldRenderPass.h"
+#include "DepthOfFieldRenderPass.h"
 
 #include "RendererHelpers.h"
 #include "ShaderConstants.h"

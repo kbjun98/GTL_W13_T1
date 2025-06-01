@@ -1645,6 +1645,8 @@
     <ClCompile Include="Engine\Contents\GameFramework\RabbitController.cpp" />
     <ClCompile Include="Engine\Contents\GameFramework\RabbitPawn.cpp" />
     <ClCompile Include="Engine\Contents\GameFramework\RabbitGameMode.cpp" />
+    <ClCompile Include="PlayerCamera.cpp" />
+    <ClCompile Include="Engine\Source\Editor\PropertyEditor\RabbitGameUIPanel.cpp" />
     <ClCompile Include="Engine\Contents\Navigation\MapData.cpp" />
     <ClCompile Include="Engine\Contents\Navigation\PathFinder.cpp" />
     <ClCompile Include="Engine\Contents\Components\GridMapComponent.cpp" />
@@ -1777,6 +1779,8 @@
     <ClInclude Include="Engine\Contents\GameFramework\RabbitController.h" />
     <ClInclude Include="Engine\Contents\GameFramework\RabbitPawn.h" />
     <ClInclude Include="Engine\Contents\GameFramework\RabbitGameMode.h" />
+    <ClInclude Include="PlayerCamera.h" />
+    <ClInclude Include="Engine\Source\Editor\PropertyEditor\RabbitGameUIPanel.h" />
     <ClInclude Include="Engine\Contents\Navigation\MapData.h" />
     <ClInclude Include="Engine\Contents\Navigation\PathFinder.h" />
     <ClInclude Include="Engine\Contents\Components\GridMapComponent.h" />

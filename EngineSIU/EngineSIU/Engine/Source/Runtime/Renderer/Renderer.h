@@ -63,6 +63,7 @@ public:
     void Render(const std::shared_ptr<FEditorViewportClient>& Viewport);
     void RenderViewport(const std::shared_ptr<FEditorViewportClient>& Viewport) const; // TODO: 추후 RenderSlate로 변경해야함
 
+    FPostProcessRenderPass* GetPostProcessRenderPass();
 protected:
     void BeginRender(const std::shared_ptr<FEditorViewportClient>& Viewport) const;
     void UpdateCommonBuffer(const std::shared_ptr<FEditorViewportClient>& Viewport) const;

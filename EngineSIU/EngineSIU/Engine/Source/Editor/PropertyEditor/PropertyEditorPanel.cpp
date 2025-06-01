@@ -52,6 +52,12 @@ PropertyEditorPanel::PropertyEditorPanel()
     SetSupportedWorldTypes(EWorldTypeBitFlag::Editor| EWorldTypeBitFlag::PIE);
 }
 
+// Pictures TArray에서 SRV를 가져와서 ImGui로 렌더링하는 개선된 코드
+
+// Pictures TArray에서 SRV를 가져와서 ImGui로 렌더링하는 개선된 코드
+
+
+
 void PropertyEditorPanel::Render()
 {
     UEditorEngine* Engine = Cast<UEditorEngine>(GEngine);
@@ -78,6 +84,7 @@ void PropertyEditorPanel::Render()
 
     /* Render Start */
     ImGui::Begin("Detail", nullptr, PanelFlags);
+
 
     AActor* SelectedActor = Engine->GetSelectedActor();
     USceneComponent* SelectedComponent = Engine->GetSelectedComponent();
