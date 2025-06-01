@@ -29,7 +29,9 @@ public:
     }
 
     void GetEndPoints(FVector& OutStart, FVector& OutEnd) const;
-    
+
+    virtual void CreatePhysXGameObject() override;
+
 private:
     float CapsuleHalfHeight = 0.88f;
     float CapsuleRadius = 0.34f;

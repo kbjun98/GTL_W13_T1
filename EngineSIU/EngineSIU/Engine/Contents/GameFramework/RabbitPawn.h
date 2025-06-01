@@ -1,25 +1,36 @@
 #pragma once
 #include "GameFramework/Pawn.h"
 
+class URabbitMovementComponent;
+
 class ARabbitPawn : public APawn
 {
     DECLARE_CLASS(ARabbitPawn, APawn)
+    
 public:
     ARabbitPawn() = default;
-    virtual void Tick(float DeltaTime) override;
+
     virtual void PostSpawnInitialize() override;
-public:
-    void MoveForward(float DeltaTime);
-    void MoveRight(float DeltaTime);
-    void RotateYaw(float DeltaTime);
-    void RotatePitch(float DeltaTime);
+
+    virtual UObject* Duplicate(UObject* InOuter) override;
+    
+    virtual void Tick(float DeltaTime) override;
 
     std::shared_ptr<PlayerCamera> GetPlayerCamera();
 
+    virtual FVector GetActorForwardVector() const override;
+    virtual FVector GetActorRightVector() const override;
+
+    void Jump();
+
 private:
-    float MoveSpeed = 100.0f; // 이동 속도  
-    float RotateSpeed = 100.0f; // 회전 속도
-    std::shared_ptr<PlayerCamera> PlayerCam;
- 
+    URabbitMovementComponent* MovementComponent;
+
+    float HalfHeight = 40.f;
+    float Radius = 30.f;
+
+    float RotateSpeed = 100.0f;
+
+    std::shared_ptr<PlayerCamera> PlayerCam = nullptr;
 };
 

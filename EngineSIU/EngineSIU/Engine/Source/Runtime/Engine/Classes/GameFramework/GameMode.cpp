@@ -9,11 +9,10 @@
 #include "GameFramework/Pawn.h"
 
 AGameMode::AGameMode()
-    : AActor()
+    : DefaultPawnClass(APawn::StaticClass())
+    , PlayerControllerClass(APlayerController::StaticClass())
     , bGameRunning(false)
     , bGameEnded(true)
-    , DefaultPawnClass(APawn::StaticClass())
-    , PlayerControllerClass(APlayerController::StaticClass())
 {
 }
 
@@ -123,7 +122,7 @@ void AGameMode::HandleStartingNewPlayer()
     UWorld* World = GEngine->ActiveWorld;
     for (const auto Iter : TObjectRange<APawn>())
     {
-        if (Iter->GetWorld() == World)
+        if (Iter->GetWorld() == World && Iter->GetClass()->IsChildOf(DefaultPawnClass))
         {
             World->SetMainPlayer(Iter);
             break;

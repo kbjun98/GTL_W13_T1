@@ -59,23 +59,9 @@ void FPhysicsManager::InitPhysX()
 
 PxScene* FPhysicsManager::CreateScene(UWorld* World)
 {
-    if (SceneMap[World])
-    {
-        // PVD 클라이언트 생성 및 씬 연결
-        if (Pvd && Pvd->isConnected()) {
-            PxPvdSceneClient* pvdClient = SceneMap[World]->getScenePvdClient();
-            if (pvdClient) {
-                pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, true);
-                pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONTACTS, true);
-                pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, true);
-            }
-        }
-        return SceneMap[World];
-    }
-    
     PxSceneDesc SceneDesc(Physics->getTolerancesScale());
     
-    SceneDesc.gravity = PxVec3(0, 0, -9.81f);
+    SceneDesc.gravity = PxVec3(0, 0, -981.f);
     
     unsigned int hc = std::thread::hardware_concurrency();
     Dispatcher = PxDefaultCpuDispatcherCreate(hc-2);
@@ -92,10 +78,14 @@ PxScene* FPhysicsManager::CreateScene(UWorld* World)
     PxScene* NewScene = Physics->createScene(SceneDesc);
     SceneMap.Add(World, NewScene);
 
+    ControllerManager = PxCreateControllerManager(*NewScene);
+
     // PVD 클라이언트 생성 및 씬 연결
-    if (Pvd && Pvd->isConnected()) {
+    if (Pvd && Pvd->isConnected())
+    {
         PxPvdSceneClient* pvdClient = NewScene->getScenePvdClient();
-        if (pvdClient) {
+        if (pvdClient)
+        {
             pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, true);
             pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONTACTS, true);
             pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, true);
@@ -660,6 +650,15 @@ void FPhysicsManager::CreateJoint(const GameObject* Obj1, const GameObject* Obj2
     ConstraintInstance->ConstraintData = Joint;
 }
 
+PxController* FPhysicsManager::CreateCapsuleController(const PxCapsuleControllerDesc& Desc) const
+{
+    if (ControllerManager)
+    {
+        return ControllerManager->createController(Desc);
+    }
+    return nullptr;
+}
+
 void FPhysicsManager::DestroyGameObject(GameObject* GameObject) const
 {
     // TODO: StaticRigidBody 분기 처리 필요
@@ -745,14 +744,19 @@ void FPhysicsManager::ShutdownPhysX()
         Foundation->release();
         Foundation = nullptr;
     }
+    CleanupPVD();
 }
 
-void FPhysicsManager::CleanupPVD() {
-    if (Pvd) {
-        if (Pvd->isConnected()) {
+void FPhysicsManager::CleanupPVD()
+{
+    if (Pvd)
+    {
+        if (Pvd->isConnected())
+        {
             Pvd->disconnect();
         }
-        if (Transport) {
+        if (Transport)
+        {
             Transport->release();
             Transport = nullptr;
         }
@@ -763,9 +767,19 @@ void FPhysicsManager::CleanupPVD() {
 
 void FPhysicsManager::CleanupScene()
 {
+    if (ControllerManager)
+    {
+        ControllerManager->release();
+        ControllerManager = nullptr;   
+    }
     if (CurrentScene)
     {
         CurrentScene->release();
         CurrentScene = nullptr;
+    }
+    if (Dispatcher)
+    {
+        Dispatcher->release();
+        Dispatcher = nullptr;
     }
 }

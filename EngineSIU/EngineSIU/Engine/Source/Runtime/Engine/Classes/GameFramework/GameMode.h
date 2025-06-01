@@ -57,10 +57,12 @@ public:
     FGameInfo GameInfo;
 
     TSubclassOf<APawn> DefaultPawnClass; // 기본 플레이어 Pawn 클래스
+    
     TSubclassOf<APlayerController> PlayerControllerClass; // 플레이어 컨트롤러 클래스
+    
 private:
-    bool bGameRunning = false; // 내부 
-    bool bGameEnded = true;
+    bool bGameRunning; // 내부 
+    bool bGameEnded;
 
     float LogTimer = 0.f;
     float LogInterval = 1.f;  // 1초마다 로그

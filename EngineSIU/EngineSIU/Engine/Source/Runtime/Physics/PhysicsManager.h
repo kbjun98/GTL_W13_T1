@@ -60,11 +60,12 @@ public:
                                      ERigidBodyType::DYNAMIC) const;
     void CreateJoint(const GameObject* Obj1, const GameObject* Obj2, FConstraintInstance* ConstraintInstance, const FConstraintSetup* ConstraintSetup) const;
 
+    PxController* CreateCapsuleController(const PxCapsuleControllerDesc& Desc) const;
+    
     PxShape* CreateBoxShape(const PxVec3& Pos, const PxQuat& Quat, const PxVec3& HalfExtents) const;
     PxShape* CreateSphereShape(const PxVec3& Pos, const PxQuat& Quat, float Radius) const;
     PxShape* CreateCapsuleShape(const PxVec3& Pos, const PxQuat& Quat, float Radius, float HalfHeight) const;
-    PxQuat EulerToQuat(const PxVec3& EulerAngles) const;
-
+    
     PxPhysics* GetPhysics() { return Physics; }
     PxMaterial* GetMaterial() const { return Material; }
     
@@ -82,6 +83,8 @@ private:
     PxScene* CurrentScene = nullptr;
     PxMaterial* Material = nullptr;
     PxDefaultCpuDispatcher* Dispatcher = nullptr;
+    PxControllerManager* ControllerManager = nullptr;
+    
     // 디버깅용
     PxPvd* Pvd;
     PxPvdTransport* Transport;

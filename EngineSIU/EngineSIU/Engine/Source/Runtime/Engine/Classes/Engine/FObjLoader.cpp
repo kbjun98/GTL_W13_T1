@@ -46,6 +46,8 @@ bool FObjLoader::ParseObj(const FString& ObjFilePath, FObjInfo& OutObjInfo)
      *       Path Mode:     Strip
      */
 
+    const float Scale = 100.f;
+
     std::string Line;
 
     while (std::getline(Obj, Line))
@@ -95,7 +97,7 @@ bool FObjLoader::ParseObj(const FString& ObjFilePath, FObjInfo& OutObjInfo)
         {
             float X, Y, Z;
             LineStream >> X >> Y >> Z;
-            OutObjInfo.Vertices.Add(FVector(X, Y * -1.f, Z));
+            OutObjInfo.Vertices.Add(FVector(X * Scale, Y * -1.f * Scale, Z * Scale));
             continue;
         }
 
