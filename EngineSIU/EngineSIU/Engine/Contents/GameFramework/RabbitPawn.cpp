@@ -27,6 +27,7 @@ void ARabbitPawn::PostSpawnInitialize()
 UObject* ARabbitPawn::Duplicate(UObject* InOuter)
 {
     ARabbitPawn* NewPawn = Cast<ARabbitPawn>(Super::Duplicate(InOuter));
+    NewPawn->PlayerCam = std::make_shared<PlayerCamera>();
     
     return NewPawn;
 }
