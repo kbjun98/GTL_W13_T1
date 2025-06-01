@@ -9,6 +9,7 @@
 #include <Engine/Engine.h>
 #include "World/World.h"
 #include "GameFramework/Pawn.h"
+#include <GameFramework/RabbitGameMode.h>
 
 RabbitCamera::RabbitCamera()
 {
@@ -90,7 +91,8 @@ FRenderTargetRHI* RabbitCamera::CopySource(FRenderTargetRHI* InputRHI)
 
 FRenderTargetRHI* RabbitCamera::CaptureFrame()
 {
-    auto Source = GEngineLoop.GetLevelEditor()->GetActiveViewportClient()
+    auto Source = GEngineLoop.GetLevelEditor()
+        ->GetActiveViewportClient()
         ->GetViewportResource()
         ->GetRenderTarget(EResourceType::ERT_DepthOfField_Result);
 
@@ -116,18 +118,14 @@ void RabbitCamera::TakePicture()
     }
    
     auto CapturedSource = CaptureFrame();
-   
     StorePicture(CapturedSource);
 
     FSoundManager::GetInstance().PlaySound("Shutter");
     CanTakePicture = false;
     TriggerShutterEffect();
 
-
     auto HitComp = CheckSubject();
-
-    GEngine->ActiveWorld->GetGameMode();
-    
+    OnPictureTaken.Execute(HitComp);
 }
 
 void RabbitCamera::ReleasePictures()
@@ -265,15 +263,4 @@ UPrimitiveComponent* RabbitCamera::CheckSubject()
 
 
     return HitComponent;
-
-
-    if (HitComponent) {
-        std::cout << "Object in FOV: " << (void*)HitComponent
-            << " at distance: " << MinHitDistance << std::endl;
-    }
-    else {
-        std::cout << "No object found in loose FOV range." << std::endl;
-    }
-
-
 }

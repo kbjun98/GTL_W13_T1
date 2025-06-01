@@ -1,8 +1,11 @@
 #pragma once
 
 #include "UnrealClient.h"
+#include "Delegates/DelegateCombination.h"
 
 class UPrimitiveComponent;
+
+DECLARE_DELEGATE_OneParam(FOnPictureTaken, UPrimitiveComponent*);
 
 class RabbitCamera
 {
@@ -35,6 +38,7 @@ public:
 
     TArray<FRenderTargetRHI*> GetPicturesRHI() const;
 
+    FOnPictureTaken OnPictureTaken;
 
 private:
     FRenderTargetRHI* CopySource(FRenderTargetRHI* InputRHI);
@@ -43,6 +47,5 @@ private:
     void TriggerShutterEffect();
     bool ValidateTakePicture();
     void StorePicture(FRenderTargetRHI* Picture);
-    
 };
 

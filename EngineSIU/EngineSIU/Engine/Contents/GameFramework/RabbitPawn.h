@@ -31,6 +31,6 @@ private:
 
     float RotateSpeed = 100.0f;
 
-    std::shared_ptr<RabbitCamera> PlayerCam = nullptr;
+    std::shared_ptr<RabbitCamera> RabbitCam= nullptr;
 };
 
