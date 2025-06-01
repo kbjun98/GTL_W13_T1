@@ -6,12 +6,14 @@
 void ARabbitController::BeginPlay()
 {
     Super::BeginPlay();
+    
     SetInputMode(EInputMode::GameOnly);
 }
 
 void ARabbitController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
     Super::EndPlay(EndPlayReason);
+    
     SetInputMode(EInputMode::GameAndUI); // 게임 종료시 UI 모드로 전환
 }
 
@@ -24,20 +26,27 @@ void ARabbitController::SetupInputComponent()
     InputComponent->BindAction("D", [this](float DeltaTime) { MoveRight(); });
     InputComponent->BindAction("A", [this](float DeltaTime) { MoveLeft(); });
 
-    InputComponent->BindAxis("Turn", [this](float DeltaTime) { RotateYaw(DeltaTime); });
-    InputComponent->BindAxis("LookUp", [this](float DeltaTime) { RotatePitch(DeltaTime); });
+    InputComponent->BindAction("SPACE_Pressed", [this](float DeltaTime) { Jump(); });
+
+    InputComponent->BindAxis("Turn", [this](float DeltaTime) { AddYawInput(DeltaTime); });
+    InputComponent->BindAxis("LookUp", [this](float DeltaTime) { AddPitchInput(-DeltaTime); });
 
     InputComponent->BindAction("ESC_Pressed", [this](float DeltaTime) { OnESCPressed(); });
 
     //마우스 클릭
-    InputComponent->BindAction("L_Pressed", [this](float DeltaTime) {TakePicture();});
+    InputComponent->BindAction("L_Pressed", [this](float DeltaTime) { TakePicture();});
 }
 
 void ARabbitController::MoveForward()
 {
-    if (APawn* Pawn = GetPawn())
+    if (CurrentInputMode == EInputMode::UIOnly)
     {
-        Pawn->AddMovementInput(GetActorForwardVector(), 1.f);
+        return;
+    }
+    
+    if (ARabbitPawn* Pawn = Cast<ARabbitPawn>(GetPawn()))
+    {
+        Pawn->AddMovementInput(Pawn->GetActorForwardVector(), 1.f);
     }
 }
 
@@ -48,9 +57,9 @@ void ARabbitController::MoveBack()
         return;
     }
     
-    if (APawn* Pawn = GetPawn())
+    if (ARabbitPawn* Pawn = Cast<ARabbitPawn>(GetPawn()))
     {
-        Pawn->AddMovementInput(GetActorForwardVector(), -1.f);
+        Pawn->AddMovementInput(Pawn->GetActorForwardVector(), -1.f);
     }
 }
 
@@ -61,9 +70,9 @@ void ARabbitController::MoveRight()
         return;
     }
     
-    if (APawn* Pawn = GetPawn())
+    if (ARabbitPawn* Pawn = Cast<ARabbitPawn>(GetPawn()))
     {
-        Pawn->AddMovementInput(GetActorRightVector(), 1.f);
+        Pawn->AddMovementInput(Pawn->GetActorRightVector(), 1.f);
     }
 }
 
@@ -74,29 +83,48 @@ void ARabbitController::MoveLeft()
         return;
     }
     
+    if (ARabbitPawn* Pawn = Cast<ARabbitPawn>(GetPawn()))
+    {
+        Pawn->AddMovementInput(Pawn->GetActorRightVector(), -1.f);
+    }
+}
+
+void ARabbitController::Jump()
+{
+    if (CurrentInputMode == EInputMode::UIOnly)
+    {
+        return;
+    }
+    
+    if (ARabbitPawn* Pawn = Cast<ARabbitPawn>(GetPawn()))
+    {
+        Pawn->Jump();
+    }
+}
+
+void ARabbitController::AddYawInput(float Value)
+{
+    if (CurrentInputMode == EInputMode::UIOnly)
+    {
+        return;
+    }
+
     if (APawn* Pawn = GetPawn())
     {
-        Pawn->AddMovementInput(GetActorRightVector(), -1.f);
+        Super::AddYawInput(Value * MouseSensitivity);
     }
 }
 
-void ARabbitController::RotateYaw(float DeltaTime)
+void ARabbitController::AddPitchInput(float Value)
 {
-    if (CurrentInputMode == EInputMode::UIOnly) return;
-
-    if (ARabbitPawn* RabbitPawn = Cast<ARabbitPawn>(PossessedPawn))
+    if (CurrentInputMode == EInputMode::UIOnly)
     {
-        RabbitPawn->RotateYaw(DeltaTime);
+        return;
     }
-}
 
-void ARabbitController::RotatePitch(float DeltaTime)
-{
-    if (CurrentInputMode == EInputMode::UIOnly) return;
-
-    if (ARabbitPawn* RabbitPawn = Cast<ARabbitPawn>(PossessedPawn))
+    if (APawn* Pawn = GetPawn())
     {
-        RabbitPawn->RotatePitch(DeltaTime);
+        Super::AddPitchInput(Value * MouseSensitivity);
     }
 }
 
@@ -136,10 +164,16 @@ void ARabbitController::OnESCPressed()
 
 void ARabbitController::TakePicture()
 {
-    if (CurrentInputMode == EInputMode::UIOnly) return;
+    if (CurrentInputMode == EInputMode::UIOnly)
+    {
+        return;
+    }
 
     if (ARabbitPawn* RabbitPawn = Cast<ARabbitPawn>(PossessedPawn))
     {
-        RabbitPawn->GetPlayerCamera()->TakePicture();
+        if (RabbitPawn->GetPlayerCamera())
+        {
+            RabbitPawn->GetPlayerCamera()->TakePicture();
+        }
     }
 }

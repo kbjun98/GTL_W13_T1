@@ -150,16 +150,29 @@ void UInputComponent::InputKey(const FKeyEvent& InKeyEvent)
 
     switch (InKeyEvent.GetKeyCode())
     {
-        case VK_ESCAPE: // Escape 키
+    case VK_ESCAPE: // Escape 키
+    {
+        if (InKeyEvent.GetInputEvent() == IE_Pressed)
+        {
+            PressedKeys.Add(EKeys::Escape);
+            KeyBindDelegate[FString("ESC_Pressed")].Broadcast(0);
+        }
+        else if (InKeyEvent.GetInputEvent() == IE_Released)
+        {
+            PressedKeys.Remove(EKeys::Escape);
+        }
+        break;
+    }
+    case VK_SPACE: // Space 키
         {
             if (InKeyEvent.GetInputEvent() == IE_Pressed)
             {
-                PressedKeys.Add(EKeys::Escape);
-                KeyBindDelegate[FString("ESC_Pressed")].Broadcast(0);
+                PressedKeys.Add(EKeys::SpaceBar);
+                KeyBindDelegate[FString("SPACE_Pressed")].Broadcast(0);
             }
             else if (InKeyEvent.GetInputEvent() == IE_Released)
             {
-                PressedKeys.Remove(EKeys::Escape);
+                PressedKeys.Remove(EKeys::SpaceBar);
             }
             break;
         }
@@ -247,11 +260,11 @@ void UInputComponent::ProcessAxisInput(float DeltaTime)
 {
     if (MouseDelta.X != 0.0f)
     {
-        AxisBindDelegate[FString("Turn")].Broadcast(MouseDelta.X * DeltaTime);
+        AxisBindDelegate[FString("Turn")].Broadcast(MouseDelta.X);
     }
     if (MouseDelta.Y != 0.0f)
     {
-        AxisBindDelegate[FString("LookUp")].Broadcast(MouseDelta.Y * DeltaTime);
+        AxisBindDelegate[FString("LookUp")].Broadcast(MouseDelta.Y);
     }
 
     MouseDelta = FVector2D::ZeroVector; // Reset after processing
@@ -278,8 +291,8 @@ void UInputComponent::BindAxis(const FString& Key, const std::function<void(floa
         return;
     }
 
-    AxisBindDelegate[Key].AddLambda([this, Callback](float DeltaTime)
+    AxisBindDelegate[Key].AddLambda([this, Callback](float Value)
         {
-            Callback(DeltaTime);
+            Callback(Value);
         });
 }

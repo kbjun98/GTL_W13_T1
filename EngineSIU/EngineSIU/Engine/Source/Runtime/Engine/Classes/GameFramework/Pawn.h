@@ -20,7 +20,13 @@ public:
 
     APlayerController* Controller;
 
+    APlayerController* GetController();
+    
     void AddMovementInput(const FVector& WorldDirection, float ScaleValue = 1.f);
+
+    void AddControllerYawInput(float Value);
+
+    void AddControllerPitchInput(float Value);
 
     UPawnMovementComponent* GetMovementComponent() const;
 

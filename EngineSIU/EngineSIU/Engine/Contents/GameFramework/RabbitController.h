@@ -26,9 +26,11 @@ private:
     void MoveBack();
     void MoveRight();
     void MoveLeft();
+
+    void Jump();
     
-    void RotateYaw(float DeltaTime);
-    void RotatePitch(float DeltaTime);
+    virtual void AddYawInput(float Value) override;
+    virtual void AddPitchInput(float Value) override;
 
     void SetInputMode(EInputMode NewInputMode);
     void OnESCPressed();
@@ -38,5 +40,7 @@ private:
 private:
     EInputMode CurrentInputMode = EInputMode::GameOnly;
     FVector2D MousePinPosition;
+
+    float MouseSensitivity = 0.4f;
 };
 

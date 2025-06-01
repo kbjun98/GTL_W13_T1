@@ -26,9 +26,14 @@ public:
 
     virtual void PerformMovement(float DeltaTime);
 
+    void Jump();
+
 protected:
     bool bGravity;
     float GravityFactor;
+    bool bIsGrounded;
+
+    float JumpZVelocity = 600.f;
 
     physx::PxController* Controller;
 };

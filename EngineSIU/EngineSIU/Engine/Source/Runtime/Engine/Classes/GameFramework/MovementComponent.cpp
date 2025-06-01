@@ -3,7 +3,7 @@
 
 UMovementComponent::UMovementComponent()
     : UpdatedComponent(nullptr)
-    , MaxSpeed(100.f)
+    , MaxSpeed(300.f)
 {
 }
 

@@ -49,6 +49,11 @@ public:
     void ClientStopCameraShake(UClass* Shake, bool bImmediately = true);
 
     APlayerCameraManager* PlayerCameraManager = nullptr;
+
+    virtual void AddPitchInput(float Value);
+    virtual void AddYawInput(float Value);
+
+    FRotator GetControlRotation() const { return ControlRotation; }
     
 protected:
     UPROPERTY(UInputComponent*, InputComponent, = nullptr)
@@ -58,5 +63,9 @@ protected:
     APawn* PossessedPawn = nullptr;
 
     bool bHasPossessed = false;
+
+    FRotator RotationInput = FRotator(0, 0, 0);
+
+    FRotator ControlRotation = FRotator(0, 0, 0);
 };
 

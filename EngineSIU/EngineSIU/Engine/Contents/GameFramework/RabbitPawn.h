@@ -16,11 +16,13 @@ public:
     
     virtual void Tick(float DeltaTime) override;
 
-    void RotateYaw(float DeltaTime);
-    void RotatePitch(float DeltaTime);
-
     std::shared_ptr<PlayerCamera> GetPlayerCamera();
-    
+
+    virtual FVector GetActorForwardVector() const override;
+    virtual FVector GetActorRightVector() const override;
+
+    void Jump();
+
 private:
     URabbitMovementComponent* MovementComponent;
 
@@ -29,6 +31,6 @@ private:
 
     float RotateSpeed = 100.0f;
 
-    std::shared_ptr<PlayerCamera> PlayerCam;
+    std::shared_ptr<PlayerCamera> PlayerCam = nullptr;
 };
 
