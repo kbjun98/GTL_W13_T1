@@ -1,6 +1,5 @@
 #include "RabbitPawn.h"
 
-#include "PhysicsManager.h"
 #include "Camera/CameraComponent.h"
 #include "RabbitMovementComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -48,7 +47,16 @@ void ARabbitPawn::Tick(float DeltaTime)
 
         if (UCameraComponent* Camera = GetComponentByClass<UCameraComponent>())
         {
-            Camera->SetRelativeRotation(FRotator(ControlRotation.Pitch, 0.f, 0.f));
+            float NewPitch = ControlRotation.Pitch;
+            if (APlayerCameraManager* CameraManager = Controller->PlayerCameraManager)
+            {
+                NewPitch = FMath::Clamp(
+                    NewPitch,
+                    CameraManager->ViewPitchMin,
+                    CameraManager->ViewPitchMax
+                );
+            }
+            Camera->SetRelativeRotation(FRotator(NewPitch, 0.f, 0.f));
         }
     }
 }

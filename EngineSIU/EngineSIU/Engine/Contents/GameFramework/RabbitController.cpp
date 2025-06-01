@@ -1,4 +1,6 @@
 #include "RabbitController.h"
+
+#include "Engine/Engine.h"
 #include "Engine/Contents/GameFramework/RabbitPawn.h"
 #include "UObject/Casts.h"
 #include "Windows/WindowsCursor.h"
@@ -15,6 +17,22 @@ void ARabbitController::EndPlay(const EEndPlayReason::Type EndPlayReason)
     Super::EndPlay(EndPlayReason);
     
     SetInputMode(EInputMode::GameAndUI); // 게임 종료시 UI 모드로 전환
+}
+
+void ARabbitController::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+
+    if (CurrentInputMode == EInputMode::GameOnly)
+    {
+        RECT ClientRect;
+        GetClientRect(GEngineLoop.AppWnd, &ClientRect);
+        int32 Width = ClientRect.right - ClientRect.left;
+        int32 Height = ClientRect.bottom - ClientRect.top;
+        int32 TargetMousePositionX = ClientRect.left + static_cast<int32>(static_cast<float>(Width) * 0.5f);
+        int32 TargetMousePositionY = ClientRect.top + static_cast<int32>(static_cast<float>(Height) * 0.5f);
+        FWindowsCursor::SetPosition(TargetMousePositionX, TargetMousePositionY);
+    }
 }
 
 void ARabbitController::SetupInputComponent()
