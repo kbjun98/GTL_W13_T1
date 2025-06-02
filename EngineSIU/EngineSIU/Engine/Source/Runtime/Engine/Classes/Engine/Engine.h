@@ -21,7 +21,6 @@ public:
 
 public:
     UWorld* ActiveWorld;
-    ERabbitAnimState State;
     UAssetManager* AssetManager = nullptr;
     FPhysicsManager* PhysicsManager = nullptr;
 

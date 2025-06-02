@@ -8,7 +8,6 @@
 #include <Animation/AnimationRuntime.h>
 #include <Animation/RabbitAnimStateMachine.h>
 #include <GameFramework/RabbitPawn.h>
-#include <Engine/Engine.h>
 #include "Animation/AnimData/AnimDataModel.h"
 
 RabbitAnimInstance::RabbitAnimInstance()
@@ -58,7 +57,7 @@ void RabbitAnimInstance::NativeUpdateAnimation(float DeltaSeconds, FPoseContext&
     UAnimInstance::NativeUpdateAnimation(DeltaSeconds, OutPose);
     USkeletalMeshComponent* SkeletalMeshComp = GetSkelMeshComponent();
     ARabbitPawn* RabbitPawn = Cast<ARabbitPawn>(SkeletalMeshComp->GetOwner());
-   StateMachine->ProcessState(GEngine->State);
+   StateMachine->ProcessState(RabbitPawn->GetAnimState());
 
 #pragma region MyAnim
 

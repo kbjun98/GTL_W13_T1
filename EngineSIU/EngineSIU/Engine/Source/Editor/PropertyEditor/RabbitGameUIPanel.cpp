@@ -27,24 +27,6 @@ RabbitGameUIPanel::RabbitGameUIPanel()
 
 void RabbitGameUIPanel::Render()
 {
-    if (ImGui::Begin("Rabbit Control Panel")) // 이름은 아무거나
-    {
-        if (ImGui::Button("Idle"))
-        {
-            GEngine->State = ERabbitAnimState::EIDLE;
-        }
-
-        if (ImGui::Button("Play"))
-        {
-            GEngine->State = ERabbitAnimState::EAttack;
-        }
-
-        if (ImGui::Button("Pause"))
-        {
-            GEngine->State = ERabbitAnimState::EWALK;
-        }
-    }
-    ImGui::End();
 
     if (!RegisterPlayerCamera())
     {
