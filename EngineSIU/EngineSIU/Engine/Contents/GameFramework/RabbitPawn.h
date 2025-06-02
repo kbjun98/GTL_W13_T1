@@ -3,6 +3,7 @@
 
 class URabbitMovementComponent;
 class RabbitCamera;
+class USkeletalMeshComponent;
 
 class ARabbitPawn : public APawn
 {
@@ -30,6 +31,7 @@ public:
 
 private:
     URabbitMovementComponent* MovementComponent;
+    USkeletalMeshComponent* SkeletalMeshComp;
 
     float HalfHeight = 40.f;
     float Radius = 30.f;

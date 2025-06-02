@@ -460,6 +460,7 @@ xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\FBX\lib\x64\$
     <None Include="Shaders\GaussianBlurShader.hlsl" />
     <None Include="Shaders\DepthOfFieldShader.hlsl" />
     <None Include="Shaders\FullScreenQuadVertexShader.hlsl" />
+    <ClCompile Include="Engine\Contents\AnimInstance\RabbitAnimInstance.cpp" />
     <ClCompile Include="RabbitCamera.cpp" />
     <ClCompile Include="Engine\Contents\GameFramework\RabbitPlayer.cpp" />
     <ClCompile Include="RabbittCamera.cpp" />
@@ -891,6 +892,7 @@ xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\FBX\lib\x64\$
     <ClInclude Include="LuaScripts\LuaBindingHelpers.h" />
     <ClInclude Include="LuaScripts\LuaScriptComponent.h" />
     <ClInclude Include="LuaScripts\LuaScriptFileUtils.h" />
+    <ClInclude Include="Engine\Contents\AnimInstance\RabbitAnimInstance.h" />
     <ClInclude Include="RabbitCamera.h" />
     <ClInclude Include="Engine\Source\Editor\PropertyEditor\RabbitGameUIPanel.h" />
     <ClInclude Include="Engine\Contents\GameFramework\RabbitPlayer.h" />
