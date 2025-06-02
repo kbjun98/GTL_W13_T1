@@ -54,12 +54,14 @@ protected:
 
 private:
     EPhotoType PhotoType;
-    EStaticMeshType MeshType;
+    //EStaticMeshType MeshType;
+    UPROPERTY_WITH_FLAGS(EditAnywhere,
+        EStaticMeshType, MeshType, = EStaticMeshType::NONE;)
 
 public:
     EPhotoType GetPhotoType();
     void SetPhotoType(EPhotoType Type);
 
     EStaticMeshType GetMeshType();
-    void SetMeshType(EStaticMeshType Type);
+    void SetStMeshType(EStaticMeshType Type);
 };

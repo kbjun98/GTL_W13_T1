@@ -3,6 +3,14 @@
 
 TArray<FGridNode*> FPathFinder::FindNodePathByNode(FGridMap& GridMap, FGridNode& StartNode, FGridNode& TargetNode)
 {
+    for (auto& Elem : GridMap.GridNodes)
+    {
+        Elem.Value.Parent = nullptr;
+        Elem.Value.GCost = FLT_MAX;
+        Elem.Value.HCost = 0.0f;
+    }
+    StartNode.GCost = 0.0f;
+
     TArray<FGridNode*> OpenSet;
     TSet<FGridNode*> ClosedSet;
 
@@ -18,10 +26,29 @@ TArray<FGridNode*> FPathFinder::FindNodePathByNode(FGridMap& GridMap, FGridNode&
         // 목표 지점 도착 시
         if (CurrentNode->X == TargetNode.X && CurrentNode->Y == TargetNode.Y)
         {
+            // 무한루프 방지용 방문 노드 세트
+            TSet<FGridNode*> VisitedNodes;
+
+
             // 경로 재구성
             TArray<FGridNode*> Path;
             while (CurrentNode)
             {
+                // 무한루프 방지: 자기 자신을 Parent로 가진 경우
+                if (VisitedNodes.Contains(CurrentNode))
+                {
+                    UE_LOG(ELogLevel::Error, TEXT("FindNodePathByNode: 무한루프 감지! Node=(%d,%d)"), CurrentNode->X, CurrentNode->Y);
+                    break;
+                }
+                VisitedNodes.Add(CurrentNode);
+
+                // Parent가 자기 자신 가리키면 강제 종료
+                if (CurrentNode->Parent == CurrentNode)
+                {
+                    UE_LOG(ELogLevel::Error, TEXT("FindNodePathByNode: Parent가 자기 자신을 가리킴! Node=(%d,%d)"), CurrentNode->X, CurrentNode->Y);
+                    break;
+                }
+
                 Path.Add(CurrentNode);
                 CurrentNode = CurrentNode->Parent;
             }
@@ -101,7 +128,7 @@ TArray<FVector> FPathFinder::FindWorldPosPathByNode(FGridMap& GridMap, FGridNode
 TArray<FVector> FPathFinder::FindWorlPosPathByWorldPos(FGridMap& GridMap, const FVector& StartWorldPos, const FVector& TargetWorldPos)
 {
 
-    const float GridSpacing = 100.0f; // 그리드 크기
+    const float GridSpacing = 10.0f; // 그리드 크기
     int StartX = FMath::FloorToInt((StartWorldPos.X - GridMap.MinPoint.X) / GridSpacing);
     int StartY = FMath::FloorToInt((StartWorldPos.Y - GridMap.MinPoint.Y) / GridSpacing);
 
