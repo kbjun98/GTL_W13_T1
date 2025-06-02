@@ -8,7 +8,6 @@ class RabbitAnimInstance : public UAnimInstance
 {
     DECLARE_CLASS(RabbitAnimInstance, UAnimInstance)
 
-
 public:
     RabbitAnimInstance();
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "GameFramework/Pawn.h"
+#include "Animation/RabbitAnimStateMachine.h"
 
 class URabbitMovementComponent;
 class RabbitCamera;
@@ -29,6 +30,8 @@ public:
     int32 GetCurrentHealth() const { return CurrentHealth; }
     void SetCurrentHealth(int32 Value);
 
+    ERabbitAnimState GetAnimState() { return AnimState; }
+    void SetAnimState(ERabbitAnimState State) { AnimState = State; }
 private:
     URabbitMovementComponent* MovementComponent;
     USkeletalMeshComponent* SkeletalMeshComp;
@@ -38,6 +41,8 @@ private:
 
     float RotateSpeed = 100.0f;
     
+    ERabbitAnimState AnimState = ERabbitAnimState::EAttack;
+
     UPROPERTY(EditAnywhere, int32, MaxHealth, = 100)
     UPROPERTY(EditAnywhere, int32, CurrentHealth, = 100)
 
