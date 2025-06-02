@@ -13,15 +13,46 @@ void ARabbitEnemyController::PostSpawnInitialize()
 void ARabbitEnemyController::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+    CheckStateChange();
     ProcessEnemyMovement(DeltaTime);
 }
 
 void ARabbitEnemyController::ProcessEnemyMovement(float DeltaTime)
 {
-    if (IsChasing)
+    switch (CurrentState)
     {
+    case EnemyState::IDLE:
+        break;
+    case EnemyState::CHASE:
         MoveTo(GetTargetRabbitPlayer()->GetActorLocation());
+        break;
+    default:
+        break;
     }
+
+}
+
+void ARabbitEnemyController::CheckStateChange()
+{
+    if (IsTargetInSight())
+    {
+        CurrentState = EnemyState::CHASE;
+    }
+    else
+    {
+        CurrentState = EnemyState::IDLE;
+    }
+}
+
+bool ARabbitEnemyController::IsTargetInSight()
+{
+    ARabbitEnemy* Enemy = GetPossesedRabbitEnemy();
+    ARabbitPawn* Target = GetTargetRabbitPlayer();
+    FVector Forward = Enemy->GetComponentByClass<USkeletalMeshComponent>()->GetForwardVector();
+    FVector ToTarget = Target->GetActorLocation() - Enemy->GetActorLocation();
+    float Dot = FVector::DotProduct(Forward.GetSafeNormal(), ToTarget.GetSafeNormal());
+    float CosHalfFOV = FMath::Cos(FMath::DegreesToRadians(SightFOV / 2.0f));
+    return Dot>CosHalfFOV;
 }
 
 ARabbitPlayer* ARabbitEnemyController::GetTargetRabbitPlayer()
