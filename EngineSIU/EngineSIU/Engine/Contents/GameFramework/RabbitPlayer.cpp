@@ -155,6 +155,11 @@ void ARabbitPlayer::StartADS()
 {
     CameraShakeInstance = GetPlayerController()->PlayerCameraManager->StartCameraShake(IdleCameraShake);
 
+    if (auto CameraMeshComp = GetComponentByClass<UCameraMeshComponent>())
+    {
+        CameraMeshComp->bHidden = true;
+    }
+
     SetFOV(DefaultFOV_ADS);
 }
 
@@ -162,6 +167,11 @@ void ARabbitPlayer::EndADS()
 {
     GetPlayerController()->PlayerCameraManager->StopCameraShake(CameraShakeInstance, true);
     CameraShakeInstance = nullptr;
+
+    if (auto CameraMeshComp = GetComponentByClass<UCameraMeshComponent>())
+    {
+        CameraMeshComp->bHidden = false;
+    }
 
     SetFOV(DefaultFOV);
 }
