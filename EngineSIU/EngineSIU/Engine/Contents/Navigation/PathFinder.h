@@ -10,11 +10,17 @@ class FPathFinder : public UObject
     DECLARE_CLASS(FPathFinder, UObject)
 
 public:
-    FPathFinder() = default;
+    FPathFinder();
     ~FPathFinder() = default;
-    // 실제 경로 탐색
-    TArray<FGridNode*> FindPath(FGridMap& GridMap, FGridNode& StartNode, FGridNode& TargetNode);
 
+    // Node 로 Node 경로 찾기
+    TArray<FGridNode*> FindNodePathByNode(FGridMap& GridMap, FGridNode& StartNode, FGridNode& TargetNode);
+    
+    // Node 로 WorldPosition 경로 찾기
+    TArray<FVector> FindWorldPosPathByNodePath(FGridMap& GridMap, FGridNode& StartNode, FGridNode& TargetNode);
+
+    // WorldPosition으로 WorldPosition 경로 찾기
+    TArray<FVector> FindWorlPosPathByWorldPos(FGridMap& GridMap, const FVector& StartWorldPos, const FVector& TargetWorldPos);
     const void DebugPrint(TArray<FGridNode*>& Path) const;
 private:
     // 휴리스틱 계산

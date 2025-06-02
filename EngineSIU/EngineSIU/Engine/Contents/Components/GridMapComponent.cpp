@@ -1,26 +1,38 @@
 #include "GridMapComponent.h"
 #include "CoreUObject/UObject/ObjectFactory.h"
 #include <Engine/Contents/Navigation/PathFinder.h>
-
+#include "Navigation/MapData.h"
 UGridMapComponent::UGridMapComponent()
 {
     SetType(StaticClass()->GetName());
+
 }
 
 void UGridMapComponent::InitializeComponent()
 {
     Super::InitializeComponent();
-    GridMap.LoadMapFromFile("Engine/Contents/Resources/Map.txt");
+    //GridMap.LoadMapFromFile("Engine/Contents/Resources/Map.txt");
+    
+    GridMap.InitializeGridNodeFromMeshes();
+    GridMap.AnalyzeWalkableFromMeshes();
     DebugPrint();
-
-    FGridNode& StartNode = GetNode(5, 1);
-    FGridNode& TargetNode = GetNode(0, 0);
+    
+    FGridNode& StartNode = GridMap.GetNode(0, 2);
+    FGridNode& TargetNode = GridMap.GetNode(5, 2);
 
     PathFinder = FObjectFactory::ConstructObject<FPathFinder>(this);
 
-    TArray<FGridNode*> Path = PathFinder->FindPath(GridMap, StartNode, TargetNode);
+    TArray<FGridNode*> Path = PathFinder->FindNodePathByNode(GridMap, StartNode, TargetNode);
 
     PathFinder->DebugPrint(Path);
+
+    TArray<FVector> WorldPositionPath = PathFinder->FindWorlPosPathByWorldPos(GridMap, FVector(0, 0, 0), FVector(500, 0, 0));
+
+    UE_LOG(ELogLevel::Warning, "=== WorldPositionPath ===");
+
+    for (auto pos : WorldPositionPath) {
+        UE_LOG(ELogLevel::Display, "x : %f, / y : %f / z : %f", pos.X, pos.Y, pos.Z);
+    }
 }
 
 void UGridMapComponent::TickComponent(float DeltaTime)
@@ -58,9 +70,4 @@ int UGridMapComponent::GetWidth() const
 int UGridMapComponent::GetHeight() const
 {
     return GridMap.Height;
-}
-
-FGridNode& UGridMapComponent::GetNode(int X, int Y)
-{
-    return GridMap.GridNodes[Y][X];
 }
