@@ -71,22 +71,29 @@ void UWorld::Tick(float DeltaTime)
 
 void UWorld::BeginPlay()
 {
-    if (!GameMode && this->WorldType == EWorldType::PIE)
+    if (GameMode)
     {
-        //GameMode = this->SpawnActor<AGameMode>();
-        GameMode = this->SpawnActor<ARabbitGameMode>();
-        GameMode->SetActorLabel(TEXT("OBJ_GAMEMODE"));
-
         GameMode->InitGame();
-
-        CreateChaserRabbitSpawner();
     }
+    
     for (AActor* Actor : ActiveLevel->Actors)
     {
         if (Actor->GetWorld() == this)
         {
             Actor->BeginPlay();
         }
+    }
+}
+
+void UWorld::SpawnEssentialActors()
+{
+    if (!GameMode && this->WorldType == EWorldType::PIE)
+    {
+        //GameMode = this->SpawnActor<AGameMode>();
+        GameMode = this->SpawnActor<ARabbitGameMode>();
+        GameMode->SetActorLabel(TEXT("OBJ_GAMEMODE"));
+
+        CreateChaserRabbitSpawner();
     }
 }
 
