@@ -8,6 +8,8 @@
 #include "Engine/World/World.h"
 #include "GameFramework/Pawn.h"
 #include "Engine/Contents/GameFramework/RabbitPlayer.h"
+#include "Engine/Contents/GameFramework/RabbitEnemy.h"
+#include "Engine/Contents/GameFramework/RabbitEnemyController.h"
 
 AGameMode::AGameMode()
     : DefaultPawnClass(APawn::StaticClass())
@@ -136,6 +138,21 @@ void AGameMode::HandleStartingNewPlayer()
     }
 
     World->GetPlayerController()->Possess(World->GetMainPlayer());
+
+    SpawnAIPlayerController();
+}
+
+void AGameMode::SpawnAIPlayerController()
+{
+    UWorld* World = GEngine->ActiveWorld;
+    for (const auto Iter : TObjectRange<ARabbitEnemy>())
+    {
+        if (Iter->GetWorld() == World)
+        {
+            ARabbitEnemyController* EnemyController = World->SpawnActor<ARabbitEnemyController>();
+            EnemyController->Possess(Iter);
+        }
+    }
 }
 
 APlayerController* AGameMode::SpawnPlayerController()

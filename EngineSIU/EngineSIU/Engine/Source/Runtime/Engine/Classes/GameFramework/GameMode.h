@@ -47,6 +47,7 @@ public:
     void Reset();
 
     void HandleStartingNewPlayer();
+    void SpawnAIPlayerController();
     APlayerController* SpawnPlayerController();
     APawn* SpawnDefaultPlayer();
 

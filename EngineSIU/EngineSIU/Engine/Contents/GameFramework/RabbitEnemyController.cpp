@@ -37,8 +37,10 @@ void ARabbitEnemyController::MoveTo(const FVector& TargetLocation)
 {
     if (ARabbitEnemy* Enemy = GetPossesedRabbitEnemy())
     {
-        FVector TargetDirection = TargetLocation - Enemy->GetActorLocation();
-        Enemy->AddMovementInput(TargetDirection, 1.0f);
+        FVector TargetDirection = TargetLocation - Enemy->GetActorLocation();    
+        TargetDirection.Z = 0.0f; // Z축 방향은 무시
+        FVector DirNormal = TargetDirection.GetSafeNormal();
+        Enemy->AddMovementInput(DirNormal, MovementSpeed);
     }
 }
 

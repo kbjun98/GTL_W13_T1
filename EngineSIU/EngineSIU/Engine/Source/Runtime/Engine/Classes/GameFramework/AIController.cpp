@@ -13,7 +13,7 @@ void AAIController::PostSpawnInitialize()
 void AAIController::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-    UpdatePath();
+    //UpdatePath();
 }
 
 void AAIController::UpdatePath()

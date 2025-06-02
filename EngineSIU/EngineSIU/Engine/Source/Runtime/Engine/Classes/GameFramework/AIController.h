@@ -30,8 +30,9 @@ protected:
     
     int32 CurrentPathIndex = 0; // 현재 경로의 인덱스
     
-    float MovementSpeed = 100.0f; // 이동 속도
-    
+    UPROPERTY(EditAnywhere,
+        float, MovementSpeed, = 1.0f; // 이동 속도
+    )
     float AcceptanceRadius = 1.0f;
 
     bool bMoving = false;

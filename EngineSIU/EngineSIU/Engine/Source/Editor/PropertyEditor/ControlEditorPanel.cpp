@@ -399,7 +399,7 @@ void ControlEditorPanel::CreateModifyButton(const ImVec2 ButtonSize, ImFont* Ico
                 }
                 case OBJ_RABBITENEMY:
                 {
-                    SpawnedActor = World->SpawnActor<ARabbitPawn>();
+                    SpawnedActor = World->SpawnActor<ARabbitEnemy>();
                     SpawnedActor->SetActorLabel(TEXT("OBJ_RABBITENEMY"));
                     break;
                 }
