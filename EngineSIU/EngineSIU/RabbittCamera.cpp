@@ -15,6 +15,7 @@ RabbitCamera::RabbitCamera()
 {
     FSoundManager::GetInstance().LoadSound("Shutter", "Contents/Rabbit/Sound/Shutter.mp3");
     FSoundManager::GetInstance().LoadSound("Error", "Contents/Rabbit/Sound/Error.mp3");
+    FSoundManager::GetInstance().LoadSound("Attack", "Contents/Rabbit/Sound/RabbitAttack.mp3");
     CameraCoolTime = CameraCoolTimeInit;
 }
 

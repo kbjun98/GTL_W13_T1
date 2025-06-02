@@ -15,6 +15,7 @@ public:
 
     virtual void NativeUpdateAnimation(float DeltaSeconds, FPoseContext& OutPose) override;
   
+    void AddSoundNotify();
 
     void SetPlaying(bool bIsPlaying)
     {
@@ -147,7 +148,7 @@ private:
     float BlendStartTime;
 
     float BlendDuration;
-
+    float PreviousTime;
     bool bIsBlending;
 
     RabbitAnimStateMachine* StateMachine;
