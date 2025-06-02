@@ -5,6 +5,8 @@
 
 void ARabbitPlayer::PostSpawnInitialize()
 {
+    Super::PostSpawnInitialize();
+    
     UCameraComponent* Camera = AddComponent<UCameraComponent>("Camera_0");
     Camera->SetupAttachment(RootComponent);
 
@@ -56,7 +58,7 @@ FVector ARabbitPlayer::GetActorForwardVector() const
         FRotator ActualRotation = FRotator(0.f, ControlRotation.Yaw, 0.f);
         return ActualRotation.ToVector();
     }
-    return APawn::GetActorForwardVector();
+    return Super::GetActorForwardVector();
 }
 
 FVector ARabbitPlayer::GetActorRightVector() const
@@ -70,7 +72,7 @@ FVector ARabbitPlayer::GetActorRightVector() const
         Right = JungleMath::FVectorRotate(Right, ActualRotation);
         return Right;
     }
-    return APawn::GetActorRightVector();
+    return Super::GetActorRightVector();
 }
 
 std::shared_ptr<RabbitCamera> ARabbitPlayer::GetRabbitCamera()

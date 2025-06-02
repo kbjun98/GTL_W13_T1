@@ -18,12 +18,10 @@ public:
     virtual void BeginPlay() override;
     
     virtual void Tick(float DeltaTime) override;
-
-
+    
     virtual FVector GetActorForwardVector() const override;
     virtual FVector GetActorRightVector() const override;
-
-
+    
     int32 GetMaxHealth() const { return MaxHealth; }
     void SetMaxHealth(int32 Value);
     

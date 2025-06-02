@@ -148,9 +148,9 @@ APlayerController* AGameMode::SpawnPlayerController()
 
 APawn* AGameMode::SpawnDefaultPlayer()
 {
-    APawn* TempPlayer = Cast<APawn>(GEngine->ActiveWorld->SpawnActor(DefaultPawnClass));
-    TempPlayer->SetActorLabel(TEXT("OBJ_PLAYER"));
-    TempPlayer->SetActorTickInEditor(false);
-    GEngine->ActiveWorld->SetMainPlayer(TempPlayer);
-    return TempPlayer;
+    APawn* PlayerPawn = Cast<APawn>(GEngine->ActiveWorld->SpawnActor(DefaultPawnClass));
+    PlayerPawn->SetActorLabel(TEXT("OBJ_PLAYER"));
+    PlayerPawn->SetActorTickInEditor(false);
+    GEngine->ActiveWorld->SetMainPlayer(PlayerPawn);
+    return PlayerPawn;
 }
