@@ -6,8 +6,16 @@
 #include "Classes/GameFramework/Pawn.h"
 void AAIController::PostSpawnInitialize()
 {
+    Super::PostSpawnInitialize();
     GridMap = new FGridMap();
     PathFinder = new FPathFinder();
+    GridMap->LoadMapFromFile("Engine/Contents/Resources/Map.txt");
+}
+
+UObject* AAIController::Duplicate(UObject* InOuter)
+{
+    ThisClass* NewComponent = Cast<ThisClass>(Super::Duplicate(InOuter));
+    return NewComponent;
 }
 
 void AAIController::Tick(float DeltaTime)

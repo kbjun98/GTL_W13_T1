@@ -14,6 +14,7 @@ public:
     AAIController() = default;
     virtual ~AAIController() = default;
     virtual void PostSpawnInitialize() override;
+    virtual UObject* Duplicate(UObject* InOuter) override;
     virtual void Tick(float DeltaTime) override;
 
     // 경로 갱신 (ex : 플레이어 추적, 순찰 경로 등)

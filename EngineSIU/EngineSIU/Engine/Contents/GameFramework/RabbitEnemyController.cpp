@@ -6,6 +6,7 @@
 
 void ARabbitEnemyController::PostSpawnInitialize()
 {
+    Super::PostSpawnInitialize();
     TargetPawn = GEngine->ActiveWorld->GetMainPlayer();
 }
 
