@@ -1,9 +1,11 @@
 #include "Controller.h"
+#include "GameFramework/Pawn.h"
 
 void AController::Possess(APawn* InPawn)
 {
     PossessedPawn = InPawn;
     bHasPossessed = true;
+    InPawn->PossessedBy(this);
 }
 
 void AController::UnPossess()
