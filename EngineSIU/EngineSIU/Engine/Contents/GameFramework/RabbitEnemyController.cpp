@@ -27,7 +27,7 @@ void ARabbitEnemyController::ProcessEnemyMovement(float DeltaTime)
         break;
     case EnemyState::CHASE:
         Enemy->SetAnimState(ERabbitAnimState::EWALK);
-        MoveTo(GetTargetRabbitPlayer()->GetActorLocation());
+        MoveTo(GetNextLocation());
         break;
     case EnemyState::ATTACK:
         Enemy->SetAnimState(ERabbitAnimState::EAttack);

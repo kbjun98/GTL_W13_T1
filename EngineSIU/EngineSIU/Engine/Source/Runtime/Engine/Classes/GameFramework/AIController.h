@@ -43,7 +43,7 @@ protected:
     //float CellTolerance = 1.0f;
 protected:
     void MoveAlongPath(float DeltaTime);
-    
+    FVector GetNextLocation();
     bool IsPathValid() const;   
 
 private:    

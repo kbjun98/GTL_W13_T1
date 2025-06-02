@@ -25,7 +25,7 @@ void AAIController::Tick(float DeltaTime)
     if (PathUpdateTimer >= PathUpdateInterval)
     {
         PathUpdateTimer = 0.0f;
-        //UpdatePath();
+        UpdatePath();
     }
 }
 
@@ -37,6 +37,7 @@ void AAIController::UpdatePath()
         FVector TargetLocation = TargetPawn->GetActorLocation();
         CurrentPath = PathFinder->FindWorlPosPathByWorldPos(
             *GridMap, StartLocation, TargetLocation);
+        CurrentPathIndex = 0;
     }
     else
     {
@@ -76,6 +77,15 @@ void AAIController::MoveAlongPath(float DeltaTime)
             OnMoveCompleted();
         }
     }
+}
+
+FVector AAIController::GetNextLocation()
+{
+    if (CurrentPath[CurrentPathIndex] == PossessedPawn->GetActorLocation())
+    {
+        CurrentPathIndex++;
+    }
+    return CurrentPath[CurrentPathIndex];
 }
 
 bool AAIController::IsPathValid() const
