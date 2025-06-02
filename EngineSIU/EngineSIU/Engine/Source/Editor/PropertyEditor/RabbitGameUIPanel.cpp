@@ -3,7 +3,7 @@
 #include <ImGui/imgui_internal.h>
 #include <Engine/Contents/GameFramework/RabbitPawn.h>
 #include <UObject/UObjectIterator.h>
-
+#include "Engine/Contents/GameFramework/RabbitPlayer.h"
 
 inline ImVec2 operator*(const ImVec2& lhs, float rhs) {
     return ImVec2(lhs.x * rhs, lhs.y * rhs);
@@ -200,7 +200,7 @@ bool RabbitGameUIPanel::RegisterPlayerCamera()
 {
     bool Registered = false;
 
-    for (auto Rabbit : TObjectRange<ARabbitPawn>())
+    for (auto Rabbit : TObjectRange<ARabbitPlayer>())
     {
         if (Rabbit->GetRabbitCamera())
         {

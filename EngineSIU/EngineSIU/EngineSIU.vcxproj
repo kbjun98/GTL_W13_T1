@@ -460,6 +460,7 @@ xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\FBX\lib\x64\$
     <None Include="Shaders\DepthOfFieldShader.hlsl" />
     <None Include="Shaders\FullScreenQuadVertexShader.hlsl" />
     <ClCompile Include="RabbitCamera.cpp" />
+    <ClCompile Include="Engine\Contents\GameFramework\RabbitPlayer.cpp" />
     <ClCompile Include="RabbittCamera.cpp" />
     <ClCompile Include="Engine\Source\Editor\PropertyEditor\RabbitGameUIPanel.cpp" />
     <ClCompile Include="SoundManager.cpp" />
@@ -890,6 +891,7 @@ xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\FBX\lib\x64\$
     <ClInclude Include="LuaScripts\LuaScriptFileUtils.h" />
     <ClInclude Include="RabbitCamera.h" />
     <ClInclude Include="Engine\Source\Editor\PropertyEditor\RabbitGameUIPanel.h" />
+    <ClInclude Include="Engine\Contents\GameFramework\RabbitPlayer.h" />
     <ClInclude Include="SoundManager.h" />
     <None Include="Shaders\EditorShaderConstants.hlsli">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

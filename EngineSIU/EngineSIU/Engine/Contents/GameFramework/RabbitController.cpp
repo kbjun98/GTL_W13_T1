@@ -2,6 +2,7 @@
 
 #include "Engine/Engine.h"
 #include "Engine/Contents/GameFramework/RabbitPawn.h"
+#include "Engine/Contents/GameFramework/RabbitPlayer.h"
 #include "UObject/Casts.h"
 #include "Windows/WindowsCursor.h"
 
@@ -62,7 +63,7 @@ void ARabbitController::MoveForward()
         return;
     }
     
-    if (ARabbitPawn* Pawn = Cast<ARabbitPawn>(GetPawn()))
+    if (ARabbitPlayer* Pawn = Cast<ARabbitPlayer>(GetPawn()))
     {
         Pawn->AddMovementInput(Pawn->GetActorForwardVector(), 1.f);
     }
@@ -75,7 +76,7 @@ void ARabbitController::MoveBack()
         return;
     }
     
-    if (ARabbitPawn* Pawn = Cast<ARabbitPawn>(GetPawn()))
+    if (ARabbitPlayer* Pawn = Cast<ARabbitPlayer>(GetPawn()))
     {
         Pawn->AddMovementInput(Pawn->GetActorForwardVector(), -1.f);
     }
@@ -88,7 +89,7 @@ void ARabbitController::MoveRight()
         return;
     }
     
-    if (ARabbitPawn* Pawn = Cast<ARabbitPawn>(GetPawn()))
+    if (ARabbitPlayer* Pawn = Cast<ARabbitPlayer>(GetPawn()))
     {
         Pawn->AddMovementInput(Pawn->GetActorRightVector(), 1.f);
     }
@@ -101,7 +102,7 @@ void ARabbitController::MoveLeft()
         return;
     }
     
-    if (ARabbitPawn* Pawn = Cast<ARabbitPawn>(GetPawn()))
+    if (ARabbitPlayer* Pawn = Cast<ARabbitPlayer>(GetPawn()))
     {
         Pawn->AddMovementInput(Pawn->GetActorRightVector(), -1.f);
     }
@@ -114,7 +115,7 @@ void ARabbitController::Jump()
         return;
     }
     
-    if (ARabbitPawn* Pawn = Cast<ARabbitPawn>(GetPawn()))
+    if (ARabbitPlayer* Pawn = Cast<ARabbitPlayer>(GetPawn()))
     {
         Pawn->Jump();
     }
@@ -187,7 +188,7 @@ void ARabbitController::TakePicture()
         return;
     }
 
-    if (ARabbitPawn* RabbitPawn = Cast<ARabbitPawn>(PossessedPawn))
+    if (ARabbitPlayer* RabbitPawn = Cast<ARabbitPlayer>(PossessedPawn))
     {
         if (RabbitPawn->GetRabbitCamera())
         {

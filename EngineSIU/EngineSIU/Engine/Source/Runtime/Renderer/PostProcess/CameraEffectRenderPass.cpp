@@ -7,11 +7,12 @@
 #include "UnrealClient.h"
 #include "D3D11RHI/DXDShaderManager.h"
 #include <Engine/Contents/GameFramework/RabbitPawn.h>
+#include <Engine/Contents/GameFramework/RabbitPlayer.h>
 
 void FCameraEffectRenderPass::PrepareRenderArr()
 {
     //TODO 일단 플레이어로 가정
-    for (auto Rabbit : TObjectRange<ARabbitPawn>())
+    for (auto Rabbit : TObjectRange<ARabbitPlayer>())
     {
         if (Rabbit->GetRabbitCamera())
         {

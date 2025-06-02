@@ -21,18 +21,14 @@ void ARabbitPawn::PostSpawnInitialize()
     Mesh->SetupAttachment(RootComponent);
     Mesh->SetRelativeLocation(FVector(0.f, 0.f, -40.0f));
     
-    UCameraComponent* Camera = AddComponent<UCameraComponent>("Camera_0");
-    Camera->SetupAttachment(RootComponent);
     
     MovementComponent = AddComponent<URabbitMovementComponent>("RabbitMoveComp_0");
 
-    RabbitCam = std::make_shared<RabbitCamera>();
 }
 
 UObject* ARabbitPawn::Duplicate(UObject* InOuter)
 {
     ARabbitPawn* NewPawn = Cast<ARabbitPawn>(Super::Duplicate(InOuter));
-    NewPawn->RabbitCam = std::make_shared<RabbitCamera>();
     
     return NewPawn;
 }
@@ -61,71 +57,20 @@ void ARabbitPawn::BeginPlay()
 
 void ARabbitPawn::Tick(float DeltaTime)
 {
-    Super::Tick(DeltaTime);
-
-    if (RabbitCam)
-    {
-        RabbitCam->Tick(DeltaTime);
-    }
-    
-    if (GetPlayerController())
-    {
-        const FRotator& ControlRotation = GetPlayerController()->GetControlRotation();
-        SetActorRotation(FRotator(0.f, ControlRotation.Yaw, 0.f));
-
-        if (UCameraComponent* Camera = GetComponentByClass<UCameraComponent>())
-        {
-            float NewPitch = ControlRotation.Pitch;
-            if (APlayerCameraManager* CameraManager = GetPlayerController()->PlayerCameraManager)
-            {
-                NewPitch = FMath::Clamp(
-                    NewPitch,
-                    CameraManager->ViewPitchMin,
-                    CameraManager->ViewPitchMax
-                );
-            }
-            Camera->SetRelativeRotation(FRotator(NewPitch, 0.f, 0.f));
-        }
-    }
+    Super::Tick(DeltaTime); 
 }
 
-std::shared_ptr<RabbitCamera> ARabbitPawn::GetRabbitCamera()
-{
-    return RabbitCam;
-}
 
 FVector ARabbitPawn::GetActorForwardVector() const
 {
-    if (GetPlayerController())
-    {
-        const FRotator& ControlRotation = GetPlayerController()->GetControlRotation();
-        FRotator ActualRotation = FRotator(0.f, ControlRotation.Yaw, 0.f);
-        return ActualRotation.ToVector();
-    }
-    return APawn::GetActorForwardVector();
+    return Super::GetActorForwardVector();
 }
 
 FVector ARabbitPawn::GetActorRightVector() const
 {
-    if (GetPlayerController())
-    {
-        const FRotator& ControlRotation = GetPlayerController()->GetControlRotation();
-        FRotator ActualRotation = FRotator(0.f, ControlRotation.Yaw, 0.f);
-        
-        FVector Right = FVector::RightVector;
-        Right = JungleMath::FVectorRotate(Right, ActualRotation);
-        return Right;
-    }
-    return APawn::GetActorRightVector();
+    return Super::GetActorRightVector();
 }
 
-void ARabbitPawn::Jump()
-{
-    if (URabbitMovementComponent* RabbitMoveComp = Cast<URabbitMovementComponent>(GetMovementComponent()))
-    {
-        RabbitMoveComp->Jump();
-    }
-}
 
 void ARabbitPawn::SetMaxHealth(int32 Value)
 {
