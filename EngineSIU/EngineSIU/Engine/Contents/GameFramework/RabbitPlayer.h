@@ -3,6 +3,7 @@
 #include "Template/SubclassOf.h"
 #include "UObject/ObjectMacros.h"
 
+class UCameraMeshComponent;
 class UCameraShakeBase;
 
 class ARabbitPlayer : public ARabbitPawn
@@ -44,6 +45,8 @@ protected:
     float GetFOV() const;
     
 private:
+    UCameraMeshComponent* CameraMesh = nullptr;
+    
     std::shared_ptr<RabbitCamera> RabbitCam = nullptr;
     
     bool bIsADS = false;
