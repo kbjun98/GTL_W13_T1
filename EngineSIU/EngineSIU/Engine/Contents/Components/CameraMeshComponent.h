@@ -11,4 +11,9 @@ public:
     virtual ~UCameraMeshComponent() override = default;
 
     virtual void TickComponent(float DeltaTime) override;
+
+private:
+    FMatrix TargetLocalMatrix;
+
+    float InterpSpeed = 1.f;
 };
