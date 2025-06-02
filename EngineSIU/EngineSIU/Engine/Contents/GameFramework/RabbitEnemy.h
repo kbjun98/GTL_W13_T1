@@ -23,7 +23,7 @@ public:
         float, FailureRadius, = 500.0f; // 추적 실패 반경
     )
     UPROPERTY(EditAnywhere,
-        float, ChaseRangeMax, = 500.0f;
+        float, ChaseRangeMax, = 1000.0f;
     )
     UPROPERTY(EditAnywhere,
         float, ChaseRangeMin, = 200.0f; // 추적 범위

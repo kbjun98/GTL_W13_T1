@@ -25,7 +25,7 @@ void AAIController::Tick(float DeltaTime)
     if (PathUpdateTimer >= PathUpdateInterval)
     {
         PathUpdateTimer = 0.0f;
-        UpdatePath();
+        //UpdatePath();
     }
 }
 
@@ -34,7 +34,8 @@ void AAIController::UpdatePath()
     if (TargetPawn && PossessedPawn)
     {
         FVector StartLocation = PossessedPawn->GetActorLocation();
-        FVector TargetLocation = TargetPawn->GetActorLocation();
+        FVector TargetLocation = TargetPawn->GetActorLocation();;
+
         CurrentPath = PathFinder->FindWorlPosPathByWorldPos(
             *GridMap, StartLocation, TargetLocation);
         CurrentPathIndex = 0;
@@ -81,11 +82,23 @@ void AAIController::MoveAlongPath(float DeltaTime)
 
 FVector AAIController::GetNextLocation()
 {
-    if (CurrentPath[CurrentPathIndex] == PossessedPawn->GetActorLocation())
+    FVector TargetDirection = CurrentPath[CurrentPathIndex] - PossessedPawn->GetActorLocation();
+    TargetDirection.Z = 0.0f; // Z축 방향은 무시
+    FVector DirNormal = TargetDirection.GetSafeNormal();
+    if (DirNormal.Size() <0.01f)
     {
         CurrentPathIndex++;
+        UE_LOG(ELogLevel::Error, "CurrentPathIndex : %d", CurrentPathIndex);
     }
-    return CurrentPath[CurrentPathIndex];
+    if (CurrentPathIndex < CurrentPath.Num())
+    {
+        return CurrentPath[CurrentPathIndex];
+    }
+    else {
+        UE_LOG(ELogLevel::Error, "Invalid currentPathIndex");
+        return FVector::ZeroVector;
+    }
+    
 }
 
 bool AAIController::IsPathValid() const

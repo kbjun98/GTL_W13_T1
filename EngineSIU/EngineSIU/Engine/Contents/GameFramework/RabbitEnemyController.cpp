@@ -26,8 +26,49 @@ void ARabbitEnemyController::ProcessEnemyMovement(float DeltaTime)
         Enemy->SetAnimState(ERabbitAnimState::EIDLE);
         break;
     case EnemyState::CHASE:
+        /*Enemy->SetAnimState(ERabbitAnimState::EWALK);
+        UpdatePath();
+        MoveTo(CurrentPath[CurrentPathIndex]);
+        break;*/
+
         Enemy->SetAnimState(ERabbitAnimState::EWALK);
-        MoveTo(GetNextLocation());
+
+        // ✅ 경로 기반으로 이동
+        if (!CurrentPath.IsEmpty() && CurrentPathIndex < CurrentPath.Num())
+        {
+            FVector NextPathPoint = CurrentPath[CurrentPathIndex];
+            FVector CurrentLocation = Enemy->GetActorLocation();
+
+            // 방향 계산
+            FVector TargetDirection = NextPathPoint - CurrentLocation;
+            TargetDirection.Z = 0.0f;
+
+            // 거의 도착했다면 다음 경로로 넘어감
+            if (TargetDirection.Size() < Enemy->AcceptanceRadius)
+            {
+                CurrentPathIndex++;
+                if (CurrentPathIndex >= CurrentPath.Num())
+                {
+                    // 경로가 끝났으면 멈춤
+                    CurrentPathIndex = 0;
+                    CurrentPath.Empty();
+                }
+                return;
+            }
+
+            FVector DirNormal = TargetDirection.GetSafeNormal();
+
+            // ✅ 이동 방향을 MovementInput으로 전달
+            Enemy->AddMovementInput(DirNormal, 1.0f);
+
+            // ✅ 방향 회전 처리
+            Enemy->RoatateToTarget(NextPathPoint);
+        }
+        else
+        {
+            // 경로가 비었으면 새로 계산
+            UpdatePath();
+        }
         break;
     case EnemyState::ATTACK:
         Enemy->SetAnimState(ERabbitAnimState::EAttack);
@@ -120,7 +161,7 @@ void ARabbitEnemyController::MoveTo(const FVector& TargetLocation)
         FVector TargetDirection = TargetLocation - Enemy->GetActorLocation();    
         TargetDirection.Z = 0.0f; // Z축 방향은 무시
         FVector DirNormal = TargetDirection.GetSafeNormal();
-        Enemy->AddMovementInput(DirNormal, 1.0f);
+        Enemy->AddMovementInput(DirNormal, 100.0f);
         Enemy->RoatateToTarget(TargetLocation);
     }
 }

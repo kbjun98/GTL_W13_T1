@@ -126,8 +126,8 @@ void FGridMap::InitializeGridNodeFromMeshes()
         // TODO : 중복된 월드 포지션 계산 함수로 빼기
         for (int i = 0; i < 8; ++i)
         {
+            //FVector WorldCorner = WorldTransform.TransformPositionWithoutScale(LocalCorners[i]);
             FVector WorldCorner = WorldTransform.TransformPosition(LocalCorners[i]);
-
             MinPoint.X = FMath::Min(MinPoint.X, WorldCorner.X);
             MinPoint.Y = FMath::Min(MinPoint.Y, WorldCorner.Y);
             MinPoint.Z = FMath::Min(MinPoint.Z, WorldCorner.Z);

@@ -34,7 +34,7 @@ protected:
     UPROPERTY(EditAnywhere,
         float, MovementSpeed, = 1.0f; // 이동 속도
     )
-    float AcceptanceRadius = 1.0f;
+    float AcceptanceRadius = 5.0f;
 
     bool bMoving = false;
 

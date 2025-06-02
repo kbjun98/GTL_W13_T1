@@ -423,6 +423,11 @@ FVector FTransform::TransformPosition(const FVector& V) const
     return Rotation.RotateVector(Scale3D * V) + Translation;
 }
 
+FVector FTransform::TransformPositionWithoutScale(const FVector& V) const
+{
+    return Rotation.RotateVector(V) + Translation;
+}
+
 FVector FTransform::InverseTransformPosition(const FVector& V) const
 {
     return (Rotation.Inverse().RotateVector(V - Translation)) / Scale3D;
