@@ -37,6 +37,7 @@ private:
     float Radius = 30.f;
 
     float RotateSpeed = 100.0f;
+    float MoveSpeed = 100.0f; // 이동 속도
 
 
     UPROPERTY(EditAnywhere, int32, MaxHealth, = 100)
