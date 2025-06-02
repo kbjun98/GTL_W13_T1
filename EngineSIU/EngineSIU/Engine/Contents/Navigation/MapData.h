@@ -57,24 +57,22 @@ public:
     FVector MinPoint = FVector::ZeroVector;
     FVector MaxPoint = FVector::ZeroVector;
 
-    //TMap<FIntPoint, FGridNode> GridNodes;
     TMap<int32, FGridNode> GridNodes;
 
+    // FIXME : 리팩터링 필요.
     int32 Get1DIndex(int X, int Y) const
     {
         return Y * Width + X;
     }
 
-    
+    // GridMap 초기화 시 호출
+    void InitializeGridMap();
 
     // 노드 가져오기 ( 인덱스->좌표 변환 처리 기능)
     FGridNode& GetNode(int X, int Y);
 
-    // 월드 좌표 변환
-    //FVector GetWorldPosition(int X, int Y, float GridSize = 1.0f);
-
     void DebugPrint() const;
-
+    
     void InitializeGridNodeFromMeshes();
 
     void AnalyzeWalkableFromMeshes();

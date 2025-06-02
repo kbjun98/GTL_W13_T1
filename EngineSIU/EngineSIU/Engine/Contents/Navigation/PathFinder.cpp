@@ -83,7 +83,7 @@ TArray<FGridNode*> FPathFinder::GetNeighbors(FGridMap& GridMap, const FGridNode&
     return Neighbors;
 }
 
-TArray<FVector> FPathFinder::FindWorldPosPathByNodePath(FGridMap& GridMap, FGridNode& StartNode, FGridNode& TargetNode)
+TArray<FVector> FPathFinder::FindWorldPosPathByNode(FGridMap& GridMap, FGridNode& StartNode, FGridNode& TargetNode)
 {
     TArray<FGridNode*> PathNodes = FindNodePathByNode(GridMap, StartNode, TargetNode);
     TArray<FVector> WorldPaths;
@@ -92,6 +92,9 @@ TArray<FVector> FPathFinder::FindWorldPosPathByNodePath(FGridMap& GridMap, FGrid
         FVector WorldPos = Node->GetPosition(); // GridSize를 100.0f로 가정
         WorldPaths.Add(WorldPos);
     }
+
+    DebugWorldPosPath(WorldPaths);
+
     return WorldPaths;
 }
 
@@ -116,7 +119,7 @@ TArray<FVector> FPathFinder::FindWorlPosPathByWorldPos(FGridMap& GridMap, const 
     FGridNode& TargetNode = GridMap.GetNode(TargetX, TargetY);
 
     // 노드로 경로 찾기 로직 호출
-    return FindWorldPosPathByNodePath(GridMap, StartNode, TargetNode);
+    return FindWorldPosPathByNode(GridMap, StartNode, TargetNode);
 }
 
 const void FPathFinder::DebugPrint(TArray<FGridNode*>& Path) const
@@ -131,5 +134,14 @@ const void FPathFinder::DebugPrint(TArray<FGridNode*>& Path) const
     }
     else {
         UE_LOG(ELogLevel::Display, "경로를 찾지 못했습니다.");
+    }
+}
+
+const void FPathFinder::DebugWorldPosPath(TArray<FVector>& Path) const
+{
+    UE_LOG(ELogLevel::Warning, "=== WorldPositionPath ===");
+
+    for (auto pos : Path) {
+        UE_LOG(ELogLevel::Display, "x : %f, / y : %f / z : %f", pos.X, pos.Y, pos.Z);
     }
 }

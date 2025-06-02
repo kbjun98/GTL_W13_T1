@@ -11,10 +11,8 @@ UGridMapComponent::UGridMapComponent()
 void UGridMapComponent::InitializeComponent()
 {
     Super::InitializeComponent();
-    //GridMap.LoadMapFromFile("Engine/Contents/Resources/Map.txt");
     
-    GridMap.InitializeGridNodeFromMeshes();
-    GridMap.AnalyzeWalkableFromMeshes();
+    GridMap.InitializeGridMap();
     DebugPrint();
     
     FGridNode& StartNode = GridMap.GetNode(0, 2);
@@ -28,11 +26,7 @@ void UGridMapComponent::InitializeComponent()
 
     TArray<FVector> WorldPositionPath = PathFinder->FindWorlPosPathByWorldPos(GridMap, FVector(0, 0, 0), FVector(500, 0, 0));
 
-    UE_LOG(ELogLevel::Warning, "=== WorldPositionPath ===");
-
-    for (auto pos : WorldPositionPath) {
-        UE_LOG(ELogLevel::Display, "x : %f, / y : %f / z : %f", pos.X, pos.Y, pos.Z);
-    }
+    
 }
 
 void UGridMapComponent::TickComponent(float DeltaTime)

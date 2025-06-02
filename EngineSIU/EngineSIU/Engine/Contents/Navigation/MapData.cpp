@@ -50,11 +50,6 @@ FGridNode& FGridMap::GetNode(int X, int Y)
     return GridNodes[Get1DIndex(X, Y)];
 }
 
-//FVector FGridMap::GetWorldPosition(int X, int Y, float GridSize)
-//{
-//    return FVector(X * GridSize, Y*GridSize, 0.0f);
-//}
-
 void FGridMap::DebugPrint() const
 {
     UE_LOG(ELogLevel::Display, "맵 디버그 출력 (Width = %d, Height = %d): ", Width, Height);
@@ -81,6 +76,15 @@ void FGridMap::DebugPrint() const
     }
 }
 
+void FGridMap::InitializeGridMap()
+{
+    InitializeGridNodeFromMeshes();
+    AnalyzeWalkableFromMeshes();
+
+    DebugPrint();
+}
+
+
 void FGridMap::InitializeGridNodeFromMeshes()
 {
     const float GridSpacing = 100.0f;
@@ -97,10 +101,11 @@ void FGridMap::InitializeGridNodeFromMeshes()
     for (auto It : TObjectRange<UStaticMeshComponent>())
     {
         FBoundingBox LocalAABB = It->GetBoundingBox();
-        //FVector Pos = It->GetComponentLocation();
+
         // 월드 변환 정보
         FTransform WorldTransform = It->GetComponentTransform();
 
+        
         // AABB의 8개의 코너를 월드 공간으로 변환 후, 전체 Min/Max 계산
         FVector LocalMin = LocalAABB.MinLocation;
         FVector LocalMax = LocalAABB.MaxLocation;
@@ -118,6 +123,7 @@ void FGridMap::InitializeGridNodeFromMeshes()
             FVector(LocalMax.X, LocalMax.Y, LocalMax.Z)
         };
 
+        // TODO : 중복된 월드 포지션 계산 함수로 빼기
         for (int i = 0; i < 8; ++i)
         {
             FVector WorldCorner = WorldTransform.TransformPosition(LocalCorners[i]);
