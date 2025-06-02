@@ -1,9 +1,10 @@
 #pragma once
 #include "GameFramework/Actor.h"
 
-class APlayerController;
+class AController;
 class UInputComponent;
 class UPawnMovementComponent;
+class APlayerController;
 
 class APawn : public AActor
 {
@@ -13,14 +14,13 @@ public:
     APawn();
 
     virtual void Tick(float DeltaTime) override;
-    
-    virtual void PossessedBy(APlayerController* NewController);
+    virtual void PossessedBy(AController* NewController);
     
     virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent);
 
-    APlayerController* Controller;
+    APlayerController* GetPlayerController() const;
 
-    APlayerController* GetController();
+    AController* GetController() const;
     
     void AddMovementInput(const FVector& WorldDirection, float ScaleValue = 1.f);
 
@@ -36,4 +36,5 @@ protected:
     FVector ControlledInputVector;
 
     FVector LastControlledInputVector;
+    AController* Controller = nullptr; // 이 Pawn을 소유하는 PlayerController
 };

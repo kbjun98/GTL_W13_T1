@@ -12,6 +12,7 @@
 #include "Classes/Components/TextComponent.h"
 #include "GameFramework/Pawn.h"
 #include "Engine/Contents/GameFramework/RabbitGameMode.h"
+#include <Engine/Contents/Actors/ChaserRabbitSpawner.h>
 class UEditorEngine;
 
 UWorld::~UWorld()
@@ -77,6 +78,8 @@ void UWorld::BeginPlay()
         GameMode->SetActorLabel(TEXT("OBJ_GAMEMODE"));
 
         GameMode->InitGame();
+
+        CreateChaserRabbitSpawner();
     }
     for (AActor* Actor : ActiveLevel->Actors)
     {
@@ -227,5 +230,11 @@ void UWorld::CheckOverlap(const UPrimitiveComponent* Component, TArray<FOverlapR
     {
         CollisionManager->CheckOverlap(this, Component, OutOverlaps);
     }
+}
+
+void UWorld::CreateChaserRabbitSpawner()
+{
+    ChaserRabbitSpawner = this->SpawnActor<AChaserRabbitSpawner>();
+    ChaserRabbitSpawner->SetActorLabel(TEXT("OBJ_ChaserRabbitSpawner"));
 }
 

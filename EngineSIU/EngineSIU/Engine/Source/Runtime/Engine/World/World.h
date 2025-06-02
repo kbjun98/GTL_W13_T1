@@ -21,7 +21,7 @@ class FCollisionManager;
 class AGameMode;
 class UTextComponent;
 class APawn;
-
+class AChaserRabbitSpawner;
 class UWorld : public UObject
 {
     DECLARE_CLASS(UWorld, UObject)
@@ -104,6 +104,11 @@ private:
     UTextComponent* MainTextComponent = nullptr;
 
     FCollisionManager* CollisionManager = nullptr;
+
+    AChaserRabbitSpawner* ChaserRabbitSpawner = nullptr;
+
+private:
+    void CreateChaserRabbitSpawner();
 };
 
 

@@ -15,7 +15,7 @@ void APawn::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
 }
 
-void APawn::PossessedBy(APlayerController* NewController)
+void APawn::PossessedBy(AController* NewController)
 {
     Controller = NewController;
 }
@@ -24,12 +24,13 @@ void APawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 }
 
-APlayerController* APawn::GetController()
+APlayerController* APawn::GetPlayerController() const
 {
-    if (!Controller)
-    {
-        
-    }
+    return Cast<APlayerController>(Controller);
+}
+
+AController* APawn::GetController() const
+{
     return Controller;
 }
 
@@ -40,17 +41,17 @@ void APawn::AddMovementInput(const FVector& WorldDirection, float ScaleValue)
 
 void APawn::AddControllerYawInput(float Value)
 {
-    if (Controller)
+    if (GetPlayerController())
     {
-        Controller->AddYawInput(Value);
+        GetPlayerController()->AddYawInput(Value);
     }
 }
 
 void APawn::AddControllerPitchInput(float Value)
 {
-    if (Controller)
+    if (GetPlayerController())
     {
-        Controller->AddPitchInput(Value);
+        GetPlayerController()->AddPitchInput(Value);
     }
 }
 

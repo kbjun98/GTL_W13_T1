@@ -40,7 +40,9 @@
 #include "Renderer/CompositingPass.h"
 #include <Engine/FbxLoader.h>
 #include "Engine/Classes/Engine/AssetManager.h"
+#include "GameFramework/TestVolume.h"
 #include "Particles/ParticleSystemComponent.h"
+#include <Engine/Contents/Actors/GridMapActor.h>
 
 ControlEditorPanel::ControlEditorPanel()
 {
@@ -372,7 +374,9 @@ void ControlEditorPanel::CreateModifyButton(const ImVec2 ButtonSize, ImFont* Ico
             { .Label = "CapsuleCol",        .OBJ = OBJ_CAPSULE_COLLISION },
             { .Label = "SkeletalMeshActor", .OBJ = OBJ_SKELETALMESH },
             { .Label = "SequencerPlayer",   .OBJ = OBJ_SEQUENCERPLAYER },
+            {.Label = "GridMapTestActor",   .OBJ = OBJ_GRIDMAPTESTACTOR },
             { .Label = "RabbitPawn",        .OBJ = OBJ_RABBITPAWN },
+            { .Label = "TestVolume",        .OBJ = OBJ_TESTVOLUME }
         };
 
         for (const auto& primitive : primitives)
@@ -383,6 +387,12 @@ void ControlEditorPanel::CreateModifyButton(const ImVec2 ButtonSize, ImFont* Ico
                 AActor* SpawnedActor = nullptr;
                 switch (static_cast<OBJECTS>(primitive.OBJ))
                 {
+                case OBJ_TESTVOLUME:
+                {
+                    SpawnedActor = World->SpawnActor<ATestVolume>();
+                    SpawnedActor->SetActorLabel(TEXT("OBJ_TESTVOLUME"));
+                    break;
+                }
                 case OBJ_SPHERE:
                 {
                     SpawnedActor = World->SpawnActor<AActor>();
@@ -496,6 +506,7 @@ void ControlEditorPanel::CreateModifyButton(const ImVec2 ButtonSize, ImFont* Ico
                 {
                     SpawnedActor = World->SpawnActor<ASequencerPlayer>();
                     SpawnedActor->SetActorLabel(TEXT("OBJ_SEQUENCERPLAYER"));
+                    break;
                 }
                 case OBJ_RABBITPAWN:
                 {
@@ -504,6 +515,11 @@ void ControlEditorPanel::CreateModifyButton(const ImVec2 ButtonSize, ImFont* Ico
                 }
                 case OBJ_CAMERA:
                 case OBJ_PLAYER:
+                case OBJ_GRIDMAPTESTACTOR:
+                {
+                    SpawnedActor = World->SpawnActor<AGridMapActor>();
+                    break;
+                }
                 case OBJ_END:
                     break;
                 }
