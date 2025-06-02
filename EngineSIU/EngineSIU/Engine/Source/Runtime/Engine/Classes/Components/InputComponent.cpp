@@ -144,6 +144,30 @@ void UInputComponent::InputKey(const FKeyEvent& InKeyEvent)
         }
         break;
     }
+    case 'E':
+    {
+        if (InKeyEvent.GetInputEvent() == IE_Pressed)
+        {
+            PressedKeys.Add(EKeys::E);
+        }
+        else if (InKeyEvent.GetInputEvent() == IE_Released)
+        {
+            PressedKeys.Remove(EKeys::E);
+        }
+        break;
+    }
+    case 'Q':
+    {
+        if (InKeyEvent.GetInputEvent() == IE_Pressed)
+        {
+            PressedKeys.Add(EKeys::Q);
+        }
+        else if (InKeyEvent.GetInputEvent() == IE_Released)
+        {
+            PressedKeys.Remove(EKeys::Q);
+        }
+        break;
+    }
     default:
         break;
     }
@@ -242,6 +266,14 @@ void UInputComponent::ProcessKeyInput(float DeltaTime)
     {
         KeyBindDelegate[FString("D")].Broadcast(DeltaTime);
     }
+    if (PressedKeys.Contains(EKeys::E))
+    {
+        KeyBindDelegate[FString("E")].Broadcast(DeltaTime);
+    }
+    if (PressedKeys.Contains(EKeys::Q))
+    {
+        KeyBindDelegate[FString("Q")].Broadcast(DeltaTime);
+    }
     if (PressedKeys.Contains(EKeys::Escape))
     {
         KeyBindDelegate[FString("ESC")].Broadcast(DeltaTime);
@@ -260,11 +292,11 @@ void UInputComponent::ProcessAxisInput(float DeltaTime)
 {
     if (MouseDelta.X != 0.0f)
     {
-        AxisBindDelegate[FString("Turn")].Broadcast(MouseDelta.X);
+        AxisBindDelegate[FString("MouseX")].Broadcast(MouseDelta.X);
     }
     if (MouseDelta.Y != 0.0f)
     {
-        AxisBindDelegate[FString("LookUp")].Broadcast(MouseDelta.Y);
+        AxisBindDelegate[FString("MouseY")].Broadcast(MouseDelta.Y);
     }
 
     MouseDelta = FVector2D::ZeroVector; // Reset after processing

@@ -2,14 +2,26 @@
 #include "GameFramework/PlayerController.h"
 #include "Math/JungleMath.h"
 #include "RabbitMovementComponent.h"
+#include "Camera/CameraShakeBase.h"
 
 void ARabbitPlayer::PostSpawnInitialize()
 {
     Super::PostSpawnInitialize();
+    
     UCameraComponent* Camera = AddComponent<UCameraComponent>("Camera_0");
     Camera->SetupAttachment(RootComponent);
 
     RabbitCam = std::make_shared<RabbitCamera>();
+}
+
+void ARabbitPlayer::BeginPlay()
+{
+    Super::BeginPlay();
+
+    if (GetPlayerController())
+    {
+        GetPlayerController()->PlayerCameraManager->DefaultFOV = DefaultFOV;
+    }
 }
 
 void ARabbitPlayer::Tick(float DeltaTime)
@@ -57,7 +69,7 @@ FVector ARabbitPlayer::GetActorForwardVector() const
         FRotator ActualRotation = FRotator(0.f, ControlRotation.Yaw, 0.f);
         return ActualRotation.ToVector();
     }
-    return APawn::GetActorForwardVector();
+    return Super::GetActorForwardVector();
 }
 
 FVector ARabbitPlayer::GetActorRightVector() const
@@ -71,7 +83,7 @@ FVector ARabbitPlayer::GetActorRightVector() const
         Right = JungleMath::FVectorRotate(Right, ActualRotation);
         return Right;
     }
-    return APawn::GetActorRightVector();
+    return Super::GetActorRightVector();
 }
 
 std::shared_ptr<RabbitCamera> ARabbitPlayer::GetRabbitCamera()
@@ -86,4 +98,92 @@ void ARabbitPlayer::Jump()
     {
         RabbitMoveComp->Jump();
     }
+}
+
+void ARabbitPlayer::ZoomIn(float DeltaTime)
+{
+    if (!IsADS())
+    {
+        return;
+    }
+
+    const float CurrentFOV = GetFOV();
+    float NextFOV = CurrentFOV - FOVChangeSpeed * DeltaTime;
+    NextFOV = FMath::Clamp(NextFOV, MinFOV_ADS, MaxFOV_ADS);
+    SetFOV(NextFOV);
+}
+
+void ARabbitPlayer::ZoomOut(float DeltaTime)
+{
+    if (!IsADS())
+    {
+        return;
+    }
+
+    const float CurrentFOV = GetFOV();
+    float NextFOV = CurrentFOV + FOVChangeSpeed * DeltaTime;
+    NextFOV = FMath::Clamp(NextFOV, MinFOV_ADS, MaxFOV_ADS);
+    SetFOV(NextFOV);
+}
+
+void ARabbitPlayer::TakePicture()
+{
+    if (IsADS() && GetRabbitCamera())
+    {
+        GetRabbitCamera()->TakePicture();
+    }
+}
+
+void ARabbitPlayer::ToggleADS()
+{
+    bIsADS = !bIsADS;
+    
+    if (bIsADS)
+    {
+        StartADS();
+    }
+    else
+    {
+        EndADS();
+    }
+}
+
+void ARabbitPlayer::StartADS()
+{
+    CameraShakeInstance = GetPlayerController()->PlayerCameraManager->StartCameraShake(IdleCameraShake);
+
+    SetFOV(DefaultFOV_ADS);
+}
+
+void ARabbitPlayer::EndADS()
+{
+    GetPlayerController()->PlayerCameraManager->StopCameraShake(CameraShakeInstance, true);
+    CameraShakeInstance = nullptr;
+
+    SetFOV(DefaultFOV);
+}
+
+void ARabbitPlayer::SetFOV(float FOV)
+{
+    if (UCameraComponent* CameraComp = GetComponentByClass<UCameraComponent>())
+    {
+        CameraComp->ViewFOV = FOV;
+    }
+    else if (GetPlayerController())
+    {
+        GetPlayerController()->PlayerCameraManager->SetFOV(FOV);
+    }
+}
+
+float ARabbitPlayer::GetFOV() const
+{
+    if (UCameraComponent* CameraComp = GetComponentByClass<UCameraComponent>())
+    {
+        return CameraComp->ViewFOV;
+    }
+    else if (GetPlayerController())
+    {
+        return GetPlayerController()->PlayerCameraManager->GetFOV();
+    }
+    return 0.f;
 }
