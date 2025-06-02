@@ -23,4 +23,6 @@ protected:
     virtual void CleanUpRender(const std::shared_ptr<FEditorViewportClient>& Viewport) override;
 
     virtual void CreateResource() override;
+
+    bool bShouldRender = false;
 };

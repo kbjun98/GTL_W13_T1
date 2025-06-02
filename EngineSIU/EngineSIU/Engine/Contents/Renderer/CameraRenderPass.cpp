@@ -3,7 +3,10 @@
 #include "RendererHelpers.h"
 #include "D3D11RHI/DXDShaderManager.h"
 #include "D3D11RHI/GraphicDevice.h"
+#include "Engine/Engine.h"
+#include "GameFramework/RabbitPlayer.h"
 #include "UnrealEd/EditorViewportClient.h"
+#include "World/World.h"
 
 void FCameraRenderPass::Initialize(FDXDBufferManager* InBufferManager, FGraphicsDevice* InGraphics, FDXDShaderManager* InShaderManager)
 {
@@ -12,7 +15,21 @@ void FCameraRenderPass::Initialize(FDXDBufferManager* InBufferManager, FGraphics
 
 void FCameraRenderPass::PrepareRenderArr()
 {
-    
+    if (GEngine->ActiveWorld->WorldType == EWorldType::PIE)
+    {
+        if (APlayerController* PC = GEngine->ActiveWorld->GetPlayerController())
+        {
+            if (ARabbitPlayer* Rabbit = Cast<ARabbitPlayer>(PC->GetPawn()))
+            {
+                if (Rabbit->IsADS())
+                {
+                    bShouldRender = true;
+                    return;
+                }
+            }
+        }
+    }
+    bShouldRender = false;
 }
 
 void FCameraRenderPass::ClearRenderArr()
@@ -24,6 +41,17 @@ void FCameraRenderPass::Render(const std::shared_ptr<FEditorViewportClient>& Vie
 {
     PrepareRender(Viewport);
 
+    if (bShouldRender)
+    {
+        auto Texture = FEngineLoop::ResourceManager.GetTexture(L"Contents/Texture/CameraViewFinder.png");
+        Graphics->DeviceContext->PSSetShaderResources(0, 1, &Texture->TextureSRV);
+    }
+    else
+    {
+        ID3D11ShaderResourceView* NullSRV[1] = { nullptr };
+        Graphics->DeviceContext->PSSetShaderResources(0, 1, NullSRV);
+    }
+    
     FQuadTransform Transform;
     BufferManager->UpdateConstantBuffer<FQuadTransform>("FSlateTransform", Transform);
     Graphics->DeviceContext->Draw(6, 0);
@@ -51,9 +79,6 @@ void FCameraRenderPass::PrepareRender(const std::shared_ptr<FEditorViewportClien
     BufferManager->BindConstantBuffer(TEXT("FSlateTransform"), 0, EShaderStage::Vertex);
 
     // Resource
-    auto Texture = FEngineLoop::ResourceManager.GetTexture(L"Contents/Texture/CameraViewFinder.png");
-    Graphics->DeviceContext->PSSetShaderResources(0, 1, &Texture->TextureSRV);
-
     FRenderTargetRHI* CompositeResultRHI = Viewport->GetViewportResource()->GetRenderTarget(EResourceType::ERT_Compositing);
     Graphics->DeviceContext->PSSetShaderResources(1, 1, &CompositeResultRHI->SRV);
 }
