@@ -45,6 +45,8 @@
 #include <Engine/Contents/Actors/GridMapActor.h>
 #include "Engine/Contents/GameFramework/RabbitEnemy.h"
 
+#include "GameFramework/RabbitPlayer.h"
+
 ControlEditorPanel::ControlEditorPanel()
 {
     SetSupportedWorldTypes(EWorldTypeBitFlag::Editor | EWorldTypeBitFlag::PIE | EWorldTypeBitFlag::SkeletalViewer | EWorldTypeBitFlag::PhysicsAssetViewer);
@@ -375,8 +377,9 @@ void ControlEditorPanel::CreateModifyButton(const ImVec2 ButtonSize, ImFont* Ico
             { .Label = "CapsuleCol",        .OBJ = OBJ_CAPSULE_COLLISION },
             { .Label = "SkeletalMeshActor", .OBJ = OBJ_SKELETALMESH },
             { .Label = "SequencerPlayer",   .OBJ = OBJ_SEQUENCERPLAYER },
-            {.Label = "GridMapTestActor",   .OBJ = OBJ_GRIDMAPTESTACTOR },
-            { .Label = "RabbitEnemy",        .OBJ = OBJ_RABBITENEMY },
+            { .Label = "GridMapTestActor",  .OBJ = OBJ_GRIDMAPTESTACTOR },
+            { .Label = "RabbitPlayer",      .OBJ = OBJ_RABBITPLAYER },
+            { .Label = "RabbitEnemy",       .OBJ = OBJ_RABBITENEMY },
             { .Label = "TestVolume",        .OBJ = OBJ_TESTVOLUME }
         };
 
@@ -388,6 +391,18 @@ void ControlEditorPanel::CreateModifyButton(const ImVec2 ButtonSize, ImFont* Ico
                 AActor* SpawnedActor = nullptr;
                 switch (static_cast<OBJECTS>(primitive.OBJ))
                 {
+                case OBJ_RABBITPLAYER:
+                {
+                    SpawnedActor = World->SpawnActor<ARabbitPlayer>();
+                    SpawnedActor->SetActorLabel(TEXT("OBJ_RABBITPLAYER"));
+                    break;
+                }
+                case OBJ_RABBITENEMY:
+                {
+                    SpawnedActor = World->SpawnActor<ARabbitPawn>();
+                    SpawnedActor->SetActorLabel(TEXT("OBJ_RABBITENEMY"));
+                    break;
+                }
                 case OBJ_TESTVOLUME:
                 {
                     SpawnedActor = World->SpawnActor<ATestVolume>();
@@ -507,12 +522,6 @@ void ControlEditorPanel::CreateModifyButton(const ImVec2 ButtonSize, ImFont* Ico
                 {
                     SpawnedActor = World->SpawnActor<ASequencerPlayer>();
                     SpawnedActor->SetActorLabel(TEXT("OBJ_SEQUENCERPLAYER"));
-                    break;
-                }
-                case OBJ_RABBITENEMY:
-                {
-                    SpawnedActor = World->SpawnActor<ARabbitEnemy>();
-                    SpawnedActor->SetActorLabel(TEXT("OBJ_RABBITENEMY"));
                     break;
                 }
                 case OBJ_CAMERA:

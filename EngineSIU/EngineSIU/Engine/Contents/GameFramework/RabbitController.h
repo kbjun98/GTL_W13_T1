@@ -30,6 +30,9 @@ private:
     void MoveLeft();
 
     void Jump();
+
+    void ZoomIn(float DeltaTime);
+    void ZoomOut(float DeltaTime);
     
     virtual void AddYawInput(float Value) override;
     virtual void AddPitchInput(float Value) override;
@@ -38,6 +41,8 @@ private:
     void OnESCPressed();
 
     void TakePicture();
+
+    void ToggleADS();
 
 private:
     EInputMode CurrentInputMode = EInputMode::GameOnly;

@@ -44,16 +44,19 @@ void ARabbitController::SetupInputComponent()
     InputComponent->BindAction("S", [this](float DeltaTime) { MoveBack(); });
     InputComponent->BindAction("D", [this](float DeltaTime) { MoveRight(); });
     InputComponent->BindAction("A", [this](float DeltaTime) { MoveLeft(); });
+    InputComponent->BindAction("E", [this](float DeltaTime) { ZoomIn(DeltaTime); });
+    InputComponent->BindAction("Q", [this](float DeltaTime) { ZoomOut(DeltaTime); });
 
     InputComponent->BindAction("SPACE_Pressed", [this](float DeltaTime) { Jump(); });
 
-    InputComponent->BindAxis("Turn", [this](float DeltaTime) { AddYawInput(DeltaTime); });
-    InputComponent->BindAxis("LookUp", [this](float DeltaTime) { AddPitchInput(-DeltaTime); });
+    InputComponent->BindAxis("MouseX", [this](float Value) { AddYawInput(Value); });
+    InputComponent->BindAxis("MouseY", [this](float Value) { AddPitchInput(-Value); });
 
     InputComponent->BindAction("ESC_Pressed", [this](float DeltaTime) { OnESCPressed(); });
 
     //마우스 클릭
     InputComponent->BindAction("L_Pressed", [this](float DeltaTime) { TakePicture();});
+    InputComponent->BindAction("R_Pressed", [this](float DeltaTime) { ToggleADS(); });
 }
 
 void ARabbitController::MoveForward()
@@ -118,6 +121,32 @@ void ARabbitController::Jump()
     if (ARabbitPlayer* Pawn = Cast<ARabbitPlayer>(GetPawn()))
     {
         Pawn->Jump();
+    }
+}
+
+void ARabbitController::ZoomIn(float DeltaTime)
+{
+    if (CurrentInputMode == EInputMode::UIOnly)
+    {
+        return;
+    }
+    
+    if (ARabbitPlayer* Pawn = Cast<ARabbitPlayer>(GetPawn()))
+    {
+        Pawn->ZoomIn(DeltaTime);
+    }
+}
+
+void ARabbitController::ZoomOut(float DeltaTime)
+{
+    if (CurrentInputMode == EInputMode::UIOnly)
+    {
+        return;
+    }
+    
+    if (ARabbitPlayer* Pawn = Cast<ARabbitPlayer>(GetPawn()))
+    {
+        Pawn->ZoomOut(DeltaTime);
     }
 }
 
@@ -190,9 +219,19 @@ void ARabbitController::TakePicture()
 
     if (ARabbitPlayer* RabbitPawn = Cast<ARabbitPlayer>(PossessedPawn))
     {
-        if (RabbitPawn->GetRabbitCamera())
-        {
-            RabbitPawn->GetRabbitCamera()->TakePicture();
-        }
+        RabbitPawn->TakePicture();
+    }
+}
+
+void ARabbitController::ToggleADS()
+{
+    if (CurrentInputMode == EInputMode::UIOnly)
+    {
+        return;
+    }
+
+    if (ARabbitPlayer* RabbitPawn = Cast<ARabbitPlayer>(PossessedPawn))
+    {
+        RabbitPawn->ToggleADS();
     }
 }

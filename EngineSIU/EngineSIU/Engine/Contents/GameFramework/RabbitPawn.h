@@ -3,6 +3,7 @@
 
 class URabbitMovementComponent;
 class RabbitCamera;
+class USkeletalMeshComponent;
 
 class ARabbitPawn : public APawn
 {
@@ -18,12 +19,10 @@ public:
     virtual void BeginPlay() override;
     
     virtual void Tick(float DeltaTime) override;
-
-
+    
     virtual FVector GetActorForwardVector() const override;
     virtual FVector GetActorRightVector() const override;
-
-
+    
     int32 GetMaxHealth() const { return MaxHealth; }
     void SetMaxHealth(int32 Value);
     
@@ -32,6 +31,7 @@ public:
 
 private:
     URabbitMovementComponent* MovementComponent;
+    USkeletalMeshComponent* SkeletalMeshComp;
 
     float HalfHeight = 40.f;
     float Radius = 30.f;

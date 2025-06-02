@@ -5,7 +5,7 @@
 #include <Engine/Engine.h>
 #include "World/World.h"
 
-ARabbitGameMode::ARabbitGameMode() : AGameMode()
+ARabbitGameMode::ARabbitGameMode()
 {
     // 기본 플레이어 Pawn 클래스 설정
     DefaultPawnClass = ARabbitPlayer::StaticClass();
@@ -13,26 +13,27 @@ ARabbitGameMode::ARabbitGameMode() : AGameMode()
     // 플레이어 컨트롤러 클래스 설정
     PlayerControllerClass = ARabbitController::StaticClass();
 
-    EPhotoTypeSize = static_cast<int>(EPhotoType::END)-1;
+    EPhotoTypeSize = static_cast<int>(EPhotoType::END) - 1;
 }
 
 void ARabbitGameMode::BeginPlay()
 {
     Super::BeginPlay();
  
-    if (APlayerController* PlayerContoller = GEngine->ActiveWorld->GetPlayerController())
+    if (APlayerController* PlayerController = GEngine->ActiveWorld->GetPlayerController())
     {
-        if (ARabbitPlayer* Rabbit = Cast<ARabbitPlayer>(PlayerContoller->GetPawn()))
+        if (ARabbitPlayer* Rabbit = Cast<ARabbitPlayer>(PlayerController->GetPawn()))
         {
             if (std::shared_ptr<RabbitCamera> Camera = Rabbit->GetRabbitCamera())
             {
-                Camera->OnPictureTaken.BindLambda([&](UPrimitiveComponent* Comp) 
+                Camera->OnPictureTaken.BindLambda(
+                    [this](UPrimitiveComponent* Comp) 
                     {
-                        JudgeCapturedPhoto(Comp);
-                    });
+                        this->JudgeCapturedPhoto(Comp);
+                    }
+                );
             }
         }
-
     }
 }
 
