@@ -30,9 +30,13 @@ void RabbitAnimStateMachine::ProcessState(ERabbitAnimState State)
     if (!DesiredAnim || AnimInstance->GetCurrAnim() == DesiredAnim)
         return;
 
+    float CurrAnimLength = AnimInstance->GetCurrAnim()->GetPlayLength();
+    float PrevAnimTimeSnapshot = FMath::Fmod(AnimInstance->GetElapsedTime(), CurrAnimLength);
+
     // 상태 전환 시 블렌딩용 정보 갱신
     AnimInstance->SetPrevAnim(AnimInstance->GetCurrAnim());
     AnimInstance->SetCurrAnim(DesiredAnim);
+    AnimInstance->SetPrevAnimTimeSnapshot(PrevAnimTimeSnapshot); // 이 함수 추가 필요
     AnimInstance->SetElapsedTime(0.f);
     AnimInstance->SetBlendStartTime(0.f);
     AnimInstance->SetIsBlending(true);  
