@@ -5,6 +5,7 @@
 
 void ARabbitPlayer::PostSpawnInitialize()
 {
+    Super::PostSpawnInitialize();
     UCameraComponent* Camera = AddComponent<UCameraComponent>("Camera_0");
     Camera->SetupAttachment(RootComponent);
 

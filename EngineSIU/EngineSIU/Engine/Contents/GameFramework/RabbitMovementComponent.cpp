@@ -1,4 +1,4 @@
-﻿#include "RabbitMovementComponent.h"
+#include "RabbitMovementComponent.h"
 
 #include "PhysicsManager.h"
 
