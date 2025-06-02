@@ -39,6 +39,8 @@ private:
 
     void TakePicture();
 
+    void ToggleADS();
+
 private:
     EInputMode CurrentInputMode = EInputMode::GameOnly;
     FVector2D MousePinPosition;

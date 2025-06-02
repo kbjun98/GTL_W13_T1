@@ -2,6 +2,7 @@
 #include "GameFramework/PlayerController.h"
 #include "Math/JungleMath.h"
 #include "RabbitMovementComponent.h"
+#include "Camera/CameraShakeBase.h"
 
 void ARabbitPlayer::PostSpawnInitialize()
 {
@@ -86,5 +87,27 @@ void ARabbitPlayer::Jump()
     if (URabbitMovementComponent* RabbitMoveComp = Cast<URabbitMovementComponent>(GetMovementComponent()))
     {
         RabbitMoveComp->Jump();
+    }
+}
+
+void ARabbitPlayer::TakePicture()
+{
+    if (IsADS() && GetRabbitCamera())
+    {
+        GetRabbitCamera()->TakePicture();
+    }
+}
+
+void ARabbitPlayer::ToggleADS()
+{
+    bIsADS = !bIsADS;
+    
+    if (bIsADS)
+    {
+        CameraShakeInstance = GetPlayerController()->PlayerCameraManager->StartCameraShake(IdleCameraShake);
+    }
+    else
+    {
+        GetPlayerController()->PlayerCameraManager->StopCameraShake(CameraShakeInstance, true);
     }
 }

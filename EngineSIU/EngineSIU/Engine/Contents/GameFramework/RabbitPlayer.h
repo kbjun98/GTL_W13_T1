@@ -1,6 +1,9 @@
 #pragma once
 #include "RabbitPawn.h"
+#include "Template/SubclassOf.h"
 #include "UObject/ObjectMacros.h"
+
+class UCameraShakeBase;
 
 class ARabbitPlayer : public ARabbitPawn
 {
@@ -21,8 +24,20 @@ public:
     virtual FVector GetActorRightVector() const override;
 
     void Jump();
-private:
+    
+    bool IsADS() const { return bIsADS; }
 
+    void TakePicture();
+    
+    void ToggleADS();
+    
+private:
     std::shared_ptr<RabbitCamera> RabbitCam = nullptr;
+    
+    bool bIsADS = false;
+
+    TSubclassOf<UCameraShakeBase> IdleCameraShake = UClass::FindClass("UIdleCameraShake");
+
+    UCameraShakeBase* CameraShakeInstance = nullptr;
 };
 

@@ -260,11 +260,11 @@ void UInputComponent::ProcessAxisInput(float DeltaTime)
 {
     if (MouseDelta.X != 0.0f)
     {
-        AxisBindDelegate[FString("Turn")].Broadcast(MouseDelta.X);
+        AxisBindDelegate[FString("MouseX")].Broadcast(MouseDelta.X);
     }
     if (MouseDelta.Y != 0.0f)
     {
-        AxisBindDelegate[FString("LookUp")].Broadcast(MouseDelta.Y);
+        AxisBindDelegate[FString("MouseY")].Broadcast(MouseDelta.Y);
     }
 
     MouseDelta = FVector2D::ZeroVector; // Reset after processing

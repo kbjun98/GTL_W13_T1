@@ -47,13 +47,14 @@ void ARabbitController::SetupInputComponent()
 
     InputComponent->BindAction("SPACE_Pressed", [this](float DeltaTime) { Jump(); });
 
-    InputComponent->BindAxis("Turn", [this](float DeltaTime) { AddYawInput(DeltaTime); });
-    InputComponent->BindAxis("LookUp", [this](float DeltaTime) { AddPitchInput(-DeltaTime); });
+    InputComponent->BindAxis("MouseX", [this](float Value) { AddYawInput(Value); });
+    InputComponent->BindAxis("MouseY", [this](float Value) { AddPitchInput(-Value); });
 
     InputComponent->BindAction("ESC_Pressed", [this](float DeltaTime) { OnESCPressed(); });
 
     //마우스 클릭
     InputComponent->BindAction("L_Pressed", [this](float DeltaTime) { TakePicture();});
+    InputComponent->BindAction("R_Pressed", [this](float DeltaTime) { ToggleADS(); });
 }
 
 void ARabbitController::MoveForward()
@@ -190,9 +191,19 @@ void ARabbitController::TakePicture()
 
     if (ARabbitPlayer* RabbitPawn = Cast<ARabbitPlayer>(PossessedPawn))
     {
-        if (RabbitPawn->GetRabbitCamera())
-        {
-            RabbitPawn->GetRabbitCamera()->TakePicture();
-        }
+        RabbitPawn->TakePicture();
+    }
+}
+
+void ARabbitController::ToggleADS()
+{
+    if (CurrentInputMode == EInputMode::UIOnly)
+    {
+        return;
+    }
+
+    if (ARabbitPlayer* RabbitPawn = Cast<ARabbitPlayer>(PossessedPawn))
+    {
+        RabbitPawn->ToggleADS();
     }
 }
