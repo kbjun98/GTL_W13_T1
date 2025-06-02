@@ -24,7 +24,7 @@ private:
 
     bool CanTakePicture = true;
     float CameraCoolTime;
-    float CameraCoolTimeInit = 5;
+    float CameraCoolTimeInit = 3;
 
 public:
     void ReleasePictures();
