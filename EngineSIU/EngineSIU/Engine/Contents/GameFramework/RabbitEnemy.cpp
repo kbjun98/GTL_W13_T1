@@ -25,7 +25,7 @@ void ARabbitEnemy::BeginPlay()
     MovementComponent->MaxSpeed = 200.0f; // 적의 이동 속도 설정    
 }
 
-void ARabbitEnemy::RoatateToTarget(const FVector& Location)
+void ARabbitEnemy::RoatateToTarget(const FVector& Location, float DeltaTime)
 {
     if (USkeletalMeshComponent* SkeletalMeshComponent = GetComponentByClass<USkeletalMeshComponent>())
     {
@@ -33,10 +33,19 @@ void ARabbitEnemy::RoatateToTarget(const FVector& Location)
         Dir.Z = 0.0f; // Z축 방향은 무시
         if (!Dir.IsNearlyZero())
         {
-            Dir.GetSafeNormal();
+            float TargetYawRad = FMath::Atan2(Dir.Y, Dir.X);
+            float TargetYawDeg = FMath::RadiansToDegrees(TargetYawRad);
+
+            FRotator CurrentRot = SkeletalMeshComponent->GetComponentRotation();
+            FRotator TargetRot(0.0f, TargetYawDeg, 0.0f);
+
+            float InterpSpeed = 10.0f;
+            FRotator SmoothRot = FMath::RInterpTo(CurrentRot, TargetRot, DeltaTime, InterpSpeed);
+            SkeletalMeshComponent->SetWorldRotation(SmoothRot);
+            /*Dir.GetSafeNormal();
             float YawRad = FMath::Atan2(Dir.Y, Dir.X);
             float YawDeg = FMath::RadiansToDegrees(YawRad);
-            SkeletalMeshComponent->SetWorldRotation(FRotator(0.0f, YawDeg, 0.0f).Quaternion());
+            SkeletalMeshComponent->SetWorldRotation(FRotator(0.0f, YawDeg, 0.0f).Quaternion());*/
         }
     }
 }

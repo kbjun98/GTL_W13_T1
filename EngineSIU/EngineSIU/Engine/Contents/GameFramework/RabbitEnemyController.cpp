@@ -33,7 +33,7 @@ void ARabbitEnemyController::ProcessEnemyMovement(float DeltaTime)
 
         Enemy->SetAnimState(ERabbitAnimState::EWALK);
 
-        // ✅ 경로 기반으로 이동
+        // 경로 기반으로 이동
         if (!CurrentPath.IsEmpty() && CurrentPathIndex < CurrentPath.Num())
         {
             FVector NextPathPoint = CurrentPath[CurrentPathIndex];
@@ -58,11 +58,11 @@ void ARabbitEnemyController::ProcessEnemyMovement(float DeltaTime)
 
             FVector DirNormal = TargetDirection.GetSafeNormal();
 
-            // ✅ 이동 방향을 MovementInput으로 전달
+            // 이동 방향을 MovementInput으로 전달
             Enemy->AddMovementInput(DirNormal, 1.0f);
 
-            // ✅ 방향 회전 처리
-            Enemy->RoatateToTarget(NextPathPoint);
+            // 방향 회전 처리
+            Enemy->RoatateToTarget(NextPathPoint, DeltaTime);
         }
         else
         {
@@ -154,7 +154,7 @@ ARabbitEnemy* ARabbitEnemyController::GetPossesedRabbitEnemy()
     return Cast<ARabbitEnemy>(PossessedPawn);
 }
 
-void ARabbitEnemyController::MoveTo(const FVector& TargetLocation)
+void ARabbitEnemyController::MoveTo(const FVector& TargetLocation, float DeltaTime)
 {
     if (ARabbitEnemy* Enemy = GetPossesedRabbitEnemy())
     {
@@ -162,7 +162,7 @@ void ARabbitEnemyController::MoveTo(const FVector& TargetLocation)
         TargetDirection.Z = 0.0f; // Z축 방향은 무시
         FVector DirNormal = TargetDirection.GetSafeNormal();
         Enemy->AddMovementInput(DirNormal, 100.0f);
-        Enemy->RoatateToTarget(TargetLocation);
+        Enemy->RoatateToTarget(TargetLocation, DeltaTime);
     }
 }
 

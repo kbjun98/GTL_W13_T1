@@ -33,7 +33,7 @@ public:
 
     bool IsChasing = true;
 private:
-    void MoveTo(const FVector& TargetLocation);
+    void MoveTo(const FVector& TargetLocation, float DeltaTime);
 private:
     EnemyState CurrentState = EnemyState::IDLE; // 현재 상태
 

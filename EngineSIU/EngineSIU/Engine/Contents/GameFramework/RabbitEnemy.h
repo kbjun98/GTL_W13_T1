@@ -11,7 +11,7 @@ public:
     virtual void BeginPlay() override;
 public:
     void SetTargetLocation(const FVector& Location) { TargetLocation = Location; }
-    void RoatateToTarget(const FVector& Location);
+    void RoatateToTarget(const FVector& Location, float DeltaTime);
 public:
     UPROPERTY(EditAnywhere,
         float, SightFOV, = 30.0f;
