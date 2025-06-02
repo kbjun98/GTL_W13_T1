@@ -56,8 +56,8 @@ UObject* USkeletalMeshComponent::Duplicate(UObject* InOuter)
     {
         NewComponent->SetAnimation(GetAnimation());
     }
-    NewComponent->SetLooping(this->IsLooping());
-    NewComponent->SetPlaying(this->IsPlaying());
+    //NewComponent->SetLooping(this->IsLooping());
+    //NewComponent->SetPlaying(this->IsPlaying());
     return NewComponent;
 }
 
