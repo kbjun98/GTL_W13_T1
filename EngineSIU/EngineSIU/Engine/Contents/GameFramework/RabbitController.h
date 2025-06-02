@@ -58,7 +58,7 @@ private:
     FVector2D MousePinPosition;
 
     float MouseSensitivityBase = 0.4f;
-    float MouseSensitivityMin = 0.05f;
+    float MouseSensitivityMin = 0.08f;
     float MouseSensitivityMax = 0.3f;
 };
 

@@ -6,6 +6,8 @@
 #include "World/World.h"
 #include "GameFramework/Pawn.h"
 #include "GameFramework/RabbitPlayer.h"
+#include "LevelEditor/SLevelEditor.h"
+#include "UnrealEd/EditorViewportClient.h"
 
 bool FTViewTarget::Equal(const FTViewTarget& OtherTarget) const
 {
@@ -67,8 +69,8 @@ APlayerCameraManager::APlayerCameraManager()
     ViewRollMin = -89.9f;
     ViewRollMax = 89.9f;
 
-    F_Stop = 2.8f;
-    SensorWidth = 36.f; // mm
+    F_Stop = 1.2f;
+    SensorWidth = 50.f; // mm
     FocalDistance = 0.f; // cm
 }
 
@@ -315,24 +317,34 @@ void APlayerCameraManager::DoUpdateFocalLength(float DeltaTime)
     const FVector Direction = ControlRotation.ToVector();
 
     const FVector RayOrigin = PCOwner->GetPawn()->GetActorLocation();
+    const FVector RayEnd = RayOrigin + Direction;
 
     float MinDistance = 10000.f;
     FVector Normal;
+
     for (auto Iter : TObjectRange<UMeshComponent>())
     {
         if (Iter->GetWorld() != PCOwner->GetWorld() || Iter->GetOwner() == PCOwner->GetPawn())
         {
             continue;
         }
-            
+
+        const FMatrix WorldMatrix = Iter->GetWorldMatrix();
+        const FMatrix InverseMatrix = FMatrix::Inverse(WorldMatrix);
+        
+        FVector LocalRayOrigin = InverseMatrix.TransformPosition(RayOrigin);
+        FVector LocalRayEnd = InverseMatrix.TransformPosition(RayEnd);
+        FVector LocalRayDir = (LocalRayEnd - LocalRayOrigin).GetSafeNormal();
+
+        // TODO: AABB만 테스트하게 최적화 가능
         float Distance = 10000.f;
-        int32 HitCnt = Iter->CheckRayIntersection(RayOrigin, Direction, Distance, Normal);
+        int32 HitCnt = Iter->CheckRayIntersection(LocalRayOrigin, LocalRayDir, Distance, Normal);
         if (HitCnt > 0)
         {
             MinDistance = FMath::Min(MinDistance, Distance);
         }
     }
-
+    
     FocalDistance = MinDistance;
 }
 
@@ -429,7 +441,7 @@ FMinimalViewInfo APlayerCameraManager::BlendViewTargets(const FTViewTarget& A, c
 
 float APlayerCameraManager::GetFocalLength() const
 {
-    const float FovRad = FMath::DegreesToRadians(DefaultFOV);
+    const float FovRad = FMath::DegreesToRadians(ViewTarget.POV.FOV);
     const float FocalLength = SensorWidth / (2.f * FMath::Tan(FovRad / 2.0f));
     return FocalLength;
 }
