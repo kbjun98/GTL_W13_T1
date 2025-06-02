@@ -17,7 +17,7 @@ UIdleCameraShake::UIdleCameraShake()
     Pattern->Yaw.Frequency = 0.8f;
 
     Pattern->Pitch.Amplitude = 0.2f;
-    Pattern->Pitch.Frequency = 1.5f;
+    Pattern->Pitch.Frequency = 1.1f;
 
     Pattern->Roll.Amplitude = 0.f;
     Pattern->Roll.Frequency = 1.f;
@@ -29,10 +29,10 @@ UIdleCameraShake::UIdleCameraShake()
     Pattern->X.Amplitude = 0.f;
     Pattern->X.Frequency = 1.f;
 
-    Pattern->Y.Amplitude = 0.2f;
+    Pattern->Y.Amplitude = 0.5f;
     Pattern->Y.Frequency = 1.f;
 
-    Pattern->Z.Amplitude = 0.1f;
+    Pattern->Z.Amplitude = 0.5f;
     Pattern->Z.Frequency = 0.4f;
     
     SetRootShakePattern(Pattern);
