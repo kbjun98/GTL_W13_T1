@@ -1,6 +1,7 @@
 #include "GameMode.h"
 #include "LuaScripts/LuaScriptComponent.h"
 #include "EngineLoop.h"
+#include "PlayerStart.h"
 #include "SoundManager.h"
 #include "InputCore/InputCoreTypes.h"
 #include "Camera/CameraComponent.h"
@@ -151,6 +152,25 @@ APawn* AGameMode::SpawnDefaultPlayer()
     APawn* PlayerPawn = Cast<APawn>(GEngine->ActiveWorld->SpawnActor(DefaultPawnClass));
     PlayerPawn->SetActorLabel(TEXT("OBJ_PLAYER"));
     PlayerPawn->SetActorTickInEditor(false);
+
+    const FTransform& Transform = GetPlayerStartTransform();
+    PlayerPawn->SetActorLocation(Transform.GetTranslation());
+    PlayerPawn->SetActorRotation(Transform.GetRotation().Rotator());
     GEngine->ActiveWorld->SetMainPlayer(PlayerPawn);
     return PlayerPawn;
+}
+
+FTransform AGameMode::GetPlayerStartTransform() const
+{
+    FVector Location = FVector::ZeroVector;
+    FRotator Rotation = FRotator::ZeroRotator;
+
+    for (auto Iter : TObjectRange<APlayerStart>())
+    {
+        Location = Iter->GetActorLocation();
+        Rotation = Iter->GetActorRotation();
+        break;
+    }
+
+    return FTransform(Rotation, Location, FVector::OneVector);
 }
