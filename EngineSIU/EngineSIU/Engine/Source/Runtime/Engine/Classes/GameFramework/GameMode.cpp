@@ -54,11 +54,6 @@ void AGameMode::PostSpawnInitialize()
     HandleStartingNewPlayer();
 }
 
-void AGameMode::InitializeComponent()
-{
-
-}
-
 UObject* AGameMode::Duplicate(UObject* InOuter)
 {
     AGameMode* NewActor = Cast<AGameMode>(Super::Duplicate(InOuter));
