@@ -193,14 +193,6 @@ APawn* UWorld::GetMainPlayer() const
         return MainPlayer;
     }
     
-    //메인플레이어 설정안하면 있는거중 한개
-    for (const auto Iter: TObjectRange<APawn>())
-    {
-        if (Iter->GetWorld() == GEngine->ActiveWorld)
-        {
-            return Iter;
-        }
-    }
     
     return nullptr;
 }

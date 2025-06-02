@@ -6,6 +6,7 @@
 #include "Animation/AnimSequence.h"
 #include "Engine/SkeletalMesh.h"
 #include <Animation/AnimationRuntime.h>
+#include <Animation/RabbitAnimStateMachine.h>
 
 RabbitAnimInstance::RabbitAnimInstance()
     : PrevAnim(nullptr)
@@ -23,7 +24,7 @@ RabbitAnimInstance::RabbitAnimInstance()
     , BlendDuration(0.2f)
     , bIsBlending(false)
 {
-    StateMachine = FObjectFactory::ConstructObject<UAnimStateMachine>(nullptr);
+    StateMachine = FObjectFactory::ConstructObject<RabbitAnimStateMachine>(this);
     Idle = UAssetManager::Get().GetAnimation(FString("Contents/Bunny/Idle"));
     Walk = UAssetManager::Get().GetAnimation(FString("Contents/Bunny/Walk"));
     Attack = UAssetManager::Get().GetAnimation(FString("Contents/Bunny/Attack"));
@@ -36,6 +37,8 @@ void RabbitAnimInstance::NativeInitializeAnimation()
 {
 
 }
+
+float temp = 0.f;
 
 void RabbitAnimInstance::NativeUpdateAnimation(float DeltaSeconds, FPoseContext& OutPose)
 {

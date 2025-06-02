@@ -2,6 +2,8 @@
 
 #include "Animation/AnimInstance.h"
 
+class RabbitAnimStateMachine;
+
 class RabbitAnimInstance : public UAnimInstance
 {
     DECLARE_CLASS(RabbitAnimInstance, UAnimInstance)
@@ -98,19 +100,25 @@ public:
 
     UAnimSequence* GetAnimForState(EAnimState InAnimState);
 
-    virtual UAnimStateMachine* GetStateMachine() const override { return StateMachine; }
-
+  
     virtual UAnimSequence* GetCurrAnim() const override { return CurrAnim; }
+    void SetCurrAnim(UAnimSequence* AnimSeq) { CurrAnim = AnimSeq; }
 
     virtual UAnimSequence* GetPrevAnim() const override { return PrevAnim; }
+    void SetPrevAnim(UAnimSequence* Animseq) { PrevAnim = Animseq; }
 
     virtual float GetBlendDuration() const override { return BlendDuration; }
 
     virtual void SetBlendDuration(float InBlendDuration) override { BlendDuration = InBlendDuration; }
-private:
+
+    void SetBlendStartTime(float Time) { BlendStartTime = Time; }
+
+    void SetIsBlending(bool State) { bIsBlending = State; }
+
     UAnimationAsset* Idle;
     UAnimationAsset* Walk;
     UAnimationAsset* Attack;
+private:
 
     float ElapsedTime;
 
@@ -140,6 +148,6 @@ private:
 
     bool bIsBlending;
 
-    UAnimStateMachine* StateMachine;
+    RabbitAnimStateMachine* StateMachine;
 };
 

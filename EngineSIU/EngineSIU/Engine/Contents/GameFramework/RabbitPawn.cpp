@@ -11,12 +11,11 @@
 void ARabbitPawn::PostSpawnInitialize()
 {
     APawn::PostSpawnInitialize();
-    
-    
-      UCapsuleComponent* Collision = AddComponent<UCapsuleComponent>("Collision_0");
-      Collision->SetHalfHeight(HalfHeight);
-      Collision->SetRadius(Radius);
-      RootComponent = Collision;
+        
+    UCapsuleComponent* Collision = AddComponent<UCapsuleComponent>("Collision_0");
+    Collision->SetHalfHeight(HalfHeight);
+    Collision->SetRadius(Radius);
+    RootComponent = Collision;
     
     SkeletalMeshComp = AddComponent<USkeletalMeshComponent>("Mesh_0");
     SkeletalMeshComp->SetupAttachment(RootComponent);
