@@ -22,11 +22,11 @@ bool USkeletalMeshComponent::bIsCPUSkinning = false;
 
 USkeletalMeshComponent::USkeletalMeshComponent()
     : AnimationMode(EAnimationMode::AnimationBlueprint)
+    , BonePoseContext(nullptr)
     , SkeletalMeshAsset(nullptr)
+    , bPlayAnimation(true)
     , AnimClass(nullptr)
     , AnimScriptInstance(nullptr)
-    , bPlayAnimation(true)
-    ,BonePoseContext(nullptr)
 {
     CPURenderData = std::make_unique<FSkeletalMeshRenderData>();
 }

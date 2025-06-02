@@ -98,8 +98,7 @@ public:
     virtual void SetAnimState(EAnimState InAnimState);
 
     UAnimSequence* GetAnimForState(EAnimState InAnimState);
-
-  
+    
     virtual UAnimSequence* GetCurrAnim() const { return CurrAnim; }
     void SetCurrAnim(UAnimSequence* AnimSeq) { CurrAnim = AnimSeq; }
 
@@ -117,8 +116,8 @@ public:
     UAnimationAsset* Idle;
     UAnimationAsset* Walk;
     UAnimationAsset* Attack;
-private:
 
+private:
     float ElapsedTime;
 
     float PlayRate;
