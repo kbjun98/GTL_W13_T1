@@ -95,20 +95,20 @@ public:
         CurrentKey = InCurrentKey;
     }
 
-    virtual void SetAnimState(EAnimState InAnimState) override;
+    virtual void SetAnimState(EAnimState InAnimState);
 
     UAnimSequence* GetAnimForState(EAnimState InAnimState);
 
   
-    virtual UAnimSequence* GetCurrAnim() const override { return CurrAnim; }
+    virtual UAnimSequence* GetCurrAnim() const { return CurrAnim; }
     void SetCurrAnim(UAnimSequence* AnimSeq) { CurrAnim = AnimSeq; }
 
-    virtual UAnimSequence* GetPrevAnim() const override { return PrevAnim; }
+    virtual UAnimSequence* GetPrevAnim() const { return PrevAnim; }
     void SetPrevAnim(UAnimSequence* Animseq) { PrevAnim = Animseq; }
 
-    virtual float GetBlendDuration() const override { return BlendDuration; }
+    virtual float GetBlendDuration() const { return BlendDuration; }
 
-    virtual void SetBlendDuration(float InBlendDuration) override { BlendDuration = InBlendDuration; }
+    virtual void SetBlendDuration(float InBlendDuration) { BlendDuration = InBlendDuration; }
 
     void SetBlendStartTime(float Time) { BlendStartTime = Time; }
 

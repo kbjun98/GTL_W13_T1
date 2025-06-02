@@ -8,6 +8,15 @@ class USkeletalMeshComponent;
 class ULuaScriptAnimInstance;
 class APawn;
 
+enum EAnimState
+{
+    AS_Idle,
+    AS_Dance,
+    AS_SlowRun,
+    AS_NarutoRun,
+    AS_FastRun,
+};
+
 class UAnimStateMachine : public UObject
 {
     DECLARE_CLASS(UAnimStateMachine, UObject)
