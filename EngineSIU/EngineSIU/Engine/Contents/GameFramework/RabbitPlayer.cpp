@@ -57,7 +57,7 @@ void ARabbitPlayer::Tick(float DeltaTime)
 UObject* ARabbitPlayer::Duplicate(UObject* InOuter)
 {
     ARabbitPlayer* NewPawn = Cast<ARabbitPlayer>(Super::Duplicate(InOuter));
-    RabbitCam = std::make_shared<RabbitCamera>();
+    NewPawn->RabbitCam = std::make_shared<RabbitCamera>();
     return NewPawn;
 }
 
