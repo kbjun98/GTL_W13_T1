@@ -42,8 +42,9 @@ UObject* USkeletalMeshComponent::Duplicate(UObject* InOuter)
     ThisClass* NewComponent = Cast<ThisClass>(Super::Duplicate(InOuter));
 
     NewComponent->SetRelativeTransform(GetRelativeTransform());
-    NewComponent->SetSkeletalMeshAsset(SkeletalMeshAsset);
     NewComponent->SetAnimationMode(AnimationMode);
+    NewComponent->SetAnimInstance(AnimScriptInstance);
+    NewComponent->SetSkeletalMeshAsset(SkeletalMeshAsset);
     if (AnimationMode == EAnimationMode::AnimationBlueprint)
     {
         NewComponent->SetAnimClass(AnimClass);
@@ -55,8 +56,8 @@ UObject* USkeletalMeshComponent::Duplicate(UObject* InOuter)
     {
         NewComponent->SetAnimation(GetAnimation());
     }
-    NewComponent->SetLooping(this->IsLooping());
-    NewComponent->SetPlaying(this->IsPlaying());
+    //NewComponent->SetLooping(this->IsLooping());
+    //NewComponent->SetPlaying(this->IsPlaying());
     return NewComponent;
 }
 
@@ -264,6 +265,7 @@ void USkeletalMeshComponent::EndPhysicsTickComponent(float DeltaTime)
 
 void USkeletalMeshComponent::TickPose(float DeltaTime)
 {
+
     if (!ShouldTickAnimation())
     {
         return;
