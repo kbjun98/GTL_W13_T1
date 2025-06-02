@@ -6,15 +6,17 @@
 #include "GameFramework/PlayerController.h"
 #include "Math/JungleMath.h"
 #include "Components/SkeletalMeshComponent.h"
-#include <AnimInstance/RabbitAnimInstance.h>
+#include "AnimInstance/RabbitAnimInstance.h"
 
 void ARabbitPawn::PostSpawnInitialize()
 {
     APawn::PostSpawnInitialize();
-        
+    
     UCapsuleComponent* Collision = AddComponent<UCapsuleComponent>("Collision_0");
     Collision->SetHalfHeight(HalfHeight);
     Collision->SetRadius(Radius);
+    Collision->bSimulate = true;
+    Collision->RigidBodyType = ERigidBodyType::KINEMATIC;
     RootComponent = Collision;
     
     SkeletalMeshComp = AddComponent<USkeletalMeshComponent>("Mesh_0");

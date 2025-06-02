@@ -34,7 +34,7 @@ private:
     USkeletalMeshComponent* SkeletalMeshComp;
 
     float HalfHeight = 40.f;
-    float Radius = 30.f;
+    float Radius = 20.f;
 
     float RotateSpeed = 100.0f;
     float MoveSpeed = 100.0f; // 이동 속도

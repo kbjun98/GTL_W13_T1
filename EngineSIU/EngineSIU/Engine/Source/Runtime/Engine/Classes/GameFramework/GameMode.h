@@ -51,6 +51,8 @@ public:
     APlayerController* SpawnPlayerController();
     APawn* SpawnDefaultPlayer();
 
+    FTransform GetPlayerStartTransform() const;
+
     FOnGameInit OnGameInit;
     FOnGameStart OnGameStart;
     FOnGameEnd OnGameEnd;

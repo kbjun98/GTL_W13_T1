@@ -5,6 +5,7 @@
 #include <UObject/UObjectIterator.h>
 #include "Engine/Contents/GameFramework/RabbitPlayer.h"
 
+
 inline ImVec2 operator*(const ImVec2& lhs, float rhs) {
     return ImVec2(lhs.x * rhs, lhs.y * rhs);
 }
@@ -66,8 +67,8 @@ void RabbitGameUIPanel::OnResize(HWND hWnd)
 {
     RECT ClientRect;
     GetClientRect(hWnd, &ClientRect);
-    // Width = ClientRect.right - ClientRect.left;
-    // Height = ClientRect.bottom - ClientRect.top;
+     Width = ClientRect.right - ClientRect.left;
+     Height = ClientRect.bottom - ClientRect.top;
 }
 
 

@@ -32,7 +32,10 @@ UObject* ULevel::Duplicate(UObject* InOuter)
 
     for (AActor* Actor : Actors)
     {
-        NewLevel->Actors.Emplace(static_cast<AActor*>(Actor->Duplicate(InOuter)));
+        if (AActor* DuplicateActor = static_cast<AActor*>(Actor->Duplicate(InOuter)))
+        {
+            NewLevel->Actors.Emplace(DuplicateActor);
+        }
     }
 
     return NewLevel;

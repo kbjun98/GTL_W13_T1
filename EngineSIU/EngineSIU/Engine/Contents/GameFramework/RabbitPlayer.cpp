@@ -3,6 +3,7 @@
 #include "Math/JungleMath.h"
 #include "RabbitMovementComponent.h"
 #include "Camera/CameraShakeBase.h"
+#include "Components/CameraMeshComponent.h"
 
 void ARabbitPlayer::PostSpawnInitialize()
 {
@@ -10,6 +11,9 @@ void ARabbitPlayer::PostSpawnInitialize()
     
     UCameraComponent* Camera = AddComponent<UCameraComponent>("Camera_0");
     Camera->SetupAttachment(RootComponent);
+
+    CameraMesh = AddComponent<UCameraMeshComponent>("CameraMesh_0");
+    CameraMesh->SetupAttachment(Camera);
 
     RabbitCam = std::make_shared<RabbitCamera>();
 }
@@ -57,7 +61,7 @@ void ARabbitPlayer::Tick(float DeltaTime)
 UObject* ARabbitPlayer::Duplicate(UObject* InOuter)
 {
     ARabbitPlayer* NewPawn = Cast<ARabbitPlayer>(Super::Duplicate(InOuter));
-    RabbitCam = std::make_shared<RabbitCamera>();
+    NewPawn->RabbitCam = std::make_shared<RabbitCamera>();
     return NewPawn;
 }
 
@@ -90,7 +94,6 @@ std::shared_ptr<RabbitCamera> ARabbitPlayer::GetRabbitCamera()
 {
     return RabbitCam;
 }
-
 
 void ARabbitPlayer::Jump()
 {

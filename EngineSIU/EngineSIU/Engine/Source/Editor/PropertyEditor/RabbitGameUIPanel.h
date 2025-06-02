@@ -17,6 +17,9 @@ private:
     void RenderGallery();
     bool RegisterPlayerCamera();
 
+    float Width;
+    float Height;
+
     std::shared_ptr<RabbitCamera> PlayerCam;
 
     bool showLargeView = false;

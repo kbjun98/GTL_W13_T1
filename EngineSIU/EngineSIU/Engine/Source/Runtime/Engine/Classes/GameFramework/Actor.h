@@ -96,9 +96,9 @@ public:
     virtual FVector GetActorRightVector() const { return RootComponent ? RootComponent->GetRightVector() : FVector::RightVector; }
     virtual FVector GetActorUpVector() const { return RootComponent ? RootComponent->GetUpVector() : FVector::UpVector; }
 
-    bool SetActorLocation(const FVector& NewLocation);
-    bool SetActorRotation(const FRotator& NewRotation);
-    bool SetActorScale(const FVector& NewScale);
+    virtual bool SetActorLocation(const FVector& NewLocation);
+    virtual bool SetActorRotation(const FRotator& NewRotation);
+    virtual bool SetActorScale(const FVector& NewScale);
 
     bool AddActorLocation(const FVector& DeltaLocation);
     bool AddActorRotation(const FRotator& DeltaRotation);
