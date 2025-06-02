@@ -23,7 +23,7 @@ void ARabbitGameMode::BeginPlay()
     {
         if (ARabbitPawn* Rabbit = Cast<ARabbitPawn>(PlayerContoller->GetPawn()))
         {
-            if (std::shared_ptr<RabbitCamera> Camera = Rabbit->GetPlayerCamera())
+            if (std::shared_ptr<RabbitCamera> Camera = Rabbit->GetRabbitCamera())
             {
                 Camera->OnPictureTaken.BindLambda([&](UPrimitiveComponent* Comp) 
                     {

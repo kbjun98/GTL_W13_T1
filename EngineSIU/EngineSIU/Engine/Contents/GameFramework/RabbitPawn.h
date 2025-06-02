@@ -2,6 +2,7 @@
 #include "GameFramework/Pawn.h"
 
 class URabbitMovementComponent;
+class RabbitCamera;
 
 class ARabbitPawn : public APawn
 {
@@ -18,7 +19,7 @@ public:
     
     virtual void Tick(float DeltaTime) override;
 
-    std::shared_ptr<RabbitCamera> GetPlayerCamera();
+    std::shared_ptr<RabbitCamera> GetRabbitCamera();
 
     virtual FVector GetActorForwardVector() const override;
     virtual FVector GetActorRightVector() const override;
@@ -40,7 +41,7 @@ private:
 
     float RotateSpeed = 100.0f;
 
-    std::shared_ptr<PlayerCamera> PlayerCam = nullptr;
+    std::shared_ptr<RabbitCamera> RabbitCam = nullptr;
 
     UPROPERTY(EditAnywhere, int32, MaxHealth, = 100)
     UPROPERTY(EditAnywhere, int32, CurrentHealth, = 100)

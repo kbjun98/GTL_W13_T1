@@ -13,9 +13,9 @@ void FCameraEffectRenderPass::PrepareRenderArr()
     //TODO 일단 플레이어로 가정
     for (auto Rabbit : TObjectRange<ARabbitPawn>())
     {
-        if (Rabbit->GetPlayerCamera())
+        if (Rabbit->GetRabbitCamera())
         {
-            CurrentApertureProgress = Rabbit->GetPlayerCamera()->GetCurrentApertureProgress();
+            CurrentApertureProgress = Rabbit->GetRabbitCamera()->GetCurrentApertureProgress();
         }
     }
 }

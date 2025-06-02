@@ -89,7 +89,7 @@ void ARabbitPawn::Tick(float DeltaTime)
     }
 }
 
-std::shared_ptr<RabbitCamera> ARabbitPawn::GetPlayerCamera()
+std::shared_ptr<RabbitCamera> ARabbitPawn::GetRabbitCamera()
 {
     return RabbitCam;
 }

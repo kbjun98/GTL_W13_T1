@@ -189,9 +189,9 @@ void ARabbitController::TakePicture()
 
     if (ARabbitPawn* RabbitPawn = Cast<ARabbitPawn>(PossessedPawn))
     {
-        if (RabbitPawn->GetPlayerCamera())
+        if (RabbitPawn->GetRabbitCamera())
         {
-            RabbitPawn->GetPlayerCamera()->TakePicture();
+            RabbitPawn->GetRabbitCamera()->TakePicture();
         }
     }
 }
