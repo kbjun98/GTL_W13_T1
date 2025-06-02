@@ -115,6 +115,7 @@ public:
     static bool GetCPUSkinning();
 
     UAnimInstance* GetAnimInstance() const { return AnimScriptInstance; }
+    void SetAnimInstance(UAnimInstance* AnimInsatnce) { AnimScriptInstance = AnimInsatnce; }
 
     void SetAnimationMode(EAnimationMode InAnimationMode);
 
