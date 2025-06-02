@@ -5,15 +5,21 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "Math/JungleMath.h"
+#include "Components/SkeletalMeshComponent.h"
 
 void ARabbitPawn::PostSpawnInitialize()
 {
     APawn::PostSpawnInitialize();
 
+
     UCapsuleComponent* Collision = AddComponent<UCapsuleComponent>("Collision_0");
     Collision->SetHalfHeight(HalfHeight);
     Collision->SetRadius(Radius);
     RootComponent = Collision;
+
+    USkeletalMeshComponent* Mesh = AddComponent<USkeletalMeshComponent>("Mesh_0");
+    Mesh->SetupAttachment(RootComponent);
+    Mesh->SetRelativeLocation(FVector(0.f, 0.f, -40.0f));
     
     UCameraComponent* Camera = AddComponent<UCameraComponent>("Camera_0");
     Camera->SetupAttachment(RootComponent);
