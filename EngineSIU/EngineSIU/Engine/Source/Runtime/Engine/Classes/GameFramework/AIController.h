@@ -31,6 +31,8 @@ protected:
 
     bool bMoving = false;
 
+    APawn* TargetPawn = nullptr; // 이동할 대상 Pawn
+
     //float CellTolerance = 1.0f;
 protected:
     void MoveAlongPath(float DeltaTime);

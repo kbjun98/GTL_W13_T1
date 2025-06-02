@@ -3,6 +3,8 @@
 #include "Engine/Contents/Navigation/PathFinder.h"
 #include "Engine/World/World.h"
 #include "Engine/Contents/GameFramework/ChasePawn.h"
+#include "Engine/Contents/GameFramework/RabbitPlayer.h"
+#include "RabbitEnemy.h"
 
 void AChaserController::Tick(float DeltaTime)
 {
@@ -21,14 +23,13 @@ void AChaserController::Tick(float DeltaTime)
     {
         // FIXME : NodeGrid에서 FVector 반환하도록 변경.
         FVector NextTarget = FVector(CurrentPath[CurrentPathIndex]->X, CurrentPath[CurrentPathIndex]->Y, GetActorLocation().Z);
-        ChasePawn->SetTargetLocation(NextTarget);
+        GetPossesedRabbitEnemy()->SetTargetLocation(NextTarget);
     }
 }
 
 void AChaserController::UpdatePath()
 {
-    AActor* Player = GetWorld()->GetMainPlayer();
-    if (!Player || !ChasePawn)
+    if (!GetPossesedRabbitEnemy()|| !GetTargetRabbitPlayer())
     {
         UE_LOG(ELogLevel::Warning, "Invalid Player or ChasePawn");
         return;
@@ -48,9 +49,15 @@ void AChaserController::UpdatePath()
     CurrentPathIndex = 0;
 }
 
-void AChaserController::SetChasePawn(AChasePawn* InPawn)
+ARabbitPlayer* AChaserController::GetTargetRabbitPlayer()
 {
-    ChasePawn = InPawn;
+    return Cast<ARabbitPlayer>(TargetPawn);
 }
+
+ARabbitEnemy* AChaserController::GetPossesedRabbitEnemy()
+{
+    return Cast<ARabbitEnemy>(PossessedPawn);
+}
+
 
 
