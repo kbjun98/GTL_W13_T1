@@ -43,6 +43,7 @@
 #include "GameFramework/TestVolume.h"
 #include "Particles/ParticleSystemComponent.h"
 #include <Engine/Contents/Actors/GridMapActor.h>
+#include "Engine/Contents/GameFramework/RabbitEnemy.h"
 
 ControlEditorPanel::ControlEditorPanel()
 {
@@ -375,7 +376,7 @@ void ControlEditorPanel::CreateModifyButton(const ImVec2 ButtonSize, ImFont* Ico
             { .Label = "SkeletalMeshActor", .OBJ = OBJ_SKELETALMESH },
             { .Label = "SequencerPlayer",   .OBJ = OBJ_SEQUENCERPLAYER },
             {.Label = "GridMapTestActor",   .OBJ = OBJ_GRIDMAPTESTACTOR },
-            { .Label = "RabbitPawn",        .OBJ = OBJ_RABBITPAWN },
+            { .Label = "RabbitEnemy",        .OBJ = OBJ_RABBITENEMY },
             { .Label = "TestVolume",        .OBJ = OBJ_TESTVOLUME }
         };
 
@@ -508,10 +509,11 @@ void ControlEditorPanel::CreateModifyButton(const ImVec2 ButtonSize, ImFont* Ico
                     SpawnedActor->SetActorLabel(TEXT("OBJ_SEQUENCERPLAYER"));
                     break;
                 }
-                case OBJ_RABBITPAWN:
+                case OBJ_RABBITENEMY:
                 {
-                    SpawnedActor = World->SpawnActor<ARabbitPawn>();
-                    SpawnedActor->SetActorLabel(TEXT("OBJ_RABBITPAWN"));
+                    SpawnedActor = World->SpawnActor<ARabbitEnemy>();
+                    SpawnedActor->SetActorLabel(TEXT("OBJ_RABBITENEMY"));
+                    break;
                 }
                 case OBJ_CAMERA:
                 case OBJ_PLAYER:
