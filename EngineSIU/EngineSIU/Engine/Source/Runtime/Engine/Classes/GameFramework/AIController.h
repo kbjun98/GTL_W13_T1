@@ -27,7 +27,7 @@ protected:
 
     FPathFinder* PathFinder;
 
-    TArray<FGridNode*> CurrentPath; // 경로를 저장하는 배열
+    TArray<FVector> CurrentPath; // 경로를 저장하는 배열
     
     int32 CurrentPathIndex = 0; // 현재 경로의 인덱스
     
@@ -45,5 +45,10 @@ protected:
     void MoveAlongPath(float DeltaTime);
     
     bool IsPathValid() const;   
+
+private:    
+    float PathUpdateInterval = 1.0f;
+    float PathUpdateTimer = 0.0f;
+
 };
 

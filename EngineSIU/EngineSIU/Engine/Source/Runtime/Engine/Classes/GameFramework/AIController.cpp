@@ -9,7 +9,7 @@ void AAIController::PostSpawnInitialize()
     Super::PostSpawnInitialize();
     GridMap = new FGridMap();
     PathFinder = new FPathFinder();
-    GridMap->LoadMapFromFile("Engine/Contents/Resources/Map.txt");
+    GridMap->InitializeGridMap();
 }
 
 UObject* AAIController::Duplicate(UObject* InOuter)
@@ -21,7 +21,12 @@ UObject* AAIController::Duplicate(UObject* InOuter)
 void AAIController::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-    //UpdatePath();
+    PathUpdateTimer += DeltaTime;
+    if (PathUpdateTimer >= PathUpdateInterval)
+    {
+        PathUpdateTimer = 0.0f;
+        //UpdatePath();
+    }
 }
 
 void AAIController::UpdatePath()
@@ -30,11 +35,8 @@ void AAIController::UpdatePath()
     {
         FVector StartLocation = PossessedPawn->GetActorLocation();
         FVector TargetLocation = TargetPawn->GetActorLocation();
-        CurrentPath = PathFinder->FindPath(
-            *GridMap,
-            GridMap->GetNode(StartLocation.X, StartLocation.Y),
-            GridMap->GetNode(TargetLocation.X, TargetLocation.Y)
-        );
+        CurrentPath = PathFinder->FindWorlPosPathByWorldPos(
+            *GridMap, StartLocation, TargetLocation);
     }
     else
     {

@@ -21,8 +21,8 @@ void AChaserController::Tick(float DeltaTime)
     if (IsPathValid())
     {
         // FIXME : NodeGrid에서 FVector 반환하도록 변경.
-        FVector NextTarget = FVector(CurrentPath[CurrentPathIndex]->X, CurrentPath[CurrentPathIndex]->Y, GetActorLocation().Z);
-        GetPossesedRabbitEnemy()->SetTargetLocation(NextTarget);
+        //FVector NextTarget = FVector(CurrentPath[CurrentPathIndex]->X, CurrentPath[CurrentPathIndex]->Y, GetActorLocation().Z);
+        //GetPossesedRabbitEnemy()->SetTargetLocation(NextTarget);
     }
 }
 
@@ -43,7 +43,7 @@ void AChaserController::UpdatePath()
     FGridNode* Node = new FGridNode();
     Node->X = TargetLocation.X;
     Node->Y = TargetLocation.Y;
-    CurrentPath.Add(Node);
+    //CurrentPath.Add(Node);
 
     CurrentPathIndex = 0;
 }
