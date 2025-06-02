@@ -26,10 +26,12 @@ void ARabbitGameMode::BeginPlay()
         {
             if (std::shared_ptr<RabbitCamera> Camera = Rabbit->GetRabbitCamera())
             {
+                Camera->InitPictureArraySize(EPhotoTypeSize);
+
                 Camera->OnPictureTaken.BindLambda(
-                    [this](UPrimitiveComponent* Comp) 
+                    [this](UPrimitiveComponent* Comp,RabbitCamera* RabbitCam) 
                     {
-                        this->JudgeCapturedPhoto(Comp);
+                        this->JudgeCapturedPhoto(Comp,RabbitCam);
                     }
                 );
             }
@@ -37,7 +39,7 @@ void ARabbitGameMode::BeginPlay()
     }
 }
 
-void ARabbitGameMode::JudgeCapturedPhoto(UPrimitiveComponent* CapturedComp)
+void ARabbitGameMode::JudgeCapturedPhoto(UPrimitiveComponent* CapturedComp, RabbitCamera* RabbitCam)
 {
     if (UStaticMeshComponent* Comp = Cast<UStaticMeshComponent>(CapturedComp))
     {
@@ -54,6 +56,7 @@ void ARabbitGameMode::JudgeCapturedPhoto(UPrimitiveComponent* CapturedComp)
         {
             CapturedPhotoTypes.Add(CapturedType);
 
+            RabbitCam->StorePicture(CapturedType);
             // 로그 출력 (선택)
             std::cout << "Captured: " << static_cast<int>(CapturedType) << std::endl;
 
