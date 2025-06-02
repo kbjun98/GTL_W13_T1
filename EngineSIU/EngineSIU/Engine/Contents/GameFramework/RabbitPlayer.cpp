@@ -100,6 +100,32 @@ void ARabbitPlayer::Jump()
     }
 }
 
+void ARabbitPlayer::ZoomIn(float DeltaTime)
+{
+    if (!IsADS())
+    {
+        return;
+    }
+
+    const float CurrentFOV = GetFOV();
+    float NextFOV = CurrentFOV - FOVChangeSpeed * DeltaTime;
+    NextFOV = FMath::Clamp(NextFOV, MinFOV_ADS, MaxFOV_ADS);
+    SetFOV(NextFOV);
+}
+
+void ARabbitPlayer::ZoomOut(float DeltaTime)
+{
+    if (!IsADS())
+    {
+        return;
+    }
+
+    const float CurrentFOV = GetFOV();
+    float NextFOV = CurrentFOV + FOVChangeSpeed * DeltaTime;
+    NextFOV = FMath::Clamp(NextFOV, MinFOV_ADS, MaxFOV_ADS);
+    SetFOV(NextFOV);
+}
+
 void ARabbitPlayer::TakePicture()
 {
     if (IsADS() && GetRabbitCamera())
@@ -126,27 +152,38 @@ void ARabbitPlayer::StartADS()
 {
     CameraShakeInstance = GetPlayerController()->PlayerCameraManager->StartCameraShake(IdleCameraShake);
 
-    if (UCameraComponent* CameraComp = GetComponentByClass<UCameraComponent>())
-    {
-        CameraComp->ViewFOV = DefaultADSFOV;
-    }
-    else if (GetPlayerController())
-    {
-        GetPlayerController()->PlayerCameraManager->SetFOV(DefaultADSFOV);
-    }
+    SetFOV(DefaultFOV_ADS);
 }
 
 void ARabbitPlayer::EndADS()
 {
     GetPlayerController()->PlayerCameraManager->StopCameraShake(CameraShakeInstance, true);
     CameraShakeInstance = nullptr;
-    
+
+    SetFOV(DefaultFOV);
+}
+
+void ARabbitPlayer::SetFOV(float FOV)
+{
     if (UCameraComponent* CameraComp = GetComponentByClass<UCameraComponent>())
     {
-        CameraComp->ViewFOV = DefaultFOV;
+        CameraComp->ViewFOV = FOV;
     }
     else if (GetPlayerController())
     {
-        GetPlayerController()->PlayerCameraManager->SetFOV(DefaultFOV);
+        GetPlayerController()->PlayerCameraManager->SetFOV(FOV);
     }
+}
+
+float ARabbitPlayer::GetFOV() const
+{
+    if (UCameraComponent* CameraComp = GetComponentByClass<UCameraComponent>())
+    {
+        return CameraComp->ViewFOV;
+    }
+    else if (GetPlayerController())
+    {
+        return GetPlayerController()->PlayerCameraManager->GetFOV();
+    }
+    return 0.f;
 }

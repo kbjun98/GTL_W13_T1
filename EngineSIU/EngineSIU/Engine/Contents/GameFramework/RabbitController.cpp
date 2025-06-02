@@ -44,6 +44,8 @@ void ARabbitController::SetupInputComponent()
     InputComponent->BindAction("S", [this](float DeltaTime) { MoveBack(); });
     InputComponent->BindAction("D", [this](float DeltaTime) { MoveRight(); });
     InputComponent->BindAction("A", [this](float DeltaTime) { MoveLeft(); });
+    InputComponent->BindAction("E", [this](float DeltaTime) { ZoomIn(DeltaTime); });
+    InputComponent->BindAction("Q", [this](float DeltaTime) { ZoomOut(DeltaTime); });
 
     InputComponent->BindAction("SPACE_Pressed", [this](float DeltaTime) { Jump(); });
 
@@ -119,6 +121,32 @@ void ARabbitController::Jump()
     if (ARabbitPlayer* Pawn = Cast<ARabbitPlayer>(GetPawn()))
     {
         Pawn->Jump();
+    }
+}
+
+void ARabbitController::ZoomIn(float DeltaTime)
+{
+    if (CurrentInputMode == EInputMode::UIOnly)
+    {
+        return;
+    }
+    
+    if (ARabbitPlayer* Pawn = Cast<ARabbitPlayer>(GetPawn()))
+    {
+        Pawn->ZoomIn(DeltaTime);
+    }
+}
+
+void ARabbitController::ZoomOut(float DeltaTime)
+{
+    if (CurrentInputMode == EInputMode::UIOnly)
+    {
+        return;
+    }
+    
+    if (ARabbitPlayer* Pawn = Cast<ARabbitPlayer>(GetPawn()))
+    {
+        Pawn->ZoomOut(DeltaTime);
     }
 }
 

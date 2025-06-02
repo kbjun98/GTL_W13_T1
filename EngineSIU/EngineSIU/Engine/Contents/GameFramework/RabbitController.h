@@ -30,6 +30,9 @@ private:
     void MoveLeft();
 
     void Jump();
+
+    void ZoomIn(float DeltaTime);
+    void ZoomOut(float DeltaTime);
     
     virtual void AddYawInput(float Value) override;
     virtual void AddPitchInput(float Value) override;

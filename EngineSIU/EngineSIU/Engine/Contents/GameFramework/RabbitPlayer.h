@@ -26,6 +26,9 @@ public:
     virtual FVector GetActorRightVector() const override;
 
     void Jump();
+
+    void ZoomIn(float DeltaTime);
+    void ZoomOut(float DeltaTime);
     
     bool IsADS() const { return bIsADS; }
 
@@ -36,14 +39,21 @@ public:
 protected:
     void StartADS();
     void EndADS();
+
+    void SetFOV(float FOV);
+    float GetFOV() const;
     
 private:
     std::shared_ptr<RabbitCamera> RabbitCam = nullptr;
     
     bool bIsADS = false;
 
-    float DefaultADSFOV = 50.f;
+    float DefaultFOV_ADS = 70.f;
     float DefaultFOV = 100.f;
+
+    float MaxFOV_ADS = 90.f;
+    float MinFOV_ADS = 30.f;
+    float FOVChangeSpeed = 50.f;
 
     TSubclassOf<UCameraShakeBase> IdleCameraShake = UClass::FindClass("UIdleCameraShake");
 
