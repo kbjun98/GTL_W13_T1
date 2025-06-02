@@ -321,11 +321,11 @@ void FRenderer::Render(const std::shared_ptr<FEditorViewportClient>& Viewport)
     RenderEditorOverlay(Viewport);
     RenderPostProcess(Viewport);
 
-    RenderFinalResult(Viewport);
-
     // Begin W13
     RenderW13(Viewport);
     // End W13
+
+    RenderFinalResult(Viewport);
 
     EndRender();
 }

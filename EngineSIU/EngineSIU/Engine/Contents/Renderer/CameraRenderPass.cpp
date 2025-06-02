@@ -24,12 +24,14 @@ void FCameraRenderPass::PrepareRenderArr()
                 if (Rabbit->IsADS())
                 {
                     bShouldRender = true;
+                    RabbitPawn = Rabbit;
                     return;
                 }
             }
         }
     }
     bShouldRender = false;
+    RabbitPawn = nullptr;
 }
 
 void FCameraRenderPass::ClearRenderArr()
@@ -40,11 +42,25 @@ void FCameraRenderPass::ClearRenderArr()
 void FCameraRenderPass::Render(const std::shared_ptr<FEditorViewportClient>& Viewport)
 {
     PrepareRender(Viewport);
-
-    if (bShouldRender)
+    
+    APlayerCameraManager* PCM = nullptr;
+    float TextureAspectRatio = 1.f;
+    
+    if (bShouldRender && RabbitPawn)
     {
         auto Texture = FEngineLoop::ResourceManager.GetTexture(L"Contents/Texture/CameraViewFinder.png");
         Graphics->DeviceContext->PSSetShaderResources(0, 1, &Texture->TextureSRV);
+        
+        D3D11_TEXTURE2D_DESC Desc;
+        Texture->Texture->GetDesc(&Desc);
+        const float TextureHeight = static_cast<float>(Desc.Height);
+        const float TextureWidth = static_cast<float>(Desc.Width);
+        TextureAspectRatio = TextureWidth / TextureHeight;
+        
+        if (APlayerController* PC = RabbitPawn->GetPlayerController())
+        {
+            PCM = PC->PlayerCameraManager;
+        }
     }
     else
     {
@@ -52,8 +68,51 @@ void FCameraRenderPass::Render(const std::shared_ptr<FEditorViewportClient>& Vie
         Graphics->DeviceContext->PSSetShaderResources(0, 1, NullSRV);
     }
     
-    FQuadTransform Transform;
-    BufferManager->UpdateConstantBuffer<FQuadTransform>("FSlateTransform", Transform);
+    FQuadTransform QuadTransform;
+    if (PCM)
+    {
+        const float LetterBoxAspectRatio = PCM->GetLetterBoxRatio();
+
+        const FRect& Rect = Viewport->GetViewport()->GetRect();
+        const float ScreenWidth = Rect.Width;
+        const float ScreenHeight = Rect.Height;
+        const float ScreenAspectRatio = ScreenWidth / ScreenHeight;
+
+        float ActualSceneRenderWidth;
+        float ActualSceneRenderHeight;
+        if (ScreenAspectRatio > LetterBoxAspectRatio)
+        {
+            ActualSceneRenderHeight = ScreenHeight;
+            ActualSceneRenderWidth = ActualSceneRenderHeight * LetterBoxAspectRatio;
+        }
+        else
+        {
+            ActualSceneRenderWidth = ScreenWidth;
+            ActualSceneRenderHeight = ActualSceneRenderWidth / LetterBoxAspectRatio;
+        }
+        
+        float TargetTextureWidth;
+        float TargetTextureHeight;
+        if (LetterBoxAspectRatio > TextureAspectRatio)
+        {
+            TargetTextureHeight = ActualSceneRenderHeight;
+            TargetTextureWidth = TargetTextureHeight * TextureAspectRatio;
+        }
+        else
+        {
+            TargetTextureWidth = ActualSceneRenderWidth;
+            TargetTextureHeight = TargetTextureWidth / TextureAspectRatio;
+        }
+
+        QuadTransform.Scale.X = TargetTextureWidth / ScreenWidth;
+        QuadTransform.Scale.Y = TargetTextureHeight / ScreenHeight;
+
+        constexpr float MarginScaleFactor = 0.8f;
+        QuadTransform.Scale.X *= MarginScaleFactor;
+        QuadTransform.Scale.Y *= MarginScaleFactor;
+    }
+    
+    BufferManager->UpdateConstantBuffer<FQuadTransform>("FSlateTransform", QuadTransform);
     Graphics->DeviceContext->Draw(6, 0);
 
     CleanUpRender(Viewport);
@@ -77,10 +136,6 @@ void FCameraRenderPass::PrepareRender(const std::shared_ptr<FEditorViewportClien
     Graphics->DeviceContext->PSSetShader(PixelShader, nullptr, 0);
 
     BufferManager->BindConstantBuffer(TEXT("FSlateTransform"), 0, EShaderStage::Vertex);
-
-    // Resource
-    FRenderTargetRHI* CompositeResultRHI = Viewport->GetViewportResource()->GetRenderTarget(EResourceType::ERT_Compositing);
-    Graphics->DeviceContext->PSSetShaderResources(1, 1, &CompositeResultRHI->SRV);
 }
 
 void FCameraRenderPass::CleanUpRender(const std::shared_ptr<FEditorViewportClient>& Viewport)
@@ -89,7 +144,6 @@ void FCameraRenderPass::CleanUpRender(const std::shared_ptr<FEditorViewportClien
 
     ID3D11ShaderResourceView* NullSRV[1] = { nullptr };
     Graphics->DeviceContext->PSSetShaderResources(0, 1, NullSRV);
-    Graphics->DeviceContext->PSSetShaderResources(1, 1, NullSRV);
 }
 
 void FCameraRenderPass::CreateResource()

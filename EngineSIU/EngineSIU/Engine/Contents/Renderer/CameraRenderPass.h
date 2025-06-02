@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "RenderPassBase.h"
 
+class ARabbitPawn;
+
 struct FQuadTransform
 {
     FVector2D Scale = FVector2D(1.0f, 1.0f);
@@ -25,4 +27,5 @@ protected:
     virtual void CreateResource() override;
 
     bool bShouldRender = false;
+    ARabbitPawn* RabbitPawn = nullptr;
 };

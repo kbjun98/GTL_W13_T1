@@ -1,6 +1,5 @@
 
 Texture2D Texture : register(t0);
-Texture2D CompositeResultTexture : register(t1);
 
 SamplerState Sampler : register(s1); // Linear Clamp
 
@@ -50,7 +49,6 @@ PS_Input mainVS(uint VertexID : SV_VertexID)
 
 float4 mainPS(PS_Input Input) : SV_TARGET
 {
-    float4 Base = CompositeResultTexture.Sample(Sampler, Input.UV);
     float4 Overlay = Texture.Sample(Sampler, Input.UV);
-    return lerp(Base, Overlay, Overlay.a);
+    return Overlay;
 }
