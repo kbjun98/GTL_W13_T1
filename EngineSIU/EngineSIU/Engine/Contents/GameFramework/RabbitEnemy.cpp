@@ -16,9 +16,14 @@ void ARabbitEnemy::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 
+
+}
+
+void ARabbitEnemy::RoatateToTarget(const FVector& Location)
+{
     if (USkeletalMeshComponent* SkeletalMeshComponent = GetComponentByClass<USkeletalMeshComponent>())
     {
-        FVector Dir = TargetLocation - GetActorLocation();
+        FVector Dir = Location - GetActorLocation();
         Dir.Z = 0.0f; // Z축 방향은 무시
         if (!Dir.IsNearlyZero())
         {
@@ -27,6 +32,5 @@ void ARabbitEnemy::Tick(float DeltaTime)
             float YawDeg = FMath::RadiansToDegrees(YawRad);
             SkeletalMeshComponent->SetWorldRotation(FRotator(0.0f, YawDeg, 0.0f).Quaternion());
         }
-
     }
 }

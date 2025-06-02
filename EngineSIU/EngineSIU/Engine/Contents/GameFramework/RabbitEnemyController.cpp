@@ -41,6 +41,7 @@ void ARabbitEnemyController::MoveTo(const FVector& TargetLocation)
         TargetDirection.Z = 0.0f; // Z축 방향은 무시
         FVector DirNormal = TargetDirection.GetSafeNormal();
         Enemy->AddMovementInput(DirNormal, MovementSpeed);
+        Enemy->RoatateToTarget(TargetLocation);
     }
 }
 

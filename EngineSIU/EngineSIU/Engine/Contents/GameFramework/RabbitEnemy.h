@@ -11,7 +11,7 @@ public:
 
 public:
     void SetTargetLocation(const FVector& Location) { TargetLocation = Location; }
-    
+    void RoatateToTarget(const FVector& Location);
 private:
     FVector TargetLocation = FVector::ZeroVector; // 적의 목표 위치
     float AcceptanceRadius = 10.0f; // 목표 위치에 도달하기 위한 허용 반경
