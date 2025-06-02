@@ -109,7 +109,6 @@ float RabbitCamera::GetCameraCoolTimeInit()
     return CameraCoolTimeInit;
 }
 
-
 void RabbitCamera::TakePicture()
 {
     if (!ValidateTakePicture())
@@ -125,7 +124,14 @@ void RabbitCamera::TakePicture()
     TriggerShutterEffect();
 
     auto HitComp = CheckSubject();
-    OnPictureTaken.Execute(HitComp);
+
+    FVector OwnerLocation;
+    if (GetOwner())
+    {
+        OwnerLocation = GetOwner()->GetActorLocation();
+    }
+    
+    OnPictureTaken.Execute(HitComp, OwnerLocation);
 }
 
 void RabbitCamera::ReleasePictures()

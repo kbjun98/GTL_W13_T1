@@ -3,9 +3,10 @@
 #include "UnrealClient.h"
 #include "Delegates/DelegateCombination.h"
 
+class AActor;
 class UPrimitiveComponent;
 
-DECLARE_DELEGATE_OneParam(FOnPictureTaken, UPrimitiveComponent*);
+DECLARE_DELEGATE_TwoParams(FOnPictureTaken, UPrimitiveComponent* /* TargetComponent */, FVector /* PlayerLocation */);
 
 class RabbitCamera
 {
@@ -24,11 +25,12 @@ private:
     float CameraCoolTime;
     float CameraCoolTimeInit = 5;
 
+    AActor* OwnerActor = nullptr;
+
 public:
     void ReleasePictures();
     void Tick(float deltaTime);
-
-
+    
     float GetCameraCoolTime();
     float GetCameraCoolTimeInit();
     const float GetCurrentApertureProgress() const;
@@ -39,6 +41,9 @@ public:
     TArray<FRenderTargetRHI*> GetPicturesRHI() const;
 
     FOnPictureTaken OnPictureTaken;
+
+    AActor* GetOwner() const { return OwnerActor; }
+    void SetOwner(AActor* InOwner) { OwnerActor = InOwner; }
 
 private:
     FRenderTargetRHI* CopySource(FRenderTargetRHI* InputRHI);

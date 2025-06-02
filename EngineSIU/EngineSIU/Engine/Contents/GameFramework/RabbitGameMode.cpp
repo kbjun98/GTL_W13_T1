@@ -27,9 +27,9 @@ void ARabbitGameMode::BeginPlay()
             if (std::shared_ptr<RabbitCamera> Camera = Rabbit->GetRabbitCamera())
             {
                 Camera->OnPictureTaken.BindLambda(
-                    [this](UPrimitiveComponent* Comp) 
+                    [this](UPrimitiveComponent* TargetComponent, FVector PlayerLocation) 
                     {
-                        this->JudgeCapturedPhoto(Comp);
+                        this->JudgeCapturedPhoto(TargetComponent);
                     }
                 );
             }

@@ -16,6 +16,7 @@ void ARabbitPlayer::PostSpawnInitialize()
     CameraMesh->SetupAttachment(Camera);
 
     RabbitCam = std::make_shared<RabbitCamera>();
+    RabbitCam->SetOwner(this);
 }
 
 void ARabbitPlayer::BeginPlay()
