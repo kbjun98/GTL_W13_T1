@@ -9,6 +9,8 @@
 void ARabbitController::BeginPlay()
 {
     Super::BeginPlay();
+
+    MouseSensitivityCurrent = MouseSensitivityBase;
     
     SetInputMode(EInputMode::GameOnly);
 }
@@ -160,7 +162,7 @@ void ARabbitController::AddYawInput(float Value)
 
     if (APawn* Pawn = GetPawn())
     {
-        Super::AddYawInput(Value * MouseSensitivity);
+        Super::AddYawInput(Value * MouseSensitivityCurrent);
     }
 }
 
@@ -173,7 +175,7 @@ void ARabbitController::AddPitchInput(float Value)
 
     if (APawn* Pawn = GetPawn())
     {
-        Super::AddPitchInput(Value * MouseSensitivity);
+        Super::AddPitchInput(Value * MouseSensitivityCurrent);
     }
 }
 

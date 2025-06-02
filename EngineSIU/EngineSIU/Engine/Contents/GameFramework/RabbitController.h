@@ -19,6 +19,12 @@ public:
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
     virtual void Tick(float DeltaTime) override;
+
+    float GetBaseMouseSensitivity() const { return MouseSensitivityBase; }
+    float GetMinMouseSensitivity() const { return MouseSensitivityMin; }
+    float GetMaxMouseSensitivity() const { return MouseSensitivityMax; }
+
+    float MouseSensitivityCurrent;
     
 protected:
     virtual void SetupInputComponent() override;
@@ -51,6 +57,8 @@ private:
     EInputMode CurrentInputMode = EInputMode::GameOnly;
     FVector2D MousePinPosition;
 
-    float MouseSensitivity = 0.4f;
+    float MouseSensitivityBase = 0.4f;
+    float MouseSensitivityMin = 0.05f;
+    float MouseSensitivityMax = 0.3f;
 };
 

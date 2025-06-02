@@ -3,6 +3,7 @@
 #include "Template/SubclassOf.h"
 #include "UObject/ObjectMacros.h"
 
+class ARabbitController;
 class UCameraMeshComponent;
 class UCameraShakeBase;
 
@@ -43,6 +44,8 @@ public:
 protected:
     void SetFOV(float FOV);
     float GetFOV() const;
+
+    ARabbitController* GetRabbitController() const;
     
 private:
     UCameraMeshComponent* CameraMesh = nullptr;
