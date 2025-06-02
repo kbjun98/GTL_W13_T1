@@ -35,7 +35,7 @@ public:
 private:
     void MoveTo(const FVector& TargetLocation, float DeltaTime);
 private:
-    EnemyState CurrentState = EnemyState::IDLE; // 현재 상태
+    EnemyState CurrentState = EnemyState::CHASE; // 현재 상태
 
 };
 

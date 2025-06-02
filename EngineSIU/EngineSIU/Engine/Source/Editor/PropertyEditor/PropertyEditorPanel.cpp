@@ -500,6 +500,15 @@ void PropertyEditorPanel::RenderForStaticMesh(UStaticMeshComponent* StaticMeshCo
             StaticMeshComp->SetPhotoType(NewType);
         }
 
+       /* const char* StaticMeshTypeNames[] = { "None", "Map", "Obstacle" };
+        int32 CurStMeshTypeIndex = static_cast<int32>(StaticMeshComp->GetMeshType());
+
+        if (ImGui::Combo("StaticMeshType", &CurStMeshTypeIndex, StaticMeshTypeNames, IM_ARRAYSIZE(StaticMeshTypeNames)))
+        {
+            EStaticMeshType NewStMeshType = static_cast<EStaticMeshType>(CurStMeshTypeIndex);
+            StaticMeshComp->SetStMeshType(NewStMeshType);
+        }*/
+
 
         ImGui::TreePop();
     }

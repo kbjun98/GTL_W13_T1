@@ -12,7 +12,7 @@
 
 UStaticMeshComponent::UStaticMeshComponent()
 {
-    SetMeshType(EStaticMeshType::NONE);
+    SetStMeshType(EStaticMeshType::NONE);
 }
 
 UObject* UStaticMeshComponent::Duplicate(UObject* InOuter)
@@ -22,6 +22,7 @@ UObject* UStaticMeshComponent::Duplicate(UObject* InOuter)
     NewComponent->StaticMesh = StaticMesh;
     NewComponent->SelectedSubMeshIndex = SelectedSubMeshIndex;
     NewComponent->PhotoType = PhotoType;
+    NewComponent->MeshType = MeshType;
 
     return NewComponent;
 }
@@ -45,6 +46,7 @@ void UStaticMeshComponent::GetProperties(TMap<FString, FString>& OutProperties) 
 
         
         OutProperties.Add(TEXT("StaticMeshPath"), PathFString);
+        OutProperties.Add(TEXT("StaticMeshType"), FString::FromInt(static_cast<uint8>(MeshType)));
     } else
     {
         OutProperties.Add(TEXT("StaticMeshPath"), TEXT("None")); // 메시 없음 명시
@@ -93,6 +95,11 @@ void UStaticMeshComponent::SetProperties(const TMap<FString, FString>& InPropert
         // 여기서는 기본값을 유지하거나, 안전하게 nullptr로 설정할 수 있습니다.
         // SetStaticMesh(nullptr); // 또는 아무것도 안 함
         UE_LOG(ELogLevel::Display, TEXT("StaticMeshPath key not found for %s, mesh unchanged."), *GetName());
+    }
+
+    if (InProperties.Contains(TEXT("StaticMeshType")))
+    {
+        MeshType = static_cast<EStaticMeshType>(FString::ToInt(InProperties[TEXT("StaticMeshType")]));
     }
 }
 
@@ -244,7 +251,16 @@ EStaticMeshType UStaticMeshComponent::GetMeshType()
     return MeshType;
 }
 
-void UStaticMeshComponent::SetMeshType(EStaticMeshType Type)
+void UStaticMeshComponent::SetStMeshType(EStaticMeshType Type)
 {
+    int Check = static_cast<int>(EStaticMeshType::END) - static_cast<int>(Type);
+    if (Check < 1)
+    {
+        MeshType = EStaticMeshType::NONE;
+        return;
+    }
+
     MeshType = Type;
+        
+        MeshType = Type;
 }

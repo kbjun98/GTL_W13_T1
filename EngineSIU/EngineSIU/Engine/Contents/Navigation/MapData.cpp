@@ -100,6 +100,10 @@ void FGridMap::InitializeGridNodeFromMeshes()
     // 모든 StaticMeshComponent의 AABB로 전체 영역 계산
     for (auto It : TObjectRange<UStaticMeshComponent>())
     {
+        if (It->GetMeshType() != EStaticMeshType::Map)
+        {
+            continue;
+        }
         FBoundingBox LocalAABB = It->GetBoundingBox();
 
         // 월드 변환 정보
@@ -180,66 +184,81 @@ void FGridMap::AnalyzeWalkableFromMeshes()
     // 모든 노드 순회
     for (auto& Elem : GridNodes)
     {
+
         FGridNode& Node = Elem.Value;
+        
+        // Obstacle로 인해 false면 패스
+        if (Node.bWalkable == false)
+        {
+            continue;
+        }
+        Node.bWalkable = false;
 
         // Ray 시작점: 노드 위치 위에서 시작
         FVector RayStart = Node.GetPosition() + FVector(0.0f, 0.0f, StartZOffset);
 
         bool bHit = false;
+        bool bObstacleHit = false;
+        bool bMapHit = false;
         FVector HitNormal = FVector::UpVector;
+        EStaticMeshType StMeshType = EStaticMeshType::NONE;
 
         // 모든 StaticMeshComponent 순회
         for (auto It : TObjectRange<UStaticMeshComponent>())
         {
-            UStaticMesh* Mesh = It->GetStaticMesh();
-            if (!Mesh) continue;
+            StMeshType = It->GetMeshType();
+            if (StMeshType == EStaticMeshType::Map || StMeshType == EStaticMeshType::Obstacle) {
+                UStaticMesh* Mesh = It->GetStaticMesh();
+                if (!Mesh) continue;
 
-            FStaticMeshRenderData* RenderData = Mesh->GetRenderData();
-            if (!RenderData) continue;
+                FStaticMeshRenderData* RenderData = Mesh->GetRenderData();
+                if (!RenderData) continue;
 
-            FTransform WorldTransform = It->GetComponentTransform();
-            TArray<FStaticMeshVertex>& Vertices = RenderData->Vertices;
-            const TArray<uint32>& Indices = RenderData->Indices;
-            const int TriangleNum = Indices.Num() / 3;
+                FTransform WorldTransform = It->GetComponentTransform();
+                TArray<FStaticMeshVertex>& Vertices = RenderData->Vertices;
+                const TArray<uint32>& Indices = RenderData->Indices;
+                const int TriangleNum = Indices.Num() / 3;
 
-            // 메시의 모든 삼각형 순회
-            for (int TriIdx = 0; TriIdx < TriangleNum; ++TriIdx)
-            {
-                // 삼각형 월드 좌표로 변환
-                FVector V0 = WorldTransform.TransformPosition(Vertices[Indices[TriIdx * 3 + 0]].GetPosition());
-                FVector V1 = WorldTransform.TransformPosition(Vertices[Indices[TriIdx * 3 + 1]].GetPosition());
-                FVector V2 = WorldTransform.TransformPosition(Vertices[Indices[TriIdx * 3 + 2]].GetPosition());
-
-                float HitDist;
-                FVector TempNormal;
-
-                if (It->IntersectRayTriangle(RayStart, RayDirection, V0, V1, V2, HitDist, TempNormal))
+                // 메시의 모든 삼각형 순회
+                for (int TriIdx = 0; TriIdx < TriangleNum; ++TriIdx)
                 {
-                    bHit = true;
-                    HitNormal = TempNormal;
-                    break; // 하나만 맞으면 장애물로 간주
-                }
-            }
+                    // 삼각형 월드 좌표로 변환
+                    FVector V0 = WorldTransform.TransformPosition(Vertices[Indices[TriIdx * 3 + 0]].GetPosition());
+                    FVector V1 = WorldTransform.TransformPosition(Vertices[Indices[TriIdx * 3 + 1]].GetPosition());
+                    FVector V2 = WorldTransform.TransformPosition(Vertices[Indices[TriIdx * 3 + 2]].GetPosition());
 
-            if (bHit) break;
+                    float HitDist;
+                    FVector TempNormal;
+
+                    if (It->IntersectRayTriangle(RayStart, RayDirection, V0, V1, V2, HitDist, TempNormal))
+                    {
+                        if (StMeshType == EStaticMeshType::Obstacle) {
+                            bObstacleHit = true;
+                            break; // 장애물 충돌하면 바로 멈춰도 됨
+                        }
+                        else if (StMeshType == EStaticMeshType::Map) {
+                            bMapHit = true;
+                            HitNormal = TempNormal; // 가장 마지막 Map 메시의 법선 저장
+                        }
+                    }
+                }
+
+                if (bObstacleHit) break;
+            }
         }
 
-        // 충돌 결과로 Walkable 여부 판정
-        if (bHit)
+        // 최종 Walkable 결정
+        if (bObstacleHit)
         {
-            // 바닥일 가능성: 법선의 Z성분이 크면 바닥
-            if (FMath::Abs(HitNormal.Z) > 0.5f)
-            {
-                Node.bWalkable = true; // 바닥 → 이동 가능
-            }
-            else
-            {
-                Node.bWalkable = false; // 벽 → 이동 불가
-            }
+            Node.bWalkable = false;
+        }
+        else if (bMapHit)
+        {
+            Node.bWalkable = FMath::Abs(HitNormal.Z) > 0.5f;
         }
         else
         {
-            Node.bWalkable = false; // 아무 메시도 없으면 공중 → 이동 불가
+            Node.bWalkable = false;
         }
     }
 
