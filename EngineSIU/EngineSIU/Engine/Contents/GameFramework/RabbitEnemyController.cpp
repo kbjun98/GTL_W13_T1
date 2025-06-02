@@ -34,17 +34,26 @@ void ARabbitEnemyController::ProcessEnemyMovement(float DeltaTime)
 
 void ARabbitEnemyController::CheckStateChange()
 {
-    if (IsTargetInSight())
+    switch (CurrentState)
     {
-        CurrentState = EnemyState::CHASE;
-    }
-    else
-    {
-        CurrentState = EnemyState::IDLE;
+    case EnemyState::IDLE:
+        if (IsTargetInSight(ChaseRangeMin,ChaseRangeMax))
+        {
+            CurrentState = EnemyState::CHASE;
+        }
+        break;
+    case EnemyState::CHASE:
+        if (IsTargetInSight(0,AcceptanceRadius)||IsTargetInRange(FailureRadius,FLT_MAX))
+        {
+            CurrentState = EnemyState::IDLE;            
+        }
+        break;
+    default:
+        break;
     }
 }
 
-bool ARabbitEnemyController::IsTargetInSight()
+bool ARabbitEnemyController::IsTargetInFOV()
 {
     ARabbitEnemy* Enemy = GetPossesedRabbitEnemy();
     ARabbitPawn* Target = GetTargetRabbitPlayer();
@@ -52,7 +61,20 @@ bool ARabbitEnemyController::IsTargetInSight()
     FVector ToTarget = Target->GetActorLocation() - Enemy->GetActorLocation();
     float Dot = FVector::DotProduct(Forward.GetSafeNormal(), ToTarget.GetSafeNormal());
     float CosHalfFOV = FMath::Cos(FMath::DegreesToRadians(SightFOV / 2.0f));
-    return Dot>CosHalfFOV;
+    return Dot > CosHalfFOV;
+}
+
+bool ARabbitEnemyController::IsTargetInSight(float Min, float Max)
+{
+    return IsTargetInRange(Min,Max) && IsTargetInFOV();
+}
+
+bool ARabbitEnemyController::IsTargetInRange(float Min, float Max)
+{
+    ARabbitEnemy* Enemy = GetPossesedRabbitEnemy();
+    ARabbitPawn* Target = GetTargetRabbitPlayer();
+    FVector Distance = Target->GetActorLocation() - Enemy->GetActorLocation();
+    return Distance.Size() <= Max && Distance.Size() >= Min;
 }
 
 ARabbitPlayer* ARabbitEnemyController::GetTargetRabbitPlayer()
