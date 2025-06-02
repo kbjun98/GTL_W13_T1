@@ -13,7 +13,6 @@ void AChaserController::Tick(float DeltaTime)
     PathUpdateTimer += DeltaTime;
     if (PathUpdateTimer >= PathUpdateInterval)
     {
-        RequestMove();              // 경로 갱신
         PathUpdateTimer = 0.0f;
         
     }
