@@ -38,6 +38,8 @@ public:
     virtual void Tick(float DeltaTime);
     void BeginPlay();
 
+    virtual void SpawnEssentialActors();
+
     void Release();
 
     /**
