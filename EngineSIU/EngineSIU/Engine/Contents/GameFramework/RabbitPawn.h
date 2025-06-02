@@ -37,7 +37,8 @@ private:
     USkeletalMeshComponent* SkeletalMeshComp;
 
     float HalfHeight = 40.f;
-    float Radius = 30.f;
+    float Radius = 20.f;
+
     float RotateSpeed = 100.0f;
     
     ERabbitAnimState AnimState = ERabbitAnimState::EAttack;

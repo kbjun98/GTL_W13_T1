@@ -44,6 +44,7 @@
 #include "Particles/ParticleSystemComponent.h"
 #include <Engine/Contents/Actors/GridMapActor.h>
 
+#include "GameFramework/PlayerStart.h"
 #include "GameFramework/RabbitPlayer.h"
 
 ControlEditorPanel::ControlEditorPanel()
@@ -377,6 +378,7 @@ void ControlEditorPanel::CreateModifyButton(const ImVec2 ButtonSize, ImFont* Ico
             { .Label = "SkeletalMeshActor", .OBJ = OBJ_SKELETALMESH },
             { .Label = "SequencerPlayer",   .OBJ = OBJ_SEQUENCERPLAYER },
             { .Label = "GridMapTestActor",  .OBJ = OBJ_GRIDMAPTESTACTOR },
+            { .Label = "PlayerStart",       .OBJ = OBJ_PLAYERSTART },
             { .Label = "RabbitPlayer",      .OBJ = OBJ_RABBITPLAYER },
             { .Label = "RabbitEnemy",       .OBJ = OBJ_RABBITENEMY },
             { .Label = "TestVolume",        .OBJ = OBJ_TESTVOLUME }
@@ -390,6 +392,12 @@ void ControlEditorPanel::CreateModifyButton(const ImVec2 ButtonSize, ImFont* Ico
                 AActor* SpawnedActor = nullptr;
                 switch (static_cast<OBJECTS>(primitive.OBJ))
                 {
+                case OBJ_PLAYERSTART:
+                {
+                    SpawnedActor = World->SpawnActor<APlayerStart>();
+                    SpawnedActor->SetActorLabel(TEXT("OBJ_PLAYERSTART"));
+                    break;
+                }
                 case OBJ_RABBITPLAYER:
                 {
                     SpawnedActor = World->SpawnActor<ARabbitPlayer>();
