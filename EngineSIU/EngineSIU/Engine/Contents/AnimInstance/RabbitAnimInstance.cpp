@@ -7,6 +7,8 @@
 #include "Engine/SkeletalMesh.h"
 #include <Animation/AnimationRuntime.h>
 #include <Animation/RabbitAnimStateMachine.h>
+#include <GameFramework/RabbitPawn.h>
+#include <Engine/Engine.h>
 
 RabbitAnimInstance::RabbitAnimInstance()
     : PrevAnim(nullptr)
@@ -21,7 +23,7 @@ RabbitAnimInstance::RabbitAnimInstance()
     , CurrentKey(0)
     , BlendAlpha(0.f)
     , BlendStartTime(0.f)
-    , BlendDuration(0.2f)
+    , BlendDuration(0.7f)
     , bIsBlending(false)
 {
     StateMachine = FObjectFactory::ConstructObject<RabbitAnimStateMachine>(this);
@@ -38,15 +40,15 @@ void RabbitAnimInstance::NativeInitializeAnimation()
 
 }
 
-float temp = 0.f;
 
 void RabbitAnimInstance::NativeUpdateAnimation(float DeltaSeconds, FPoseContext& OutPose)
 {
     UAnimInstance::NativeUpdateAnimation(DeltaSeconds, OutPose);
-    StateMachine->ProcessState();
+    USkeletalMeshComponent* SkeletalMeshComp = GetSkelMeshComponent();
+    ARabbitPawn* RabbitPawn = Cast<ARabbitPawn>(SkeletalMeshComp->GetOwner());
+   StateMachine->ProcessState(GEngine->State);
 
 #pragma region MyAnim
-    USkeletalMeshComponent* SkeletalMeshComp = GetSkelMeshComponent();
 
     if (!PrevAnim || !CurrAnim || !SkeletalMeshComp->GetSkeletalMeshAsset() || !SkeletalMeshComp->GetSkeletalMeshAsset()->GetSkeleton() || !bPlaying)
     {
@@ -88,6 +90,8 @@ void RabbitAnimInstance::NativeUpdateAnimation(float DeltaSeconds, FPoseContext&
         PrevPose.Pose[BoneIdx] = RefSkeleton.RawRefBonePose[BoneIdx];
         CurrPose.Pose[BoneIdx] = RefSkeleton.RawRefBonePose[BoneIdx];
     }
+
+    std::cout << GetElapsedTime() << std::endl;
 
     FAnimExtractContext ExtractA(GetElapsedTime(), false);
     FAnimExtractContext ExtractB(GetElapsedTime(), false);

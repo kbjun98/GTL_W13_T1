@@ -5,10 +5,12 @@
 
 #include "Container/Array.h"
 #include "World/WorldContext.h"
+#include <Animation/RabbitAnimStateMachine.h>
 
 class UAssetManager;
 class UWorld;
 class FPhysicsManager;
+
 
 class UEngine : public UObject
 {
@@ -19,7 +21,7 @@ public:
 
 public:
     UWorld* ActiveWorld;
-    
+    ERabbitAnimState State;
     UAssetManager* AssetManager = nullptr;
     FPhysicsManager* PhysicsManager = nullptr;
 

@@ -3,12 +3,7 @@
 #include <UObject/Casts.h>
 #include "Animation/AnimSequence.h"
 
-RabbitAnimStateMachine::RabbitAnimStateMachine()
-{
-    CurrentState = ERabbitState::EIDLE;
-}
-
-void RabbitAnimStateMachine::ProcessState()
+void RabbitAnimStateMachine::ProcessState(ERabbitAnimState State)
 {
     // GetOuter로 RabbitAnimInstance 접근
     RabbitAnimInstance* AnimInstance = Cast<RabbitAnimInstance>(GetOuter());
@@ -17,17 +12,17 @@ void RabbitAnimStateMachine::ProcessState()
 
     UAnimSequence* DesiredAnim = nullptr;
 
-    switch (CurrentState)
+    switch (State)
     {
-    case ERabbitState::EIDLE:
+    case ERabbitAnimState::EIDLE:
         DesiredAnim = Cast<UAnimSequence>(AnimInstance->Idle);
         break;
 
-    case ERabbitState::EWALK:
+    case ERabbitAnimState::EWALK:
         DesiredAnim = Cast<UAnimSequence>(AnimInstance->Walk);
         break;
 
-    case ERabbitState::EAttack:
+    case ERabbitAnimState::EAttack:
         DesiredAnim = Cast<UAnimSequence>(AnimInstance->Attack);
         break;
     }
@@ -40,20 +35,12 @@ void RabbitAnimStateMachine::ProcessState()
     AnimInstance->SetCurrAnim(DesiredAnim);
     AnimInstance->SetElapsedTime(0.f);
     AnimInstance->SetBlendStartTime(0.f);
-    AnimInstance->SetIsBlending(true);
+    AnimInstance->SetIsBlending(true);  
 }
 
-FString RabbitAnimStateMachine::GetStateName(ERabbitState State) const
+FString RabbitAnimStateMachine::GetStateName(ERabbitAnimState State) const
 {
     return FString();
 }
 
-ERabbitState RabbitAnimStateMachine::GetState() const
-{
-    return ERabbitState();
-}
 
-void RabbitAnimStateMachine::SetRabbitAnimState(ERabbitState State)
-{
-    CurrentState = State;
-}
