@@ -407,3 +407,13 @@ float APlayerCameraManager::GetLetterBoxRatio()
 {
     return LetterBoxWidth / LetterBoxHeight;
 }
+
+void APlayerCameraManager::SetFOV(float NewFOV)
+{
+    ViewTarget.POV.FOV = NewFOV;
+}
+
+float APlayerCameraManager::GetFOV() const
+{
+    return ViewTarget.POV.FOV;
+}

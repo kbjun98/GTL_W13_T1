@@ -13,6 +13,8 @@ public:
     ARabbitPlayer() = default;
     
     virtual void PostSpawnInitialize() override;
+
+    virtual void BeginPlay() override;
     
     virtual void Tick(float DeltaTime) override;
     
@@ -30,11 +32,18 @@ public:
     void TakePicture();
     
     void ToggleADS();
+
+protected:
+    void StartADS();
+    void EndADS();
     
 private:
     std::shared_ptr<RabbitCamera> RabbitCam = nullptr;
     
     bool bIsADS = false;
+
+    float DefaultADSFOV = 50.f;
+    float DefaultFOV = 100.f;
 
     TSubclassOf<UCameraShakeBase> IdleCameraShake = UClass::FindClass("UIdleCameraShake");
 

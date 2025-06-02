@@ -14,6 +14,16 @@ void ARabbitPlayer::PostSpawnInitialize()
     RabbitCam = std::make_shared<RabbitCamera>();
 }
 
+void ARabbitPlayer::BeginPlay()
+{
+    Super::BeginPlay();
+
+    if (GetPlayerController())
+    {
+        GetPlayerController()->PlayerCameraManager->DefaultFOV = DefaultFOV;
+    }
+}
+
 void ARabbitPlayer::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
@@ -104,10 +114,39 @@ void ARabbitPlayer::ToggleADS()
     
     if (bIsADS)
     {
-        CameraShakeInstance = GetPlayerController()->PlayerCameraManager->StartCameraShake(IdleCameraShake);
+        StartADS();
     }
     else
     {
-        GetPlayerController()->PlayerCameraManager->StopCameraShake(CameraShakeInstance, true);
+        EndADS();
+    }
+}
+
+void ARabbitPlayer::StartADS()
+{
+    CameraShakeInstance = GetPlayerController()->PlayerCameraManager->StartCameraShake(IdleCameraShake);
+
+    if (UCameraComponent* CameraComp = GetComponentByClass<UCameraComponent>())
+    {
+        CameraComp->ViewFOV = DefaultADSFOV;
+    }
+    else if (GetPlayerController())
+    {
+        GetPlayerController()->PlayerCameraManager->SetFOV(DefaultADSFOV);
+    }
+}
+
+void ARabbitPlayer::EndADS()
+{
+    GetPlayerController()->PlayerCameraManager->StopCameraShake(CameraShakeInstance, true);
+    CameraShakeInstance = nullptr;
+    
+    if (UCameraComponent* CameraComp = GetComponentByClass<UCameraComponent>())
+    {
+        CameraComp->ViewFOV = DefaultFOV;
+    }
+    else if (GetPlayerController())
+    {
+        GetPlayerController()->PlayerCameraManager->SetFOV(DefaultFOV);
     }
 }

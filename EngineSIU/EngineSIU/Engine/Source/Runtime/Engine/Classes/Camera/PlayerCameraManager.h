@@ -129,6 +129,9 @@ public:
     virtual void StopAllInstancesOfCameraShake(UClass* ShakeClass, bool bImmediately = true);
 
     float GetLetterBoxRatio();
+
+    void SetFOV(float NewFOV);
+    float GetFOV() const;
     
 protected:
     virtual void DoUpdateCamera(float DeltaTime);
