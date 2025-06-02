@@ -1,11 +1,13 @@
 #pragma once
-
 #include "UnrealClient.h"
 #include "Delegates/DelegateCombination.h"
 
 class UPrimitiveComponent;
+class RabbitCamera;
+enum class EPhotoType;
 
-DECLARE_DELEGATE_OneParam(FOnPictureTaken, UPrimitiveComponent*);
+DECLARE_DELEGATE_TwoParams(FOnPictureTaken, UPrimitiveComponent*, RabbitCamera*);
+
 
 class RabbitCamera
 {
@@ -22,7 +24,7 @@ private:
 
     bool CanTakePicture = true;
     float CameraCoolTime;
-    float CameraCoolTimeInit = 5;
+    float CameraCoolTimeInit = 3;
 
 public:
     void ReleasePictures();
@@ -33,19 +35,19 @@ public:
     float GetCameraCoolTimeInit();
     const float GetCurrentApertureProgress() const;
     void SetCurrentApertureProgress(float value);
-
+    void InitPictureArraySize(int Size);
     void TakePicture();
 
     TArray<FRenderTargetRHI*> GetPicturesRHI() const;
 
     FOnPictureTaken OnPictureTaken;
-
+    void StorePicture(EPhotoType Type);
 private:
     FRenderTargetRHI* CopySource(FRenderTargetRHI* InputRHI);
     FRenderTargetRHI* CaptureFrame();
     UPrimitiveComponent* CheckSubject();
     void TriggerShutterEffect();
     bool ValidateTakePicture();
-    void StorePicture(FRenderTargetRHI* Picture);
+    
 };
 
