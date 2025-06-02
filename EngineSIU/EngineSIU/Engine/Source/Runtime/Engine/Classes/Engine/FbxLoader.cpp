@@ -1107,6 +1107,9 @@ UStaticMesh* FFbxLoader::CreateStaticMesh(FbxNode* MeshNode, int32 GlobalMeshIdx
 
     int VertexCounter = 0; // 폴리곤 정점 인덱스 (eByPolygonVertex 모드용)
 
+    FVector BoundingBoxMin = FVector::ZeroVector;
+    FVector BoundingBoxMax = FVector::ZeroVector;
+
     // 폴리곤(삼각형) 순회
     for (int32 i = 0; i < PolygonCount; ++i)
     {
@@ -1194,6 +1197,14 @@ UStaticMesh* FFbxLoader::CreateStaticMesh(FbxNode* MeshNode, int32 GlobalMeshIdx
                 NewIndex = static_cast<uint32>(RenderData->Vertices.Num() - 1);
                 // 맵에 새 정점 정보 추가
                 UniqueVertices.Add(Key, NewIndex);
+
+                // 바운딩 박스 계산
+                BoundingBoxMin.X = FMath::Min(BoundingBoxMin.X, NewVertex.X);
+                BoundingBoxMin.Y = FMath::Min(BoundingBoxMin.Y, NewVertex.Y);
+                BoundingBoxMin.Z = FMath::Min(BoundingBoxMin.Z, NewVertex.Z);
+                BoundingBoxMax.X = FMath::Max(BoundingBoxMax.X, NewVertex.X);
+                BoundingBoxMax.Y = FMath::Max(BoundingBoxMax.Y, NewVertex.Y);
+                BoundingBoxMax.Z = FMath::Max(BoundingBoxMax.Z, NewVertex.Z);
             }
             PolyIndices[j] = NewIndex;
             VertexCounter++; // 다음 폴리곤 정점으로 이동
@@ -1232,6 +1243,9 @@ UStaticMesh* FFbxLoader::CreateStaticMesh(FbxNode* MeshNode, int32 GlobalMeshIdx
         RenderData->Indices += Indices;
         RunningIndex += Indices.Num();
     }
+
+    RenderData->BoundingBoxMax = BoundingBoxMax;
+    RenderData->BoundingBoxMin = BoundingBoxMin;
 
     CalculateTangents(RenderData->Vertices, RenderData->Indices);
     
