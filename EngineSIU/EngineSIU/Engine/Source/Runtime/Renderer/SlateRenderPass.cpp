@@ -92,7 +92,10 @@ void FSlateRenderPass::Render(const std::shared_ptr<FEditorViewportClient>& View
 
     // 렌더 준비
     FViewportResource* ViewportResource = Viewport->GetViewportResource();
-    FRenderTargetRHI* Resource = ViewportResource->GetRenderTarget(EResourceType::ERT_Compositing);
+    // Begin W13
+    //FRenderTargetRHI* Resource = ViewportResource->GetRenderTarget(EResourceType::ERT_Compositing);
+    FRenderTargetRHI* Resource = ViewportResource->GetRenderTarget(EResourceType::ERT_CameraW13);
+    // End W13
 
     Graphics->DeviceContext->PSSetShaderResources(static_cast<UINT>(EShaderSRVSlot::SRV_Viewport), 1, &Resource->SRV);
 

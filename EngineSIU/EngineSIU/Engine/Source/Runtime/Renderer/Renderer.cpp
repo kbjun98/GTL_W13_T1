@@ -29,6 +29,7 @@
 #include "GameFrameWork/Actor.h"
 
 #include "PropertyEditor/ShowFlags.h"
+#include "Renderer/CameraRenderPass.h"
 #include "Stats/Stats.h"
 #include "Stats/GPUTimingManager.h"
 
@@ -67,6 +68,10 @@ void FRenderer::Initialize(FGraphicsDevice* InGraphics, FDXDBufferManager* InBuf
     
     CompositingPass = AddRenderPass<FCompositingPass>();
     SlateRenderPass = AddRenderPass<FSlateRenderPass>();
+
+    // Begin W13
+    CameraRenderPass = AddRenderPass<FCameraRenderPass>();
+    // End W13
 
     const bool bShadowManagerInitialized = ShadowManager->Initialize(Graphics, BufferManager);
     assert(bShadowManagerInitialized);
@@ -318,6 +323,10 @@ void FRenderer::Render(const std::shared_ptr<FEditorViewportClient>& Viewport)
 
     RenderFinalResult(Viewport);
 
+    // Begin W13
+    RenderW13(Viewport);
+    // End W13
+
     EndRender();
 }
 
@@ -481,6 +490,11 @@ void FRenderer::RenderFinalResult(const std::shared_ptr<FEditorViewportClient>& 
         QUICK_GPU_SCOPE_CYCLE_COUNTER(CompositingPass_GPU, *GPUTimingManager)
         CompositingPass->Render(Viewport);
     }
+}
+
+void FRenderer::RenderW13(const std::shared_ptr<FEditorViewportClient>& Viewport)
+{
+    CameraRenderPass->Render(Viewport);
 }
 
 void FRenderer::EndRender() const

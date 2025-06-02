@@ -13,6 +13,7 @@
 
 #include "D3D11RHI/GraphicDevice.h"
 #include "D3D11RHI/DXDBufferManager.h"
+#include "Renderer/CameraRenderPass.h"
 
 
 class FPostProcessRenderPass;
@@ -78,6 +79,8 @@ protected:
     void RenderPostProcess(const std::shared_ptr<FEditorViewportClient>& Viewport) const;
     void RenderFinalResult(const std::shared_ptr<FEditorViewportClient>& Viewport) const;
     
+    void RenderW13(const std::shared_ptr<FEditorViewportClient>& Viewport);
+    
     void EndRender() const;
     void ClearRenderArr() const;
     
@@ -120,6 +123,7 @@ public:
     FCompositingPass* CompositingPass = nullptr;
     
     FSlateRenderPass* SlateRenderPass = nullptr;
+    FCameraRenderPass* CameraRenderPass = nullptr;
 
 private:
     template <typename RenderPassType>

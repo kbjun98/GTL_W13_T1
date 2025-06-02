@@ -33,6 +33,9 @@ enum class EResourceType : uint8
     ERT_DepthOfField_LayerFar,
     ERT_DepthOfField_Result,
     // End Depth of Field
+    // Begin W13
+    ERT_CameraW13,
+    // End W13
     ERT_Temp1,
     ERT_Temp2,
     ERT_MAX,
