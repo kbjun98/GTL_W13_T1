@@ -33,7 +33,7 @@ void AChaserController::UpdatePath()
         UE_LOG(ELogLevel::Warning, "Invalid Player or ChasePawn");
         return;
     }
-    AGridMapActor* GridMapActor = GetWorld()->GetActorByClass<AGridMapActor>();
+    //AGridMapActor* GridMapActor = GetWorld()->GetActorByClass<AGridMapActor>();
     FVector StartLocation = GetActorLocation();    
     FVector TargetLocation = PossessedPawn->GetActorLocation();
 

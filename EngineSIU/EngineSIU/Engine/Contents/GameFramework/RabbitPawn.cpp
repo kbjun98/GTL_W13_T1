@@ -62,15 +62,15 @@ void ARabbitPawn::Tick(float DeltaTime)
         PlayerCam->Tick(DeltaTime);
     }
     
-    if (Controller)
+    if (GetPlayerController())
     {
-        const FRotator& ControlRotation = Controller->GetControlRotation();
+        const FRotator& ControlRotation = GetPlayerController()->GetControlRotation();
         SetActorRotation(FRotator(0.f, ControlRotation.Yaw, 0.f));
 
         if (UCameraComponent* Camera = GetComponentByClass<UCameraComponent>())
         {
             float NewPitch = ControlRotation.Pitch;
-            if (APlayerCameraManager* CameraManager = Controller->PlayerCameraManager)
+            if (APlayerCameraManager* CameraManager = GetPlayerController()->PlayerCameraManager)
             {
                 NewPitch = FMath::Clamp(
                     NewPitch,
@@ -90,9 +90,9 @@ std::shared_ptr<PlayerCamera> ARabbitPawn::GetPlayerCamera()
 
 FVector ARabbitPawn::GetActorForwardVector() const
 {
-    if (Controller)
+    if (GetPlayerController())
     {
-        const FRotator& ControlRotation = Controller->GetControlRotation();
+        const FRotator& ControlRotation = GetPlayerController()->GetControlRotation();
         FRotator ActualRotation = FRotator(0.f, ControlRotation.Yaw, 0.f);
         return ActualRotation.ToVector();
     }
@@ -101,9 +101,9 @@ FVector ARabbitPawn::GetActorForwardVector() const
 
 FVector ARabbitPawn::GetActorRightVector() const
 {
-    if (Controller)
+    if (GetPlayerController())
     {
-        const FRotator& ControlRotation = Controller->GetControlRotation();
+        const FRotator& ControlRotation = GetPlayerController()->GetControlRotation();
         FRotator ActualRotation = FRotator(0.f, ControlRotation.Yaw, 0.f);
         
         FVector Right = FVector::RightVector;

@@ -4,6 +4,7 @@
 class AController;
 class UInputComponent;
 class UPawnMovementComponent;
+class APlayerController;
 
 class APawn : public AActor
 {
@@ -17,7 +18,9 @@ public:
     
     virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent);
 
-    APlayerController* GetController();
+    APlayerController* GetPlayerController() const;
+
+    AController* GetController() const;
     
     void AddMovementInput(const FVector& WorldDirection, float ScaleValue = 1.f);
 
