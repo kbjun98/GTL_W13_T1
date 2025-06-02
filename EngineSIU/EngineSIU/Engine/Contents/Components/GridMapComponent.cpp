@@ -18,7 +18,7 @@ void UGridMapComponent::InitializeComponent()
     FGridNode& StartNode = GridMap.GetNode(0, 2);
     FGridNode& TargetNode = GridMap.GetNode(5, 2);
 
-    PathFinder = FObjectFactory::ConstructObject<FPathFinder>(this);
+    PathFinder = new FPathFinder();
 
     TArray<FGridNode*> Path = PathFinder->FindNodePathByNode(GridMap, StartNode, TargetNode);
 

@@ -5,10 +5,8 @@
 /*
 *   A* 경로 탐색 클래스
 */
-class FPathFinder : public UObject
+class FPathFinder
 {
-    DECLARE_CLASS(FPathFinder, UObject)
-
 public:
     FPathFinder() = default;
     ~FPathFinder() = default;

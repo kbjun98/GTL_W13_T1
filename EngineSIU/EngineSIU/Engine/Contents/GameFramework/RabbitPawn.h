@@ -42,6 +42,8 @@ private:
     float RotateSpeed = 100.0f;
     
     ERabbitAnimState AnimState = ERabbitAnimState::EAttack;
+    float MoveSpeed = 100.0f; // 이동 속도
+
 
     UPROPERTY(EditAnywhere, int32, MaxHealth, = 100)
     UPROPERTY(EditAnywhere, int32, CurrentHealth, = 100)

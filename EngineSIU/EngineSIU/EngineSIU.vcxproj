@@ -465,6 +465,8 @@ xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\FBX\lib\x64\$
     <ClCompile Include="Engine\Contents\AnimInstance\RabbitAnimInstance.cpp" />
     <ClCompile Include="RabbitCamera.cpp" />
     <ClCompile Include="Engine\Contents\GameFramework\RabbitPlayer.cpp" />
+    <ClCompile Include="Engine\Contents\GameFramework\RabbitEnemy.cpp" />
+    <ClCompile Include="Engine\Contents\GameFramework\RabbitEnemyController.cpp" />
     <ClCompile Include="Engine\Source\Runtime\Engine\Classes\Animation\RabbitAnimStateMachine.cpp" />
     <ClCompile Include="RabbittCamera.cpp" />
     <ClCompile Include="Engine\Source\Editor\PropertyEditor\RabbitGameUIPanel.cpp" />
@@ -902,6 +904,8 @@ xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\FBX\lib\x64\$
     <ClInclude Include="RabbitCamera.h" />
     <ClInclude Include="Engine\Source\Editor\PropertyEditor\RabbitGameUIPanel.h" />
     <ClInclude Include="Engine\Contents\GameFramework\RabbitPlayer.h" />
+    <ClInclude Include="Engine\Contents\GameFramework\RabbitEnemy.h" />
+    <ClInclude Include="Engine\Contents\GameFramework\RabbitEnemyController.h" />
     <ClInclude Include="Engine\Source\Runtime\Engine\Classes\Animation\RabbitAnimStateMachine.h" />
     <ClInclude Include="SoundManager.h" />
     <None Include="Shaders\EditorShaderConstants.hlsli">
