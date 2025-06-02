@@ -7,6 +7,7 @@
 #include "Engine/Engine.h"
 #include "Engine/World/World.h"
 #include "GameFramework/Pawn.h"
+#include "Engine/Contents/GameFramework/RabbitPlayer.h"
 
 AGameMode::AGameMode()
     : DefaultPawnClass(APawn::StaticClass())
@@ -120,7 +121,7 @@ void AGameMode::HandleStartingNewPlayer()
     SpawnPlayerController();
 
     UWorld* World = GEngine->ActiveWorld;
-    for (const auto Iter : TObjectRange<APawn>())
+    for (const auto Iter : TObjectRange<ARabbitPlayer>())
     {
         if (Iter->GetWorld() == World && Iter->GetClass()->IsChildOf(DefaultPawnClass))
         {
