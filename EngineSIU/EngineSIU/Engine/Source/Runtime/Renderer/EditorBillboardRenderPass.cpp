@@ -18,7 +18,7 @@ void FEditorBillboardRenderPass::PrepareRenderArr()
     BillboardComps.Empty();
     for (const auto Component : TObjectRange<UBillboardComponent>())
     {
-        if (Component->GetWorld() == GEngine->ActiveWorld && Component->bIsEditorBillboard)
+        if (Component->GetWorld() == GEngine->ActiveWorld && Component->bIsEditorBillboard && !Component->bHidden)
         {
             BillboardComps.Add(Component);
         }

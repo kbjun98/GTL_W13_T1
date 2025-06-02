@@ -35,7 +35,7 @@ void FBillboardRenderPass::PrepareRenderArr()
     BillboardComps.Empty();
     for (const auto Iter : TObjectRange<UBillboardComponent>())
     {
-        if (Iter->GetWorld() == GEngine->ActiveWorld)
+        if (Iter->GetWorld() == GEngine->ActiveWorld && !Iter->bHidden)
         {
             BillboardComps.Add(Iter);
         }

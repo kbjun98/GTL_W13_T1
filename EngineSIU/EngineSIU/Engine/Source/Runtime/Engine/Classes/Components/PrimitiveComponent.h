@@ -33,6 +33,8 @@ public:
     FBoundingBox AABB;
 
     bool GetGenerateOverlapEvents() const { return bGenerateOverlapEvents; }
+
+    bool bHidden = false;
     
     bool bGenerateOverlapEvents = true;
     bool bBlockComponent = true;

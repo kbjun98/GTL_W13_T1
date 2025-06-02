@@ -37,8 +37,7 @@ private:
     float Radius = 20.f;
 
     float RotateSpeed = 100.0f;
-
-
+    
     UPROPERTY(EditAnywhere, int32, MaxHealth, = 100)
     UPROPERTY(EditAnywhere, int32, CurrentHealth, = 100)
 
