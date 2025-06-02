@@ -9,6 +9,7 @@ class ARabbitEnemyController : public AAIController
     DECLARE_CLASS(ARabbitEnemyController, AAIController)
 public:
     ARabbitEnemyController() = default;
+    virtual void PostSpawnInitialize() override;
     virtual void Tick(float DeltaTime) override;
     void ProcessEnemyMovement(float DeltaTime);
 public:

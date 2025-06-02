@@ -1,6 +1,13 @@
 #include "RabbitEnemyController.h"
 #include "Engine/Contents/GameFramework/RabbitPlayer.h"
 #include "Engine/Contents/GameFramework/RabbitEnemy.h"
+#include "Engine/Engine.h"
+#include "World/World.h"
+
+void ARabbitEnemyController::PostSpawnInitialize()
+{
+    TargetPawn = GEngine->ActiveWorld->GetMainPlayer();
+}
 
 void ARabbitEnemyController::Tick(float DeltaTime)
 {
