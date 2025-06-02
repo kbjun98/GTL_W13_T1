@@ -1,8 +1,9 @@
 #pragma once
 #include "Components/MeshComponent.h"
 #include "Engine/StaticMesh.h"
-
 #include "Engine/Asset/StaticMeshAsset.h"
+
+enum class EPhotoType;
 
 class UStaticMeshComponent : public UMeshComponent
 {
@@ -48,4 +49,11 @@ public:
 protected:
     UStaticMesh* StaticMesh = nullptr;
     int SelectedSubMeshIndex = -1;
+
+private:
+    EPhotoType PhotoType;
+
+public:
+    EPhotoType GetPhotoType();
+    void SetPhotoType(EPhotoType Type);
 };

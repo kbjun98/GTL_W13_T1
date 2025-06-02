@@ -6,7 +6,7 @@
 #include "UnrealEd/PrimitiveDrawBatch.h"
 #include "Stats/ProfilerStatsManager.h"
 #include "Stats/GPUTimingManager.h"
-#include <PlayerCamera.h>
+#include <RabbitCamera.h>
 
 
 class FSlateAppMessageHandler;

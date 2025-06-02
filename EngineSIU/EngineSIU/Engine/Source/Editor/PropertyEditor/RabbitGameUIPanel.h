@@ -4,6 +4,7 @@
 #include "UObject/ObjectTypes.h"
 
 #include "UnrealEd/EditorPanel.h"
+#include <RabbitCamera.h>
 
 class RabbitGameUIPanel : public UEditorPanel
 {
@@ -16,7 +17,7 @@ private:
     void RenderGallery();
     bool RegisterPlayerCamera();
 
-    std::shared_ptr<PlayerCamera> PlayerCam;
+    std::shared_ptr<RabbitCamera> PlayerCam;
 
     bool showLargeView = false;
     int32 selectedPhotoIndex = -1;

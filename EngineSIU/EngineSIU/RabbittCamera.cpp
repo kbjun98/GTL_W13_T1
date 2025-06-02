@@ -1,4 +1,4 @@
-#include "PlayerCamera.h"
+#include "RabbitCamera.h"
 #include <EngineLoop.h>
 #include "SoundManager.h"
 #include "LevelEditor/SLevelEditor.h"
@@ -9,20 +9,21 @@
 #include <Engine/Engine.h>
 #include "World/World.h"
 #include "GameFramework/Pawn.h"
+#include <GameFramework/RabbitGameMode.h>
 
-PlayerCamera::PlayerCamera()
+RabbitCamera::RabbitCamera()
 {
     FSoundManager::GetInstance().LoadSound("Shutter", "Contents/Rabbit/Sound/Shutter.mp3");
     FSoundManager::GetInstance().LoadSound("Error", "Contents/Rabbit/Sound/Error.mp3");
     CameraCoolTime = CameraCoolTimeInit;
 }
 
-PlayerCamera::~PlayerCamera()
+RabbitCamera::~RabbitCamera()
 {
     ReleasePictures();
 }
 
-FRenderTargetRHI* PlayerCamera::CopyRHI(FRenderTargetRHI* InputRHI)
+FRenderTargetRHI* RabbitCamera::CopySource(FRenderTargetRHI* InputRHI)
 {
     auto Device = GEngineLoop.GraphicDevice.Device;
     auto DeviceContext = GEngineLoop.GraphicDevice.DeviceContext;
@@ -88,41 +89,46 @@ FRenderTargetRHI* PlayerCamera::CopyRHI(FRenderTargetRHI* InputRHI)
     return destination;
 }
 
-float PlayerCamera::GetCameraCoolTime()
+FRenderTargetRHI* RabbitCamera::CaptureFrame()
+{
+    auto Source = GEngineLoop.GetLevelEditor()
+        ->GetActiveViewportClient()
+        ->GetViewportResource()
+        ->GetRenderTarget(EResourceType::ERT_DepthOfField_Result);
+
+    return CopySource(Source);
+}
+
+float RabbitCamera::GetCameraCoolTime()
 {
     return CameraCoolTime;
 }
 
-float PlayerCamera::GetCameraCoolTimeInit()
+float RabbitCamera::GetCameraCoolTimeInit()
 {
     return CameraCoolTimeInit;
 }
 
 
-void PlayerCamera::TakePicture()
+void RabbitCamera::TakePicture()
 {
-    if (!CanTakePicture)
+    if (!ValidateTakePicture())
     {
-        FSoundManager::GetInstance().PlaySound("Error");
         return;
     }
-    auto Source =  GEngineLoop.GetLevelEditor()->GetActiveViewportClient()->GetViewportResource()->GetRenderTarget(EResourceType::ERT_DepthOfField_Result);
-    
-    Source = CopyRHI(Source);
+   
+    auto CapturedSource = CaptureFrame();
+    StorePicture(CapturedSource);
 
-    assert(Source);
+    FSoundManager::GetInstance().PlaySound("Shutter");
+    CanTakePicture = false;
+    TriggerShutterEffect();
 
-    if (Source)
-    {
-        PicturesRHI.Add(Source);
-        FSoundManager::GetInstance().PlaySound("Shutter");
-        TriggerShutterEffect();
-        CheckObject();
-        CanTakePicture = false;
-    }
+    auto HitComp = CheckSubject();
+    OnPictureTaken.Execute(HitComp);
 }
 
-void PlayerCamera::ReleasePictures()
+void RabbitCamera::ReleasePictures()
 {
     for (auto Picture : PicturesRHI)
     {
@@ -132,19 +138,38 @@ void PlayerCamera::ReleasePictures()
     PicturesRHI.Empty();
 }
 
-TArray<FRenderTargetRHI*> PlayerCamera::GetPicturesRHI() const
+TArray<FRenderTargetRHI*> RabbitCamera::GetPicturesRHI() const
 {
     return PicturesRHI;
 }
 
-void PlayerCamera::TriggerShutterEffect()
+void RabbitCamera::TriggerShutterEffect()
 {
     bIsShutterAnimating = true;
     ShutterTimer = 0.0f;
     CurrentApertureProgress = 0.0f; // 시작 시점은 이미 0이거나, 여기서 명시적으로 0으로 설정
 }
 
-void PlayerCamera::Tick(float DeltaTime)
+bool RabbitCamera::ValidateTakePicture()
+{
+    if (!CanTakePicture)
+    {
+        FSoundManager::GetInstance().PlaySound("Error");
+        return false;
+    }
+
+    return true;
+}
+
+void RabbitCamera::StorePicture(FRenderTargetRHI* Picture)
+{
+    if (Picture)
+    {
+        PicturesRHI.Add(Picture);
+    }
+}
+
+void RabbitCamera::Tick(float DeltaTime)
 {
     if (!CanTakePicture)
     {
@@ -187,20 +212,19 @@ void PlayerCamera::Tick(float DeltaTime)
     }
 
     CurrentApertureProgress = std::max(0.0f, std::min(1.0f, CurrentApertureProgress));
-
 }
 
-const float PlayerCamera::GetCurrentApertureProgress() const
+const float RabbitCamera::GetCurrentApertureProgress() const
 {
     return CurrentApertureProgress;
 }
 
-void PlayerCamera::SetCurrentApertureProgress(float value)
+void RabbitCamera::SetCurrentApertureProgress(float value)
 {
     CurrentApertureProgress = value;
 }
 
-void PlayerCamera::CheckObject()
+UPrimitiveComponent* RabbitCamera::CheckSubject()
 {
     auto Player = GEngine->ActiveWorld->GetMainPlayer();
 
@@ -209,39 +233,54 @@ void PlayerCamera::CheckObject()
 
 
     float MaxRange = 100.f; // 최대 거리
-    float CosHalfFOV = FMath::Cos(FMath::DegreesToRadians(30.f)); // 느슨한 시야각 (총 30도)
+    float FOV = FMath::Cos(FMath::DegreesToRadians(45.f)); // 느슨한 시야각 (총 30도)
 
-    UPrimitiveComponent* bestHitComponent = nullptr;
-    float minWorldHitDistance = MaxRange + 1.0f;
+    UStaticMeshComponent* HitComponent = nullptr;
+    float MinHitDistance = MaxRange;
 
-    for (auto currentComponent : TObjectRange<UPrimitiveComponent>()) {
-        if (!currentComponent)
+    bool bPrintedOutOfFOV = false;
+    bool bPrintedTooFar = false;
+
+    for (auto CurrentComponent : TObjectRange<UStaticMeshComponent>()) {
+        if (!CurrentComponent ||
+            CurrentComponent->GetPhotoType() <= EPhotoType::NONE ||
+            CurrentComponent->GetPhotoType() >= EPhotoType::END)
+        {
             continue;
+        }
 
-        FVector ObjectLocation = currentComponent->GetComponentLocation();
+        FVector ObjectLocation = CurrentComponent->GetComponentLocation();
         FVector ToObject = ObjectLocation - PlayerPosition;
         float DistanceToObject = ToObject.Length();
 
         if (DistanceToObject > MaxRange)
+        {
+            if (!bPrintedTooFar)
+            {
+                std::cout << "너무 멀다야\n";
+                bPrintedTooFar = true;
+            }
             continue;
+        }
 
         FVector ToObjectDir = ToObject.GetSafeNormal();
         float Dot = FVector::DotProduct(PlayerForward, ToObjectDir);
 
-        if (Dot >= CosHalfFOV) {
-            // 시야각 안에 있고, 더 가까운 오브젝트인지 확인
-            if (DistanceToObject < minWorldHitDistance) {
-                minWorldHitDistance = DistanceToObject;
-                bestHitComponent = currentComponent;
+        if (Dot >= FOV) {
+            if (DistanceToObject < MinHitDistance) {
+                MinHitDistance = DistanceToObject;
+                HitComponent = CurrentComponent;
+            }
+        }
+        else
+        {
+            if (!bPrintedOutOfFOV)
+            {
+                std::cout << "거기 아니야~\n";
+                bPrintedOutOfFOV = true;
             }
         }
     }
 
-    if (bestHitComponent) {
-        std::cout << "Object in FOV: " << (void*)bestHitComponent
-            << " at distance: " << minWorldHitDistance << std::endl;
-    }
-    else {
-        std::cout << "No object found in loose FOV range." << std::endl;
-    }
+    return HitComponent;
 }

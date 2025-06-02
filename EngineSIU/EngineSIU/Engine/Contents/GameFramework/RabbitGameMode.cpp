@@ -1,6 +1,8 @@
 #include "RabbitGameMode.h"
 #include "Engine/Contents/GameFramework/RabbitPawn.h"
 #include "Engine/Contents/GameFramework/RabbitController.h"
+#include <Engine/Engine.h>
+#include "World/World.h"
 
 ARabbitGameMode::ARabbitGameMode() : AGameMode()
 {
@@ -9,4 +11,56 @@ ARabbitGameMode::ARabbitGameMode() : AGameMode()
 
     // 플레이어 컨트롤러 클래스 설정
     PlayerControllerClass = ARabbitController::StaticClass();
+
+    EPhotoTypeSize = static_cast<int>(EPhotoType::END)-1;
+}
+
+void ARabbitGameMode::BeginPlay()
+{
+    Super::BeginPlay();
+ 
+    if (APlayerController* PlayerContoller = GEngine->ActiveWorld->GetPlayerController())
+    {
+        if (ARabbitPawn* Rabbit = Cast<ARabbitPawn>(PlayerContoller->GetPawn()))
+        {
+            if (std::shared_ptr<RabbitCamera> Camera = Rabbit->GetPlayerCamera())
+            {
+                Camera->OnPictureTaken.BindLambda([&](UPrimitiveComponent* Comp) 
+                    {
+                        JudgeCapturedPhoto(Comp);
+                    });
+            }
+        }
+
+    }
+}
+
+void ARabbitGameMode::JudgeCapturedPhoto(UPrimitiveComponent* CapturedComp)
+{
+    if (UStaticMeshComponent* Comp = Cast<UStaticMeshComponent>(CapturedComp))
+    {
+        EPhotoType CapturedType = Comp->GetPhotoType();
+
+        // 무효한 타입 무시
+        if (CapturedType <= EPhotoType::NONE || CapturedType >= EPhotoType::END)
+        {
+            return;
+        }
+
+        // 중복 방지
+        if (!CapturedPhotoTypes.Contains(CapturedType))
+        {
+            CapturedPhotoTypes.Add(CapturedType);
+
+            // 로그 출력 (선택)
+            std::cout << "Captured: " << static_cast<int>(CapturedType) << std::endl;
+
+        }
+    }
+
+    if (CapturedPhotoTypes.Num() == EPhotoTypeSize)
+    {
+        std::cout << "다찍었다 드가자~";
+    }
+   
 }
