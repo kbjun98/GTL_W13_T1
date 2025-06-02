@@ -5,6 +5,7 @@
 #include "Camera/CameraModifier_CameraShake.h"
 #include "World/World.h"
 #include "GameFramework/Pawn.h"
+#include "GameFramework/RabbitPlayer.h"
 
 bool FTViewTarget::Equal(const FTViewTarget& OtherTarget) const
 {
@@ -101,8 +102,9 @@ void APlayerCameraManager::UpdateCamera(float DeltaTime)
     if (PCOwner)
     {
         DoUpdateCamera(DeltaTime);
-    }
 
+        DoUpdateFocalLength(DeltaTime);
+    }
 }
 
 /**
@@ -286,6 +288,52 @@ void APlayerCameraManager::DoUpdateCamera(float DeltaTime)
     }
     
     LastFrameViewTarget.POV = NewPOV;
+}
+
+bool APlayerCameraManager::ShouldUpdateFocalLength() const
+{
+    if (PCOwner && PCOwner->GetPawn())
+    {
+        if (ARabbitPlayer* RabbitPlayer = Cast<ARabbitPlayer>(PCOwner->GetPawn()))
+        {
+            return RabbitPlayer->IsADS();
+        }
+    }
+    return false;
+}
+
+void APlayerCameraManager::DoUpdateFocalLength(float DeltaTime)
+{
+    if (!ShouldUpdateFocalLength())
+    {
+        FocalDistance = 0.f;
+        return;
+    }
+    
+    // Focal Distance Update
+    const FRotator& ControlRotation = PCOwner->GetControlRotation();
+    const FVector Direction = ControlRotation.ToVector();
+
+    const FVector RayOrigin = PCOwner->GetPawn()->GetActorLocation();
+
+    float MinDistance = 10000.f;
+    FVector Normal;
+    for (auto Iter : TObjectRange<UMeshComponent>())
+    {
+        if (Iter->GetWorld() != PCOwner->GetWorld() || Iter->GetOwner() == PCOwner->GetPawn())
+        {
+            continue;
+        }
+            
+        float Distance = 10000.f;
+        int32 HitCnt = Iter->CheckRayIntersection(RayOrigin, Direction, Distance, Normal);
+        if (HitCnt > 0)
+        {
+            MinDistance = FMath::Min(MinDistance, Distance);
+        }
+    }
+
+    FocalDistance = MinDistance;
 }
 
 void APlayerCameraManager::SetViewTarget(class AActor* NewTarget, struct FViewTargetTransitionParams TransitionParams)

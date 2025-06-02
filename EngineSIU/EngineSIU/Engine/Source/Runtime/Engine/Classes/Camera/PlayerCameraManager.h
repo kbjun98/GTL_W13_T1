@@ -136,6 +136,10 @@ public:
 protected:
     virtual void DoUpdateCamera(float DeltaTime);
 
+    bool ShouldUpdateFocalLength() const;
+    
+    virtual void DoUpdateFocalLength(float DeltaTime);
+
     virtual void UpdateViewTarget(FTViewTarget& OutVT, float DeltaTime);
     
     void SetCameraVignette(float InIntensity, float InRadius, float InSmoothness);
