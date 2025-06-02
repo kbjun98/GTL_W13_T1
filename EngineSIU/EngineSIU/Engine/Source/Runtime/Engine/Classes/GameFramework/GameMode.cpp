@@ -1,5 +1,4 @@
 #include "GameMode.h"
-#include "LuaScripts/LuaScriptComponent.h"
 #include "EngineLoop.h"
 #include "PlayerStart.h"
 #include "SoundManager.h"
@@ -53,6 +52,11 @@ void AGameMode::PostSpawnInitialize()
     }
 
     HandleStartingNewPlayer();
+}
+
+void AGameMode::InitializeComponent()
+{
+
 }
 
 UObject* AGameMode::Duplicate(UObject* InOuter)
