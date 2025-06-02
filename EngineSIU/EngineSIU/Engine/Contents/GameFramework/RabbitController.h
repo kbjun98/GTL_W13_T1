@@ -44,6 +44,9 @@ private:
 
     void ToggleADS();
 
+    void StartADS();
+    void EndADS();
+
 private:
     EInputMode CurrentInputMode = EInputMode::GameOnly;
     FVector2D MousePinPosition;

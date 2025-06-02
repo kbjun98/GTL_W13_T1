@@ -139,20 +139,25 @@ void ARabbitPlayer::TakePicture()
 
 void ARabbitPlayer::ToggleADS()
 {
-    bIsADS = !bIsADS;
-    
     if (bIsADS)
     {
-        StartADS();
+        EndADS();
     }
     else
     {
-        EndADS();
+        StartADS();
     }
 }
 
 void ARabbitPlayer::StartADS()
 {
+    if (bIsADS)
+    {
+        return;
+    }
+    
+    bIsADS = true;
+    
     CameraShakeInstance = GetPlayerController()->PlayerCameraManager->StartCameraShake(IdleCameraShake);
 
     if (auto CameraMeshComp = GetComponentByClass<UCameraMeshComponent>())
@@ -165,6 +170,13 @@ void ARabbitPlayer::StartADS()
 
 void ARabbitPlayer::EndADS()
 {
+    if (!bIsADS)
+    {
+        return;
+    }
+    
+    bIsADS = false;
+    
     GetPlayerController()->PlayerCameraManager->StopCameraShake(CameraShakeInstance, true);
     CameraShakeInstance = nullptr;
 

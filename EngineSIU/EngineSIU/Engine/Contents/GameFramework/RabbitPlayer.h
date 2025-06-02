@@ -37,10 +37,10 @@ public:
     
     void ToggleADS();
 
-protected:
     void StartADS();
     void EndADS();
 
+protected:
     void SetFOV(float FOV);
     float GetFOV() const;
     
