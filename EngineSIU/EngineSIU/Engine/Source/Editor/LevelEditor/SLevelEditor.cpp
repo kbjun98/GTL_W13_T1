@@ -657,3 +657,8 @@ void SLevelEditor::RegisterPIEInputDelegates()
     // Add Delegate functions in PIE mode
 }
 
+void SLevelEditor::GetEditorSize(uint32& OutWidth, uint32& OutHeight)
+{
+    OutWidth = EditorWidth;
+    OutHeight = EditorHeight;
+}
