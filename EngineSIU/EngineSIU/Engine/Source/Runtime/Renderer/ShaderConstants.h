@@ -237,6 +237,14 @@ struct alignas(16) FConstantBufferCameraVignette
     FVector Padding;
 };
 
+struct alignas(16) FConstantBufferShutter
+{
+    float apertureProgress; // 0.0 (완전히 열림) ~ 1.0 (완전히 닫힘)
+    float aspectRatio; // 화면 가로/세로 비율 (셔터 모양 보정용)
+    FVector2D shutterPadding; // 16바이트 정렬용
+};
+
+
 struct alignas(16) FConstantBufferLetterBox
 {
     FLinearColor LetterBoxColor = FLinearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -249,11 +257,11 @@ struct alignas(16) FConstantBufferLetterBox
 struct FDepthOfFieldConstant
 {
     float F_Stop = 2.8f;
-    float SensorWidth = 24.576f; // mm
+    float SensorWidth = 36.f; // mm
     float FocalDistance = 0.f; // cm
     float FocalLength = 0.f; // mm
 
-    float CoCScaleFactor = 2.f;
+    float CoCScaleFactor = 100.f;
     float InFocusThreshold = 0.0f;
     float DOFPadding1 = 0.f;
     float DOFPadding2 = 0.f;

@@ -22,9 +22,9 @@ void FTViewTarget::CheckViewTarget(APlayerController* OwningController)
     if (Target != nullptr)
     {
         // PossessActor가 있을때
-        if (OwningController->GetPossessedPawn() && !OwningController->GetPossessedPawn()->IsActorBeingDestroyed() )
+        if (OwningController->GetPawn() && !OwningController->GetPawn()->IsActorBeingDestroyed() )
         {
-            OwningController->PlayerCameraManager->AssignViewTarget(OwningController->GetPossessedPawn(), *this);
+            OwningController->PlayerCameraManager->AssignViewTarget(OwningController->GetPawn(), *this);
         }
         else
         {
@@ -47,7 +47,7 @@ AActor* FTViewTarget::GetTargetActor() const
 
     if (APlayerController* Controller = Cast<APlayerController>(Target))
     {
-        return Controller->GetPossessedPawn();
+        return Controller->GetPawn();
     }
 
     return nullptr;
@@ -67,7 +67,7 @@ APlayerCameraManager::APlayerCameraManager()
     ViewRollMax = 89.9f;
 
     F_Stop = 2.8f;
-    SensorWidth = 24.576f; // mm
+    SensorWidth = 36.f; // mm
     FocalDistance = 0.f; // cm
 }
 
@@ -306,7 +306,7 @@ void APlayerCameraManager::SetViewTarget(class AActor* NewTarget, struct FViewTa
 
 		BlendTimeToGo = TransitionParams.BlendTime;
 
-		AssignViewTarget(PCOwner->GetPossessedPawn(), ViewTarget);
+		AssignViewTarget(PCOwner->GetPawn(), ViewTarget);
 		AssignViewTarget(NewTarget, PendingViewTarget, TransitionParams);
 
 	}

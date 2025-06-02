@@ -1,7 +1,8 @@
-﻿#pragma once
+#pragma once
 
 #include "RenderPassBase.h"
 
+class FRenderTargetRHI;
 struct ID3D11SamplerState;
 
 class FDepthOfFieldRenderPass : public FRenderPassBase

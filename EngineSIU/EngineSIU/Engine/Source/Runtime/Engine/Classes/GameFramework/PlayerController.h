@@ -38,7 +38,7 @@ public:
     
     virtual void BindAction(const FString& Key, const std::function<void(float)>& Callback);
 
-    APawn* GetPossessedPawn() const { return PossessedPawn; }
+    APawn* GetPawn() const { return PossessedPawn; }
     
     // 카메라 관련 함수
     AActor* GetViewTarget() const;
@@ -50,6 +50,11 @@ public:
     void ClientStopCameraShake(UClass* Shake, bool bImmediately = true);
 
     APlayerCameraManager* PlayerCameraManager = nullptr;
+
+    virtual void AddPitchInput(float Value);
+    virtual void AddYawInput(float Value);
+
+    FRotator GetControlRotation() const { return ControlRotation; }
     
 protected:
     UPROPERTY(UInputComponent*, InputComponent, = nullptr)
@@ -59,5 +64,9 @@ protected:
     APawn* PossessedPawn = nullptr;
 
     bool bHasPossessed = false;
+
+    FRotator RotationInput = FRotator(0, 0, 0);
+
+    FRotator ControlRotation = FRotator(0, 0, 0);
 };
 

@@ -6,6 +6,7 @@
 #include "UnrealEd/PrimitiveDrawBatch.h"
 #include "Stats/ProfilerStatsManager.h"
 #include "Stats/GPUTimingManager.h"
+#include <PlayerCamera.h>
 
 
 class FSlateAppMessageHandler;
@@ -50,6 +51,8 @@ public:
 
     FGPUTimingManager GPUTimingManager;
     FEngineProfiler EngineProfiler;
+
+
 
 private:
     UImGuiManager* UIManager;

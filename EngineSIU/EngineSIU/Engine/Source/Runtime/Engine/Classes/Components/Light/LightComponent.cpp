@@ -50,7 +50,7 @@ void ULightComponentBase::TickComponent(float DeltaTime)
     Super::TickComponent(DeltaTime);
 }
 
-int ULightComponentBase::CheckRayIntersection(const FVector& InRayOrigin, const FVector& InRayDirection, float& OutHitDistance) const
+int ULightComponentBase::CheckRayIntersection(const FVector& InRayOrigin, const FVector& InRayDirection, float& OutHitDistance, FVector& OutHitNormal) const
 {
     return AABB.Intersect(InRayOrigin, InRayDirection, OutHitDistance);
 }

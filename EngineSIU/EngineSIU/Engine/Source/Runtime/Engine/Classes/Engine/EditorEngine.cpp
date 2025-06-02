@@ -86,6 +86,11 @@ void UEditorEngine::Tick(float DeltaTime)
 {
     for (FWorldContext* WorldContext : WorldList)
     {
+        if (ActiveWorld != WorldContext->World())
+        {
+            continue;
+        }
+        
         if (WorldContext->WorldType == EWorldType::Editor)
         {
             if (UWorld* World = WorldContext->World())
@@ -555,6 +560,8 @@ void UEditorEngine::SetPhysXScene(UWorld* World)
 void UEditorEngine::EndPIE()
 {
     ViewerType = EViewerType::EVT_Editor;
+
+    PhysicsManager->CleanupScene();
     
     if (PIEWorld)
     {

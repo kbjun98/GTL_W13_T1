@@ -219,7 +219,7 @@ public:
 
     // Depth of Field
     float F_Stop = 2.8f;
-    float SensorWidth = 24.576f; // mm
+    float SensorWidth = 36.f; // mm
     float FocalDistance = 0.f; // cm
 
     float GetFocalLength() const;

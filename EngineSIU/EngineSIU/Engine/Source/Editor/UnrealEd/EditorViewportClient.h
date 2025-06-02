@@ -113,7 +113,7 @@ protected:
     int32 CameraSpeedSetting = 1;
     /** Camera speed scalar */
     float CameraSpeed = 1.0f;
-    float CameraSpeedMultiplier = 10.0f;
+    float CameraSpeedMultiplier = 1000.0f;
     float GridSize;
 
     void GetViewInfo(FMinimalViewInfo& OutViewInfo) const;
@@ -141,11 +141,11 @@ public:
     // 카메라 정보 
     float ViewFOV = 90.0f;
     float AspectRatio;
-    float NearClip = 0.1f;
-    float FarClip = 1000.0f;
+    float NearClip = 10.f; // cm
+    float FarClip = 10000.0f; // cm
     
     float F_Stop = 2.8f;
-    float SensorWidth = 24.576f; // mm
+    float SensorWidth = 36.f; // mm
     float FocalDistance = 0.f; // cm
 
     float GetFocalLength() const

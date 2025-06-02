@@ -106,7 +106,7 @@ public:
     
     bool bIsAnimationEnabled() const { return bPlayAnimation; }
     
-    virtual int CheckRayIntersection(const FVector& InRayOrigin, const FVector& InRayDirection, float& OutHitDistance) const override;
+    virtual int CheckRayIntersection(const FVector& InRayOrigin, const FVector& InRayDirection, float& OutHitDistance, FVector& OutHitNormal) const override;
 
     const FSkeletalMeshRenderData* GetCPURenderData() const;
 
