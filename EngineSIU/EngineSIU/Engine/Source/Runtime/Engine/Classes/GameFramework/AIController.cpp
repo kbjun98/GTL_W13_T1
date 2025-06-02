@@ -4,27 +4,39 @@
 #include "Engine/Contents/Navigation/MapData.h"
 #include "Engine/Contents/Components/GridMapComponent.h"
 #include "Classes/GameFramework/Pawn.h"
+void AAIController::PostSpawnInitialize()
+{
+    GridMap = new FGridMap();
+    PathFinder = new FPathFinder();
+}
+
 void AAIController::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-    if (IsPathValid())
-    {
-        MoveAlongPath(DeltaTime);
-    }
-}
-
-void AAIController::RequestMove()
-{
-    // 경로 갱신 - default : 갱신 X
     UpdatePath();
 }
 
-
+void AAIController::UpdatePath()
+{
+    if (TargetPawn && PossessedPawn)
+    {
+        FVector StartLocation = PossessedPawn->GetActorLocation();
+        FVector TargetLocation = TargetPawn->GetActorLocation();
+        CurrentPath = PathFinder->FindPath(
+            *GridMap,
+            GridMap->GetNode(StartLocation.X, StartLocation.Y),
+            GridMap->GetNode(TargetLocation.X, TargetLocation.Y)
+        );
+    }
+    else
+    {
+        CurrentPath.Empty();
+    }
+}
 
 void AAIController::OnMoveCompleted()
 {
     bMoving = false;
-
 }
 
 void AAIController::MoveAlongPath(float DeltaTime)
