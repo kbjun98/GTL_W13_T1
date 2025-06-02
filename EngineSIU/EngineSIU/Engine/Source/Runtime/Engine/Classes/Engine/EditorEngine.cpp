@@ -86,6 +86,11 @@ void UEditorEngine::Tick(float DeltaTime)
 {
     for (FWorldContext* WorldContext : WorldList)
     {
+        if (ActiveWorld != WorldContext->World())
+        {
+            continue;
+        }
+        
         if (WorldContext->WorldType == EWorldType::Editor)
         {
             if (UWorld* World = WorldContext->World())

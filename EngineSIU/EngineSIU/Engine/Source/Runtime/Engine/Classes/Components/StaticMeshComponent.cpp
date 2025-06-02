@@ -2,6 +2,7 @@
 
 #include "Components/StaticMeshComponent.h"
 
+#include "Engine/AssetManager.h"
 #include "Engine/FObjLoader.h"
 #include "Launch/EngineLoop.h"
 #include "UObject/Casts.h"
@@ -57,9 +58,13 @@ void UStaticMeshComponent::SetProperties(const TMap<FString, FString>& InPropert
         if (*TempStr != TEXT("None")) // 값이 "None"이 아닌지 확인
         {
             // 경로 문자열로 UStaticMesh 에셋 로드 시도
-           
-            if (UStaticMesh* MeshToSet = FObjManager::CreateStaticMesh(*TempStr))
+            if (UStaticMesh* Mesh2Set = Cast<UStaticMesh>(UAssetManager::Get().GetAsset(EAssetType::StaticMesh, *TempStr)))
             {
+                SetStaticMesh(Mesh2Set);
+            }
+            else if (UStaticMesh* MeshToSet = FObjManager::CreateStaticMesh(*TempStr))
+            {
+                // TODO: FilePath가 올바르지 않아도 비어있는 UStaticMesh를 반환하는 문제 있음.
                 SetStaticMesh(MeshToSet); // 성공 시 메시 설정
                 UE_LOG(ELogLevel::Display, TEXT("Set StaticMesh '%s' for %s"), **TempStr, *GetName());
             }

@@ -163,7 +163,10 @@ bool AEditorPlayer::PickGizmo(FVector& pickPosition, FEditorViewportClient* InAc
 
 void AEditorPlayer::PickActor(const FVector& PickPosition)
 {
-    if (!(ShowFlags::GetInstance().CurrentFlags & EEngineShowFlags::SF_Primitives)) return;
+    if (!(ShowFlags::GetInstance().CurrentFlags & EEngineShowFlags::SF_Primitives))
+    {
+        return;
+    }
 
     USceneComponent* Possible = nullptr;
     int maxIntersect = 0;

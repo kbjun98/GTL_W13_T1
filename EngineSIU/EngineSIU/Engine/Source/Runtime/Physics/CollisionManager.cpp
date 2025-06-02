@@ -278,7 +278,7 @@ void FCollisionManager::CheckOverlap(const UWorld* World, const UPrimitiveCompon
             bCanSkip = false;
         }
 
-        if (!bCanSkip)
+        if (!bCanSkip || true) // AABB 검사 결과 무시
         {
             FOverlapResult OverlapResult;
             if (IsOverlapped(Component, Iter, OverlapResult))

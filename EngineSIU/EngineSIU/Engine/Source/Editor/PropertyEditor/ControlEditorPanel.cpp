@@ -40,6 +40,7 @@
 #include "Renderer/CompositingPass.h"
 #include <Engine/FbxLoader.h>
 #include "Engine/Classes/Engine/AssetManager.h"
+#include "GameFramework/TestVolume.h"
 #include "Particles/ParticleSystemComponent.h"
 
 ControlEditorPanel::ControlEditorPanel()
@@ -373,6 +374,7 @@ void ControlEditorPanel::CreateModifyButton(const ImVec2 ButtonSize, ImFont* Ico
             { .Label = "SkeletalMeshActor", .OBJ = OBJ_SKELETALMESH },
             { .Label = "SequencerPlayer",   .OBJ = OBJ_SEQUENCERPLAYER },
             { .Label = "RabbitPawn",        .OBJ = OBJ_RABBITPAWN },
+            { .Label = "TestVolume",        .OBJ = OBJ_TESTVOLUME }
         };
 
         for (const auto& primitive : primitives)
@@ -383,6 +385,12 @@ void ControlEditorPanel::CreateModifyButton(const ImVec2 ButtonSize, ImFont* Ico
                 AActor* SpawnedActor = nullptr;
                 switch (static_cast<OBJECTS>(primitive.OBJ))
                 {
+                case OBJ_TESTVOLUME:
+                {
+                    SpawnedActor = World->SpawnActor<ATestVolume>();
+                    SpawnedActor->SetActorLabel(TEXT("OBJ_TESTVOLUME"));
+                    break;
+                }
                 case OBJ_SPHERE:
                 {
                     SpawnedActor = World->SpawnActor<AActor>();

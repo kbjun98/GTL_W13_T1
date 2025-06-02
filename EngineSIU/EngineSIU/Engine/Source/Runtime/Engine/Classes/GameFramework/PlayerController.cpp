@@ -32,8 +32,24 @@ void APlayerController::Tick(float DeltaTime)
         PlayerCameraManager->UpdateCamera(DeltaTime);
     }
 
-    ControlRotation += RotationInput;
-    ControlRotation.Normalize();
+    float PitchMax = 89.f;
+    float PitchMin = -89.f;
+    if (PlayerCameraManager)
+    {
+        PitchMax = PlayerCameraManager->ViewPitchMax;
+        PitchMin = PlayerCameraManager->ViewPitchMin;
+    }
+    
+    FRotator NewControlRotation = ControlRotation;
+    NewControlRotation.Yaw += RotationInput.Yaw;
+    NewControlRotation.Roll += RotationInput.Roll;
+    NewControlRotation.Pitch = FMath::Clamp(
+        NewControlRotation.Pitch + RotationInput.Pitch,
+        PitchMin,
+        PitchMax
+    );
+    NewControlRotation.Normalize();
+    ControlRotation = NewControlRotation;
 
     RotationInput = FRotator::ZeroRotator;
 }
