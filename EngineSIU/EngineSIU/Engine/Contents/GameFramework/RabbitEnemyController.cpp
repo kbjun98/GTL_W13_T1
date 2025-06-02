@@ -19,12 +19,18 @@ void ARabbitEnemyController::Tick(float DeltaTime)
 
 void ARabbitEnemyController::ProcessEnemyMovement(float DeltaTime)
 {
+    ARabbitEnemy* Enemy = GetPossesedRabbitEnemy();
     switch (CurrentState)
     {
     case EnemyState::IDLE:
+        Enemy->SetAnimState(ERabbitAnimState::EIDLE);
         break;
     case EnemyState::CHASE:
+        Enemy->SetAnimState(ERabbitAnimState::EWALK);
         MoveTo(GetTargetRabbitPlayer()->GetActorLocation());
+        break;
+    case EnemyState::ATTACK:
+        Enemy->SetAnimState(ERabbitAnimState::EAttack);
         break;
     default:
         break;
@@ -42,11 +48,30 @@ void ARabbitEnemyController::CheckStateChange()
         {
             CurrentState = EnemyState::CHASE;
         }
+        else if (IsTargetInSight(0, Enemy->AcceptanceRadius))
+        {
+            CurrentState = EnemyState::ATTACK;
+        }
         break;
     case EnemyState::CHASE:
-        if (IsTargetInSight(0, Enemy->AcceptanceRadius)||IsTargetInRange(Enemy->FailureRadius,FLT_MAX))
+        if (IsTargetInSight(0, Enemy->AcceptanceRadius))
         {
-            CurrentState = EnemyState::IDLE;            
+            CurrentState = EnemyState::ATTACK;            
+        }
+        else if (IsTargetInRange(Enemy->FailureRadius, FLT_MAX))
+        {
+            CurrentState = EnemyState::IDLE;
+        }
+        break;
+    case EnemyState::ATTACK:
+        if (IsTargetInRange(Enemy->AcceptanceRadius, Enemy->ChaseRangeMin)
+            ||!IsTargetInFOV(Enemy->SightFOV))
+        {
+            CurrentState = EnemyState::IDLE;
+        }
+        else if (IsTargetInSight(Enemy->ChaseRangeMin, Enemy->ChaseRangeMax))
+        {
+            CurrentState = EnemyState::CHASE;
         }
         break;
     default:

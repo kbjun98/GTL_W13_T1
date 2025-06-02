@@ -8,6 +8,7 @@ enum class EnemyState : uint8
 {
     IDLE,
     CHASE,
+    ATTACK,
     END
 };
 
