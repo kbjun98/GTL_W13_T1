@@ -7,6 +7,8 @@
 #include "Engine/SkeletalMesh.h"
 #include <Animation/AnimationRuntime.h>
 #include <Animation/RabbitAnimStateMachine.h>
+#include <GameFramework/RabbitPawn.h>
+#include "Animation/AnimData/AnimDataModel.h"
 
 RabbitAnimInstance::RabbitAnimInstance()
     : PrevAnim(nullptr)
@@ -21,9 +23,10 @@ RabbitAnimInstance::RabbitAnimInstance()
     , CurrentKey(0)
     , BlendAlpha(0.f)
     , BlendStartTime(0.f)
-    , BlendDuration(0.2f)
+    , BlendDuration(1.f)
     , bIsBlending(false)
 {
+    PrevAnimTimeSnapshot = 0.f;
     StateMachine = FObjectFactory::ConstructObject<RabbitAnimStateMachine>(this);
     Idle = UAssetManager::Get().GetAnimation(FString("Contents/Bunny/Idle"));
     Walk = UAssetManager::Get().GetAnimation(FString("Contents/Bunny/Walk"));
@@ -38,15 +41,25 @@ void RabbitAnimInstance::NativeInitializeAnimation()
 
 }
 
-float temp = 0.f;
+float GetNormalizedAnimTime(UAnimSequence* Anim, float ElapsedTime)
+{
+    if (!Anim) return 0.f;
+
+    float AnimLength = Anim->GetPlayLength();
+    if (AnimLength <= 0.f) return 0.f;
+
+    // 루프를 고려한 정규화된 시간
+    return FMath::Fmod(ElapsedTime, AnimLength);
+}
 
 void RabbitAnimInstance::NativeUpdateAnimation(float DeltaSeconds, FPoseContext& OutPose)
 {
     UAnimInstance::NativeUpdateAnimation(DeltaSeconds, OutPose);
-    StateMachine->ProcessState();
+    USkeletalMeshComponent* SkeletalMeshComp = GetSkelMeshComponent();
+    ARabbitPawn* RabbitPawn = Cast<ARabbitPawn>(SkeletalMeshComp->GetOwner());
+   StateMachine->ProcessState(RabbitPawn->GetAnimState());
 
 #pragma region MyAnim
-    USkeletalMeshComponent* SkeletalMeshComp = GetSkelMeshComponent();
 
     if (!PrevAnim || !CurrAnim || !SkeletalMeshComp->GetSkeletalMeshAsset() || !SkeletalMeshComp->GetSkeletalMeshAsset()->GetSkeleton() || !bPlaying)
     {
@@ -89,11 +102,30 @@ void RabbitAnimInstance::NativeUpdateAnimation(float DeltaSeconds, FPoseContext&
         CurrPose.Pose[BoneIdx] = RefSkeleton.RawRefBonePose[BoneIdx];
     }
 
-    FAnimExtractContext ExtractA(GetElapsedTime(), false);
-    FAnimExtractContext ExtractB(GetElapsedTime(), false);
+    
+    if (bIsBlending)
+    {
+        float BlendElapsed = ElapsedTime - BlendStartTime;
+        float CurrAnimLength = CurrAnim->GetPlayLength();
+        float CurrAnimTime = FMath::Fmod(BlendElapsed, CurrAnimLength);
 
-    PrevAnim->GetAnimationPose(PrevPose, ExtractA);
-    CurrAnim->GetAnimationPose(CurrPose, ExtractB);
+        FAnimExtractContext ExtractA(PrevAnimTimeSnapshot, false); // 저장된 시간 사용
+        FAnimExtractContext ExtractB(CurrAnimTime, false);
+
+        PrevAnim->GetAnimationPose(PrevPose, ExtractA);
+        CurrAnim->GetAnimationPose(CurrPose, ExtractB);
+    }
+    else
+    {
+        float CurrAnimLength = CurrAnim->GetPlayLength();
+        float CurrAnimTime = FMath::Fmod(ElapsedTime, CurrAnimLength);
+
+        FAnimExtractContext ExtractA(CurrAnimTime, false);
+        FAnimExtractContext ExtractB(CurrAnimTime, false);
+        PrevAnim->GetAnimationPose(PrevPose, ExtractA);
+        CurrAnim->GetAnimationPose(CurrPose, ExtractB);
+    }
+
 
     FAnimationRuntime::BlendTwoPosesTogether(CurrPose.Pose, PrevPose.Pose, BlendAlpha, OutPose.Pose);
 #pragma endregion

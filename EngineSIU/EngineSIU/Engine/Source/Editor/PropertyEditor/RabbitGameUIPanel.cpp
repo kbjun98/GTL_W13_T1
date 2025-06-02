@@ -4,6 +4,7 @@
 #include <Engine/Contents/GameFramework/RabbitPawn.h>
 #include <UObject/UObjectIterator.h>
 #include "Engine/Contents/GameFramework/RabbitPlayer.h"
+#include <Engine/Engine.h>
 
 
 inline ImVec2 operator*(const ImVec2& lhs, float rhs) {
@@ -26,6 +27,7 @@ RabbitGameUIPanel::RabbitGameUIPanel()
 
 void RabbitGameUIPanel::Render()
 {
+
     if (!RegisterPlayerCamera())
     {
         return;
@@ -39,7 +41,7 @@ void RabbitGameUIPanel::Render()
    ImVec2 center = ImVec2(radius + padding.x, screen_size.y - radius - padding.y);
 
    ImDrawList* draw_list = ImGui::GetBackgroundDrawList(); // 또는 ForegroundDrawList
-
+    
    // 배경 원
    draw_list->AddCircle(center, radius, IM_COL32(100, 100, 100, 255), 64, 2.0f);
 
