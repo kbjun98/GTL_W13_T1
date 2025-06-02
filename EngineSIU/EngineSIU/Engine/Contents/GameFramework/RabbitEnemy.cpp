@@ -1,5 +1,6 @@
 #include "RabbitEnemy.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Engine/Contents/GameFramework/RabbitMovementComponent.h"
 
 void ARabbitEnemy::PostSpawnInitialize()
 {
@@ -15,8 +16,13 @@ UObject* ARabbitEnemy::Duplicate(UObject* InOuter)
 void ARabbitEnemy::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+}
 
-
+void ARabbitEnemy::BeginPlay()
+{
+    Super::BeginPlay();    
+    URabbitMovementComponent* MovementComponent = GetComponentByClass<URabbitMovementComponent>();
+    MovementComponent->MaxSpeed = 200.0f; // 적의 이동 속도 설정    
 }
 
 void ARabbitEnemy::RoatateToTarget(const FVector& Location)
