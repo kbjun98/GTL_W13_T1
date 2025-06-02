@@ -26,13 +26,13 @@ void ARabbitPawn::PostSpawnInitialize()
     
     MovementComponent = AddComponent<URabbitMovementComponent>("RabbitMoveComp_0");
 
-    PlayerCam = std::make_shared<PlayerCamera>();
+    RabbitCam = std::make_shared<RabbitCamera>();
 }
 
 UObject* ARabbitPawn::Duplicate(UObject* InOuter)
 {
     ARabbitPawn* NewPawn = Cast<ARabbitPawn>(Super::Duplicate(InOuter));
-    NewPawn->PlayerCam = std::make_shared<PlayerCamera>();
+    NewPawn->RabbitCam = std::make_shared<RabbitCamera>();
     
     return NewPawn;
 }
@@ -63,9 +63,9 @@ void ARabbitPawn::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 
-    if (PlayerCam)
+    if (RabbitCam)
     {
-        PlayerCam->Tick(DeltaTime);
+        RabbitCam->Tick(DeltaTime);
     }
     
     if (GetPlayerController())
@@ -89,9 +89,9 @@ void ARabbitPawn::Tick(float DeltaTime)
     }
 }
 
-std::shared_ptr<PlayerCamera> ARabbitPawn::GetPlayerCamera()
+std::shared_ptr<RabbitCamera> ARabbitPawn::GetPlayerCamera()
 {
-    return PlayerCam;
+    return RabbitCam;
 }
 
 FVector ARabbitPawn::GetActorForwardVector() const

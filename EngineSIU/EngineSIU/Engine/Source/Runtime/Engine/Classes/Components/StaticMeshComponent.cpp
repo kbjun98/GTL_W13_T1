@@ -7,7 +7,7 @@
 #include "Launch/EngineLoop.h"
 #include "UObject/Casts.h"
 #include "UObject/ObjectFactory.h"
-
+#include "GameFramework/RabbitGameMode.h"
 #include "GameFramework/Actor.h"
 
 UObject* UStaticMeshComponent::Duplicate(UObject* InOuter)
@@ -16,6 +16,7 @@ UObject* UStaticMeshComponent::Duplicate(UObject* InOuter)
 
     NewComponent->StaticMesh = StaticMesh;
     NewComponent->SelectedSubMeshIndex = SelectedSubMeshIndex;
+    NewComponent->PhotoType = PhotoType;
 
     return NewComponent;
 }
@@ -213,4 +214,22 @@ int UStaticMeshComponent::CheckRayIntersection(
         }
     }
     return IntersectionNum;
+}
+
+EPhotoType UStaticMeshComponent::GetPhotoType()
+{
+    return PhotoType;
+}
+
+void UStaticMeshComponent::SetPhotoType(EPhotoType Type)
+{
+    int Check = static_cast<int>(EPhotoType::END) - static_cast<int>(Type);
+
+    if (Check < 1)
+    {
+        PhotoType = EPhotoType::NONE;
+        return;
+    }
+
+    PhotoType = Type;
 }
