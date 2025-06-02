@@ -13,27 +13,27 @@ UIdleCameraShake::UIdleCameraShake()
     Pattern->RotationAmplitudeMultiplier = 1.f;
     Pattern->RotationFrequencyMultiplier = 1.f;
     
-    Pattern->Yaw.Amplitude = 3.f;
-    Pattern->Yaw.Frequency = 5.f;
+    Pattern->Yaw.Amplitude = 0.3f;
+    Pattern->Yaw.Frequency = 0.8f;
 
-    Pattern->Pitch.Amplitude = 5.f;
-    Pattern->Pitch.Frequency = 4.f;
+    Pattern->Pitch.Amplitude = 0.2f;
+    Pattern->Pitch.Frequency = 1.5f;
 
-    Pattern->Roll.Amplitude = 3.f;
-    Pattern->Roll.Frequency = 10.f;
+    Pattern->Roll.Amplitude = 0.f;
+    Pattern->Roll.Frequency = 1.f;
 
     // Location
-    Pattern->LocationAmplitudeMultiplier = 0.f;
+    Pattern->LocationAmplitudeMultiplier = 1.f;
     Pattern->LocationFrequencyMultiplier = 1.f;
 
     Pattern->X.Amplitude = 0.f;
     Pattern->X.Frequency = 1.f;
 
-    Pattern->Y.Amplitude = 5.f;
-    Pattern->Y.Frequency = 2.f;
+    Pattern->Y.Amplitude = 0.2f;
+    Pattern->Y.Frequency = 1.f;
 
-    Pattern->Z.Amplitude = 0.f;
-    Pattern->Z.Frequency = 5.f;
+    Pattern->Z.Amplitude = 0.1f;
+    Pattern->Z.Frequency = 0.4f;
     
     SetRootShakePattern(Pattern);
 }
