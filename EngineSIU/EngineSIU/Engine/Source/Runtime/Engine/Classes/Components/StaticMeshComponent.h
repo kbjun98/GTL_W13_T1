@@ -2,15 +2,17 @@
 #include "Components/MeshComponent.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/Asset/StaticMeshAsset.h"
+#include "Engine/Contents/Runtime/Core/StaticMeshTypes.h"
 
 enum class EPhotoType;
+enum class EStaticMeshType;
 
 class UStaticMeshComponent : public UMeshComponent
 {
     DECLARE_CLASS(UStaticMeshComponent, UMeshComponent)
 
 public:
-    UStaticMeshComponent() = default;
+    UStaticMeshComponent();
 
     virtual UObject* Duplicate(UObject* InOuter) override;
 
@@ -52,8 +54,12 @@ protected:
 
 private:
     EPhotoType PhotoType;
+    EStaticMeshType MeshType;
 
 public:
     EPhotoType GetPhotoType();
     void SetPhotoType(EPhotoType Type);
+
+    EStaticMeshType GetMeshType();
+    void SetMeshType(EStaticMeshType Type);
 };

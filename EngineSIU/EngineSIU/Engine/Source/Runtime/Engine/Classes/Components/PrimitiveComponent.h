@@ -112,6 +112,12 @@ public:
 
     virtual void BeginPlay() override;
     
+    bool IntersectRayTriangle(
+        const FVector& RayOrigin, const FVector& RayDirection,
+        const FVector& V0, const FVector& V1, const FVector& V2,
+        float& OutHitDistance, FVector& OutNormal
+    ) const;
+
 protected:
     TArray<FOverlapInfo> OverlappingComponents;
 
@@ -121,11 +127,7 @@ protected:
 
     void ClearComponentOverlaps(bool bDoNotifies, bool bSkipNotifySelf);
     
-    bool IntersectRayTriangle(
-        const FVector& RayOrigin, const FVector& RayDirection,
-        const FVector& V0, const FVector& V1, const FVector& V2,
-        float& OutHitDistance, FVector& OutNormal
-    ) const;
+    
     
 private:
     FString m_Type;
