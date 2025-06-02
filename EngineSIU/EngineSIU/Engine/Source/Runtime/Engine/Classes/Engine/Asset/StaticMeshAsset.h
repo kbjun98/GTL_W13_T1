@@ -22,6 +22,11 @@ struct FStaticMeshVertex
                   << Data.U << Data.V
                   << Data.MaterialIndex;
     }
+
+    FVector GetPosition()
+    {
+        return FVector(X, Y, Z);
+    }
 };
 
 struct FStaticMeshRenderData

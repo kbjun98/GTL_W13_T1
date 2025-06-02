@@ -1,7 +1,7 @@
 #include "PathFinder.h"
 #include <Container/Set.h>
 
-TArray<FGridNode*> FPathFinder::FindPath(FGridMap& GridMap, FGridNode& StartNode, FGridNode& TargetNode)
+TArray<FGridNode*> FPathFinder::FindNodePathByNode(FGridMap& GridMap, FGridNode& StartNode, FGridNode& TargetNode)
 {
     TArray<FGridNode*> OpenSet;
     TSet<FGridNode*> ClosedSet;
@@ -54,7 +54,6 @@ TArray<FGridNode*> FPathFinder::FindPath(FGridMap& GridMap, FGridNode& StartNode
         }
     }
 
-
     return {};
 }
 
@@ -84,6 +83,45 @@ TArray<FGridNode*> FPathFinder::GetNeighbors(FGridMap& GridMap, const FGridNode&
     return Neighbors;
 }
 
+TArray<FVector> FPathFinder::FindWorldPosPathByNode(FGridMap& GridMap, FGridNode& StartNode, FGridNode& TargetNode)
+{
+    TArray<FGridNode*> PathNodes = FindNodePathByNode(GridMap, StartNode, TargetNode);
+    TArray<FVector> WorldPaths;
+    for (FGridNode* Node : PathNodes)
+    {
+        FVector WorldPos = Node->GetPosition(); // GridSize를 100.0f로 가정
+        WorldPaths.Add(WorldPos);
+    }
+
+    DebugWorldPosPath(WorldPaths);
+
+    return WorldPaths;
+}
+
+TArray<FVector> FPathFinder::FindWorlPosPathByWorldPos(FGridMap& GridMap, const FVector& StartWorldPos, const FVector& TargetWorldPos)
+{
+
+    const float GridSpacing = 100.0f; // 그리드 크기
+    int StartX = FMath::FloorToInt((StartWorldPos.X - GridMap.MinPoint.X) / GridSpacing);
+    int StartY = FMath::FloorToInt((StartWorldPos.Y - GridMap.MinPoint.Y) / GridSpacing);
+
+    int TargetX = FMath::FloorToInt((TargetWorldPos.X - GridMap.MinPoint.X) / GridSpacing);
+    int TargetY = FMath::FloorToInt((TargetWorldPos.Y - GridMap.MinPoint.Y) / GridSpacing);
+
+    // 유효성 검사
+    StartX = FMath::Clamp(StartX, 0, GridMap.Width - 1);
+    StartY = FMath::Clamp(StartY, 0, GridMap.Height - 1);
+    TargetX = FMath::Clamp(TargetX, 0, GridMap.Width - 1);
+    TargetY = FMath::Clamp(TargetY, 0, GridMap.Height - 1);
+
+    // 노드 가져오기
+    FGridNode& StartNode = GridMap.GetNode(StartX, StartY);
+    FGridNode& TargetNode = GridMap.GetNode(TargetX, TargetY);
+
+    // 노드로 경로 찾기 로직 호출
+    return FindWorldPosPathByNode(GridMap, StartNode, TargetNode);
+}
+
 const void FPathFinder::DebugPrint(TArray<FGridNode*>& Path) const
 {
     if (!Path.IsEmpty())
@@ -96,5 +134,14 @@ const void FPathFinder::DebugPrint(TArray<FGridNode*>& Path) const
     }
     else {
         UE_LOG(ELogLevel::Display, "경로를 찾지 못했습니다.");
+    }
+}
+
+const void FPathFinder::DebugWorldPosPath(TArray<FVector>& Path) const
+{
+    UE_LOG(ELogLevel::Warning, "=== WorldPositionPath ===");
+
+    for (auto pos : Path) {
+        UE_LOG(ELogLevel::Display, "x : %f, / y : %f / z : %f", pos.X, pos.Y, pos.Z);
     }
 }

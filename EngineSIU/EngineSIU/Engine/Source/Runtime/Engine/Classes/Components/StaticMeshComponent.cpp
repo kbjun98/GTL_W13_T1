@@ -10,6 +10,11 @@
 #include "GameFramework/RabbitGameMode.h"
 #include "GameFramework/Actor.h"
 
+UStaticMeshComponent::UStaticMeshComponent()
+{
+    SetMeshType(EStaticMeshType::NONE);
+}
+
 UObject* UStaticMeshComponent::Duplicate(UObject* InOuter)
 {
     ThisClass* NewComponent = Cast<ThisClass>(Super::Duplicate(InOuter));
@@ -232,4 +237,14 @@ void UStaticMeshComponent::SetPhotoType(EPhotoType Type)
     }
 
     PhotoType = Type;
+}
+
+EStaticMeshType UStaticMeshComponent::GetMeshType()
+{
+    return MeshType;
+}
+
+void UStaticMeshComponent::SetMeshType(EStaticMeshType Type)
+{
+    MeshType = Type;
 }

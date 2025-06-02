@@ -10,10 +10,19 @@ class FPathFinder
 public:
     FPathFinder() = default;
     ~FPathFinder() = default;
-    // 실제 경로 탐색
-    TArray<FGridNode*> FindPath(FGridMap& GridMap, FGridNode& StartNode, FGridNode& TargetNode);
 
+    // Node 로 Node 경로 찾기
+    TArray<FGridNode*> FindNodePathByNode(FGridMap& GridMap, FGridNode& StartNode, FGridNode& TargetNode);
+    
+    // Node 로 WorldPosition 경로 찾기
+    TArray<FVector> FindWorldPosPathByNode(FGridMap& GridMap, FGridNode& StartNode, FGridNode& TargetNode);
+
+    // WorldPosition으로 WorldPosition 경로 찾기
+    TArray<FVector> FindWorlPosPathByWorldPos(FGridMap& GridMap, const FVector& StartWorldPos, const FVector& TargetWorldPos);
+    
     const void DebugPrint(TArray<FGridNode*>& Path) const;
+
+    const void DebugWorldPosPath(TArray<FVector>& Path) const;
 private:
     // 휴리스틱 계산
     float CalcHeuristic(FGridNode& A, FGridNode& B);
