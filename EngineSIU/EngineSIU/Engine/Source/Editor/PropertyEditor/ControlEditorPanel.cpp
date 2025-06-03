@@ -213,7 +213,7 @@ void ControlEditorPanel::CreateMenuButton(const ImVec2 ButtonSize, ImFont* IconF
             
             EditorEngine->NewLevel();
             EditorEngine->LoadLevel(FileName);
-            GridMap->LoadFromBinaryFile(GridMapFileName);
+            //GridMap->LoadFromBinaryFile(GridMapFileName);
 
         }
     }

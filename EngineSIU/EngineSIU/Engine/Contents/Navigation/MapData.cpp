@@ -334,6 +334,7 @@ void FGridMap::LoadFromBinaryFile(const FString& FilePath)
 
     InFile.close();
     UE_LOG(ELogLevel::Display, "GridMap 로드 완료: %s", *FilePath);
+    GridMap->DebugPrint();
 }
 
 
