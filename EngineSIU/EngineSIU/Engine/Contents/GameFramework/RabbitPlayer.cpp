@@ -217,6 +217,47 @@ void ARabbitPlayer::EndADS()
     }
 }
 
+void ARabbitPlayer::ResetPlayer()
+{
+    bIsDied = false;
+
+    if (SkeletalMeshComp)
+    {
+        USkeletalMesh* MeshAsset = Cast<USkeletalMesh>(UAssetManager::Get().GetAsset(EAssetType::SkeletalMesh, "Contents/Bunny/Bunny2"));
+        SkeletalMeshComp->SetSkeletalMeshAsset(MeshAsset);
+        SkeletalMeshComp->SetAnimationMode(EAnimationMode::AnimationSingleNode);
+        SkeletalMeshComp->SetRelativeLocation(FVector(0.f, 0.f, 100.f));
+
+        SkeletalMeshComp->RigidBodyType = ERigidBodyType::KINEMATIC;
+        SkeletalMeshComp->bApplyGravity = true;
+        SkeletalMeshComp->bSimulate = true;
+
+        UObject* Obj = UAssetManager::Get().GetAsset(EAssetType::PhysicsAsset, "Contents/PhysicsAsset/Bunny2");
+        if (UPhysicsAsset* PhysicsAsset = Cast<UPhysicsAsset>(Obj))
+        {
+            SkeletalMeshComp->GetSkeletalMeshAsset()->SetPhysicsAsset(PhysicsAsset);
+        }
+
+        SkeletalMeshComp->RemovePhysXGameObject();
+        
+        SkeletalMeshComp->bHidden = true;
+    }
+
+    if (CameraMesh)
+    {
+        CameraMesh->bHidden = false;
+    }
+
+    if (GetPlayerController())
+    {
+        GetPlayerController()->SetInputEnabled(true);
+    }
+    if (GetRabbitController())
+    {
+        GetRabbitController()->SetInputMode(EInputMode::GameOnly);
+    }
+}
+
 void ARabbitPlayer::SetFOV(float FOV)
 {
     if (UCameraComponent* CameraComp = GetComponentByClass<UCameraComponent>())
@@ -255,6 +296,21 @@ void ARabbitPlayer::OnRabbitBeginOverlap(UPrimitiveComponent* OverlappedComp, AA
 {
     Super::OnRabbitBeginOverlap(OverlappedComp, OtherActor, OtherComp);
 
+    OnDeath();
+}
+
+void ARabbitPlayer::OnRabbitEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp)
+{
+    Super::OnRabbitEndOverlap(OverlappedComp, OtherActor, OtherComp);
+}
+
+void ARabbitPlayer::OnDeath()
+{
+    if (bIsDied)
+    {
+        return;        
+    }
+    
     if (SkeletalMeshComp)
     {
         USkeletalMesh* MeshAsset = Cast<USkeletalMesh>(UAssetManager::Get().GetAsset(EAssetType::SkeletalMesh, "Contents/Bunny/Bunny2"));
@@ -277,9 +333,21 @@ void ARabbitPlayer::OnRabbitBeginOverlap(UPrimitiveComponent* OverlappedComp, AA
         SkeletalMeshComp->EnableRagdoll(true);
         SkeletalMeshComp->bHidden = false;
     }
-}
 
-void ARabbitPlayer::OnRabbitEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp)
-{
-    Super::OnRabbitEndOverlap(OverlappedComp, OtherActor, OtherComp);
+    if (CameraMesh)
+    {
+        CameraMesh->bHidden = true;
+    }
+
+    OnPlayerDied.ExecuteIfBound();
+    bIsDied = true;
+
+    if (GetPlayerController())
+    {
+        GetPlayerController()->SetInputEnabled(false);
+    }
+    if (GetRabbitController())
+    {
+        GetRabbitController()->SetInputMode(EInputMode::UIOnly);
+    }
 }

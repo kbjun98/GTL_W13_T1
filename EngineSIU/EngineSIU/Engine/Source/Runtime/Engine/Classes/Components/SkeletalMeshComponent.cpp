@@ -647,6 +647,32 @@ void USkeletalMeshComponent::CreatePhysXGameObject()
     }
 }
 
+void USkeletalMeshComponent::RemovePhysXGameObject()
+{
+    for (auto Constraint : Constraints)
+    {
+        Constraint->ConstraintData->release();
+        Constraint->ConstraintData = nullptr;
+    }
+    Constraints.Empty();
+    
+    for (auto Body : Bodies)
+    {
+        Body->BIGameObject->DynamicRigidBody->release();
+        Body->BIGameObject->DynamicRigidBody = nullptr;
+        
+        Body->BIGameObject->StaticRigidBody->release();
+        Body->BIGameObject->StaticRigidBody = nullptr;
+        
+        delete Body->BIGameObject;
+        Body->BIGameObject = nullptr;
+        
+        Body->RigidActorSync = nullptr;
+        Body->RigidActorAsync = nullptr;
+    }
+    Bodies.Empty();
+}
+
 void USkeletalMeshComponent::AddBodyInstance(FBodyInstance* BodyInstance)
 {
     Bodies.Add(BodyInstance);
@@ -809,11 +835,6 @@ void USkeletalMeshComponent::EnableRagdoll(bool bEnable)
         {
             BodyInstance->BIGameObject->DynamicRigidBody->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
             BodyInstance->BIGameObject->DynamicRigidBody->wakeUp();
-        }
-        if (AttachParent)
-        {
-            FTransform Transform = AttachParent->GetComponentTransform();
-            SetWorldTransform(Transform);
         }
     }
     else

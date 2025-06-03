@@ -7,6 +7,8 @@ class ARabbitController;
 class UCameraMeshComponent;
 class UCameraShakeBase;
 
+DECLARE_DELEGATE(FOnPlayerDiedSignature);
+
 class ARabbitPlayer : public ARabbitPawn
 {
     DECLARE_CLASS(ARabbitPlayer, ARabbitPawn)
@@ -41,6 +43,8 @@ public:
     void StartADS();
     void EndADS();
 
+    void ResetPlayer();
+
 protected:
     void SetFOV(float FOV);
     float GetFOV() const;
@@ -67,5 +71,10 @@ private:
     TSubclassOf<UCameraShakeBase> IdleCameraShake = UClass::FindClass("UIdleCameraShake");
 
     UCameraShakeBase* CameraShakeInstance = nullptr;
+
+    bool bIsDied = false;
+    FOnPlayerDiedSignature OnPlayerDied;
+
+    void OnDeath();
 };
 
