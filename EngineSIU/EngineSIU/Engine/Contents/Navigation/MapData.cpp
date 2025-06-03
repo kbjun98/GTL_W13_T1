@@ -87,7 +87,7 @@ void FGridMap::InitializeGridMap()
 
 void FGridMap::InitializeGridNodeFromMeshes()
 {
-    const float GridSpacing = 10.0f;
+    const float GridSpacing = 10.f;
 
     MinPoint= FVector(FLT_MAX);
     MaxPoint = FVector(-FLT_MAX);

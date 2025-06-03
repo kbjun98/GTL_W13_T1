@@ -28,7 +28,14 @@ public:
     UPROPERTY(EditAnywhere,
         float, ChaseRangeMin, = 200.0f; // 추적 범위
     )
+public:
+    TArray<USceneComponent*> PatrolTargets;
+
 private:
     FVector TargetLocation = FVector::ZeroVector; // 적의 목표 위치
+    const uint32 PatrolTargetNum = 2;
+
+
+
 };
 

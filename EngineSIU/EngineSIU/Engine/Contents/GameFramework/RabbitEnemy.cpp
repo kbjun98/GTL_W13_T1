@@ -5,11 +5,19 @@
 void ARabbitEnemy::PostSpawnInitialize()
 {
     Super::PostSpawnInitialize();
+    for (uint32 i = 0; i < PatrolTargetNum; i++)
+    {
+        USceneComponent* NewPatrolTargetComp = AddComponent<USceneComponent>("PatrolTargetComp_"+ i);
+        PatrolTargets.Add(NewPatrolTargetComp);
+        NewPatrolTargetComp->SetupAttachment(RootComponent);
+    }
 }
 
 UObject* ARabbitEnemy::Duplicate(UObject* InOuter)
 {
     ARabbitEnemy* NewEnemy = Cast<ARabbitEnemy>(Super::Duplicate(InOuter));
+
+    NewEnemy->PatrolTargets = PatrolTargets;
     return NewEnemy;
 }
 
