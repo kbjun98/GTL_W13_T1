@@ -259,6 +259,7 @@ void FCollisionManager::CheckOverlap(const UWorld* World, const UPrimitiveCompon
     
     for (const auto Iter : TObjectRange<UShapeComponent>())
     {
+        if (Iter->bIsOverlapEnabled == false) continue;
         if (!Iter || Iter->GetWorld() != World || Iter == Component)
         {
             continue;            
