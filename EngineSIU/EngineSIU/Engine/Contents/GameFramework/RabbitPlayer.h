@@ -45,6 +45,8 @@ public:
 
     void ResetPlayer();
 
+    FOnPlayerDiedSignature OnPlayerDied;
+
 protected:
     void SetFOV(float FOV);
     float GetFOV() const;
@@ -73,7 +75,7 @@ private:
     UCameraShakeBase* CameraShakeInstance = nullptr;
 
     bool bIsDied = false;
-    FOnPlayerDiedSignature OnPlayerDied;
+
 
     void OnDeath();
 };

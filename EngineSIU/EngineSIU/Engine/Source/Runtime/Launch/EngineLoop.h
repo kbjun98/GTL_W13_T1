@@ -47,6 +47,7 @@ public:
     static uint32 TotalAllocationBytes;
     static uint32 TotalAllocationCount;
     static float TimeScale;
+    static float DeltaTime;
     HWND AppWnd;
 
     FGPUTimingManager GPUTimingManager;

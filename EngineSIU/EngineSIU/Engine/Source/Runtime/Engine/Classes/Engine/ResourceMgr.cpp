@@ -33,8 +33,11 @@ void FResourceManager::Initialize(FRenderer* Renderer, FGraphicsDevice* Device)
     LoadTextureFromFile(Device->Device, L"Assets/Viewer/Bone_16x.PNG");
     LoadTextureFromFile(Device->Device, L"Assets/Viewer/BoneNonWeighted_16x.PNG");
     LoadTextureFromFile(Device->Device, L"Assets/Viewer/GroupActor_16x.PNG");
-    
+
     LoadTextureFromFile(Device->Device, L"Contents/Texture/CameraViewFinder.png");
+    LoadTextureFromFile(Device->Device, L"Assets/Texture/DeathBG.png");
+    LoadTextureFromFile(Device->Device, L"Assets/Texture/RestartButton.png");
+    
 }
 
 void FResourceManager::Release(FRenderer* Renderer)

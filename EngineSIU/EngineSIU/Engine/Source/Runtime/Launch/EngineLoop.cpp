@@ -26,6 +26,7 @@ FResourceManager FEngineLoop::ResourceManager;
 uint32 FEngineLoop::TotalAllocationBytes = 0;
 uint32 FEngineLoop::TotalAllocationCount = 0;
 float FEngineLoop::TimeScale = 1.0f;
+float FEngineLoop::DeltaTime = 0.f;
 
 FEngineLoop::FEngineLoop()
     : AppWnd(nullptr)
@@ -101,6 +102,8 @@ int32 FEngineLoop::Init(HINSTANCE hInstance)
     FSoundManager::GetInstance().Initialize();
     FSoundManager::GetInstance().LoadSound("fishdream", "Contents/Sounds/fishdream.mp3");
     FSoundManager::GetInstance().LoadSound("sizzle", "Contents/Sounds/sizzle.mp3");
+    FSoundManager::GetInstance().LoadSound("GameOver", "Contents/Rabbit/Sound/GameOver.mp3");
+   
     //FSoundManager::GetInstance().PlaySound("fishdream");
 
 
@@ -172,7 +175,7 @@ void FEngineLoop::Tick()
             }
         }
 
-        const float DeltaTime = static_cast<float>(ElapsedTime / 1000.f) * TimeScale;
+        DeltaTime = static_cast<float>(ElapsedTime / 1000.f) * TimeScale;
 
         GEngine->Tick(DeltaTime);
         LevelEditor->Tick(DeltaTime);
