@@ -45,6 +45,7 @@ void RabbitGameUIPanel::ShowBouncingWindow(float DeltaTime)
     case BounceState::Idle:
         bounce.Start(downDuration, &BounceTween::EaseOutBounce);
         bounceState = BounceState::Down;
+        std::cout << "간드아앗";
         break;
     case BounceState::Down:
         if (!bounce.IsPlaying()) {

@@ -127,6 +127,7 @@ void ARabbitGameMode::StartUIPictureEnd()
     auto RabbitPanel = std::dynamic_pointer_cast<RabbitGameUIPanel>(Panel);
 
     RabbitPanel->OnPictureEndUI();
+    FSoundManager::GetInstance().PlaySound("Shoong");
 }
 
 void ARabbitGameMode::StartUIDeathTimer()
