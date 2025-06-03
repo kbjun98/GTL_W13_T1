@@ -47,7 +47,7 @@ void RabbitAnimInstance::NativeInitializeAnimation()
 {
     Super::NativeInitializeAnimation();
     AddSoundNotify();
-    AddAttackNotify();
+    //AddAttackNotify();
 }
 
 float GetNormalizedAnimTime(UAnimSequence* Anim, float ElapsedTime)
@@ -193,15 +193,16 @@ void RabbitAnimInstance::AddSoundNotify()
     }
 }
 
-void RabbitAnimInstance::AddAttackNotify()
+void RabbitAnimInstance::AddAttackNotify(ARabbitEnemy* OutEnemy)
 {
     int32 OverlapTrack;
-    bool bTrackAdded = Cast<UAnimSequence>(Attack)->AddNotifyTrack(FName("OverlapTrack"), OverlapTrack);
+    bool bTrackAdded = Cast<UAnimSequence>(Attack)->AddNotifyTrack(OutEnemy->GetFName(), OverlapTrack);
     UAnimSequence* AnimSequence = Cast<UAnimSequence>(Attack);
+    int32 AttackStartIndex;
+    int32 AttackEndIndex;
     if (bTrackAdded)
     {
         // 공격 시작 Notify 추가
-        int32 AttackStartIndex;
         AnimSequence->AddNotifyEvent(
             OverlapTrack,
             0.25f,           // 0.25초에 발생
@@ -210,7 +211,6 @@ void RabbitAnimInstance::AddAttackNotify()
             AttackStartIndex
         );
 
-        int32 AttackEndIndex;
         AnimSequence->AddNotifyEvent(
             OverlapTrack,
             0.7f,
@@ -220,13 +220,16 @@ void RabbitAnimInstance::AddAttackNotify()
         );
     }
     // Notify 이벤트 가져오기 및 타입 설정
-    FAnimNotifyEvent* NotifyEvent = AnimSequence->GetNotifyEvent(1);
+    //int AttackStartNotifyIndex = AnimSequence->AnimNotifyTracks[OverlapTrack].NotifyIndices[AttackStartIndex];
+    FAnimNotifyEvent* NotifyEvent = AnimSequence->GetNotifyEvent(AttackStartIndex);
     UAnimAttackNotify* AttackNotifyEvent = FObjectFactory::ConstructObject<UAnimAttackNotify>(this);
     NotifyEvent->SetAnimNotify(AttackNotifyEvent);
 
     USkeletalMeshComponent* SkelMeshComp = GetSkelMeshComponent();
     AActor* Owner = GetSkelMeshComponent()->GetOwner();
-    ARabbitEnemy* RabbitEnemy = Cast<ARabbitEnemy>(Owner);
+    //ARabbitEnemy* RabbitEnemy = Cast<ARabbitEnemy>(Owner);
+    ARabbitEnemy* RabbitEnemy = OutEnemy;
+
     if (NotifyEvent)
     {
         UAnimNotify* BaseNotify = NotifyEvent->GetNotify();
@@ -238,7 +241,8 @@ void RabbitAnimInstance::AddAttackNotify()
         }
     }
 
-    FAnimNotifyEvent* NotifyAttakEndEvent = AnimSequence->GetNotifyEvent(2);
+    //int AttackEndNotifyIndex = AnimSequence->AnimNotifyTracks[OverlapTrack].NotifyIndices[AttackEndIndex];
+    FAnimNotifyEvent* NotifyAttakEndEvent = AnimSequence->GetNotifyEvent(AttackEndIndex);
     UAnimAttackNotify* AttackNotifyEndEvent = FObjectFactory::ConstructObject<UAnimAttackNotify>(this);
     NotifyAttakEndEvent->SetAnimNotify(AttackNotifyEndEvent);
     if (NotifyAttakEndEvent)

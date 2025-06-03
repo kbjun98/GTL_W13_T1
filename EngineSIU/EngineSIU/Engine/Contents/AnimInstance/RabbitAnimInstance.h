@@ -3,6 +3,7 @@
 #include "Animation/AnimInstance.h"
 
 class RabbitAnimStateMachine;
+class ARabbitEnemy;
 
 class RabbitAnimInstance : public UAnimInstance
 {
@@ -17,7 +18,7 @@ public:
   
     void AddSoundNotify();
 
-    void AddAttackNotify();
+    void AddAttackNotify(ARabbitEnemy* OutEnemy);
 
     void SetPlaying(bool bIsPlaying)
     {
