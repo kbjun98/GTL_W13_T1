@@ -224,7 +224,6 @@ void ARabbitPlayer::ResetPlayer()
         USkeletalMesh* MeshAsset = Cast<USkeletalMesh>(UAssetManager::Get().GetAsset(EAssetType::SkeletalMesh, "Contents/Bunny/Bunny2"));
         SkeletalMeshComp->SetSkeletalMeshAsset(MeshAsset);
         SkeletalMeshComp->SetAnimationMode(EAnimationMode::AnimationSingleNode);
-        SkeletalMeshComp->SetRelativeLocation(FVector(0.f, 0.f, 100.f));
 
         SkeletalMeshComp->RigidBodyType = ERigidBodyType::KINEMATIC;
         SkeletalMeshComp->bApplyGravity = true;
@@ -244,6 +243,11 @@ void ARabbitPlayer::ResetPlayer()
     if (CameraMesh)
     {
         CameraMesh->bHidden = false;
+    }
+
+    if (UCameraComponent* CameraComp = GetComponentByClass<UCameraComponent>())
+    {
+        CameraComp->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
     }
 
     if (GetPlayerController())
@@ -314,7 +318,7 @@ void ARabbitPlayer::OnDeath()
         USkeletalMesh* MeshAsset = Cast<USkeletalMesh>(UAssetManager::Get().GetAsset(EAssetType::SkeletalMesh, "Contents/Bunny/Bunny2"));
         SkeletalMeshComp->SetSkeletalMeshAsset(MeshAsset);
         SkeletalMeshComp->SetAnimationMode(EAnimationMode::AnimationSingleNode);
-        SkeletalMeshComp->SetRelativeLocation(FVector(0.f, 0.f, 100.f));
+        SkeletalMeshComp->SetRelativeLocation(FVector(0.f, 0.f, 3.f));
 
         SkeletalMeshComp->RigidBodyType = ERigidBodyType::KINEMATIC;
         SkeletalMeshComp->bApplyGravity = true;
@@ -335,6 +339,24 @@ void ARabbitPlayer::OnDeath()
     if (CameraMesh)
     {
         CameraMesh->bHidden = true;
+    }
+
+    if (UCameraComponent* CameraComp = GetComponentByClass<UCameraComponent>())
+    {
+        CameraComp->SetRelativeLocation(FVector(-100.f, 0.f, 50.f));
+
+        const FVector WorldLocation = CameraComp->GetComponentLocation();
+        const FVector TargetLocation = GetActorLocation();
+        const FVector Direction = (TargetLocation - WorldLocation).GetSafeNormal();
+
+        const float Pitch = FMath::RadiansToDegrees(FMath::Asin(Direction.Z));
+
+        if (APlayerController* PC = GetPlayerController())
+        {
+            FRotator ControlRotation = PC->GetControlRotation();
+            ControlRotation.Pitch = Pitch;
+            PC->SetControlRotation(ControlRotation);
+        }
     }
 
     OnPlayerDied.ExecuteIfBound();
