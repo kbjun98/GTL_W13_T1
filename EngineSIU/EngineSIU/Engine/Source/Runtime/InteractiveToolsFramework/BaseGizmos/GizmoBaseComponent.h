@@ -21,7 +21,7 @@ public:
     };
     
 public:
-    UGizmoBaseComponent() = default;
+    UGizmoBaseComponent();
 
     virtual void TickComponent(float DeltaTime) override;
 

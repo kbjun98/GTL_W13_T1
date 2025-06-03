@@ -128,12 +128,11 @@ TArray<FVector> FPathFinder::FindWorldPosPathByNode(FGridMap& GridMap, FGridNode
 TArray<FVector> FPathFinder::FindWorlPosPathByWorldPos(FGridMap& GridMap, const FVector& StartWorldPos, const FVector& TargetWorldPos)
 {
 
-    const float GridSpacing = 10.f; // 그리드 크기
-    int StartX = FMath::FloorToInt((StartWorldPos.X - GridMap.MinPoint.X) / GridSpacing);
-    int StartY = FMath::FloorToInt((StartWorldPos.Y - GridMap.MinPoint.Y) / GridSpacing);
+    int StartX = FMath::FloorToInt((StartWorldPos.X - GridMap.MinPoint.X) / GridMap.GridSpacing);
+    int StartY = FMath::FloorToInt((StartWorldPos.Y - GridMap.MinPoint.Y) / GridMap.GridSpacing);
 
-    int TargetX = FMath::FloorToInt((TargetWorldPos.X - GridMap.MinPoint.X) / GridSpacing);
-    int TargetY = FMath::FloorToInt((TargetWorldPos.Y - GridMap.MinPoint.Y) / GridSpacing);
+    int TargetX = FMath::FloorToInt((TargetWorldPos.X - GridMap.MinPoint.X) / GridMap.GridSpacing);
+    int TargetY = FMath::FloorToInt((TargetWorldPos.Y - GridMap.MinPoint.Y) / GridMap.GridSpacing);
 
     // 유효성 검사
     StartX = FMath::Clamp(StartX, 0, GridMap.Width - 1);

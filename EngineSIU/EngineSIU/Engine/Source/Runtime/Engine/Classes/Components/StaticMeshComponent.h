@@ -48,6 +48,9 @@ public:
         }
     }
 
+    UPROPERTY_WITH_FLAGS(EditAnywhere,
+        EStaticMeshType, MeshType, = EStaticMeshType::NONE;)
+
 protected:
     UStaticMesh* StaticMesh = nullptr;
     int SelectedSubMeshIndex = -1;
@@ -55,8 +58,7 @@ protected:
 private:
     EPhotoType PhotoType;
     
-    UPROPERTY_WITH_FLAGS(EditAnywhere,
-        EStaticMeshType, MeshType, = EStaticMeshType::Map;)
+    
 
 public:
     EPhotoType GetPhotoType();

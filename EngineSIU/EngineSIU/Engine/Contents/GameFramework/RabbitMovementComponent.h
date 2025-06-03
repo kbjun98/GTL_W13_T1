@@ -35,7 +35,7 @@ protected:
     
     float GravityFactor;
 
-    float JumpZVelocity = 600.f;
+    float JumpZVelocity = 300.f;
     
     bool bIsGrounded = false;
     bool bCollisionUp = false;

@@ -58,7 +58,7 @@ public:
     FVector MaxPoint = FVector::ZeroVector;
 
     TMap<int32, FGridNode> GridNodes;
-
+    const float GridSpacing = 50.0f;
     // FIXME : 리팩터링 필요.
     int32 Get1DIndex(int X, int Y) const
     {
@@ -77,6 +77,9 @@ public:
 
     void AnalyzeWalkableFromMeshes();
 
+    void SaveToBinaryFile(const FString& FilePath);
+    
+    void LoadFromBinaryFile(const FString& FilePath);
     // === 레거시 코드들 ===
     void LoadMapFromFile(const FString FilePath);
 };

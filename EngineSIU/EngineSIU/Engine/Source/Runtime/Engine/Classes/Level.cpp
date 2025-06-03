@@ -2,11 +2,10 @@
 #include "GameFramework/Actor.h"
 #include "UObject/Casts.h"
 
-
 void ULevel::InitLevel(UWorld* InOwningWorld)
 {
     OwningWorld = InOwningWorld;
-
+    
 }
 
 void ULevel::Release()
