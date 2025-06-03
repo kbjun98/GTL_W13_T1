@@ -2,6 +2,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/Contents/GameFramework/RabbitMovementComponent.h"
 #include "Components/SphereComponent.h"
+
 void ARabbitEnemy::PostSpawnInitialize()
 {
     Super::PostSpawnInitialize();
@@ -67,4 +68,16 @@ void ARabbitEnemy::RoatateToTarget(const FVector& Location, float DeltaTime)
             SkeletalMeshComponent->SetWorldRotation(FRotator(0.0f, YawDeg, 0.0f).Quaternion());*/
         }
     }
+}
+
+void ARabbitEnemy::OnAttackNotify()
+{
+    GetComponentByClass<USphereComponent>()->bIsOverlapEnabled = true;
+    UE_LOG(ELogLevel::Error, TEXT("Attack Start Notify Triggered!"));
+}
+
+void ARabbitEnemy::OnAttackEndNotify()
+{
+    GetComponentByClass<USphereComponent>()->bIsOverlapEnabled = false;
+    UE_LOG(ELogLevel::Error, TEXT("Attack End Notify Triggered!"));
 }

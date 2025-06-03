@@ -12,6 +12,8 @@ public:
 public:
     void SetTargetLocation(const FVector& Location) { TargetLocation = Location; }
     void RoatateToTarget(const FVector& Location, float DeltaTime);
+    void OnAttackNotify();
+    void OnAttackEndNotify();
 public:
     UPROPERTY(EditAnywhere,
         float, SightFOV, = 30.0f;

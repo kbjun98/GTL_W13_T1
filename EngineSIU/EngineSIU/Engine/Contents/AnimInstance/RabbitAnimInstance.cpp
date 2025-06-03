@@ -13,6 +13,7 @@
 #include "Animation/AnimTypes.h"
 #include <Animation/AnimSoundNotify.h>
 #include "Animation/AnimAttackNotify.h"
+#include "GameFramework/RabbitEnemy.h"
 
 
 
@@ -208,6 +209,15 @@ void RabbitAnimInstance::AddAttackNotify()
             FName("AttackOverlap"),
             AttackStartIndex
         );
+
+        int32 AttackEndIndex;
+        AnimSequence->AddNotifyEvent(
+            OverlapTrack,
+            0.7f,
+            0.0f,
+            FName("AttackEnd"),
+            AttackEndIndex
+        );
     }
     // Notify 이벤트 가져오기 및 타입 설정
     FAnimNotifyEvent* NotifyEvent = AnimSequence->GetNotifyEvent(1);
@@ -216,9 +226,7 @@ void RabbitAnimInstance::AddAttackNotify()
 
     USkeletalMeshComponent* SkelMeshComp = GetSkelMeshComponent();
     AActor* Owner = GetSkelMeshComponent()->GetOwner();
-
-
-
+    ARabbitEnemy* RabbitEnemy = Cast<ARabbitEnemy>(Owner);
     if (NotifyEvent)
     {
         UAnimNotify* BaseNotify = NotifyEvent->GetNotify();
@@ -226,14 +234,24 @@ void RabbitAnimInstance::AddAttackNotify()
         if (AttackNotify)
         {
             // 공격 델리게이트 설정
-            AttackNotify->OnAttackDelegate.AddLambda([this]()
-                {
-                    // 공격 애니메이션이 시작될 때 호출되는 로직
-                    UE_LOG(ELogLevel::Display,TEXT("Attack Notify Triggered!"));
-                    // 여기에 공격 관련 로직 추가
-                });
+            AttackNotify->OnAttackDelegate.AddUObject(RabbitEnemy, &ARabbitEnemy::OnAttackNotify);
         }
     }
+
+    FAnimNotifyEvent* NotifyAttakEndEvent = AnimSequence->GetNotifyEvent(2);
+    UAnimAttackNotify* AttackNotifyEndEvent = FObjectFactory::ConstructObject<UAnimAttackNotify>(this);
+    NotifyAttakEndEvent->SetAnimNotify(AttackNotifyEndEvent);
+    if (NotifyAttakEndEvent)
+    {
+        UAnimNotify* BaseNotify = NotifyAttakEndEvent->GetNotify();
+        UAnimAttackNotify* AttackNotifyEnd = Cast<UAnimAttackNotify>(BaseNotify);
+        if (AttackNotifyEnd)
+        {
+            // 공격 종료 델리게이트 설정
+            AttackNotifyEnd->OnAttackDelegate.AddUObject(RabbitEnemy, &ARabbitEnemy::OnAttackEndNotify);
+        }
+    }
+
 }
 
 void RabbitAnimInstance::SetAnimState(EAnimState InAnimState)
