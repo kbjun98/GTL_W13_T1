@@ -39,7 +39,7 @@ public:
     void SetCurrentApertureProgress(float value);
     void InitPictureArraySize(int Size);
     void TakePicture();
-    void PlayCameraSound(bool IsSlow);
+    void PlayCameraSound(bool IsEnd);
 
     TArray<FRenderTargetRHI*> GetPicturesRHI() const;
 
