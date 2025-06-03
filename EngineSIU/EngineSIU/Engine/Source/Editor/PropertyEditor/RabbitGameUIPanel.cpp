@@ -27,17 +27,123 @@ RabbitGameUIPanel::RabbitGameUIPanel()
     SetSupportedWorldTypes(EWorldTypeBitFlag::PIE);
 }
 
-void RabbitGameUIPanel::Render()
-{
 
-    if (!RegisterPlayerCamera())
+
+void RabbitGameUIPanel::ShowBouncingWindow(float DeltaTime)
+{
+    constexpr float downDuration = 1.2f;
+    constexpr float waitDuration = 2.5f;
+    constexpr float upDuration = 0.8f;
+
+    switch (bounceState)
     {
-        return;
+    case BounceState::Idle:
+        bounce.Start(downDuration, &BounceTween::EaseOutBounce);
+        bounceState = BounceState::Down;
+        break;
+    case BounceState::Down:
+        if (!bounce.IsPlaying()) {
+            bounceState = BounceState::Wait;
+            waitTimer = 0.0f;
+        }
+        break;
+    case BounceState::Wait:
+        waitTimer += DeltaTime;
+        if (waitTimer >= waitDuration) {
+            bounce.Start(upDuration, &BounceTween::EaseInBack);
+            bounceState = BounceState::Up;
+        }
+        break;
+    case BounceState::Up:
+        if (!bounce.IsPlaying()) {
+            bounceState = BounceState::Done;
+        }
+        break;
+    case BounceState::Done:
+        // 애니메이션 종료
+        break;
     }
 
-    RenderDeathUI();
-    RenderCameraCool();
-    RenderGallery();
+    // 네가 준 코드에서 뷰포트 정보 받아서 중심 계산
+    auto ViewPort = GEngineLoop.GetLevelEditor()->GetActiveViewportClient()->GetViewport()->GetD3DViewport();
+    ImVec2 center(
+        ViewPort.TopLeftX + ViewPort.Width * 0.5f,
+        ViewPort.TopLeftY + ViewPort.Height * 0.4f
+    );
+
+    ImVec2 windowSize(300, 120);
+    float currentX = 0.0f;
+
+    if (bounceState == BounceState::Down)
+    {
+        float t = bounce.Update(DeltaTime);
+        float startX = ViewPort.TopLeftX - windowSize.x - 100.0f; // 화면 왼쪽 밖
+        float endX = center.x; // 화면 중앙
+        currentX = startX + (endX - startX) * t;
+    }
+    else if (bounceState == BounceState::Wait)
+    {
+        currentX = center.x; // 중앙에서 대기
+    }
+    else if (bounceState == BounceState::Up)
+    {
+        float t = bounce.Update(DeltaTime);
+        float startX = center.x; // 중앙에서 시작
+        float endX = ViewPort.TopLeftX + ViewPort.Width + windowSize.x + 300.0f; // 화면 오른쪽 멀리
+        currentX = startX + (endX - startX) * t;
+    }
+    else if (bounceState == BounceState::Idle)
+    {
+        currentX = ViewPort.TopLeftX - windowSize.x - 100.0f; // 화면 왼쪽 밖
+    }
+    else if (bounceState == BounceState::Done)
+    {
+        currentX = ViewPort.TopLeftX + ViewPort.Width + windowSize.x + 300.0f; // Up과 같은 위치로 고정
+    }
+
+    ImVec2 windowPos(currentX - windowSize.x * 0.5f, center.y - windowSize.y * 0.5f);
+
+    ImGui::SetNextWindowPos(windowPos, ImGuiCond_Always);
+    ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
+
+    ImTextureID textureID = (ImTextureID)FEngineLoop::ResourceManager.GetTexture(L"Assets/Texture/DeathBG.png")->TextureSRV;
+
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 20.0f);
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, 0));
+
+    ImGui::Begin("📷 Bounced", nullptr,
+        ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoTitleBar);
+
+    ImVec2 imagePos = ImGui::GetWindowPos();
+    ImDrawList* drawList = ImGui::GetWindowDrawList();
+
+    drawList->AddImage(
+        textureID,
+        imagePos,
+        ImVec2(imagePos.x + windowSize.x, imagePos.y + windowSize.y),
+        ImVec2(0, 0),
+        ImVec2(1, 1)
+    );
+
+    ImVec2 textPos(
+        (windowSize.x - ImGui::CalcTextSize("모든 사진을 찍었습니다!").x) * 0.5f,
+        windowSize.y * 0.4f
+    );
+
+    ImVec2 bgMin = ImGui::GetWindowPos() + textPos - ImVec2(5, 3);
+    ImVec2 bgMax = bgMin + ImGui::CalcTextSize("모든 사진을 찍었습니다!") + ImVec2(10, 6);
+
+    // 배경 사각형 (검은색, 반투명)
+    drawList->AddRectFilled(bgMin, bgMax, IM_COL32(0, 0, 0, 150), 5.0f);
+
+    ImGui::SetCursorPos(textPos);
+    ImGui::Text("모든 사진을 찍었습니다!");
+
+    ImGui::End();
+    ImGui::PopStyleColor();
+    ImGui::PopStyleVar();
 }
 
 void RabbitGameUIPanel::Restart()
@@ -88,7 +194,7 @@ void RabbitGameUIPanel::RenderDeathUI()
         ViewPort.TopLeftY + ViewPort.Height * 0.5f
     );
     // 창 크기 및 위치
-    ImVec2 windowSize(1536, 1224);
+    ImVec2 windowSize(1536, 1150);
     ImVec2 windowPos(
         centerPos.x - windowSize.x * 0.5f,
         centerPos.y - windowSize.y * 0.45f
@@ -294,4 +400,18 @@ void RabbitGameUIPanel::RenderCameraCool()
     draw_list->AddText(center - text_size * 0.5f, IM_COL32_WHITE, buffer);
 
 
+}
+
+void RabbitGameUIPanel::Render()
+{
+
+    if (!RegisterPlayerCamera())
+    {
+        return;
+    }
+
+    RenderDeathUI();
+    RenderCameraCool();
+    RenderGallery();
+    ShowBouncingWindow(FEngineLoop::DeltaTime);
 }
