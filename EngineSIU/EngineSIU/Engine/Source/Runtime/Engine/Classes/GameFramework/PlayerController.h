@@ -55,6 +55,7 @@ public:
     virtual void AddYawInput(float Value);
 
     FRotator GetControlRotation() const { return ControlRotation; }
+    void SetControlRotation(const FRotator& NewControlRotation) { ControlRotation = NewControlRotation; }
 
     void SetInputEnabled(bool bEnable) { bInputEnabled = bEnable; }
     bool IsInputEnabled() const { return bInputEnabled; }

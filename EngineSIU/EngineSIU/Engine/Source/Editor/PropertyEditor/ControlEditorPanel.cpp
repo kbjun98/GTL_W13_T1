@@ -204,10 +204,18 @@ void ControlEditorPanel::CreateMenuButton(const ImVec2 ButtonSize, ImFont* IconF
             ImGui::End();
             return;
         }
+        FGridMap* GridMap = GEngine->ActiveWorld->GetGridMap();
+
+        FString  GridMapFileName = FileName + FString(".mapgrid");
+        GridMap->SaveToBinaryFile(GridMapFileName);
+
         if (UEditorEngine* EditorEngine = Cast<UEditorEngine>(GEngine))
         {
+            
             EditorEngine->NewLevel();
             EditorEngine->LoadLevel(FileName);
+            //GridMap->LoadFromBinaryFile(GridMapFileName);
+
         }
     }
 
@@ -225,10 +233,58 @@ void ControlEditorPanel::CreateMenuButton(const ImVec2 ButtonSize, ImFont* IconF
         }
         if (const UEditorEngine* EditorEngine = Cast<UEditorEngine>(GEngine))
         {
+            FGridMap* GridMap = GEngine->ActiveWorld->GetGridMap();
+
+            GridMap->InitializeGridMap();
+
+            FString  GridMapFileName = FileName + FString(".mapgrid");
+            GridMap->SaveToBinaryFile(GridMapFileName);
+
             EditorEngine->SaveLevel(FileName);
+            
         }
 
         tinyfd_messageBox("알림", "저장되었습니다.", "ok", "info", 1);
+    }
+
+    if (ImGui::MenuItem("Save Map Grid Data"))
+    {
+        char const* lFilterPatterns[1] = { "*.mapgrid" };
+        const char* FileName = tinyfd_saveFileDialog("Save Map Grid Data File", "", 1, lFilterPatterns, "MapGrid(.mapgrid) file");
+
+        if (FileName == nullptr)
+        {
+            ImGui::End();
+            return;
+        }
+
+        FGridMap* GridMap = GEngine->ActiveWorld->GetGridMap();
+        if (const UEditorEngine* EditorEngine = Cast<UEditorEngine>(GEngine))
+        {
+            GridMap->InitializeGridMap();
+            GridMap->SaveToBinaryFile(FileName);
+        }
+
+        tinyfd_messageBox("알림", "저장되었습니다.", "ok", "info", 1);
+    }
+
+    if (ImGui::MenuItem("Load Map Grid Data"))
+    {
+        char const* lFilterPatterns[1] = { "*.mapgrid" };
+        const char* FileName = tinyfd_openFileDialog("Open Map Grid Data File", "", 1, lFilterPatterns, "MapGrid (.mapgrid) file", 0);
+
+        if (FileName == nullptr)
+        {
+            tinyfd_messageBox("Error", "파일을 불러올 수 없습니다.", "ok", "error", 1);
+            ImGui::End();
+            return;
+        }
+        if (UEditorEngine* EditorEngine = Cast<UEditorEngine>(GEngine))
+        {
+            FGridMap* GridMap = GEngine->ActiveWorld->GetGridMap();
+            GridMap->LoadFromBinaryFile(FileName);
+            GridMap->DebugPrint();
+        }
     }
 
     ImGui::Separator();

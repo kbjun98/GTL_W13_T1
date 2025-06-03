@@ -4,12 +4,11 @@
 #include "Engine/Contents/Navigation/MapData.h"
 #include "Engine/Contents/Components/GridMapComponent.h"
 #include "Classes/GameFramework/Pawn.h"
+#include <Engine/EditorEngine.h>
 void AAIController::PostSpawnInitialize()
 {
     Super::PostSpawnInitialize();
-    GridMap = new FGridMap();
     PathFinder = new FPathFinder();
-    GridMap->InitializeGridMap();
 }
 
 UObject* AAIController::Duplicate(UObject* InOuter)
@@ -31,6 +30,8 @@ void AAIController::Tick(float DeltaTime)
 
 void AAIController::UpdatePath()
 {
+    
+    FGridMap* GridMap = GEngine->ActiveWorld->GetGridMap();
     if (TargetPawn && PossessedPawn)
     {
         FVector StartLocation = PossessedPawn->GetActorLocation();
