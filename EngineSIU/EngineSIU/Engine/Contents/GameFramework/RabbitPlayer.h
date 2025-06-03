@@ -7,6 +7,8 @@ class ARabbitController;
 class UCameraMeshComponent;
 class UCameraShakeBase;
 
+DECLARE_DELEGATE(FOnPlayerDiedSignature);
+
 class ARabbitPlayer : public ARabbitPawn
 {
     DECLARE_CLASS(ARabbitPlayer, ARabbitPawn)
@@ -41,11 +43,16 @@ public:
     void StartADS();
     void EndADS();
 
+    void ResetPlayer();
+
 protected:
     void SetFOV(float FOV);
     float GetFOV() const;
 
     ARabbitController* GetRabbitController() const;
+
+    virtual void OnRabbitBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp) override;
+    virtual void OnRabbitEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp) override;
     
 private:
     UCameraMeshComponent* CameraMesh = nullptr;
@@ -64,5 +71,10 @@ private:
     TSubclassOf<UCameraShakeBase> IdleCameraShake = UClass::FindClass("UIdleCameraShake");
 
     UCameraShakeBase* CameraShakeInstance = nullptr;
+
+    bool bIsDied = false;
+    FOnPlayerDiedSignature OnPlayerDied;
+
+    void OnDeath();
 };
 

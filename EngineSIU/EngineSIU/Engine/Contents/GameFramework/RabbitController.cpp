@@ -64,7 +64,7 @@ void ARabbitController::SetupInputComponent()
 
 void ARabbitController::MoveForward()
 {
-    if (CurrentInputMode == EInputMode::UIOnly)
+    if (ShouldIgnoreInput())
     {
         return;
     }
@@ -77,7 +77,7 @@ void ARabbitController::MoveForward()
 
 void ARabbitController::MoveBack()
 {
-    if (CurrentInputMode == EInputMode::UIOnly)
+    if (ShouldIgnoreInput())
     {
         return;
     }
@@ -90,7 +90,7 @@ void ARabbitController::MoveBack()
 
 void ARabbitController::MoveRight()
 {
-    if (CurrentInputMode == EInputMode::UIOnly)
+    if (ShouldIgnoreInput())
     {
         return;
     }
@@ -103,7 +103,7 @@ void ARabbitController::MoveRight()
 
 void ARabbitController::MoveLeft()
 {
-    if (CurrentInputMode == EInputMode::UIOnly)
+    if (ShouldIgnoreInput())
     {
         return;
     }
@@ -116,7 +116,7 @@ void ARabbitController::MoveLeft()
 
 void ARabbitController::Jump()
 {
-    if (CurrentInputMode == EInputMode::UIOnly)
+    if (ShouldIgnoreInput())
     {
         return;
     }
@@ -129,7 +129,7 @@ void ARabbitController::Jump()
 
 void ARabbitController::ZoomIn(float DeltaTime)
 {
-    if (CurrentInputMode == EInputMode::UIOnly)
+    if (ShouldIgnoreInput())
     {
         return;
     }
@@ -142,7 +142,7 @@ void ARabbitController::ZoomIn(float DeltaTime)
 
 void ARabbitController::ZoomOut(float DeltaTime)
 {
-    if (CurrentInputMode == EInputMode::UIOnly)
+    if (ShouldIgnoreInput())
     {
         return;
     }
@@ -155,7 +155,7 @@ void ARabbitController::ZoomOut(float DeltaTime)
 
 void ARabbitController::AddYawInput(float Value)
 {
-    if (CurrentInputMode == EInputMode::UIOnly)
+    if (ShouldIgnoreInput())
     {
         return;
     }
@@ -168,7 +168,7 @@ void ARabbitController::AddYawInput(float Value)
 
 void ARabbitController::AddPitchInput(float Value)
 {
-    if (CurrentInputMode == EInputMode::UIOnly)
+    if (ShouldIgnoreInput())
     {
         return;
     }
@@ -215,7 +215,7 @@ void ARabbitController::OnESCPressed()
 
 void ARabbitController::TakePicture()
 {
-    if (CurrentInputMode == EInputMode::UIOnly)
+    if (ShouldIgnoreInput())
     {
         return;
     }
@@ -228,7 +228,7 @@ void ARabbitController::TakePicture()
 
 void ARabbitController::ToggleADS()
 {
-    if (CurrentInputMode == EInputMode::UIOnly)
+    if (ShouldIgnoreInput())
     {
         return;
     }
@@ -241,7 +241,7 @@ void ARabbitController::ToggleADS()
 
 void ARabbitController::StartADS()
 {
-    if (CurrentInputMode == EInputMode::UIOnly)
+    if (ShouldIgnoreInput())
     {
         return;
     }
@@ -254,7 +254,7 @@ void ARabbitController::StartADS()
 
 void ARabbitController::EndADS()
 {
-    if (CurrentInputMode == EInputMode::UIOnly)
+    if (ShouldIgnoreInput())
     {
         return;
     }
@@ -263,4 +263,9 @@ void ARabbitController::EndADS()
     {
         RabbitPawn->EndADS();
     }
+}
+
+bool ARabbitController::ShouldIgnoreInput() const
+{
+    return !bInputEnabled || CurrentInputMode == EInputMode::UIOnly;
 }
