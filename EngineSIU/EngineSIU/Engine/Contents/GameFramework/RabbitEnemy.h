@@ -15,7 +15,7 @@ public:
     
 public:
     void SetTargetLocation(const FVector& Location) { TargetLocation = Location; }
-    void RoatateToTarget(const FVector& Location, float DeltaTime);
+    void RotateToTarget(const FVector& Location, float DeltaTime);
     void OnAttackNotify(USkeletalMeshComponent* NotifySkeletal);
     void OnAttackEndNotify(USkeletalMeshComponent* NotifySkeletal);
 public:
