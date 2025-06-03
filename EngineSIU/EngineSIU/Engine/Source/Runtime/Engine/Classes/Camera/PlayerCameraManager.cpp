@@ -1,10 +1,14 @@
 #include "PlayerCameraManager.h"
 
 #include "CameraModifier.h"
+#include "WindowsPlatformTime.h"
 #include "GameFramework/PlayerController.h"
 #include "Camera/CameraModifier_CameraShake.h"
 #include "World/World.h"
 #include "GameFramework/Pawn.h"
+#include "GameFramework/RabbitPlayer.h"
+#include "LevelEditor/SLevelEditor.h"
+#include "UnrealEd/EditorViewportClient.h"
 
 bool FTViewTarget::Equal(const FTViewTarget& OtherTarget) const
 {
@@ -66,7 +70,7 @@ APlayerCameraManager::APlayerCameraManager()
     ViewRollMin = -89.9f;
     ViewRollMax = 89.9f;
 
-    F_Stop = 2.8f;
+    F_Stop = 1.2f;
     SensorWidth = 36.f; // mm
     FocalDistance = 0.f; // cm
 }
@@ -101,8 +105,9 @@ void APlayerCameraManager::UpdateCamera(float DeltaTime)
     if (PCOwner)
     {
         DoUpdateCamera(DeltaTime);
-    }
 
+        DoUpdateFocalDistance(DeltaTime);
+    }
 }
 
 /**
@@ -288,6 +293,89 @@ void APlayerCameraManager::DoUpdateCamera(float DeltaTime)
     LastFrameViewTarget.POV = NewPOV;
 }
 
+bool APlayerCameraManager::ShouldUpdateFocalDistance() const
+{
+    if (PCOwner && PCOwner->GetPawn())
+    {
+        if (ARabbitPlayer* RabbitPlayer = Cast<ARabbitPlayer>(PCOwner->GetPawn()))
+        {
+            return RabbitPlayer->IsADS();
+        }
+    }
+    return false;
+}
+
+void APlayerCameraManager::DoUpdateFocalDistance(float DeltaTime)
+{
+    if (!ShouldUpdateFocalDistance())
+    {
+        FocalDistance = 0.f;
+        bIsUpdatingFocalDistance = false;
+        return;
+    }
+
+    if (!bIsUpdatingFocalDistance)
+    {
+        bIsUpdatingFocalDistance = true;
+        PrevFocalDistCheckTime = 0.f;
+        AccumulatedFocalDistCheckTime = 0.f;
+    }
+
+    // Begin Interp
+    const float CurrentFocalDistance = FocalDistance;
+    const float NextFocalDistance = FMath::FInterpTo(CurrentFocalDistance, TargetFocalDistance, DeltaTime, FocalDistInterpSpeed);
+    FocalDistance = NextFocalDistance;
+    // End Interp
+
+    AccumulatedFocalDistCheckTime += DeltaTime;
+
+    if (0.f < AccumulatedFocalDistCheckTime && AccumulatedFocalDistCheckTime < PrevFocalDistCheckTime + FocalDistCheckInterval)
+    {
+        return;
+    }
+
+    PrevFocalDistCheckTime = AccumulatedFocalDistCheckTime;
+    
+    // Focal Distance Update
+    const FRotator& ControlRotation = PCOwner->GetControlRotation();
+    const FVector Direction = ControlRotation.ToVector();
+
+    const FVector WorldRayOrigin = PCOwner->GetPawn()->GetActorLocation();
+    const FVector WorldRayDir = WorldRayOrigin + Direction;
+
+    float MinDistance = 10000.f;
+    FVector Normal;
+
+    for (auto Iter : TObjectRange<UMeshComponent>())
+    {
+        if (Iter->GetWorld() != PCOwner->GetWorld() || Iter->GetOwner() == PCOwner->GetPawn())
+        {
+            continue;
+        }
+
+        const FMatrix WorldMatrix = Iter->GetWorldMatrix();
+        const FMatrix InverseMatrix = FMatrix::Inverse(WorldMatrix);
+        
+        FVector LocalRayOrigin = InverseMatrix.TransformPosition(WorldRayOrigin);
+        FVector LocalRayEnd = InverseMatrix.TransformPosition(WorldRayDir);
+        FVector LocalRayDir = (LocalRayEnd - LocalRayOrigin).GetSafeNormal();
+
+        // TODO: AABB만 테스트하게 최적화 가능
+        float LocalDistance = 10000.f;
+        int32 HitCnt = Iter->CheckRayIntersection(LocalRayOrigin, LocalRayDir, LocalDistance, Normal);
+        if (HitCnt > 0 && !FMath::IsNearlyZero(LocalDistance))
+        {
+            FVector LocalHitPoint = LocalRayOrigin + LocalRayDir * LocalDistance;
+            FVector WorldHitPoint = WorldMatrix.TransformPosition(LocalHitPoint);
+            float WorldDistance = (WorldHitPoint - WorldRayOrigin).Size();
+            
+            MinDistance = FMath::Min(MinDistance, WorldDistance);
+        }
+    }
+
+    TargetFocalDistance = MinDistance;
+}
+
 void APlayerCameraManager::SetViewTarget(class AActor* NewTarget, struct FViewTargetTransitionParams TransitionParams)
 {
 	// Make sure view target is valid
@@ -334,6 +422,13 @@ void APlayerCameraManager::UpdateViewTarget(FTViewTarget& OutVT, float DeltaTime
 
     OutVT.POV.Location = OutVT.Target->GetActorLocation();
     OutVT.POV.Rotation = OutVT.Target->GetActorRotation();
+    if (APawn* Pawn = Cast<APawn>(OutVT.Target))
+    {
+        if (APlayerController* PC = Pawn->GetPlayerController())
+        {
+            OutVT.POV.Rotation = PC->GetControlRotation();
+        }
+    }
     OutVT.POV.Rotation.Roll = 0.0f;
     
 	if (UCameraComponent* CamComp = OutVT.Target->GetComponentByClass<UCameraComponent>())
@@ -374,7 +469,7 @@ FMinimalViewInfo APlayerCameraManager::BlendViewTargets(const FTViewTarget& A, c
 
 float APlayerCameraManager::GetFocalLength() const
 {
-    const float FovRad = FMath::DegreesToRadians(DefaultFOV);
+    const float FovRad = FMath::DegreesToRadians(ViewTarget.POV.FOV);
     const float FocalLength = SensorWidth / (2.f * FMath::Tan(FovRad / 2.0f));
     return FocalLength;
 }

@@ -111,7 +111,6 @@ float RabbitCamera::GetCameraCoolTimeInit()
     return CameraCoolTimeInit;
 }
 
-
 void RabbitCamera::TakePicture()
 {
     if (!ValidateTakePicture())
@@ -124,7 +123,14 @@ void RabbitCamera::TakePicture()
     TriggerShutterEffect();
 
     auto HitComp = CheckSubject();
-    OnPictureTaken.Execute(HitComp,this);
+
+    FVector OwnerLocation;
+    if (GetOwner())
+    {
+        OwnerLocation = GetOwner()->GetActorLocation();
+    }
+    
+    OnPictureTaken.Execute(this, HitComp, OwnerLocation);
 }
 
 void RabbitCamera::ReleasePictures()
@@ -219,7 +225,7 @@ void RabbitCamera::Tick(float DeltaTime)
     CurrentApertureProgress = std::max(0.0f, std::min(1.0f, CurrentApertureProgress));
 }
 
-const float RabbitCamera::GetCurrentApertureProgress() const
+float RabbitCamera::GetCurrentApertureProgress() const
 {
     return CurrentApertureProgress;
 }

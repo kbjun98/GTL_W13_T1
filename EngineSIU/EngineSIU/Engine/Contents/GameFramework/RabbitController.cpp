@@ -9,6 +9,8 @@
 void ARabbitController::BeginPlay()
 {
     Super::BeginPlay();
+
+    MouseSensitivityCurrent = MouseSensitivityBase;
     
     SetInputMode(EInputMode::GameOnly);
 }
@@ -56,7 +58,8 @@ void ARabbitController::SetupInputComponent()
 
     //마우스 클릭
     InputComponent->BindAction("L_Pressed", [this](float DeltaTime) { TakePicture();});
-    InputComponent->BindAction("R_Pressed", [this](float DeltaTime) { ToggleADS(); });
+    InputComponent->BindAction("R_Pressed", [this](float DeltaTime) { StartADS(); });
+    InputComponent->BindAction("R_Released", [this](float DeltaTime) { EndADS(); });
 }
 
 void ARabbitController::MoveForward()
@@ -159,7 +162,7 @@ void ARabbitController::AddYawInput(float Value)
 
     if (APawn* Pawn = GetPawn())
     {
-        Super::AddYawInput(Value * MouseSensitivity);
+        Super::AddYawInput(Value * MouseSensitivityCurrent);
     }
 }
 
@@ -172,7 +175,7 @@ void ARabbitController::AddPitchInput(float Value)
 
     if (APawn* Pawn = GetPawn())
     {
-        Super::AddPitchInput(Value * MouseSensitivity);
+        Super::AddPitchInput(Value * MouseSensitivityCurrent);
     }
 }
 
@@ -233,5 +236,31 @@ void ARabbitController::ToggleADS()
     if (ARabbitPlayer* RabbitPawn = Cast<ARabbitPlayer>(PossessedPawn))
     {
         RabbitPawn->ToggleADS();
+    }
+}
+
+void ARabbitController::StartADS()
+{
+    if (CurrentInputMode == EInputMode::UIOnly)
+    {
+        return;
+    }
+
+    if (ARabbitPlayer* RabbitPawn = Cast<ARabbitPlayer>(PossessedPawn))
+    {
+        RabbitPawn->StartADS();
+    }
+}
+
+void ARabbitController::EndADS()
+{
+    if (CurrentInputMode == EInputMode::UIOnly)
+    {
+        return;
+    }
+
+    if (ARabbitPlayer* RabbitPawn = Cast<ARabbitPlayer>(PossessedPawn))
+    {
+        RabbitPawn->EndADS();
     }
 }

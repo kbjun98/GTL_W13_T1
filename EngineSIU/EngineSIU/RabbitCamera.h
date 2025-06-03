@@ -2,12 +2,12 @@
 #include "UnrealClient.h"
 #include "Delegates/DelegateCombination.h"
 
+class AActor;
 class UPrimitiveComponent;
 class RabbitCamera;
 enum class EPhotoType;
 
-DECLARE_DELEGATE_TwoParams(FOnPictureTaken, UPrimitiveComponent*, RabbitCamera*);
-
+DECLARE_DELEGATE_ThreeParams(FOnPictureTaken, RabbitCamera* /* RabbitCamera */, UPrimitiveComponent* /* TargetComponent */, FVector /* PlayerLocation */);
 
 class RabbitCamera
 {
@@ -26,14 +26,15 @@ private:
     float CameraCoolTime;
     float CameraCoolTimeInit = 3;
 
+    AActor* OwnerActor = nullptr;
+
 public:
     void ReleasePictures();
     void Tick(float deltaTime);
-
-
+    
     float GetCameraCoolTime();
     float GetCameraCoolTimeInit();
-    const float GetCurrentApertureProgress() const;
+    float GetCurrentApertureProgress() const;
     void SetCurrentApertureProgress(float value);
     void InitPictureArraySize(int Size);
     void TakePicture();
@@ -41,7 +42,12 @@ public:
     TArray<FRenderTargetRHI*> GetPicturesRHI() const;
 
     FOnPictureTaken OnPictureTaken;
+    
     void StorePicture(EPhotoType Type);
+
+    AActor* GetOwner() const { return OwnerActor; }
+    void SetOwner(AActor* InOwner) { OwnerActor = InOwner; }
+
 private:
     FRenderTargetRHI* CopySource(FRenderTargetRHI* InputRHI);
     FRenderTargetRHI* CaptureFrame();

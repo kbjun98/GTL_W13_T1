@@ -1,4 +1,6 @@
 #include "RabbitPlayer.h"
+
+#include "RabbitController.h"
 #include "GameFramework/PlayerController.h"
 #include "Math/JungleMath.h"
 #include "RabbitMovementComponent.h"
@@ -16,6 +18,7 @@ void ARabbitPlayer::PostSpawnInitialize()
     CameraMesh->SetupAttachment(Camera);
 
     RabbitCam = std::make_shared<RabbitCamera>();
+    RabbitCam->SetOwner(this);
 }
 
 void ARabbitPlayer::BeginPlay()
@@ -114,6 +117,13 @@ void ARabbitPlayer::ZoomIn(float DeltaTime)
     float NextFOV = CurrentFOV - FOVChangeSpeed * DeltaTime;
     NextFOV = FMath::Clamp(NextFOV, MinFOV_ADS, MaxFOV_ADS);
     SetFOV(NextFOV);
+
+    if (ARabbitController* RC = GetRabbitController())
+    {
+        float ZoomRatio = (NextFOV - MinFOV_ADS) / (MaxFOV_ADS - MinFOV_ADS);
+        float NewMouseSensitivity = ZoomRatio * (RC->GetMaxMouseSensitivity() - RC->GetMinMouseSensitivity()) + RC->GetMinMouseSensitivity();
+        RC->MouseSensitivityCurrent = NewMouseSensitivity;
+    }
 }
 
 void ARabbitPlayer::ZoomOut(float DeltaTime)
@@ -127,6 +137,13 @@ void ARabbitPlayer::ZoomOut(float DeltaTime)
     float NextFOV = CurrentFOV + FOVChangeSpeed * DeltaTime;
     NextFOV = FMath::Clamp(NextFOV, MinFOV_ADS, MaxFOV_ADS);
     SetFOV(NextFOV);
+
+    if (ARabbitController* RC = GetRabbitController())
+    {
+        float ZoomRatio = (NextFOV - MinFOV_ADS) / (MaxFOV_ADS - MinFOV_ADS);
+        float NewMouseSensitivity = ZoomRatio * (RC->GetMaxMouseSensitivity() - RC->GetMinMouseSensitivity()) + RC->GetMinMouseSensitivity();
+        RC->MouseSensitivityCurrent = NewMouseSensitivity;
+    }
 }
 
 void ARabbitPlayer::TakePicture()
@@ -139,31 +156,58 @@ void ARabbitPlayer::TakePicture()
 
 void ARabbitPlayer::ToggleADS()
 {
-    bIsADS = !bIsADS;
-    
     if (bIsADS)
     {
-        StartADS();
+        EndADS();
     }
     else
     {
-        EndADS();
+        StartADS();
     }
 }
 
 void ARabbitPlayer::StartADS()
 {
+    if (bIsADS)
+    {
+        return;
+    }
+    
+    bIsADS = true;
+    
     CameraShakeInstance = GetPlayerController()->PlayerCameraManager->StartCameraShake(IdleCameraShake);
+
+    if (auto CameraMeshComp = GetComponentByClass<UCameraMeshComponent>())
+    {
+        CameraMeshComp->bHidden = true;
+    }
 
     SetFOV(DefaultFOV_ADS);
 }
 
 void ARabbitPlayer::EndADS()
 {
+    if (!bIsADS)
+    {
+        return;
+    }
+    
+    bIsADS = false;
+    
     GetPlayerController()->PlayerCameraManager->StopCameraShake(CameraShakeInstance, true);
     CameraShakeInstance = nullptr;
 
+    if (auto CameraMeshComp = GetComponentByClass<UCameraMeshComponent>())
+    {
+        CameraMeshComp->bHidden = false;
+    }
+
     SetFOV(DefaultFOV);
+
+    if (ARabbitController* RC = GetRabbitController())
+    {
+        RC->MouseSensitivityCurrent = RC->GetBaseMouseSensitivity();
+    }
 }
 
 void ARabbitPlayer::SetFOV(float FOV)
@@ -189,4 +233,13 @@ float ARabbitPlayer::GetFOV() const
         return GetPlayerController()->PlayerCameraManager->GetFOV();
     }
     return 0.f;
+}
+
+ARabbitController* ARabbitPlayer::GetRabbitController() const
+{
+    if (ARabbitController* RC = Cast<ARabbitController>(GetPlayerController()))
+    {
+        return RC;
+    }
+    return nullptr;
 }

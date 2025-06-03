@@ -17,7 +17,7 @@ void FDepthPrePass::PrepareRenderArr()
 {
     for (const auto Iter : TObjectRange<UMeshComponent>())
     {
-        if (Iter->GetWorld() != GEngine->ActiveWorld)
+        if (Iter->GetWorld() != GEngine->ActiveWorld || Iter->bHidden)
         {
             continue;
         }

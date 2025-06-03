@@ -62,7 +62,7 @@ void FShadowRenderPass::PrepareRenderArr()
         {
             continue;
         }
-        if (!Iter->GetOwner() || Iter->GetOwner()->IsHidden())
+        if (!Iter->GetOwner() || Iter->GetOwner()->IsHidden() || Iter->bHidden)
         {
             continue;
         }

@@ -29,9 +29,9 @@ void ARabbitGameMode::BeginPlay()
                 Camera->InitPictureArraySize(EPhotoTypeSize);
 
                 Camera->OnPictureTaken.BindLambda(
-                    [this](UPrimitiveComponent* Comp,RabbitCamera* RabbitCam) 
+                    [this](RabbitCamera* RabbitCamera, UPrimitiveComponent* Comp, FVector PlayerLocation) 
                     {
-                        this->JudgeCapturedPhoto(Comp,RabbitCam);
+                        this->JudgeCapturedPhoto(Comp, RabbitCamera);
                     }
                 );
             }

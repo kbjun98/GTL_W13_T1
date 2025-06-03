@@ -136,6 +136,22 @@ public:
 protected:
     virtual void DoUpdateCamera(float DeltaTime);
 
+    // Begin Focal Distance
+    bool ShouldUpdateFocalDistance() const;
+    
+    virtual void DoUpdateFocalDistance(float DeltaTime);
+
+    bool bIsUpdatingFocalDistance = false;
+
+    float AccumulatedFocalDistCheckTime = 0.f;
+    float PrevFocalDistCheckTime = 0.f;
+    float FocalDistCheckInterval = 1.f;
+
+    float FocalDistInterpSpeed = 5.f;
+
+    float TargetFocalDistance = 0.f;
+    // End Focal Distance
+
     virtual void UpdateViewTarget(FTViewTarget& OutVT, float DeltaTime);
     
     void SetCameraVignette(float InIntensity, float InRadius, float InSmoothness);
