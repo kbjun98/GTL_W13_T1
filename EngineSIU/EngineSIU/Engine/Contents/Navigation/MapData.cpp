@@ -53,7 +53,8 @@ FGridNode& FGridMap::GetNode(int X, int Y)
 
 void FGridMap::DebugPrint() const
 {
-    UE_LOG(ELogLevel::Display, "맵 디버그 출력 (Width = %d, Height = %d): ", Width, Height);
+    /* 엔진 내 콘솔 출력*/
+   /* UE_LOG(ELogLevel::Display, "맵 디버그 출력 (Width = %d, Height = %d): ", Width, Height);
     for (int y = 0; y < Height; ++y)
     {
         FString log;
@@ -74,6 +75,22 @@ void FGridMap::DebugPrint() const
             }
         }
         UE_LOG(ELogLevel::Display, "%s", *log);
+    }*/
+    std::cout << "맵 디버그 출력 (Width = " << Width << ", Height = " << Height << "):" << std::endl;
+    for (int y = 0; y < Height; ++y)
+    {
+        std::string log;
+        for (int x = 0; x < Width; ++x)
+        {
+            FIntPoint Key(x, y);
+            uint32 KeyIndex = Get1DIndex(Key.X, Key.Y);
+            const FGridNode* Node = GridNodes.Find(KeyIndex);
+
+            if (Node) {
+                log += Node->bWalkable ? "O " : "X ";
+            }
+        }
+        std::cout << log << std::endl;
     }
 }
 
