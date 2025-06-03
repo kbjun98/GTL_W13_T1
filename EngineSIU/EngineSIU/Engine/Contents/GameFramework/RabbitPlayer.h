@@ -44,7 +44,7 @@ public:
     void EndADS();
 
     void ResetPlayer();
-
+    
     FOnPlayerDiedSignature OnPlayerDied;
 
 protected:
@@ -75,7 +75,6 @@ private:
     UCameraShakeBase* CameraShakeInstance = nullptr;
 
     bool bIsDied = false;
-
 
     void OnDeath();
 };
