@@ -43,9 +43,15 @@ void ARabbitPawn::BeginPlay()
     if (UCapsuleComponent* Collision = Cast<UCapsuleComponent>(RootComponent))
     {
         Collision->OnComponentBeginOverlap.AddLambda(
-            [](UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Hit)
+            [this](UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Hit)
             {
                 UE_LOG(ELogLevel::Display, TEXT("Begin Overlap!"));
+
+                if (USkeletalMeshComponent* Comp = this->SkeletalMeshComp)
+                {
+                    Comp->EnableRagdoll();
+                    Comp->bHidden = false;
+                }
             }
         );
 

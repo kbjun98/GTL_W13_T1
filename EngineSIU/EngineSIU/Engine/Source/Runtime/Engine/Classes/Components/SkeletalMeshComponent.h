@@ -168,4 +168,6 @@ public:
     UClass* GetAnimClass() const;
     
     void SetAnimInstanceClass(class UClass* NewClass);
+
+    void EnableRagdoll();
 };

@@ -796,6 +796,15 @@ void USkeletalMeshComponent::SetAnimInstanceClass(class UClass* NewClass)
     }
 }
 
+void USkeletalMeshComponent::EnableRagdoll()
+{
+    for (FBodyInstance* BodyInstance : Bodies)
+    {
+        BodyInstance->BIGameObject->DynamicRigidBody->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
+        BodyInstance->BIGameObject->DynamicRigidBody->wakeUp();
+    }
+}
+
 void USkeletalMeshComponent::SetAnimation(UAnimationAsset* NewAnimToPlay)
 {
     if (UAnimSingleNodeInstance* SingleNodeInstance = GetSingleNodeInstance())

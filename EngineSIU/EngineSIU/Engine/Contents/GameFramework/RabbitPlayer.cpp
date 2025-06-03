@@ -30,6 +30,14 @@ void ARabbitPlayer::PostSpawnInitialize()
         SkeletalMeshComp->bHidden = true;
 
         SkeletalMeshComp->RigidBodyType = ERigidBodyType::KINEMATIC;
+        SkeletalMeshComp->bApplyGravity = true;
+        SkeletalMeshComp->bSimulate = true;
+
+        UObject* Obj = UAssetManager::Get().GetAsset(EAssetType::PhysicsAsset, "Contents/PhysicsAsset/Bunny2");
+        if (UPhysicsAsset* PhysicsAsset = Cast<UPhysicsAsset>(Obj))
+        {
+            SkeletalMeshComp->GetSkeletalMeshAsset()->SetPhysicsAsset(PhysicsAsset);
+        }
     }
 }
 
