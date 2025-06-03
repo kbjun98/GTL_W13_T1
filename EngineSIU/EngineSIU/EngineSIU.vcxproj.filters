@@ -1670,6 +1670,8 @@
     <ClCompile Include="Engine\Source\Runtime\Engine\Classes\Animation\RabbitAnimStateMachine.cpp" />
     <ClCompile Include="RabbittCamera.cpp" />
     <ClCompile Include="Engine\Source\Editor\PropertyEditor\RabbitGameUIPanel.cpp" />
+    <ClCompile Include="Engine\Contents\Animation\AnimAttackNotify.cpp" />
+    <ClCompile Include="Engine\Contents\Objects\HitCameraShake.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="EngineSIU.natvis" />
@@ -1822,6 +1824,8 @@
     <ClInclude Include="Engine\Contents\GameFramework\RabbitEnemyController.h" />
     <ClInclude Include="Engine\Source\Runtime\Engine\Classes\Animation\RabbitAnimStateMachine.h" />
     <ClInclude Include="Engine\Contents\GameFramework\SuccessVolume.h" />
+    <ClInclude Include="Engine\Contents\Animation\AnimAttackNotify.h" />
+    <ClInclude Include="Engine\Contents\Objects\HitCameraShake.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\CompositingShader.hlsl" />

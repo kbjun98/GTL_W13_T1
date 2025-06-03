@@ -200,7 +200,10 @@ xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\FBX\lib\x64\$
 xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\Lua\bin\$(Configuration)\lua.pdb" "$(OutDir)"
 xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\fmod\lib\$(Platform)\fmod.dll" "$(OutDir)"
 xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\fmod\lib\$(Platform)\fmodL.dll" "$(OutDir)"
-xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\FBX\lib\x64\$(Configuration)\libfbxsdk.dll" "$(OutDir)"</Command>
+xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\FBX\lib\x64\$(Configuration)\libfbxsdk.dll" "$(OutDir)"
+xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\Physics\$(Configuration)\PhysXDevice64.dll" "$(OutDir)"
+xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\Physics\$(Configuration)\PhysXGpu_64.dll" "$(OutDir)"
+xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\Physics\$(Configuration)\*.pdb" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
