@@ -17,6 +17,8 @@ public:
   
     void AddSoundNotify();
 
+    void AddAttackNotify();
+
     void SetPlaying(bool bIsPlaying)
     {
         bPlaying = bIsPlaying;

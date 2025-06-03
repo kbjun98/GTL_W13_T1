@@ -12,6 +12,7 @@
 #include "Animation/AnimData/AnimDataModel.h"
 #include "Animation/AnimTypes.h"
 #include <Animation/AnimSoundNotify.h>
+#include "Animation/AnimAttackNotify.h"
 
 
 
@@ -38,6 +39,7 @@ RabbitAnimInstance::RabbitAnimInstance()
     Attack = UAssetManager::Get().GetAnimation(FString("Contents/Bunny/Attack"));
 
     AddSoundNotify();
+    AddAttackNotify();
 
     CurrAnim = Cast<UAnimSequence>(Idle);
     PrevAnim = Cast<UAnimSequence>(Idle);
@@ -187,6 +189,47 @@ void RabbitAnimInstance::AddSoundNotify()
         {
             // 사운드 이름 설정
             SoundNotify->SetSoundName(FName("Attack"));
+        }
+    }
+}
+
+void RabbitAnimInstance::AddAttackNotify()
+{
+    int32 OverlapTrack;
+    bool bTrackAdded = Cast<UAnimSequence>(Attack)->AddNotifyTrack(FName("OverlapTrack"), OverlapTrack);
+    UAnimSequence* AnimSequence = Cast<UAnimSequence>(Attack);
+    if (bTrackAdded)
+    {
+        // 공격 시작 Notify 추가
+        int32 AttackStartIndex;
+        AnimSequence->AddNotifyEvent(
+            OverlapTrack,
+            0.25f,           // 0.25초에 발생
+            0.0f,           // 즉시 Notify
+            FName("AttackOverlap"),
+            AttackStartIndex
+        );
+    }
+    // Notify 이벤트 가져오기 및 타입 설정
+    FAnimNotifyEvent* NotifyEvent = AnimSequence->GetNotifyEvent(1);
+    UAnimAttackNotify* AttackNotifyEvent = FObjectFactory::ConstructObject<UAnimAttackNotify>(this);
+    NotifyEvent->SetAnimNotify(AttackNotifyEvent);
+
+    AActor* Owner = GetSkelMeshComponent()->GetOwner();
+
+    if (NotifyEvent)
+    {
+        UAnimNotify* BaseNotify = NotifyEvent->GetNotify();
+        UAnimAttackNotify* AttackNotify = Cast<UAnimAttackNotify>(BaseNotify);
+        if (AttackNotify)
+        {
+            // 공격 델리게이트 설정
+            AttackNotify->OnAttackDelegate.AddLambda([this]()
+                {
+                    // 공격 애니메이션이 시작될 때 호출되는 로직
+                    UE_LOG(ELogLevel::Display,TEXT("Attack Notify Triggered!"));
+                    // 여기에 공격 관련 로직 추가
+                });
         }
     }
 }
