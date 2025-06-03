@@ -46,7 +46,7 @@ public:
     static FResourceManager ResourceManager;
     static uint32 TotalAllocationBytes;
     static uint32 TotalAllocationCount;
-
+    static float TimeScale;
     HWND AppWnd;
 
     FGPUTimingManager GPUTimingManager;
