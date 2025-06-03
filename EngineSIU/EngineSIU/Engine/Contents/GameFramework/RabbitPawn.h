@@ -30,9 +30,11 @@ public:
     int32 GetCurrentHealth() const { return CurrentHealth; }
     void SetCurrentHealth(int32 Value);
 
-    ERabbitAnimState GetAnimState() { return AnimState; }
+    ERabbitAnimState GetAnimState() const { return AnimState; }
     void SetAnimState(ERabbitAnimState State) { AnimState = State; }
 
+    virtual bool SetActorLocation(const FVector& NewLocation) override;
+    
 protected:
     URabbitMovementComponent* MovementComponent;
     USkeletalMeshComponent* SkeletalMeshComp;

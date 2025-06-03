@@ -26,7 +26,6 @@ void ARabbitPawn::PostSpawnInitialize()
     SkeletalMeshComp->AnimClass = RabbitAnimInstance::StaticClass();
 
     MovementComponent = AddComponent<URabbitMovementComponent>("RabbitMoveComp_0");
-
 }
 
 UObject* ARabbitPawn::Duplicate(UObject* InOuter)
@@ -86,6 +85,18 @@ void ARabbitPawn::SetMaxHealth(int32 Value)
 void ARabbitPawn::SetCurrentHealth(int32 Value)
 {
     CurrentHealth = FMath::Min(Value, MaxHealth);
+}
+
+bool ARabbitPawn::SetActorLocation(const FVector& NewLocation)
+{
+    Super::SetActorLocation(NewLocation);
+
+    if (MovementComponent)
+    {
+        MovementComponent->SetLocation(NewLocation);
+    }
+
+    return true;
 }
 
 void ARabbitPawn::OnRabbitBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp)

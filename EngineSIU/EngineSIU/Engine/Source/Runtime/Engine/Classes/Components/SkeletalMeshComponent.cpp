@@ -181,7 +181,7 @@ void USkeletalMeshComponent::EndPhysicsTickComponent(float DeltaTime)
                  if (BI->BoneIndex == i)
                  {
                     // 바디 인스턴스가 있는 경우, 또는 첫번째 바디 인스턴스인 경우에는
-                    // 바디 인스턴스의 월드 매트릭스를 그대로 사용
+                    // 바디 인스턴스의 월드 매트릭스를 그대로 사용i
                      BI->BIGameObject->UpdateFromPhysics(GEngine->PhysicsManager->GetScene(GEngine->ActiveWorld));
                      XMMATRIX DXMatrix = BI->BIGameObject->WorldMatrix;
                      XMFLOAT4X4 dxMat;
@@ -550,7 +550,12 @@ void USkeletalMeshComponent::CreatePhysXGameObject()
         RigidBodyType = ERigidBodyType::KINEMATIC;
     }
 
+    if (!SkeletalMeshAsset || !(SkeletalMeshAsset->GetSkeleton()))
+    {
+        return;
+    }
     // BodyInstance 생성
+    
     const auto& Skeleton = SkeletalMeshAsset->GetSkeleton()->GetReferenceSkeleton();
     TArray<UBodySetup*> BodySetups = SkeletalMeshAsset->GetPhysicsAsset()->BodySetups;
     for (int i = 0; i < BodySetups.Num(); i++)
@@ -658,11 +663,22 @@ void USkeletalMeshComponent::RemovePhysXGameObject()
     
     for (auto Body : Bodies)
     {
-        Body->BIGameObject->DynamicRigidBody->release();
-        Body->BIGameObject->DynamicRigidBody = nullptr;
+        if (!Body)
+        {
+            continue;
+        }
         
-        Body->BIGameObject->StaticRigidBody->release();
-        Body->BIGameObject->StaticRigidBody = nullptr;
+        if (Body->BIGameObject->DynamicRigidBody)
+        {
+            Body->BIGameObject->DynamicRigidBody->release();
+            Body->BIGameObject->DynamicRigidBody = nullptr;
+        }
+
+        if (Body->BIGameObject->StaticRigidBody)
+        {
+            Body->BIGameObject->StaticRigidBody->release();
+            Body->BIGameObject->StaticRigidBody = nullptr;
+        }
         
         delete Body->BIGameObject;
         Body->BIGameObject = nullptr;

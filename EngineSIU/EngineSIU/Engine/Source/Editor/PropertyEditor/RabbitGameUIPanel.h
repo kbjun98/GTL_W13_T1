@@ -79,13 +79,22 @@ public:
     void Render() override;
     void ShowBouncingWindow(float deltaTime);
     void Restart();
-    void OnDeathUI();
+    
+    void StartDeathTimer();
+
+    void ClearDeathTimer();
+    
     void RenderDeathUI();
+    
 private:
-    void OnResize(HWND hWnd) override;
+    virtual void OnResize(HWND hWnd) override;
+    
     void RenderGallery();
+    
     bool RegisterPlayerCamera();
+    
     void RenderCameraCool();
+    
     float Width;
     float Height;
 

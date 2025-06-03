@@ -8,6 +8,7 @@
 #include "World/World.h"
 #include "LevelEditor/SLevelEditor.h"
 #include "Editor/UnrealEd/EditorViewportClient.h"
+#include "GameFramework/RabbitGameMode.h"
 
 inline ImVec2 operator*(const ImVec2& lhs, float rhs) {
     return ImVec2(lhs.x * rhs, lhs.y * rhs);
@@ -148,38 +149,44 @@ void RabbitGameUIPanel::ShowBouncingWindow(float DeltaTime)
 
 void RabbitGameUIPanel::Restart()
 {
-    bShowDeathUI = false;
+    ClearDeathTimer();
 
-    return;
-    if (APlayerController* PlayerController = GEngine->ActiveWorld->GetPlayerController())
+    if (ARabbitGameMode* RabbitGameMode = Cast<ARabbitGameMode>(GEngine->ActiveWorld->GetGameMode()))
     {
-        if (ARabbitPlayer* Rabbit = Cast<ARabbitPlayer>(PlayerController->GetPawn()))
-        {
-            Rabbit->ResetPlayer();
-        }
+        RabbitGameMode->Restart();
     }
 }
 
-void RabbitGameUIPanel::OnDeathUI()
+void RabbitGameUIPanel::StartDeathTimer()
 {
     bDeathTriggered = true;  // 죽음 트리거
-    deathTimer = 0.0f;       // 타이머 리셋
+    DeathTimer = 0.0f;       // 타이머 리셋
     bShowDeathUI = false;    // 아직 UI는 보이지 않음
 }
 
+void RabbitGameUIPanel::ClearDeathTimer()
+{
+    bDeathTriggered = false;
+    DeathTimer = 0.0f;
+    bShowDeathUI = false;
+}
 
 void RabbitGameUIPanel::RenderDeathUI()
 {
+    if (!bDeathTriggered)
+    {
+        return;
+    }
+    
     // 죽음이 트리거되었고 아직 UI가 표시되지 않았다면
     if (bDeathTriggered && !bShowDeathUI)
     {
-        deathTimer += FEngineLoop::DeltaTime;
+        DeathTimer += FEngineLoop::DeltaTime;
 
         // 지연 시간이 지나면 UI 표시
-        if (deathTimer >= deathUIDelay)
+        if (DeathTimer >= deathUIDelay)
         {
             bShowDeathUI = true;
-            bDeathTriggered = false;  // 트리거 플래그 리셋
         }
     }
 
@@ -187,6 +194,7 @@ void RabbitGameUIPanel::RenderDeathUI()
     {
         return;
     }
+    
     auto ViewPort = GEngineLoop.GetLevelEditor()->GetActiveViewportClient()->GetViewport()->GetD3DViewport();
     // 뷰포트 중심 계산
     ImVec2 centerPos(
@@ -259,8 +267,8 @@ void RabbitGameUIPanel::OnResize(HWND hWnd)
 {
     RECT ClientRect;
     GetClientRect(hWnd, &ClientRect);
-     Width = ClientRect.right - ClientRect.left;
-     Height = ClientRect.bottom - ClientRect.top;
+    Width = ClientRect.right - ClientRect.left;
+    Height = ClientRect.bottom - ClientRect.top;
 }
 
 

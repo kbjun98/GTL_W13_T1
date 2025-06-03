@@ -150,3 +150,27 @@ void URabbitMovementComponent::Jump()
         bIsGrounded = false;
     }
 }
+
+void URabbitMovementComponent::SetLocation(const FVector& NewLocation)
+{
+    if (Controller)
+    {
+        PxExtendedVec3 Position = PxExtendedVec3(NewLocation.X, NewLocation.Y, NewLocation.Z);
+        
+        bool bMoved = Controller->setPosition(Position);
+        if (bMoved)
+        {
+            const PxExtendedVec3& Pos = Controller->getPosition();
+            FVector MovedLocation = FVector(Pos.x, Pos.y, Pos.z);
+
+            Velocity = FVector::ZeroVector;
+
+            UpdatedComponent->SetWorldLocation(MovedLocation);
+        }
+    }
+    else
+    {
+        FVector Delta = NewLocation - UpdatedComponent->GetComponentLocation();
+        MoveUpdatedComponent(Delta, GetOwner()->GetActorRotation());
+    }
+}
