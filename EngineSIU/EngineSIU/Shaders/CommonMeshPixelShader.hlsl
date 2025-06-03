@@ -100,7 +100,7 @@ float4 mainPS(PS_INPUT_CommonMesh Input) : SV_Target
     {
         EmissiveColor = MaterialTextures[TEXTURE_SLOT_EMISSIVE].Sample(SamplerLinearWrap, Input.UV).rgb;
     }
-    EmissiveColor *= 5.0; // 5.0은 임의의 값
+    EmissiveColor *= 1.2; // 5.0은 임의의 값
 
 #ifdef LIGHTING_MODEL_PBR
     // Metallic

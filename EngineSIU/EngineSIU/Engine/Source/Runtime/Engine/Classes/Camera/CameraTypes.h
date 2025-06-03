@@ -34,7 +34,7 @@ struct FMinimalViewInfo
         , Rotation(0.0f, 0.0f, 0.0f)
         , FOV(90.0f)
         , PerspectiveNearClip(10.f)
-        , PerspectiveFarClip(10000.f)
+        , PerspectiveFarClip(100000.f)
         /*, OrthoWidth(512.0f)
         , OrthoNearClipPlane(1.0f)
         , OrthoFarClipPlane(10000.0f)
