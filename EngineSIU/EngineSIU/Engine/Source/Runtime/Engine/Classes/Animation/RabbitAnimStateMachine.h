@@ -5,9 +5,10 @@
 
 enum class ERabbitAnimState
 {
-    EIDLE,
-    EWALK,
-    EAttack,
+    Idle,
+    Walk,
+    Chase,
+    Attack,
 };
 
 class RabbitAnimStateMachine : public UObject

@@ -36,6 +36,7 @@ RabbitAnimInstance::RabbitAnimInstance()
     Idle = UAssetManager::Get().GetAnimation(FString("Contents/Bunny/Idle"));
     Walk = UAssetManager::Get().GetAnimation(FString("Contents/Bunny/Walk"));
     Attack = UAssetManager::Get().GetAnimation(FString("Contents/Bunny/Attack"));
+    Chase = UAssetManager::Get().GetAnimation(FString("Contents/Bunny/FastRun"));
 
     AddSoundNotify();
 
