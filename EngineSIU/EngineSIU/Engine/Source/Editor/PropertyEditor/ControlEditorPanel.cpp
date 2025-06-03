@@ -206,19 +206,16 @@ void ControlEditorPanel::CreateMenuButton(const ImVec2 ButtonSize, ImFont* IconF
         FGridMap* GridMap = GEngine->ActiveWorld->GetGridMap();
 
         FString  GridMapFileName = FileName + FString(".mapgrid");
-        GridMap->SaveToBinaryFile(GridMapFileName);
 
         if (UEditorEngine* EditorEngine = Cast<UEditorEngine>(GEngine))
         {
             
             EditorEngine->NewLevel();
             EditorEngine->LoadLevel(FileName);
-            //GridMap->LoadFromBinaryFile(GridMapFileName);
+            GridMap->LoadFromBinaryFile(GridMapFileName);
 
         }
     }
-
-    ImGui::Separator();
 
     if (ImGui::MenuItem("Save Level"))
     {
@@ -240,11 +237,15 @@ void ControlEditorPanel::CreateMenuButton(const ImVec2 ButtonSize, ImFont* IconF
             GridMap->SaveToBinaryFile(GridMapFileName);
 
             EditorEngine->SaveLevel(FileName);
-            
+
         }
 
         tinyfd_messageBox("알림", "저장되었습니다.", "ok", "info", 1);
     }
+
+    ImGui::Separator();
+
+    
 
     if (ImGui::MenuItem("Save Map Grid Data"))
     {
