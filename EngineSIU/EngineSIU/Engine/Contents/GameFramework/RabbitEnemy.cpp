@@ -33,7 +33,7 @@ void ARabbitEnemy::BeginPlay()
     MovementComponent->MaxSpeed = 200.0f; // 적의 이동 속도 설정    
 }
 
-void ARabbitEnemy::RoatateToTarget(const FVector& Location, float DeltaTime)
+void ARabbitEnemy::RotateToTarget(const FVector& Location, float DeltaTime)
 {
     if (USkeletalMeshComponent* SkeletalMeshComponent = GetComponentByClass<USkeletalMeshComponent>())
     {

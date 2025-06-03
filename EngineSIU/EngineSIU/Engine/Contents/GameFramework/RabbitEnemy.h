@@ -9,9 +9,11 @@ public:
     virtual UObject* Duplicate(UObject* InOuter) override;
     virtual void Tick(float DeltaTime) override;
     virtual void BeginPlay() override;
+    
 public:
     void SetTargetLocation(const FVector& Location) { TargetLocation = Location; }
-    void RoatateToTarget(const FVector& Location, float DeltaTime);
+    void RotateToTarget(const FVector& Location, float DeltaTime);
+    
 public:
     UPROPERTY(EditAnywhere,
         float, SightFOV, = 30.0f;

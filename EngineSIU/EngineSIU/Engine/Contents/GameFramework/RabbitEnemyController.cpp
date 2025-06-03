@@ -48,7 +48,7 @@ void ARabbitEnemyController::ProcessEnemyMovement(float DeltaTime)
 
             FVector DirNormal = ToNext.GetSafeNormal();
             Enemy->AddMovementInput(DirNormal, 1.0f);
-            Enemy->RoatateToTarget(NextPathPoint, DeltaTime);
+            Enemy->RotateToTarget(NextPathPoint, DeltaTime);
         }
         else
         {
@@ -101,7 +101,7 @@ void ARabbitEnemyController::ProcessEnemyMovement(float DeltaTime)
             Enemy->AddMovementInput(DirNormal, 1.0f);
 
             // 방향 회전 처리
-            Enemy->RoatateToTarget(NextPathPoint, DeltaTime);
+            Enemy->RotateToTarget(NextPathPoint, DeltaTime);
         }
         else
         {
@@ -237,7 +237,7 @@ void ARabbitEnemyController::MoveTo(const FVector& TargetLocation, float DeltaTi
         TargetDirection.Z = 0.0f; // Z축 방향은 무시
         FVector DirNormal = TargetDirection.GetSafeNormal();
         Enemy->AddMovementInput(DirNormal, 100.0f);
-        Enemy->RoatateToTarget(TargetLocation, DeltaTime);
+        Enemy->RotateToTarget(TargetLocation, DeltaTime);
     }
 }
 
