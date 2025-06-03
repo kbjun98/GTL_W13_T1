@@ -222,6 +222,7 @@ void FPhysicsManager::AttachShapesToActor(PxRigidActor* Actor, UBodySetup* BodyS
         {
             Actor->attachShape(*Sphere);
         }
+      
     }
 
     // Box 추가
@@ -683,14 +684,14 @@ PxShape* FPhysicsManager::CreateBoxShape(const PxVec3& Pos, const PxQuat& Quat, 
 {
     // Box 모양 생성
     PxShape* Result = Physics->createShape(PxBoxGeometry(HalfExtents), *Material);
-
+    
+    // 위치와 회전을 모두 적용한 Transform 생성
     if (Result)
     {
-        // 위치와 회전을 모두 적용한 Transform 생성
         PxTransform LocalTransform(Pos, Quat);
         Result->setLocalPose(LocalTransform);
     }
-    
+
     return Result;
 }
 

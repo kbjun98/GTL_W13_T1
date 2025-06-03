@@ -28,21 +28,127 @@ RabbitGameUIPanel::RabbitGameUIPanel()
     SetSupportedWorldTypes(EWorldTypeBitFlag::PIE);
 }
 
-void RabbitGameUIPanel::Render()
+
+void RabbitGameUIPanel::ShowBouncingWindow(float DeltaTime)
 {
-    if (!RegisterPlayerCamera())
+    if (!bShowPictureEndUI)
     {
         return;
     }
 
-    RenderDeathUI();
-    RenderCameraCool();
-    RenderGallery();
+    constexpr float downDuration = 1.7f;
+    constexpr float waitDuration = 2.5f;
+    constexpr float upDuration = 0.8f;
+
+    switch (bounceState)
+    {
+    case BounceState::Idle:
+        bounce.Start(downDuration, &BounceTween::EaseOutBounce);
+        bounceState = BounceState::Down;
+        std::cout << "간드아앗";
+        break;
+    case BounceState::Down:
+        if (!bounce.IsPlaying()) {
+            bounceState = BounceState::Wait;
+            waitTimer = 0.0f;
+        }
+        break;
+    case BounceState::Wait:
+        waitTimer += DeltaTime;
+        if (waitTimer >= waitDuration) {
+            bounce.Start(upDuration, &BounceTween::EaseInBack);
+            bounceState = BounceState::Up;
+        }
+        break;
+    case BounceState::Up:
+        if (!bounce.IsPlaying()) {
+            bounceState = BounceState::Done;
+        }
+        break;
+    case BounceState::Done:
+        // 애니메이션 종료
+        break;
+    }
+
+    // 네가 준 코드에서 뷰포트 정보 받아서 중심 계산
+    auto ViewPort = GEngineLoop.GetLevelEditor()->GetActiveViewportClient()->GetViewport()->GetD3DViewport();
+    ImVec2 center(
+        ViewPort.TopLeftX + ViewPort.Width * 0.5f,
+        ViewPort.TopLeftY + ViewPort.Height * 0.4f
+    );
+
+    ImVec2 windowSize(388, 197);
+    float currentX = 0.0f;
+
+    if (bounceState == BounceState::Down)
+    {
+        float t = bounce.Update(DeltaTime);
+        float startX = ViewPort.TopLeftX - windowSize.x - 100.0f; // 화면 왼쪽 밖
+        float endX = center.x; // 화면 중앙
+        currentX = startX + (endX - startX) * t;
+    }
+    else if (bounceState == BounceState::Wait)
+    {
+        currentX = center.x; // 중앙에서 대기
+    }
+    else if (bounceState == BounceState::Up)
+    {
+        float t = bounce.Update(DeltaTime);
+        float startX = center.x; // 중앙에서 시작
+        float endX = ViewPort.TopLeftX + ViewPort.Width + windowSize.x + 300.0f; // 화면 오른쪽 멀리
+        currentX = startX + (endX - startX) * t;
+    }
+    else if (bounceState == BounceState::Idle)
+    {
+        currentX = ViewPort.TopLeftX - windowSize.x - 100.0f; // 화면 왼쪽 밖
+    }
+    else if (bounceState == BounceState::Done)
+    {
+        currentX = ViewPort.TopLeftX + ViewPort.Width + windowSize.x + 300.0f; // Up과 같은 위치로 고정
+    }
+
+    ImVec2 windowPos(currentX - windowSize.x * 0.5f, center.y - windowSize.y * 0.5f);
+
+    ImTextureID textureID = (ImTextureID)FEngineLoop::ResourceManager.GetTexture(L"Assets/Texture/PictureEnd.png")->TextureSRV;
+
+    // 방법 1: 완전히 테두리 없는 윈도우
+    ImGui::SetNextWindowPos(windowPos, ImGuiCond_Always);
+    ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
+
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 20.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);  // 테두리 크기 0
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));  // 패딩 제거
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, 0));
+    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));  // 테두리 색상 투명
+    ImGui::PushStyleColor(ImGuiCol_BorderShadow, ImVec4(0, 0, 0, 0));  // 그림자 제거
+
+    ImGui::Begin("📷 PictureEnd", nullptr,
+        ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoTitleBar |
+        ImGuiWindowFlags_NoBackground);  // 배경 제거 플래그 추가
+
+    ImVec2 imagePos = ImGui::GetWindowPos();
+    ImDrawList* drawList = ImGui::GetWindowDrawList();
+
+    // SRV 이미지만 그리기
+    drawList->AddImage(
+        textureID,
+        imagePos,
+        ImVec2(imagePos.x + windowSize.x, imagePos.y + windowSize.y),
+        ImVec2(0, 0),
+        ImVec2(1, 1)
+    );
+
+    ImGui::End();
+    ImGui::PopStyleColor(3);
+    ImGui::PopStyleVar(3);
 }
 
 void RabbitGameUIPanel::Restart()
 {
     ClearDeathTimer();
+    ResetBounce();
 
     if (ARabbitGameMode* RabbitGameMode = Cast<ARabbitGameMode>(GEngine->ActiveWorld->GetGameMode()))
     {
@@ -95,7 +201,7 @@ void RabbitGameUIPanel::RenderDeathUI()
         ViewPort.TopLeftY + ViewPort.Height * 0.5f
     );
     // 창 크기 및 위치
-    ImVec2 windowSize(1536, 1224);
+    ImVec2 windowSize(1536, 1150);
     ImVec2 windowPos(
         centerPos.x - windowSize.x * 0.5f,
         centerPos.y - windowSize.y * 0.45f
@@ -301,4 +407,33 @@ void RabbitGameUIPanel::RenderCameraCool()
     draw_list->AddText(center - text_size * 0.5f, IM_COL32_WHITE, buffer);
 
 
+}
+
+void RabbitGameUIPanel::ResetBounce()
+{
+    bounce.Reset();
+    bounceState = BounceState::Idle;
+    waitTimer = 0.0f;
+    bShowPictureEndUI = false;
+}
+
+void RabbitGameUIPanel::OnPictureEndUI()
+{
+    bShowPictureEndUI = true;
+}
+
+void RabbitGameUIPanel::Render()
+{
+
+    if (!RegisterPlayerCamera())
+    {
+        return;
+    }
+
+    RenderDeathUI();
+    RenderCameraCool();
+    RenderGallery();
+
+
+    ShowBouncingWindow(FEngineLoop::DeltaTime);
 }

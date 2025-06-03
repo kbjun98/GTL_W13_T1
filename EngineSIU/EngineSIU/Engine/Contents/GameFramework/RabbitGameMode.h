@@ -25,6 +25,8 @@ public:
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
     
     void JudgeCapturedPhoto(UPrimitiveComponent* CapturedComp,RabbitCamera* RabbitCam);
+
+    void StartUIPictureEnd();
     
     void StartUIDeathTimer();
     
@@ -36,8 +38,9 @@ private:
     TSet<EPhotoType> CapturedPhotoTypes;
     int32 EPhotoTypeSize;
     bool IsEndEffectOn = false;
-    float EndEffectLastTime = 3.f;
-
+    float EndEffectLastTime;
+    float EndEffectLastTimeInit = 3.0f;
+    bool IsPictureComplete=false;
     void OnPlayerDeath();
 };
 
