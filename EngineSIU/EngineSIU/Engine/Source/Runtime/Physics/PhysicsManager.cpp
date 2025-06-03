@@ -51,10 +51,31 @@ void FPhysicsManager::InitPhysX()
     }
     
     Physics = PxCreatePhysics(PX_PHYSICS_VERSION, *Foundation, PxTolerancesScale(), true, Pvd);
+    if (!Physics)
+    {
+        UE_LOG(ELogLevel::Error, TEXT("Failed to create PhysX Physics"));
+        if (Foundation)
+        {
+            Foundation->release();
+            Foundation = nullptr;
+        }
+        return;
+    }
     
     Material = Physics->createMaterial(0.5f, 0.7f, 0.1f);
+    if (!Material)
+    {
+        UE_LOG(ELogLevel::Error, TEXT("Failed to create PhysX Material"));
+        return;
+    }
 
-    PxInitExtensions(*Physics, Pvd);
+    bool extensionsResult = PxInitExtensions(*Physics, Pvd);
+    if (!extensionsResult)
+    {
+        UE_LOG(ELogLevel::Warning, TEXT("PhysX Extensions initialization failed, but continuing"));
+    }
+    
+    UE_LOG(ELogLevel::Display, TEXT("PhysX initialization completed successfully"));
 }
 
 PxScene* FPhysicsManager::CreateScene(UWorld* World)
@@ -67,13 +88,62 @@ PxScene* FPhysicsManager::CreateScene(UWorld* World)
     Dispatcher = PxDefaultCpuDispatcherCreate(hc-2);
     SceneDesc.cpuDispatcher = Dispatcher;
     
-    SceneDesc.filterShader = PxDefaultSimulationFilterShader;
+    // Release 빌드에서도 안정적인 충돌 감지를 위한 강화된 필터 셰이더Add commentMore actions
+    SceneDesc.filterShader = [](
+        PxFilterObjectAttributes attributes0, PxFilterData filterData0,
+        PxFilterObjectAttributes attributes1, PxFilterData filterData1,
+        PxPairFlags& pairFlags, const void* constantBlock, PxU32 constantBlockSize) -> PxFilterFlags
+    {
+        // Release 빌드에서 충돌 감지 로깅
+#ifdef NDEBUG
+        static bool bFirstCollisionCheck = true;
+        if (bFirstCollisionCheck)
+        {
+            UE_LOG(ELogLevel::Display, TEXT("Release Build: PhysX collision filter active"));
+            bFirstCollisionCheck = false;
+        }
+#endif
+        
+        // Trigger 객체 처리
+        if (PxFilterObjectIsTrigger(attributes0) || PxFilterObjectIsTrigger(attributes1))
+        {
+            pairFlags = PxPairFlag::eTRIGGER_DEFAULT;
+            pairFlags |= PxPairFlag::eNOTIFY_TOUCH_FOUND;
+            pairFlags |= PxPairFlag::eNOTIFY_TOUCH_LOST;
+            return PxFilterFlag::eDEFAULT;
+        }
+
+        // 일반 충돌 객체 처리 - Release 빌드에서 강화된 설정
+        pairFlags = PxPairFlag::eCONTACT_DEFAULT;
+        pairFlags |= PxPairFlag::eSOLVE_CONTACT;           // 충돌 해결 강제 활성화
+        pairFlags |= PxPairFlag::eDETECT_DISCRETE_CONTACT; // 불연속 충돌 감지
+        pairFlags |= PxPairFlag::eNOTIFY_TOUCH_FOUND;      // Contact Begin 이벤트
+        pairFlags |= PxPairFlag::eNOTIFY_TOUCH_LOST;       // Contact End 이벤트
+        pairFlags |= PxPairFlag::eNOTIFY_CONTACT_POINTS;   // Contact 점 정보
+
+        // Release 빌드에서 CCD(Continuous Collision Detection) 강화
+#ifdef NDEBUG
+        pairFlags |= PxPairFlag::eDETECT_CCD_CONTACT;      // CCD 충돌 감지
+        pairFlags |= PxPairFlag::eSOLVE_CONTACT;           // 충돌 해결 보장
+#endif
+        
+        return PxFilterFlag::eDEFAULT;
+    };
     
     // sceneDesc.simulationEventCallback = gMyCallback; // TODO: 이벤트 핸들러 등록(옵저버 or component 별 override)
     
     SceneDesc.flags |= PxSceneFlag::eENABLE_ACTIVE_ACTORS;
     SceneDesc.flags |= PxSceneFlag::eENABLE_CCD;
     SceneDesc.flags |= PxSceneFlag::eENABLE_PCM;
+    SceneDesc.flags |= PxSceneFlag::eEXCLUDE_KINEMATICS_FROM_ACTIVE_ACTORS;
+
+    // Release 빌드에서 솔버 정밀도 향상
+#ifdef NDEBUG
+    SceneDesc.solverType = PxSolverType::ePGS;                 // PGS 솔버 사용
+    SceneDesc.bounceThresholdVelocity = 0.5f;                 // 바운스 임계값 낮춤
+    SceneDesc.frictionOffsetThreshold = 0.04f;                // 마찰 오프셋 임계값
+    SceneDesc.ccdMaxSeparation = 0.04f;                       // CCD 최대 분리 거리
+#endif
     
     PxScene* NewScene = Physics->createScene(SceneDesc);
     SceneMap.Add(World, NewScene);
@@ -412,7 +482,36 @@ void FPhysicsManager::ApplyShapeCollisionSettings(PxShape* Shape, const FBodyIns
         // (구체적인 구현은 메시 충돌 시스템에 따라 다름)
     }
     
+    // 충돌 필터링 설정 추가
+    PxFilterData FilterData;
+    FilterData.word0 = 1;  // 자신의 그룹
+    FilterData.word1 = 0xFFFFFFFF;  // 모든 그룹과 충돌 (마스크)
+
+    Shape->setSimulationFilterData(FilterData);
+    Shape->setQueryFilterData(FilterData);
+
+    // 충돌 필터링 설정 추가
+    FilterData.word0 = 1;  // 자신의 그룹
+    FilterData.word1 = 0xFFFFFFFF;  // 모든 그룹과 충돌
+    FilterData.word2 = 0;  // 사용자 데이터 1
+    FilterData.word3 = 0;  // 사용자 데이터 2
+
+    Shape->setSimulationFilterData(FilterData);
+    Shape->setQueryFilterData(FilterData);
+
+    Shape->setContactOffset(0.02f);     // 충돌 감지 거리 설정
+    Shape->setRestOffset(0.0f);         // 충돌 해결 거리 설정
+
     Shape->setFlags(ShapeFlags);
+
+    // 릴리즈 빌드에서 추가 설정
+    #ifdef NDEBUG
+    // 릴리즈 빌드에서는 충돌이 항상 작동하도록 강제 설정
+    if(BodyInstance->bSimulatePhysics)
+    {
+        Shape->setFlags(ShapeFlags | PxShapeFlag::eSIMULATION_SHAPE);
+    }
+    #endif
 }
 
 // // === 런타임 설정 변경 함수들 === TODO : 필요하면 GameObject 안으로 옮기기
@@ -729,9 +828,31 @@ void FPhysicsManager::Simulate(float DeltaTime)
 {
     if (CurrentScene)
     {
+        // Release 빌드에서 물리 시뮬레이션 상태 로깅 추가
+#ifndef NDEBUG
+        static int logCounter = 0;
+        if (logCounter++ % 60 == 0) // 1초마다 로깅 (60FPS 기준)
+        {
+            UE_LOG(ELogLevel::Display, TEXT("Physics simulation running - DeltaTime: %.4f"), DeltaTime);
+        }
+#else
+        // Release 빌드에서만 물리 상태 확인
+        static bool bFirstRun = true;
+        if (bFirstRun)
+        {
+            UE_LOG(ELogLevel::Display, TEXT("Release Build: Physics simulation started - DeltaTime: %.4f"), DeltaTime);
+            UE_LOG(ELogLevel::Display, TEXT("Release Build: CurrentScene valid: %s"), CurrentScene ? TEXT("YES") : TEXT("NO"));
+            bFirstRun = false;
+        }
+#endif
+        
         QUICK_SCOPE_CYCLE_COUNTER(SimulatePass_CPU)
         CurrentScene->simulate(DeltaTime);
         CurrentScene->fetchResults(true);
+    }
+    else
+    {
+        UE_LOG(ELogLevel::Error, TEXT("Physics simulation failed: CurrentScene is null"));
     }
 }
 

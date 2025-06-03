@@ -305,11 +305,13 @@ void ARabbitPlayer::OnRabbitBeginOverlap(UPrimitiveComponent* OverlappedComp, AA
         OnDeath();
     }
 
-    if (Cast<ASuccessVolume>(OtherActor))
+    if (IsCaptureAll)
     {
-        OnPlayerSucceed.ExecuteIfBound();
+        if (Cast<ASuccessVolume>(OtherActor))
+        {
+            OnPlayerSucceed.ExecuteIfBound();
+        }
     }
-    
 }
 
 void ARabbitPlayer::OnRabbitEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp)

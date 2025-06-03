@@ -1,0 +1,158 @@
+# Blender 4.4.0 MTL File: 'None'
+# www.blender.org
+
+newmtl CarrotKnifeCol1
+Ns 490.000000
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 0.099043 0.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl CarrotKnifeCol2
+Ns 96.078415
+Ka 1.000000 1.000000 1.000000
+Kd 0.334457 0.097233 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl CarrotKnifeCol3
+Ns 96.078415
+Ka 1.000000 1.000000 1.000000
+Kd 0.569777 1.000000 0.073770
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl Cigar_Mat
+Ns 123.076927
+Ka 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd Boss_diffuse.png
+map_Ks Boss_specular.png
+map_Bump -bm 1.000000 Boss_normal.png
+
+newmtl Clothes_MAT
+Ns 369.230743
+Ka 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd Boss_diffuse.png
+map_Ks Boss_specular.png
+map_Bump -bm 1.000000 Boss_normal.png
+
+newmtl Clothes_MAT.001
+Ns 369.230743
+Ka 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd Boss_diffuse.png
+map_Ks Boss_specular.png
+map_Bump -bm 1.000000 Boss_normal.png
+
+newmtl Eyes_MAT
+Ns 938.461548
+Ka 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd Boss_diffuse.png
+map_Ks Boss_specular.png
+map_Bump -bm 1.000000 Boss_normal.png
+
+newmtl Eyes_MAT.001
+Ns 938.461548
+Ka 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd Boss_diffuse.png
+map_Ks Boss_specular.png
+map_Bump -bm 1.000000 Boss_normal.png
+
+newmtl Skin_MAT
+Ns 138.461548
+Ka 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd Boss_diffuse.png
+map_Ks Boss_specular.png
+map_Bump -bm 1.000000 Boss_normal.png
+
+newmtl bunny1_brown
+Ns 39.999996
+Ka 1.000000 1.000000 1.000000
+Kd 0.637704 0.479299 0.391544
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl bunny1_face_body
+Ns 39.999996
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd Bunny1.fbm/bunny1_face_body.png
+
+newmtl bunny1_nose_eyebrow
+Ns 39.999996
+Ka 1.000000 1.000000 1.000000
+Kd 0.334695 0.187524 0.124817
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl bunny1_scarf
+Ns 39.999996
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd scarf1.png
+
+newmtl bunny1_white
+Ns 39.999996
+Ka 1.000000 1.000000 1.000000
+Kd 0.974331 0.974331 0.974331
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl bunny_eyes.001
+Ns 640.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.017828 0.017828 0.017828
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2

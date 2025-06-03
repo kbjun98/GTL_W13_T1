@@ -44,6 +44,9 @@ public:
     void StartADS();
     void EndADS();
 
+    bool GetIsCaptureAll() { return IsCaptureAll; }
+    void SetIsCaptureAll(bool State) { IsCaptureAll = State; }
+
     void ResetPlayer();
 
     void OnDeath();
@@ -60,7 +63,9 @@ protected:
 
     virtual void OnRabbitBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp) override;
     virtual void OnRabbitEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp) override;
-    
+
+   
+
 private:
     UCameraMeshComponent* CameraMesh = nullptr;
     
@@ -80,6 +85,7 @@ private:
     UCameraShakeBase* CameraShakeInstance = nullptr;
 
     bool bIsDied = false;
+    bool IsCaptureAll=false;
 
 };
 

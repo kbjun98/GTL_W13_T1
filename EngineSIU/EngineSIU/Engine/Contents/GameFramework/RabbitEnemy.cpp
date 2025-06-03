@@ -46,7 +46,7 @@ void ARabbitEnemy::BeginPlay()
     GetComponentByClass<USphereComponent>()->bIsOverlapEnabled = false;
 }
 
-void ARabbitEnemy::RoatateToTarget(const FVector& Location, float DeltaTime)
+void ARabbitEnemy::RotateToTarget(const FVector& Location, float DeltaTime)
 {
     if (USkeletalMeshComponent* SkeletalMeshComponent = GetComponentByClass<USkeletalMeshComponent>())
     {
