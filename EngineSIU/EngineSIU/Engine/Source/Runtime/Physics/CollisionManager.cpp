@@ -256,7 +256,7 @@ void FCollisionManager::CheckOverlap(const UWorld* World, const UPrimitiveCompon
     }
     if (UShapeComponent* ShapeComponent = Cast<UShapeComponent>(Component))
     {
-        if(ShapeComponent->bIsOverlapEnabled == false) return;
+        //if(ShapeComponent->bIsOverlapEnabled == false) return;
     }
 
 

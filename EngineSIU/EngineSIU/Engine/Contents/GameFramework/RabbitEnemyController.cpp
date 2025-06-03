@@ -176,9 +176,13 @@ void ARabbitEnemyController::CheckStateChange(float DeltaTime)
         break;
     }
     
-    if (CurrentState != EnemyState::ATTACK)
+    if (CurrentState == EnemyState::ATTACK)
     {
-        //Enemy->GetComponentByClass<USphereComponent>()->bIsOverlapEnabled = false;
+        Enemy->GetComponentByClass<USphereComponent>()->bIsOverlapEnabled = true;
+    }
+    else
+    {
+        Enemy->GetComponentByClass<USphereComponent>()->bIsOverlapEnabled = false;
     }
 }
 

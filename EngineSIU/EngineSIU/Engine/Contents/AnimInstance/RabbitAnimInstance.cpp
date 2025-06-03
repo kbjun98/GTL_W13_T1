@@ -47,8 +47,8 @@ RabbitAnimInstance::RabbitAnimInstance()
 void RabbitAnimInstance::NativeInitializeAnimation()
 {
     Super::NativeInitializeAnimation();
-    AddSoundNotify();
-    AddAttackNotify();
+    //AddSoundNotify();
+    //AddAttackNotify();
 }
 
 float GetNormalizedAnimTime(UAnimSequence* Anim, float ElapsedTime)
@@ -201,8 +201,8 @@ void RabbitAnimInstance::AddAttackNotify()
     ARabbitEnemy* RabbitEnemy = Cast<ARabbitEnemy>(Owner);
 
     int32 OverlapTrack;
-    //bool bTrackAdded = Cast<UAnimSequence>(Attack)->AddNotifyTrack(Owner->GetName(), OverlapTrack);
-    bool bTrackAdded = Cast<UAnimSequence>(Attack)->AddNotifyTrack("AttackOverlap", OverlapTrack);
+    bool bTrackAdded = Cast<UAnimSequence>(Attack)->AddNotifyTrack(Owner->GetName(), OverlapTrack);
+    //bool bTrackAdded = Cast<UAnimSequence>(Attack)->AddNotifyTrack("AttackOverlap", OverlapTrack);
     UAnimSequence* AnimSequence = Cast<UAnimSequence>(Attack);
     int32 AttackStartIndex;
     int32 AttackEndIndex;
