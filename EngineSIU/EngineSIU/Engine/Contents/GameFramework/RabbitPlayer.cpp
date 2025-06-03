@@ -404,7 +404,7 @@ void ARabbitPlayer::OnDeath()
 void ARabbitPlayer::OnAttacked()
 {
     const int32 CurrentHealth = GetCurrentHealth();
-    const int32 NextHealth = CurrentHealth - 40;
+    const int32 NextHealth = CurrentHealth - 1;
     SetCurrentHealth(NextHealth);
 
     if (APlayerController* PC = GetPlayerController())
