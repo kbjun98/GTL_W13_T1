@@ -265,6 +265,73 @@ void FGridMap::AnalyzeWalkableFromMeshes()
     UE_LOG(ELogLevel::Display, TEXT("Raycast + Normal 기반 장애물 분석 완료!"));
 }
 
+void FGridMap::SaveToBinaryFile(const FString& FilePath)
+{
+    std::ofstream OutFile(FilePath.ToAnsiString(), std::ios::binary);
+    if (!OutFile.is_open())
+    {
+        UE_LOG(ELogLevel::Error, "Failed to open file for saving: %s", *FilePath);
+        return;
+    }
+
+    OutFile.write(reinterpret_cast<const char*>(&Width), sizeof(int));
+    OutFile.write(reinterpret_cast<const char*>(&Height), sizeof(int));
+    OutFile.write(reinterpret_cast<const char*>(&MinPoint), sizeof(FVector));
+    OutFile.write(reinterpret_cast<const char*>(&MaxPoint), sizeof(FVector));
+
+    int32 NodeCount = GridNodes.Num();
+    OutFile.write(reinterpret_cast<const char*>(&NodeCount), sizeof(int32));
+
+    for (const auto& Pair : GridNodes)
+    {
+        int32 Index = Pair.Key;
+        const FGridNode& Node = Pair.Value;
+
+        OutFile.write(reinterpret_cast<const char*>(&Index), sizeof(int32));
+        OutFile.write(reinterpret_cast<const char*>(&Node.X), sizeof(int));
+        OutFile.write(reinterpret_cast<const char*>(&Node.Y), sizeof(int));
+        OutFile.write(reinterpret_cast<const char*>(&Node.bWalkable), sizeof(bool));
+        OutFile.write(reinterpret_cast<const char*>(&Node.WorldPosition), sizeof(FVector));
+    }
+
+    OutFile.close();
+    UE_LOG(ELogLevel::Display, "GridMap 저장 완료: %s", *FilePath);
+}
+
+void FGridMap::LoadFromBinaryFile(const FString& FilePath)
+{
+    std::ifstream InFile(FilePath.ToAnsiString(), std::ios::binary);
+    if (!InFile.is_open())
+    {
+        UE_LOG(ELogLevel::Error, "Failed to open file for loading: %s", *FilePath);
+        return;
+    }
+
+    InFile.read(reinterpret_cast<char*>(&Width), sizeof(int));
+    InFile.read(reinterpret_cast<char*>(&Height), sizeof(int));
+    InFile.read(reinterpret_cast<char*>(&MinPoint), sizeof(FVector));
+    InFile.read(reinterpret_cast<char*>(&MaxPoint), sizeof(FVector));
+
+    int32 NodeCount = 0;
+    InFile.read(reinterpret_cast<char*>(&NodeCount), sizeof(int32));
+    GridNodes.Empty();
+
+    for (int i = 0; i < NodeCount; ++i)
+    {
+        int32 Index;
+        FGridNode Node;
+        InFile.read(reinterpret_cast<char*>(&Index), sizeof(int32));
+        InFile.read(reinterpret_cast<char*>(&Node.X), sizeof(int));
+        InFile.read(reinterpret_cast<char*>(&Node.Y), sizeof(int));
+        InFile.read(reinterpret_cast<char*>(&Node.bWalkable), sizeof(bool));
+        InFile.read(reinterpret_cast<char*>(&Node.WorldPosition), sizeof(FVector));
+        GridNodes.Add(Index, Node);
+    }
+
+    InFile.close();
+    UE_LOG(ELogLevel::Display, "GridMap 로드 완료: %s", *FilePath);
+}
+
 
 
 

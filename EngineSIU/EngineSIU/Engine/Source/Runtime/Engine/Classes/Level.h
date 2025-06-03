@@ -4,7 +4,7 @@
 
 class AActor;
 class UWorld;
-
+class FGridMap;
 
 class ULevel : public UObject
 {

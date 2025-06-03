@@ -6,6 +6,11 @@
 #include "UnrealEd/EditorViewportClient.h"
 
 
+UGizmoBaseComponent::UGizmoBaseComponent()
+{
+    MeshType = EStaticMeshType::NONE;
+}
+
 void UGizmoBaseComponent::TickComponent(float DeltaTime)
 {
     Super::TickComponent(DeltaTime);

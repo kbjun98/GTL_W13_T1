@@ -4,6 +4,7 @@
 #include "Engine/Engine.h"
 #include "World/World.h"
 #include "Engine/Contents/Navigation/PathFinder.h"
+#include <Engine/EditorEngine.h>
 void ARabbitEnemyController::PostSpawnInitialize()
 {
     Super::PostSpawnInitialize();
@@ -208,7 +209,12 @@ ARabbitEnemy* ARabbitEnemyController::GetPossesedRabbitEnemy()
 
 void ARabbitEnemyController::UpdatePatrolPath()
 {
+    UEditorEngine* Engine = Cast<UEditorEngine>(GEngine);
+
+    FGridMap* GridMap = GEngine->ActiveWorld->GetGridMap();
+    
     ARabbitEnemy* Enemy = GetPossesedRabbitEnemy();
+    
     if (!Enemy || Enemy->PatrolTargets.Num() == 0) return;
 
     USceneComponent* TargetComp = Enemy->PatrolTargets[CurPatrolIndex];

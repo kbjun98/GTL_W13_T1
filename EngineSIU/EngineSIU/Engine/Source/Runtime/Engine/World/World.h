@@ -82,6 +82,8 @@ public:
     
     void CheckOverlap(const UPrimitiveComponent* Component, TArray<FOverlapResult>& OutOverlaps) const;
 
+    FGridMap* GetGridMap();
+
 public:
     double TimeSeconds;
 
@@ -109,8 +111,11 @@ private:
 
     AChaserRabbitSpawner* ChaserRabbitSpawner = nullptr;
 
+    FGridMap* GridMap = nullptr;
+
 private:
     void CreateChaserRabbitSpawner();
+
 };
 
 

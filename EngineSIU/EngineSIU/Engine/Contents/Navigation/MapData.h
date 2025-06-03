@@ -77,6 +77,9 @@ public:
 
     void AnalyzeWalkableFromMeshes();
 
+    void SaveToBinaryFile(const FString& FilePath);
+    
+    void LoadFromBinaryFile(const FString& FilePath);
     // === 레거시 코드들 ===
     void LoadMapFromFile(const FString FilePath);
 };

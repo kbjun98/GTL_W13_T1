@@ -13,6 +13,8 @@
 #include "GameFramework/Pawn.h"
 #include "Engine/Contents/GameFramework/RabbitGameMode.h"
 #include <Engine/Contents/Actors/ChaserRabbitSpawner.h>
+#include "Engine/Contents/Navigation/MapData.h"
+
 class UEditorEngine;
 
 UWorld::~UWorld()
@@ -29,7 +31,7 @@ UWorld* UWorld::CreateWorld(UObject* InOuter, const EWorldType InWorldType, cons
     NewWorld->WorldName = InWorldName;
     NewWorld->WorldType = InWorldType;
     NewWorld->InitializeNewWorld();
-
+    NewWorld->GridMap = new FGridMap();
     
     return NewWorld;
 }
@@ -229,6 +231,11 @@ void UWorld::CheckOverlap(const UPrimitiveComponent* Component, TArray<FOverlapR
     {
         CollisionManager->CheckOverlap(this, Component, OutOverlaps);
     }
+}
+
+FGridMap* UWorld::GetGridMap()
+{
+    return GridMap;
 }
 
 void UWorld::CreateChaserRabbitSpawner()
