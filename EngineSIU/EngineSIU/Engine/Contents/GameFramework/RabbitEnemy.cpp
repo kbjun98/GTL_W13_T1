@@ -1,7 +1,7 @@
 #include "RabbitEnemy.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/Contents/GameFramework/RabbitMovementComponent.h"
-
+#include "Components/SphereComponent.h"
 void ARabbitEnemy::PostSpawnInitialize()
 {
     Super::PostSpawnInitialize();
@@ -11,6 +11,17 @@ void ARabbitEnemy::PostSpawnInitialize()
         PatrolTargets.Add(NewPatrolTargetComp);
         NewPatrolTargetComp->SetupAttachment(RootComponent);
     }
+
+    USphereComponent* Collision = AddComponent<USphereComponent>("Collision_Attack_0");
+    Collision->SetRadius(Radius);
+    Collision->bSimulate = true;
+    Collision->RigidBodyType = ERigidBodyType::KINEMATIC;
+
+    FVector CapsuleOffset = GetActorForwardVector() * Radius * 2;
+    FVector CapsuleLocation = GetActorLocation() + CapsuleOffset;
+    Collision->SetRelativeLocation(CapsuleLocation);
+    Collision->bIsOverlapEnabled = false;
+    Collision->SetupAttachment(RootComponent);
 }
 
 UObject* ARabbitEnemy::Duplicate(UObject* InOuter)
