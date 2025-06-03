@@ -6,6 +6,8 @@
 #include "RabbitMovementComponent.h"
 #include "Camera/CameraShakeBase.h"
 #include "Components/CameraMeshComponent.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "Engine/SkeletalMesh.h"
 
 void ARabbitPlayer::PostSpawnInitialize()
 {
@@ -19,6 +21,14 @@ void ARabbitPlayer::PostSpawnInitialize()
 
     RabbitCam = std::make_shared<RabbitCamera>();
     RabbitCam->SetOwner(this);
+
+    if (SkeletalMeshComp)
+    {
+        USkeletalMesh* MeshAsset = Cast<USkeletalMesh>(UAssetManager::Get().GetAsset(EAssetType::SkeletalMesh, "Contents/Bunny/Bunny2"));
+        SkeletalMeshComp->SetSkeletalMeshAsset(MeshAsset);
+        SkeletalMeshComp->SetAnimationMode(EAnimationMode::AnimationSingleNode);
+        SkeletalMeshComp->bHidden = true;
+    }
 }
 
 void ARabbitPlayer::BeginPlay()

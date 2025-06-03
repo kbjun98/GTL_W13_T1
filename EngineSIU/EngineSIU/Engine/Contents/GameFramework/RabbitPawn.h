@@ -32,7 +32,8 @@ public:
 
     ERabbitAnimState GetAnimState() { return AnimState; }
     void SetAnimState(ERabbitAnimState State) { AnimState = State; }
-private:
+
+protected:
     URabbitMovementComponent* MovementComponent;
     USkeletalMeshComponent* SkeletalMeshComp;
 
