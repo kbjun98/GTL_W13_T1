@@ -5,7 +5,9 @@
 #include <UObject/UObjectIterator.h>
 #include "Engine/Contents/GameFramework/RabbitPlayer.h"
 #include <Engine/Engine.h>
-
+#include "World/World.h"
+#include "LevelEditor/SLevelEditor.h"
+#include "Editor/UnrealEd/EditorViewportClient.h"
 
 inline ImVec2 operator*(const ImVec2& lhs, float rhs) {
     return ImVec2(lhs.x * rhs, lhs.y * rhs);
@@ -32,8 +34,119 @@ void RabbitGameUIPanel::Render()
     {
         return;
     }
+
+    RenderDeathUI();
     RenderCameraCool();
-   RenderGallery();
+    RenderGallery();
+}
+
+void RabbitGameUIPanel::Restart()
+{
+    bShowDeathUI = false;
+
+    return;
+    if (APlayerController* PlayerController = GEngine->ActiveWorld->GetPlayerController())
+    {
+        if (ARabbitPlayer* Rabbit = Cast<ARabbitPlayer>(PlayerController->GetPawn()))
+        {
+            Rabbit->ResetPlayer();
+        }
+    }
+}
+
+void RabbitGameUIPanel::OnDeathUI()
+{
+    bDeathTriggered = true;  // 죽음 트리거
+    deathTimer = 0.0f;       // 타이머 리셋
+    bShowDeathUI = false;    // 아직 UI는 보이지 않음
+}
+
+
+void RabbitGameUIPanel::RenderDeathUI()
+{
+    // 죽음이 트리거되었고 아직 UI가 표시되지 않았다면
+    if (bDeathTriggered && !bShowDeathUI)
+    {
+        deathTimer += FEngineLoop::DeltaTime;
+
+        // 지연 시간이 지나면 UI 표시
+        if (deathTimer >= deathUIDelay)
+        {
+            bShowDeathUI = true;
+            bDeathTriggered = false;  // 트리거 플래그 리셋
+        }
+    }
+
+    if (!bShowDeathUI)
+    {
+        return;
+    }
+    auto ViewPort = GEngineLoop.GetLevelEditor()->GetActiveViewportClient()->GetViewport()->GetD3DViewport();
+    // 뷰포트 중심 계산
+    ImVec2 centerPos(
+        ViewPort.TopLeftX + ViewPort.Width * 0.5f,
+        ViewPort.TopLeftY + ViewPort.Height * 0.5f
+    );
+    // 창 크기 및 위치
+    ImVec2 windowSize(1536, 1224);
+    ImVec2 windowPos(
+        centerPos.x - windowSize.x * 0.5f,
+        centerPos.y - windowSize.y * 0.45f
+    );
+    ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
+    ImGui::SetNextWindowPos(windowPos, ImGuiCond_Always);
+    // 스타일 설정
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 15.0f);
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, 0)); // 완전 투명
+    ImGui::Begin("💀 DeathUI", nullptr,
+        ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoTitleBar |
+        ImGuiWindowFlags_NoScrollbar);
+    ImVec2 imagePos = ImGui::GetWindowPos();
+    ImDrawList* drawList = ImGui::GetWindowDrawList();
+    ImTextureID textureID = (ImTextureID)FEngineLoop::ResourceManager.GetTexture(L"Assets/Texture/DeathBG.png")->TextureSRV;
+    // 배경 이미지 그리기
+    drawList->AddImage(textureID,
+        imagePos,
+        ImVec2(imagePos.x + windowSize.x, imagePos.y + windowSize.y),
+        ImVec2(0, 0), ImVec2(1, 1)
+    );
+
+  
+    // 커스텀 이미지 버튼
+    ImVec2 buttonSize(250, 100);
+    ImVec2 buttonPos(
+        imagePos.x + (windowSize.x - buttonSize.x) * 0.5f,
+        imagePos.y + windowSize.y - 200.f
+    );
+
+    // 버튼 배경 이미지 그리기
+    ImTextureID buttonTextureID = (ImTextureID)FEngineLoop::ResourceManager.GetTexture(L"Assets/Texture/RestartButton.png")->TextureSRV;
+
+    // 마우스 호버 체크
+    ImVec2 mousePos = ImGui::GetMousePos();
+    bool isHovered = (mousePos.x >= buttonPos.x && mousePos.x <= buttonPos.x + buttonSize.x &&
+        mousePos.y >= buttonPos.y && mousePos.y <= buttonPos.y + buttonSize.y);
+
+    // 호버 상태에 따른 색상 조정 (선택사항)
+    ImU32 buttonTint = isHovered ? IM_COL32(255, 255, 255, 200) : IM_COL32(255, 255, 255, 255);
+
+    drawList->AddImage(buttonTextureID,
+        buttonPos,
+        ImVec2(buttonPos.x + buttonSize.x, buttonPos.y + buttonSize.y),
+        ImVec2(0, 0), ImVec2(1, 1),
+        buttonTint
+    );
+
+    // 클릭 감지
+    if (isHovered && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+    {
+        Restart();
+    }
+    ImGui::End();
+    ImGui::PopStyleColor();
+    ImGui::PopStyleVar();
 }
 
 void RabbitGameUIPanel::OnResize(HWND hWnd)

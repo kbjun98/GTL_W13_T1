@@ -4,6 +4,9 @@
 #include "Engine/Contents/GameFramework/RabbitController.h"
 #include <Engine/Engine.h>
 #include "World/World.h"
+#include "UnrealEd/UnrealEd.h"
+#include <PropertyEditor/RabbitGameUIPanel.h>
+#include "SoundManager.h"
 
 ARabbitGameMode::ARabbitGameMode()
 {
@@ -38,6 +41,13 @@ void ARabbitGameMode::BeginPlay()
     {
         if (ARabbitPlayer* Rabbit = Cast<ARabbitPlayer>(PlayerController->GetPawn()))
         {
+            Rabbit->OnPlayerDied.BindLambda(
+                [this]
+                {
+                    OnDieUIPanel();
+                }
+            );
+
             if (std::shared_ptr<RabbitCamera> Camera = Rabbit->GetRabbitCamera())
             {
                 Camera->InitPictureArraySize(EPhotoTypeSize);
@@ -87,4 +97,12 @@ void ARabbitGameMode::JudgeCapturedPhoto(UPrimitiveComponent* CapturedComp, Rabb
         FEngineLoop::TimeScale = .3f;
     }
    
+}
+
+void ARabbitGameMode::OnDieUIPanel()
+{
+    auto Panel = GEngineLoop.GetUnrealEditor()->GetEditorPanel("RabbitGameUIPanel");
+    auto RabbitPanel = std::dynamic_pointer_cast<RabbitGameUIPanel>(Panel);
+    RabbitPanel->OnDeathUI();
+    FSoundManager::GetInstance().PlaySound("GameOver");
 }

@@ -22,6 +22,7 @@ public:
     /** Actor가 게임에 배치되거나 스폰될 때 호출됩니다. */
     virtual void BeginPlay() override;
     void JudgeCapturedPhoto(UPrimitiveComponent* CapturedComp,RabbitCamera* RabbitCam);
+    void OnDieUIPanel();
 
 private:
     TSet<EPhotoType> CapturedPhotoTypes;

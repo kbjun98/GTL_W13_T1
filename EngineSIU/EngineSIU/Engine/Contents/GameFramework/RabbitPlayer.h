@@ -44,6 +44,8 @@ public:
     void EndADS();
 
     void ResetPlayer();
+    
+    FOnPlayerDiedSignature OnPlayerDied;
 
 protected:
     void SetFOV(float FOV);
@@ -73,7 +75,6 @@ private:
     UCameraShakeBase* CameraShakeInstance = nullptr;
 
     bool bIsDied = false;
-    FOnPlayerDiedSignature OnPlayerDied;
 
     void OnDeath();
 };
