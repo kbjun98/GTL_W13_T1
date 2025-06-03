@@ -205,8 +205,12 @@ void ControlEditorPanel::CreateMenuButton(const ImVec2 ButtonSize, ImFont* IconF
         }
         if (UEditorEngine* EditorEngine = Cast<UEditorEngine>(GEngine))
         {
+            FGridMap* GridMap = GEngine->ActiveWorld->GetGridMap();
+            
             EditorEngine->NewLevel();
             EditorEngine->LoadLevel(FileName);
+            GridMap->LoadFromBinaryFile(FileName);
+
         }
     }
 
@@ -224,7 +228,15 @@ void ControlEditorPanel::CreateMenuButton(const ImVec2 ButtonSize, ImFont* IconF
         }
         if (const UEditorEngine* EditorEngine = Cast<UEditorEngine>(GEngine))
         {
+            FGridMap* GridMap = GEngine->ActiveWorld->GetGridMap();
+
+            GridMap->InitializeGridMap();
+
+            FString  GridMapFileName = FileName + FString(".mapgrid");
+            GridMap->SaveToBinaryFile(GridMapFileName);
+
             EditorEngine->SaveLevel(FileName);
+            
         }
 
         tinyfd_messageBox("알림", "저장되었습니다.", "ok", "info", 1);

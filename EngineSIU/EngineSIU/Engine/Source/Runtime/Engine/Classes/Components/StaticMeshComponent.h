@@ -49,7 +49,7 @@ public:
     }
 
     UPROPERTY_WITH_FLAGS(EditAnywhere,
-        EStaticMeshType, MeshType, = EStaticMeshType::Map;)
+        EStaticMeshType, MeshType, = EStaticMeshType::NONE;)
 
 protected:
     UStaticMesh* StaticMesh = nullptr;

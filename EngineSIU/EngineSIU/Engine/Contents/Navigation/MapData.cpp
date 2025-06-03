@@ -4,7 +4,8 @@
 #include <sstream>
 #include <Components/StaticMeshComponent.h>
 #include <UObject/UObjectIterator.h>
-
+#include <Engine/Engine.h>
+#include "Runtime/Engine/World/World.h"
 void FGridMap::LoadMapFromFile(const FString FilePath)
 {
    /* std::ifstream File(FilePath.ToAnsiString());
@@ -87,7 +88,6 @@ void FGridMap::InitializeGridMap()
 
 void FGridMap::InitializeGridNodeFromMeshes()
 {
-    const float GridSpacing = 10.f;
 
     MinPoint= FVector(FLT_MAX);
     MaxPoint = FVector(-FLT_MAX);
@@ -143,8 +143,10 @@ void FGridMap::InitializeGridNodeFromMeshes()
     }
 
     // 그리드 크기 계산
-    Width = FMath::CeilToInt((MaxPoint.X - MinPoint.X) / GridSpacing);
-    Height = FMath::CeilToInt((MaxPoint.Y - MinPoint.Y) / GridSpacing);
+    FGridMap* GridMap = GEngine->ActiveWorld->GetGridMap();
+
+    Width = FMath::CeilToInt((MaxPoint.X - MinPoint.X) / GridMap->GridSpacing);
+    Height = FMath::CeilToInt((MaxPoint.Y - MinPoint.Y) / GridMap->GridSpacing);
 
     UE_LOG(ELogLevel::Display, TEXT("GridMap 영역: Width=%d, Height=%d"), Width, Height);
     UE_LOG(ELogLevel::Display, TEXT("MinPoint: %s"), *MinPoint.ToString());
@@ -300,6 +302,8 @@ void FGridMap::SaveToBinaryFile(const FString& FilePath)
 
 void FGridMap::LoadFromBinaryFile(const FString& FilePath)
 {
+    FGridMap* GridMap = GEngine->ActiveWorld->GetGridMap();
+
     std::ifstream InFile(FilePath.ToAnsiString(), std::ios::binary);
     if (!InFile.is_open())
     {
@@ -314,7 +318,7 @@ void FGridMap::LoadFromBinaryFile(const FString& FilePath)
 
     int32 NodeCount = 0;
     InFile.read(reinterpret_cast<char*>(&NodeCount), sizeof(int32));
-    GridNodes.Empty();
+    GridMap->GridNodes.Empty();
 
     for (int i = 0; i < NodeCount; ++i)
     {
@@ -325,7 +329,7 @@ void FGridMap::LoadFromBinaryFile(const FString& FilePath)
         InFile.read(reinterpret_cast<char*>(&Node.Y), sizeof(int));
         InFile.read(reinterpret_cast<char*>(&Node.bWalkable), sizeof(bool));
         InFile.read(reinterpret_cast<char*>(&Node.WorldPosition), sizeof(FVector));
-        GridNodes.Add(Index, Node);
+        GridMap->GridNodes.Add(Index, Node);
     }
 
     InFile.close();

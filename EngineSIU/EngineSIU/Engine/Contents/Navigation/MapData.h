@@ -58,7 +58,7 @@ public:
     FVector MaxPoint = FVector::ZeroVector;
 
     TMap<int32, FGridNode> GridNodes;
-
+    const float GridSpacing = 50.0f;
     // FIXME : 리팩터링 필요.
     int32 Get1DIndex(int X, int Y) const
     {

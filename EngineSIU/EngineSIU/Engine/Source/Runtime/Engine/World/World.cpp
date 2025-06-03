@@ -52,6 +52,7 @@ UObject* UWorld::Duplicate(UObject* InOuter)
     NewWorld->ActiveLevel->InitLevel(NewWorld);
     
     NewWorld->CollisionManager = new FCollisionManager();
+    NewWorld->GridMap = GridMap;
     
     return NewWorld;
 }
