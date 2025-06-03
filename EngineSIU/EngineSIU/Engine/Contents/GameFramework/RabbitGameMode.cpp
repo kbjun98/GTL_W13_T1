@@ -103,9 +103,6 @@ void ARabbitGameMode::JudgeCapturedPhoto(UPrimitiveComponent* CapturedComp, Rabb
             CapturedPhotoTypes.Add(CapturedType);
 
             RabbitCam->StorePicture(CapturedType);
-            // 로그 출력 (선택)
-            std::cout << "Captured: " << static_cast<int>(CapturedType) << std::endl;
-
         }
     }
 

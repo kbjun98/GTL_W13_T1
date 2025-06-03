@@ -130,7 +130,6 @@ void ARabbitPlayer::ZoomIn(float DeltaTime)
     float Range = FMath::Lerp(800.f, 300.f, t);  // t가 작을수록 Range 큼
     GetRabbitCamera()->SetMaxRange(Range);
 
-    std::cout << GetRabbitCamera()->GetMaxRange() << std::endl;
 
     if (ARabbitController* RC = GetRabbitController())
     {
@@ -157,7 +156,6 @@ void ARabbitPlayer::ZoomOut(float DeltaTime)
     float Range = FMath::Lerp(800.f, 300.f, t);  // 동일하게 적용
     GetRabbitCamera()->SetMaxRange(Range);
 
-    std::cout << GetRabbitCamera()->GetMaxRange() << std::endl;
 
     if (ARabbitController* RC = GetRabbitController())
     {
