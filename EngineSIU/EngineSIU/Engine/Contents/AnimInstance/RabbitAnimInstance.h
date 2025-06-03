@@ -3,6 +3,7 @@
 #include "Animation/AnimInstance.h"
 
 class RabbitAnimStateMachine;
+class ARabbitEnemy;
 
 class RabbitAnimInstance : public UAnimInstance
 {
@@ -16,6 +17,10 @@ public:
     virtual void NativeUpdateAnimation(float DeltaSeconds, FPoseContext& OutPose) override;
   
     void AddNotify();
+
+    void AddAttackNotify();
+
+    void RemoveAllNotify();
 
     void SetPlaying(bool bIsPlaying)
     {

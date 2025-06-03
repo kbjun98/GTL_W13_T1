@@ -221,6 +221,8 @@ void ARabbitPlayer::ResetPlayer()
 {
     bIsDied = false;
 
+    SetCurrentHealth(GetMaxHealth());
+
     if (SkeletalMeshComp)
     {
         USkeletalMesh* MeshAsset = Cast<USkeletalMesh>(UAssetManager::Get().GetAsset(EAssetType::SkeletalMesh, "Contents/Bunny/Bunny2"));
@@ -305,11 +307,13 @@ void ARabbitPlayer::OnRabbitBeginOverlap(UPrimitiveComponent* OverlappedComp, AA
         OnDeath();
     }
 
-    if (Cast<ASuccessVolume>(OtherActor))
+    if (IsCaptureAll)
     {
-        OnPlayerSucceed.ExecuteIfBound();
+        if (Cast<ASuccessVolume>(OtherActor))
+        {
+            OnPlayerSucceed.ExecuteIfBound();
+        }
     }
-    
 }
 
 void ARabbitPlayer::OnRabbitEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp)
@@ -380,5 +384,19 @@ void ARabbitPlayer::OnDeath()
     if (GetRabbitController())
     {
         GetRabbitController()->SetInputMode(EInputMode::UIOnly);
+    }
+}
+
+void ARabbitPlayer::OnAttacked()
+{
+    const int32 CurrentHealth = GetCurrentHealth();
+    const int32 NextHealth = CurrentHealth - 40;
+    SetCurrentHealth(NextHealth);
+
+    UE_LOGFMT(ELogLevel::Display, "Health: {}", GetCurrentHealth());
+    
+    if (GetCurrentHealth() < 1)
+    {
+        OnDeath();
     }
 }

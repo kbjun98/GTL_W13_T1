@@ -289,7 +289,7 @@ bool USkeletalMeshComponent::InitializeAnimScriptInstance()
     if (NeedToSpawnAnimScriptInstance())
     {
         AnimScriptInstance = Cast<UAnimInstance>(FObjectFactory::ConstructObject(AnimClass, this));
-
+        AnimScriptInstance->NativeInitializeAnimation();
         if (AnimScriptInstance)
         {
             AnimScriptInstance->InitializeAnimation();

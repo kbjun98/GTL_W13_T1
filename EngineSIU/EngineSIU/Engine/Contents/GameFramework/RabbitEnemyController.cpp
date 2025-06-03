@@ -5,6 +5,7 @@
 #include "World/World.h"
 #include "Engine/Contents/Navigation/PathFinder.h"
 #include <Engine/EditorEngine.h>
+
 void ARabbitEnemyController::PostSpawnInitialize()
 {
     Super::PostSpawnInitialize();
@@ -14,19 +15,30 @@ void ARabbitEnemyController::PostSpawnInitialize()
 void ARabbitEnemyController::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+
+    if (CurrentState == EEnemyState::ATTACK)
+    {
+        float NextAttackElapsedTime = AttackElapsedTime + DeltaTime;
+        AttackElapsedTime = FMath::Fmod(NextAttackElapsedTime, AnimTime);
+        if (AttackElapsedTime < NextAttackElapsedTime)
+        {
+            bAttacked = false;
+        }
+    }
+    
     CheckStateChange(DeltaTime);
     ProcessEnemyMovement(DeltaTime);
 }
 
 void ARabbitEnemyController::ProcessEnemyMovement(float DeltaTime)
 {
-    ARabbitEnemy* Enemy = GetPossesedRabbitEnemy();
+    ARabbitEnemy* Enemy = GetPossessedRabbitEnemy();
     switch (CurrentState)
     {
-    case EnemyState::IDLE:
+    case EEnemyState::IDLE:
         Enemy->SetAnimState(ERabbitAnimState::Idle);
         break;
-    case EnemyState::PATROL:
+    case EEnemyState::PATROL:
         Enemy->SetAnimState(ERabbitAnimState::Walk);
         // Patrol 경로 기반 이동 등 로직을 작성
         // 경로 따라 이동
@@ -57,15 +69,7 @@ void ARabbitEnemyController::ProcessEnemyMovement(float DeltaTime)
             UpdatePatrolPath();
         }
         break;
-
-
-        break;
-    case EnemyState::CHASE:
-        /*Enemy->SetAnimState(ERabbitAnimState::EWALK);
-        UpdatePath();
-        MoveTo(CurrentPath[CurrentPathIndex]);
-        break;*/
-
+    case EEnemyState::CHASE:
         if (ARabbitPawn* Rabbit = Cast<ARabbitPawn>(GetPossessedPawn()))
         {
             Rabbit->Jump();
@@ -110,9 +114,30 @@ void ARabbitEnemyController::ProcessEnemyMovement(float DeltaTime)
             UpdatePath();
         }
         break;
-    case EnemyState::ATTACK:
+    case EEnemyState::ATTACK:
+    {
         Enemy->SetAnimState(ERabbitAnimState::Attack);
+        
+        if (!bAttacked && AttackElapsedTime >= AttackTime)
+        {
+            bAttacked = true;
+            
+            const APawn* MainPlayer = GEngine->ActiveWorld->GetMainPlayer();
+            ARabbitPlayer* RabbitPlayer = Cast<ARabbitPlayer>(MainPlayer);
+        
+            const FVector TargetLocation = RabbitPlayer->GetActorLocation();
+            const FVector EnemyLocation = Enemy->GetActorLocation();
+            const FVector Delta = TargetLocation - EnemyLocation;
+
+            const float DeltaLengthSquare = Delta.Length2DSquared();
+            const float AttackRangeSquare = AttackRange * AttackRange;
+            if (DeltaLengthSquare < AttackRangeSquare)
+            {
+                RabbitPlayer->OnAttacked();
+            }
+        }
         break;
+    }
     default:
         break;
     }
@@ -121,55 +146,53 @@ void ARabbitEnemyController::ProcessEnemyMovement(float DeltaTime)
 
 void ARabbitEnemyController::CheckStateChange(float DeltaTime)
 {
-    ARabbitEnemy* Enemy = GetPossesedRabbitEnemy();
+    ARabbitEnemy* Enemy = GetPossessedRabbitEnemy();
     switch (CurrentState)
     {
-    case EnemyState::IDLE:
+    case EEnemyState::IDLE:
         IdleTime += DeltaTime;
         if (IsTargetInSight(Enemy->ChaseRangeMin, Enemy->ChaseRangeMax))
         {
-            CurrentState = EnemyState::CHASE;
+            SetState(EEnemyState::CHASE);
         }
         else if (IsTargetInSight(0, Enemy->AcceptanceRadius))
         {
-            CurrentState = EnemyState::ATTACK;
+            SetState(EEnemyState::ATTACK);
         }
         else if (IdleTime >= 2.0f) // 2초 이상 경과했으면
         {
-            CurrentState = EnemyState::PATROL;
+            SetState(EEnemyState::PATROL);
             IdleTime = 0.0f; // 초기화
         }
         break;
-    case EnemyState::PATROL:
+    case EEnemyState::PATROL:
         if (IsTargetInSight(Enemy->ChaseRangeMin, Enemy->ChaseRangeMax))
         {
-            CurrentState = EnemyState::CHASE;
+            SetState(EEnemyState::CHASE);
         }
         else if (IsTargetInSight(0, Enemy->AcceptanceRadius))
         {
-            CurrentState = EnemyState::ATTACK;
+            SetState(EEnemyState::ATTACK);
         }
         break;
-
-    case EnemyState::CHASE:
+    case EEnemyState::CHASE:
         if (IsTargetInSight(0, Enemy->AcceptanceRadius))
         {
-            CurrentState = EnemyState::ATTACK;            
+            SetState(EEnemyState::ATTACK);            
         }
         else if (IsTargetInRange(Enemy->FailureRadius, FLT_MAX))
         {
-            CurrentState = EnemyState::IDLE;
+            SetState(EEnemyState::IDLE);
         }
         break;
-    case EnemyState::ATTACK:
-        if (IsTargetInRange(Enemy->AcceptanceRadius, Enemy->ChaseRangeMin)
-            ||!IsTargetInFOV(Enemy->SightFOV))
+    case EEnemyState::ATTACK:
+        if (IsTargetInRange(Enemy->AcceptanceRadius, Enemy->ChaseRangeMin) ||!IsTargetInFOV(Enemy->SightFOV))
         {
-            CurrentState = EnemyState::IDLE;
+            SetState(EEnemyState::IDLE);
         }
         else if (IsTargetInSight(Enemy->ChaseRangeMin, Enemy->ChaseRangeMax))
         {
-            CurrentState = EnemyState::CHASE;
+            SetState(EEnemyState::CHASE);
         }
         break;
     default:
@@ -179,7 +202,7 @@ void ARabbitEnemyController::CheckStateChange(float DeltaTime)
 
 bool ARabbitEnemyController::IsTargetInFOV(float FOV)
 {
-    ARabbitEnemy* Enemy = GetPossesedRabbitEnemy();
+    ARabbitEnemy* Enemy = GetPossessedRabbitEnemy();
     ARabbitPawn* Target = GetTargetRabbitPlayer();
     FVector Forward = Enemy->GetComponentByClass<USkeletalMeshComponent>()->GetForwardVector();
     FVector ToTarget = Target->GetActorLocation() - Enemy->GetActorLocation();
@@ -190,12 +213,12 @@ bool ARabbitEnemyController::IsTargetInFOV(float FOV)
 
 bool ARabbitEnemyController::IsTargetInSight(float Min, float Max)
 {
-    return IsTargetInRange(Min,Max) && IsTargetInFOV(GetPossesedRabbitEnemy()->SightFOV);
+    return IsTargetInRange(Min,Max) && IsTargetInFOV(GetPossessedRabbitEnemy()->SightFOV);
 }
 
 bool ARabbitEnemyController::IsTargetInRange(float Min, float Max)
 {
-    ARabbitEnemy* Enemy = GetPossesedRabbitEnemy();
+    ARabbitEnemy* Enemy = GetPossessedRabbitEnemy();
     ARabbitPawn* Target = GetTargetRabbitPlayer();
     FVector Distance = Target->GetActorLocation() - Enemy->GetActorLocation();
     return Distance.Length2D() <= Max && Distance.Length2D() >= Min;
@@ -206,20 +229,21 @@ ARabbitPlayer* ARabbitEnemyController::GetTargetRabbitPlayer()
     return Cast<ARabbitPlayer>(TargetPawn);
 }
 
-ARabbitEnemy* ARabbitEnemyController::GetPossesedRabbitEnemy()
+ARabbitEnemy* ARabbitEnemyController::GetPossessedRabbitEnemy()
 {
     return Cast<ARabbitEnemy>(PossessedPawn);
 }
 
 void ARabbitEnemyController::UpdatePatrolPath()
 {
-    UEditorEngine* Engine = Cast<UEditorEngine>(GEngine);
-
     FGridMap* GridMap = GEngine->ActiveWorld->GetGridMap();
     
-    ARabbitEnemy* Enemy = GetPossesedRabbitEnemy();
+    ARabbitEnemy* Enemy = GetPossessedRabbitEnemy();
     
-    if (!Enemy || Enemy->PatrolTargets.Num() == 0) return;
+    if (!Enemy || Enemy->PatrolTargets.Num() == 0)
+    {
+        return;
+    }
 
     USceneComponent* TargetComp = Enemy->PatrolTargets[CurPatrolIndex];
     FVector TargetLocation = TargetComp->GetComponentLocation();
@@ -227,8 +251,7 @@ void ARabbitEnemyController::UpdatePatrolPath()
     FVector StartLocation = Enemy->GetActorLocation();
 
     // 경로 계산
-    CurrentPath = PathFinder->FindWorlPosPathByWorldPos(
-        *GridMap, StartLocation, TargetLocation);
+    CurrentPath = PathFinder->FindWorlPosPathByWorldPos(*GridMap, StartLocation, TargetLocation);
     CurrentPathIndex = 0;
 
     CurPatrolIndex = (CurPatrolIndex + 1) % Enemy->PatrolTargets.Num();
@@ -236,13 +259,23 @@ void ARabbitEnemyController::UpdatePatrolPath()
 
 void ARabbitEnemyController::MoveTo(const FVector& TargetLocation, float DeltaTime)
 {
-    if (ARabbitEnemy* Enemy = GetPossesedRabbitEnemy())
+    if (ARabbitEnemy* Enemy = GetPossessedRabbitEnemy())
     {
         FVector TargetDirection = TargetLocation - Enemy->GetActorLocation();    
         TargetDirection.Z = 0.0f; // Z축 방향은 무시
         FVector DirNormal = TargetDirection.GetSafeNormal();
         Enemy->AddMovementInput(DirNormal, 100.0f);
         Enemy->RotateToTarget(TargetLocation, DeltaTime);
+    }
+}
+
+void ARabbitEnemyController::SetState(EEnemyState NewState)
+{
+    CurrentState = NewState;
+
+    if (CurrentState == EEnemyState::ATTACK)
+    {
+        AttackElapsedTime = 0.f;
     }
 }
 

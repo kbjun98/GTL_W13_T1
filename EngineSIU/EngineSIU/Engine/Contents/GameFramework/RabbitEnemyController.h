@@ -4,7 +4,7 @@
 class ARabbitEnemy;
 class ARabbitPlayer;
 
-enum class EnemyState : uint8
+enum class EEnemyState : uint8
 {
     IDLE,
     CHASE,
@@ -16,6 +16,7 @@ enum class EnemyState : uint8
 class ARabbitEnemyController : public AAIController
 {
     DECLARE_CLASS(ARabbitEnemyController, AAIController)
+    
 public:
     ARabbitEnemyController() = default;
     virtual void PostSpawnInitialize() override;
@@ -30,17 +31,26 @@ public:
 
 public:
     ARabbitPlayer* GetTargetRabbitPlayer();
-    ARabbitEnemy* GetPossesedRabbitEnemy();
+    ARabbitEnemy* GetPossessedRabbitEnemy();
 
     uint32 PatrolTargetIndex;
 
     void UpdatePatrolPath();
     bool IsChasing = true;
+    
 private:
     void MoveTo(const FVector& TargetLocation, float DeltaTime);
+    
 private:
-    EnemyState CurrentState = EnemyState::IDLE; // 현재 상태
+    void SetState(EEnemyState NewState);
+    float AttackElapsedTime = 0.f;
+    bool bAttacked = false;
+    float AttackTime = 0.35f;
+    float AnimTime = 1.1666666f;
+    
+    EEnemyState CurrentState = EEnemyState::IDLE; // 현재 상태
     uint32 CurPatrolIndex = 0;
     float IdleTime = 0.0f;
+    float AttackRange = 90.0f; // 공격 범위
 };
 

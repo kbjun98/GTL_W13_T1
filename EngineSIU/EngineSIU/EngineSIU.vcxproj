@@ -204,6 +204,7 @@ xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\FBX\lib\x64\$
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Contents\Animation\AnimAttackNotify.cpp" />
     <ClCompile Include="Engine\Contents\Actors\ChaserRabbitSpawner.cpp" />
     <ClCompile Include="Engine\Contents\Components\CameraMeshComponent.cpp" />
     <ClCompile Include="Engine\Contents\GameFramework\ChasePawn.cpp" />
@@ -544,6 +545,7 @@ xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\FBX\lib\x64\$
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Contents\Animation\AnimAttackNotify.h" />
     <ClInclude Include="Engine\Contents\Actors\ChaserRabbitSpawner.h" />
     <ClInclude Include="Engine\Contents\Components\CameraMeshComponent.h" />
     <ClInclude Include="Engine\Contents\GameFramework\ChasePawn.h" />

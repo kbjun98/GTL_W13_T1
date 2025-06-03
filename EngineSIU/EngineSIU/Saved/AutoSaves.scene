@@ -109,7 +109,7 @@
                         "ComponentOwnerClass": "APlayerStart",
                         "FinalIndexU": "0.000000",
                         "FinalIndexV": "0.000000",
-                        "RelativeLocation": "X=225.028 Y=0.000 Z=242.908",
+                        "RelativeLocation": "X=-279.535 Y=0.000 Z=242.908",
                         "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "RigidBodyType": "0",
@@ -125,22 +125,10 @@
         },
         {
             "ActorClass": "ARabbitEnemy",
-            "ActorID": "ARabbitEnemy_307",
-            "ActorLabel": "OBJ_RABBITENEMY_307",
+            "ActorID": "ARabbitEnemy_444",
+            "ActorLabel": "OBJ_RABBITENEMY_444",
             "ActorTickInEditor": "false",
             "Components": [
-                {
-                    "ComponentClass": "URabbitMovementComponent",
-                    "ComponentID": "RabbitMoveComp_0",
-                    "Properties": {
-                        "ComponentClass": "URabbitMovementComponent",
-                        "ComponentName": "RabbitMoveComp_0",
-                        "ComponentOwner": "ARabbitEnemy_307",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
-                    }
-                },
                 {
                     "ComponentClass": "UCapsuleComponent",
                     "ComponentID": "Collision_0",
@@ -152,12 +140,60 @@
                         "CapsuleRadius": "20.000000",
                         "ComponentClass": "UCapsuleComponent",
                         "ComponentName": "Collision_0",
-                        "ComponentOwner": "ARabbitEnemy_307",
+                        "ComponentOwner": "ARabbitEnemy_444",
                         "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=-441.350 Y=0.000 Z=171.842",
+                        "RelativeLocation": "X=50.209 Y=-431.918 Z=190.964",
                         "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "RigidBodyType": "2",
+                        "bApplyGravity": "false",
+                        "bAutoActive": "true",
+                        "bIsActive": "true",
+                        "bSimulate": "true",
+                        "m_Type": ""
+                    }
+                },
+                {
+                    "ComponentClass": "USkeletalMeshComponent",
+                    "ComponentID": "Mesh_0",
+                    "Properties": {
+                        "AABB_max": "X=16.736 Y=22.754 Z=79.466",
+                        "AABB_min": "X=-16.353 Y=-22.754 Z=-0.179",
+                        "AnimClass": "RabbitAnimInstance",
+                        "AnimationMode": "0",
+                        "AttachParentID": "Collision_0",
+                        "ComponentClass": "USkeletalMeshComponent",
+                        "ComponentName": "Mesh_0",
+                        "ComponentOwner": "ARabbitEnemy_444",
+                        "ComponentOwnerClass": "ARabbitEnemy",
+                        "RelativeLocation": "X=0.000 Y=0.000 Z=-40.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "RigidBodyType": "1",
+                        "SkeletalMeshKey": "Contents/Bunny/Bunny2",
+                        "bApplyGravity": "false",
+                        "bAutoActive": "true",
+                        "bIsActive": "true",
+                        "bSimulate": "false",
+                        "m_Type": ""
+                    }
+                },
+                {
+                    "ComponentClass": "USphereComponent",
+                    "ComponentID": "Collision_Attack_0",
+                    "Properties": {
+                        "AABB_max": "X=0.000 Y=0.000 Z=0.000",
+                        "AABB_min": "X=0.000 Y=0.000 Z=0.000",
+                        "AttachParentID": "Collision_0",
+                        "ComponentClass": "USphereComponent",
+                        "ComponentName": "Collision_Attack_0",
+                        "ComponentOwner": "ARabbitEnemy_444",
+                        "ComponentOwnerClass": "ARabbitEnemy",
+                        "RelativeLocation": "X=40.000 Y=0.000 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "RigidBodyType": "2",
+                        "SphereRadius": "20.000000",
                         "bApplyGravity": "false",
                         "bAutoActive": "true",
                         "bIsActive": "true",
@@ -172,7 +208,7 @@
                         "AttachParentID": "Collision_0",
                         "ComponentClass": "USceneComponent",
                         "ComponentName": "atrolTargetComp_",
-                        "ComponentOwner": "ARabbitEnemy_307",
+                        "ComponentOwner": "ARabbitEnemy_444",
                         "ComponentOwnerClass": "ARabbitEnemy",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
                         "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
@@ -182,28 +218,15 @@
                     }
                 },
                 {
-                    "ComponentClass": "USkeletalMeshComponent",
-                    "ComponentID": "Mesh_0",
+                    "ComponentClass": "URabbitMovementComponent",
+                    "ComponentID": "RabbitMoveComp_0",
                     "Properties": {
-                        "AABB_max": "X=16.736 Y=22.754 Z=79.466",
-                        "AABB_min": "X=-16.353 Y=-22.754 Z=-0.179",
-                        "AnimClass": "RabbitAnimInstance",
-                        "AnimationMode": "0",
-                        "AttachParentID": "Collision_0",
-                        "ComponentClass": "USkeletalMeshComponent",
-                        "ComponentName": "Mesh_0",
-                        "ComponentOwner": "ARabbitEnemy_307",
+                        "ComponentClass": "URabbitMovementComponent",
+                        "ComponentName": "RabbitMoveComp_0",
+                        "ComponentOwner": "ARabbitEnemy_444",
                         "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=0.000 Y=0.000 Z=-40.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "RigidBodyType": "1",
-                        "SkeletalMeshKey": "Contents/Bunny/Bunny1",
-                        "bApplyGravity": "false",
                         "bAutoActive": "true",
-                        "bIsActive": "true",
-                        "bSimulate": "false",
-                        "m_Type": ""
+                        "bIsActive": "true"
                     }
                 },
                 {
@@ -213,7 +236,7 @@
                         "AttachParentID": "Collision_0",
                         "ComponentClass": "USceneComponent",
                         "ComponentName": "PatrolTargetComp_",
-                        "ComponentOwner": "ARabbitEnemy_307",
+                        "ComponentOwner": "ARabbitEnemy_444",
                         "ComponentOwnerClass": "ARabbitEnemy",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
                         "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
@@ -227,25 +250,50 @@
         },
         {
             "ActorClass": "ARabbitEnemy",
-            "ActorID": "ARabbitEnemy_320",
-            "ActorLabel": "ARabbitEnemy320",
+            "ActorID": "ARabbitEnemy_457",
+            "ActorLabel": "OBJ_RABBITENEMY_457",
             "ActorTickInEditor": "false",
             "Components": [
+                {
+                    "ComponentClass": "USkeletalMeshComponent",
+                    "ComponentID": "Mesh_0",
+                    "Properties": {
+                        "AABB_max": "X=16.736 Y=22.754 Z=79.466",
+                        "AABB_min": "X=-16.353 Y=-22.754 Z=-0.179",
+                        "AnimClass": "RabbitAnimInstance",
+                        "AnimationMode": "0",
+                        "AttachParentID": "Collision_0",
+                        "ComponentClass": "USkeletalMeshComponent",
+                        "ComponentName": "Mesh_0",
+                        "ComponentOwner": "ARabbitEnemy_457",
+                        "ComponentOwnerClass": "ARabbitEnemy",
+                        "RelativeLocation": "X=0.000 Y=0.000 Z=-40.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "RigidBodyType": "1",
+                        "SkeletalMeshKey": "Contents/Bunny/Bunny1",
+                        "bApplyGravity": "false",
+                        "bAutoActive": "true",
+                        "bIsActive": "true",
+                        "bSimulate": "false",
+                        "m_Type": ""
+                    }
+                },
                 {
                     "ComponentClass": "UCapsuleComponent",
                     "ComponentID": "Collision_0",
                     "Properties": {
                         "AABB_max": "X=0.000 Y=0.000 Z=0.000",
                         "AABB_min": "X=0.000 Y=0.000 Z=0.000",
-                        "AttachParentID": "UCapsuleComponent_326",
+                        "AttachParentID": "nullptr",
                         "CapsuleHalfHeight": "40.000000",
                         "CapsuleRadius": "20.000000",
                         "ComponentClass": "UCapsuleComponent",
                         "ComponentName": "Collision_0",
-                        "ComponentOwner": "ARabbitEnemy_320",
+                        "ComponentOwner": "ARabbitEnemy_457",
                         "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeLocation": "X=53.994 Y=0.000 Z=200.682",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "RigidBodyType": "2",
                         "bApplyGravity": "false",
@@ -256,65 +304,12 @@
                     }
                 },
                 {
-                    "ComponentClass": "USceneComponent",
-                    "ComponentID": "USceneComponent_330",
-                    "Properties": {
-                        "AttachParentID": "UCapsuleComponent_326",
-                        "ComponentClass": "USceneComponent",
-                        "ComponentName": "USceneComponent_330",
-                        "ComponentOwner": "ARabbitEnemy_320",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
-                    }
-                },
-                {
-                    "ComponentClass": "USkeletalMeshComponent",
-                    "ComponentID": "Mesh_0",
-                    "Properties": {
-                        "AABB_max": "X=0.000 Y=0.000 Z=0.000",
-                        "AABB_min": "X=0.000 Y=0.000 Z=0.000",
-                        "AnimClass": "RabbitAnimInstance",
-                        "AnimationMode": "0",
-                        "AttachParentID": "Collision_0",
-                        "ComponentClass": "USkeletalMeshComponent",
-                        "ComponentName": "Mesh_0",
-                        "ComponentOwner": "ARabbitEnemy_320",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=0.000 Y=0.000 Z=-40.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "RigidBodyType": "1",
-                        "SkeletalMeshKey": "None",
-                        "bApplyGravity": "false",
-                        "bAutoActive": "true",
-                        "bIsActive": "true",
-                        "bSimulate": "false",
-                        "m_Type": ""
-                    }
-                },
-                {
-                    "ComponentClass": "URabbitMovementComponent",
-                    "ComponentID": "URabbitMovementComponent_329",
-                    "Properties": {
-                        "ComponentClass": "URabbitMovementComponent",
-                        "ComponentName": "URabbitMovementComponent_329",
-                        "ComponentOwner": "ARabbitEnemy_320",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
-                    }
-                },
-                {
                     "ComponentClass": "URabbitMovementComponent",
                     "ComponentID": "RabbitMoveComp_0",
                     "Properties": {
                         "ComponentClass": "URabbitMovementComponent",
                         "ComponentName": "RabbitMoveComp_0",
-                        "ComponentOwner": "ARabbitEnemy_320",
+                        "ComponentOwner": "ARabbitEnemy_457",
                         "ComponentOwnerClass": "ARabbitEnemy",
                         "bAutoActive": "true",
                         "bIsActive": "true"
@@ -327,18 +322,78 @@
                         "AttachParentID": "Collision_0",
                         "ComponentClass": "USceneComponent",
                         "ComponentName": "PatrolTargetComp_",
-                        "ComponentOwner": "ARabbitEnemy_320",
+                        "ComponentOwner": "ARabbitEnemy_457",
                         "ComponentOwnerClass": "ARabbitEnemy",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
                         "bIsActive": "true"
                     }
                 },
                 {
+                    "ComponentClass": "USceneComponent",
+                    "ComponentID": "atrolTargetComp_",
+                    "Properties": {
+                        "AttachParentID": "Collision_0",
+                        "ComponentClass": "USceneComponent",
+                        "ComponentName": "atrolTargetComp_",
+                        "ComponentOwner": "ARabbitEnemy_457",
+                        "ComponentOwnerClass": "ARabbitEnemy",
+                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                },
+                {
+                    "ComponentClass": "USphereComponent",
+                    "ComponentID": "Collision_Attack_0",
+                    "Properties": {
+                        "AABB_max": "X=0.000 Y=0.000 Z=0.000",
+                        "AABB_min": "X=0.000 Y=0.000 Z=0.000",
+                        "AttachParentID": "Collision_0",
+                        "ComponentClass": "USphereComponent",
+                        "ComponentName": "Collision_Attack_0",
+                        "ComponentOwner": "ARabbitEnemy_457",
+                        "ComponentOwnerClass": "ARabbitEnemy",
+                        "RelativeLocation": "X=40.000 Y=0.000 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "RigidBodyType": "2",
+                        "SphereRadius": "20.000000",
+                        "bApplyGravity": "false",
+                        "bAutoActive": "true",
+                        "bIsActive": "true",
+                        "bSimulate": "true",
+                        "m_Type": ""
+                    }
+                }
+            ],
+            "RootComponentID": "Collision_0"
+        },
+        {
+            "ActorClass": "ARabbitEnemy",
+            "ActorID": "ARabbitEnemy_470",
+            "ActorLabel": "OBJ_RABBITENEMY_470",
+            "ActorTickInEditor": "false",
+            "Components": [
+                {
+                    "ComponentClass": "URabbitMovementComponent",
+                    "ComponentID": "RabbitMoveComp_0",
+                    "Properties": {
+                        "ComponentClass": "URabbitMovementComponent",
+                        "ComponentName": "RabbitMoveComp_0",
+                        "ComponentOwner": "ARabbitEnemy_470",
+                        "ComponentOwnerClass": "ARabbitEnemy",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                },
+                {
                     "ComponentClass": "UCapsuleComponent",
-                    "ComponentID": "UCapsuleComponent_326",
+                    "ComponentID": "Collision_0",
                     "Properties": {
                         "AABB_max": "X=0.000 Y=0.000 Z=0.000",
                         "AABB_min": "X=0.000 Y=0.000 Z=0.000",
@@ -346,13 +401,77 @@
                         "CapsuleHalfHeight": "40.000000",
                         "CapsuleRadius": "20.000000",
                         "ComponentClass": "UCapsuleComponent",
-                        "ComponentName": "UCapsuleComponent_326",
-                        "ComponentOwner": "ARabbitEnemy_320",
+                        "ComponentName": "Collision_0",
+                        "ComponentOwner": "ARabbitEnemy_470",
                         "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=-201.804 Y=-346.180 Z=328.538",
+                        "RelativeLocation": "X=0.000 Y=388.795 Z=214.381",
                         "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "RigidBodyType": "2",
+                        "bApplyGravity": "false",
+                        "bAutoActive": "true",
+                        "bIsActive": "true",
+                        "bSimulate": "true",
+                        "m_Type": ""
+                    }
+                },
+                {
+                    "ComponentClass": "USkeletalMeshComponent",
+                    "ComponentID": "Mesh_0",
+                    "Properties": {
+                        "AABB_max": "X=16.736 Y=22.754 Z=79.466",
+                        "AABB_min": "X=-16.353 Y=-22.754 Z=-0.179",
+                        "AnimClass": "RabbitAnimInstance",
+                        "AnimationMode": "0",
+                        "AttachParentID": "Collision_0",
+                        "ComponentClass": "USkeletalMeshComponent",
+                        "ComponentName": "Mesh_0",
+                        "ComponentOwner": "ARabbitEnemy_470",
+                        "ComponentOwnerClass": "ARabbitEnemy",
+                        "RelativeLocation": "X=0.000 Y=0.000 Z=-40.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "RigidBodyType": "1",
+                        "SkeletalMeshKey": "Contents/Bunny/Bunny1",
+                        "bApplyGravity": "false",
+                        "bAutoActive": "true",
+                        "bIsActive": "true",
+                        "bSimulate": "false",
+                        "m_Type": ""
+                    }
+                },
+                {
+                    "ComponentClass": "USceneComponent",
+                    "ComponentID": "PatrolTargetComp_",
+                    "Properties": {
+                        "AttachParentID": "Collision_0",
+                        "ComponentClass": "USceneComponent",
+                        "ComponentName": "PatrolTargetComp_",
+                        "ComponentOwner": "ARabbitEnemy_470",
+                        "ComponentOwnerClass": "ARabbitEnemy",
+                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                },
+                {
+                    "ComponentClass": "USphereComponent",
+                    "ComponentID": "Collision_Attack_0",
+                    "Properties": {
+                        "AABB_max": "X=0.000 Y=0.000 Z=0.000",
+                        "AABB_min": "X=0.000 Y=0.000 Z=0.000",
+                        "AttachParentID": "Collision_0",
+                        "ComponentClass": "USphereComponent",
+                        "ComponentName": "Collision_Attack_0",
+                        "ComponentOwner": "ARabbitEnemy_470",
+                        "ComponentOwnerClass": "ARabbitEnemy",
+                        "RelativeLocation": "X=40.000 Y=0.000 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "RigidBodyType": "2",
+                        "SphereRadius": "20.000000",
                         "bApplyGravity": "false",
                         "bAutoActive": "true",
                         "bIsActive": "true",
@@ -367,48 +486,7 @@
                         "AttachParentID": "Collision_0",
                         "ComponentClass": "USceneComponent",
                         "ComponentName": "atrolTargetComp_",
-                        "ComponentOwner": "ARabbitEnemy_320",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
-                    }
-                },
-                {
-                    "ComponentClass": "USkeletalMeshComponent",
-                    "ComponentID": "USkeletalMeshComponent_321",
-                    "Properties": {
-                        "AABB_max": "X=16.736 Y=22.754 Z=79.466",
-                        "AABB_min": "X=-16.353 Y=-22.754 Z=-0.179",
-                        "AnimClass": "RabbitAnimInstance",
-                        "AnimationMode": "0",
-                        "AttachParentID": "UCapsuleComponent_326",
-                        "ComponentClass": "USkeletalMeshComponent",
-                        "ComponentName": "USkeletalMeshComponent_321",
-                        "ComponentOwner": "ARabbitEnemy_320",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=0.000 Y=0.000 Z=-40.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "RigidBodyType": "1",
-                        "SkeletalMeshKey": "Contents/Bunny/Bunny1",
-                        "bApplyGravity": "false",
-                        "bAutoActive": "true",
-                        "bIsActive": "true",
-                        "bSimulate": "false",
-                        "m_Type": ""
-                    }
-                },
-                {
-                    "ComponentClass": "USceneComponent",
-                    "ComponentID": "USceneComponent_328",
-                    "Properties": {
-                        "AttachParentID": "UCapsuleComponent_326",
-                        "ComponentClass": "USceneComponent",
-                        "ComponentName": "USceneComponent_328",
-                        "ComponentOwner": "ARabbitEnemy_320",
+                        "ComponentOwner": "ARabbitEnemy_470",
                         "ComponentOwnerClass": "ARabbitEnemy",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
                         "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
@@ -418,202 +496,7 @@
                     }
                 }
             ],
-            "RootComponentID": "UCapsuleComponent_326"
-        },
-        {
-            "ActorClass": "ARabbitEnemy",
-            "ActorID": "ARabbitEnemy_552",
-            "ActorLabel": "ARabbitEnemy552",
-            "ActorTickInEditor": "false",
-            "Components": [
-                {
-                    "ComponentClass": "USceneComponent",
-                    "ComponentID": "USceneComponent_555",
-                    "Properties": {
-                        "AttachParentID": "UCapsuleComponent_561",
-                        "ComponentClass": "USceneComponent",
-                        "ComponentName": "USceneComponent_555",
-                        "ComponentOwner": "ARabbitEnemy_552",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
-                    }
-                },
-                {
-                    "ComponentClass": "UCapsuleComponent",
-                    "ComponentID": "UCapsuleComponent_553",
-                    "Properties": {
-                        "AABB_max": "X=0.000 Y=0.000 Z=0.000",
-                        "AABB_min": "X=0.000 Y=0.000 Z=0.000",
-                        "AttachParentID": "UCapsuleComponent_561",
-                        "CapsuleHalfHeight": "40.000000",
-                        "CapsuleRadius": "20.000000",
-                        "ComponentClass": "UCapsuleComponent",
-                        "ComponentName": "UCapsuleComponent_553",
-                        "ComponentOwner": "ARabbitEnemy_552",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "RigidBodyType": "2",
-                        "bApplyGravity": "false",
-                        "bAutoActive": "true",
-                        "bIsActive": "true",
-                        "bSimulate": "true",
-                        "m_Type": ""
-                    }
-                },
-                {
-                    "ComponentClass": "URabbitMovementComponent",
-                    "ComponentID": "URabbitMovementComponent_558",
-                    "Properties": {
-                        "ComponentClass": "URabbitMovementComponent",
-                        "ComponentName": "URabbitMovementComponent_558",
-                        "ComponentOwner": "ARabbitEnemy_552",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
-                    }
-                },
-                {
-                    "ComponentClass": "USkeletalMeshComponent",
-                    "ComponentID": "USkeletalMeshComponent_556",
-                    "Properties": {
-                        "AABB_max": "X=0.000 Y=0.000 Z=0.000",
-                        "AABB_min": "X=0.000 Y=0.000 Z=0.000",
-                        "AnimClass": "RabbitAnimInstance",
-                        "AnimationMode": "0",
-                        "AttachParentID": "UCapsuleComponent_553",
-                        "ComponentClass": "USkeletalMeshComponent",
-                        "ComponentName": "USkeletalMeshComponent_556",
-                        "ComponentOwner": "ARabbitEnemy_552",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=0.000 Y=0.000 Z=-40.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "RigidBodyType": "1",
-                        "SkeletalMeshKey": "None",
-                        "bApplyGravity": "false",
-                        "bAutoActive": "true",
-                        "bIsActive": "true",
-                        "bSimulate": "false",
-                        "m_Type": ""
-                    }
-                },
-                {
-                    "ComponentClass": "URabbitMovementComponent",
-                    "ComponentID": "URabbitMovementComponent_559",
-                    "Properties": {
-                        "ComponentClass": "URabbitMovementComponent",
-                        "ComponentName": "URabbitMovementComponent_559",
-                        "ComponentOwner": "ARabbitEnemy_552",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
-                    }
-                },
-                {
-                    "ComponentClass": "USceneComponent",
-                    "ComponentID": "USceneComponent_560",
-                    "Properties": {
-                        "AttachParentID": "UCapsuleComponent_553",
-                        "ComponentClass": "USceneComponent",
-                        "ComponentName": "USceneComponent_560",
-                        "ComponentOwner": "ARabbitEnemy_552",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
-                    }
-                },
-                {
-                    "ComponentClass": "UCapsuleComponent",
-                    "ComponentID": "UCapsuleComponent_561",
-                    "Properties": {
-                        "AABB_max": "X=0.000 Y=0.000 Z=0.000",
-                        "AABB_min": "X=0.000 Y=0.000 Z=0.000",
-                        "AttachParentID": "nullptr",
-                        "CapsuleHalfHeight": "40.000000",
-                        "CapsuleRadius": "20.000000",
-                        "ComponentClass": "UCapsuleComponent",
-                        "ComponentName": "UCapsuleComponent_561",
-                        "ComponentOwner": "ARabbitEnemy_552",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=-201.804 Y=92.445 Z=328.538",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "RigidBodyType": "2",
-                        "bApplyGravity": "false",
-                        "bAutoActive": "true",
-                        "bIsActive": "true",
-                        "bSimulate": "true",
-                        "m_Type": ""
-                    }
-                },
-                {
-                    "ComponentClass": "USceneComponent",
-                    "ComponentID": "USceneComponent_563",
-                    "Properties": {
-                        "AttachParentID": "UCapsuleComponent_553",
-                        "ComponentClass": "USceneComponent",
-                        "ComponentName": "USceneComponent_563",
-                        "ComponentOwner": "ARabbitEnemy_552",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
-                    }
-                },
-                {
-                    "ComponentClass": "USkeletalMeshComponent",
-                    "ComponentID": "USkeletalMeshComponent_564",
-                    "Properties": {
-                        "AABB_max": "X=16.736 Y=22.754 Z=79.466",
-                        "AABB_min": "X=-16.353 Y=-22.754 Z=-0.179",
-                        "AnimClass": "RabbitAnimInstance",
-                        "AnimationMode": "0",
-                        "AttachParentID": "UCapsuleComponent_561",
-                        "ComponentClass": "USkeletalMeshComponent",
-                        "ComponentName": "USkeletalMeshComponent_564",
-                        "ComponentOwner": "ARabbitEnemy_552",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=0.000 Y=0.000 Z=-40.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "RigidBodyType": "1",
-                        "SkeletalMeshKey": "Contents/Bunny/Bunny1",
-                        "bApplyGravity": "false",
-                        "bAutoActive": "true",
-                        "bIsActive": "true",
-                        "bSimulate": "false",
-                        "m_Type": ""
-                    }
-                },
-                {
-                    "ComponentClass": "USceneComponent",
-                    "ComponentID": "USceneComponent_570",
-                    "Properties": {
-                        "AttachParentID": "UCapsuleComponent_561",
-                        "ComponentClass": "USceneComponent",
-                        "ComponentName": "USceneComponent_570",
-                        "ComponentOwner": "ARabbitEnemy_552",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
-                    }
-                }
-            ],
-            "RootComponentID": "UCapsuleComponent_561"
+            "RootComponentID": "Collision_0"
         }
     ],
     "NextUUID": 0,

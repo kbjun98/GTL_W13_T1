@@ -24,7 +24,9 @@ public:
     bool bDrawOnlyIfSelected = true;
 
     EShapeType GetShapeType() const { return ShapeType; }
-
+    UPROPERTY(EditAnywhere,
+    bool, bIsOverlapEnabled ,= true;
+        )
 protected:
     EShapeType ShapeType = EShapeType::Max;
 };

@@ -1,6 +1,8 @@
 #include "RabbitEnemy.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/Contents/GameFramework/RabbitMovementComponent.h"
+#include "Components/SphereComponent.h"
+#include "Engine/Contents/AnimInstance/RabbitAnimInstance.h"
 
 void ARabbitEnemy::PostSpawnInitialize()
 {
@@ -11,6 +13,17 @@ void ARabbitEnemy::PostSpawnInitialize()
         PatrolTargets.Add(NewPatrolTargetComp);
         NewPatrolTargetComp->SetupAttachment(RootComponent);
     }
+
+    USphereComponent* Collision = AddComponent<USphereComponent>("Collision_Attack_0");
+    Collision->SetRadius(Radius);
+    Collision->bSimulate = true;
+    Collision->RigidBodyType = ERigidBodyType::KINEMATIC;
+
+    FVector CapsuleOffset = GetActorForwardVector() * Radius * 2;
+    FVector CapsuleLocation = GetActorLocation() + CapsuleOffset;
+    Collision->SetRelativeLocation(CapsuleLocation);
+    Collision->bIsOverlapEnabled = false;
+    Collision->SetupAttachment(RootComponent);
 }
 
 UObject* ARabbitEnemy::Duplicate(UObject* InOuter)
@@ -31,6 +44,7 @@ void ARabbitEnemy::BeginPlay()
     Super::BeginPlay();    
     URabbitMovementComponent* MovementComponent = GetComponentByClass<URabbitMovementComponent>();
     MovementComponent->MaxSpeed = 200.0f; // 적의 이동 속도 설정    
+    GetComponentByClass<USphereComponent>()->bIsOverlapEnabled = false;
 }
 
 void ARabbitEnemy::RotateToTarget(const FVector& Location, float DeltaTime)
@@ -56,4 +70,20 @@ void ARabbitEnemy::RotateToTarget(const FVector& Location, float DeltaTime)
             SkeletalMeshComponent->SetWorldRotation(FRotator(0.0f, YawDeg, 0.0f).Quaternion());*/
         }
     }
+}
+
+void ARabbitEnemy::OnAttackNotify(USkeletalMeshComponent* NotifySkeletal)
+{
+    AActor* Owner = NotifySkeletal->GetOwner();
+    USphereComponent* SphereComp = Owner->GetComponentByClass<USphereComponent>();
+    Owner->GetComponentByClass<USphereComponent>()->bIsOverlapEnabled = true;
+    UE_LOG(ELogLevel::Error, TEXT("Attack Start Notify Triggered! %s"), GetName().ToAnsiString().c_str());
+}
+
+void ARabbitEnemy::OnAttackEndNotify(USkeletalMeshComponent* NotifySkeletal)
+{
+    AActor* Owner = NotifySkeletal->GetOwner();
+    UShapeComponent* SphereComp = Owner->GetComponentByClass<USphereComponent>();
+    Owner->GetComponentByClass<USphereComponent>()->bIsOverlapEnabled = false;
+    UE_LOG(ELogLevel::Error, TEXT("Attack End Notify Triggered! %s"), GetName().ToAnsiString().c_str());
 }

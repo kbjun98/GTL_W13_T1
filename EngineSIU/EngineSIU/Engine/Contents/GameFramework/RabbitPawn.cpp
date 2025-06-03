@@ -85,7 +85,7 @@ void ARabbitPawn::SetMaxHealth(int32 Value)
 
 void ARabbitPawn::SetCurrentHealth(int32 Value)
 {
-    CurrentHealth = FMath::Min(Value, MaxHealth);
+    CurrentHealth = FMath::Max(0, FMath::Min(Value, MaxHealth));
 }
 
 bool ARabbitPawn::SetActorLocation(const FVector& NewLocation)

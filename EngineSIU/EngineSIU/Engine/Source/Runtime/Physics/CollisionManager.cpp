@@ -254,11 +254,17 @@ void FCollisionManager::CheckOverlap(const UWorld* World, const UPrimitiveCompon
     {
         return;
     }
+    if (UShapeComponent* ShapeComponent = Cast<UShapeComponent>(Component))
+    {
+        //if(ShapeComponent->bIsOverlapEnabled == false) return;
+    }
+
 
     const bool bComponentHasValidBox = Component->AABB.IsValidBox();
-    
+
     for (const auto Iter : TObjectRange<UShapeComponent>())
     {
+        //if (Iter->bIsOverlapEnabled == false) continue;
         if (!Iter || Iter->GetWorld() != World || Iter == Component)
         {
             continue;            
