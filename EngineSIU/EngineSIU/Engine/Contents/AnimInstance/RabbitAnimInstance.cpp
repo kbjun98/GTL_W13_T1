@@ -38,16 +38,15 @@ RabbitAnimInstance::RabbitAnimInstance()
     Walk = UAssetManager::Get().GetAnimation(FString("Contents/Bunny/Walk"));
     Attack = UAssetManager::Get().GetAnimation(FString("Contents/Bunny/Attack"));
 
-    AddSoundNotify();
-    AddAttackNotify();
-
     CurrAnim = Cast<UAnimSequence>(Idle);
     PrevAnim = Cast<UAnimSequence>(Idle);
 }
 
 void RabbitAnimInstance::NativeInitializeAnimation()
 {
-
+    Super::NativeInitializeAnimation();
+    AddSoundNotify();
+    AddAttackNotify();
 }
 
 float GetNormalizedAnimTime(UAnimSequence* Anim, float ElapsedTime)
@@ -215,7 +214,10 @@ void RabbitAnimInstance::AddAttackNotify()
     UAnimAttackNotify* AttackNotifyEvent = FObjectFactory::ConstructObject<UAnimAttackNotify>(this);
     NotifyEvent->SetAnimNotify(AttackNotifyEvent);
 
+    USkeletalMeshComponent* SkelMeshComp = GetSkelMeshComponent();
     AActor* Owner = GetSkelMeshComponent()->GetOwner();
+
+
 
     if (NotifyEvent)
     {
