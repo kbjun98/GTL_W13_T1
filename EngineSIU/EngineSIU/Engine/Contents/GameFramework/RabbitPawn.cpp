@@ -24,6 +24,7 @@ void ARabbitPawn::PostSpawnInitialize()
     SkeletalMeshComp->SetRelativeLocation(FVector(0.f, 0.f, -40.0f));
     SkeletalMeshComp->SetAnimationMode(EAnimationMode::AnimationBlueprint);
     SkeletalMeshComp->AnimClass = RabbitAnimInstance::StaticClass();
+    SkeletalMeshComp->bSimulate = false;
 
     MovementComponent = AddComponent<URabbitMovementComponent>("RabbitMoveComp_0");
 }
