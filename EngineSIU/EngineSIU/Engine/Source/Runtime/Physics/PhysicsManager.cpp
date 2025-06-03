@@ -218,20 +218,28 @@ void FPhysicsManager::AttachShapesToActor(PxRigidActor* Actor, UBodySetup* BodyS
     // Sphere 추가
     for (const auto& Sphere : BodySetup->AggGeom.SphereElems)
     {
-    
-        Actor->attachShape(*Sphere);
+        if (Sphere)
+        {
+            Actor->attachShape(*Sphere);
+        }
     }
 
     // Box 추가
     for (const auto& Box : BodySetup->AggGeom.BoxElems)
     {
-        Actor->attachShape(*Box);
+        if (Box)
+        {
+            Actor->attachShape(*Box);
+        }
     }
 
     // Capsule 추가
     for (const auto& Capsule : BodySetup->AggGeom.CapsuleElems)
     {
-        Actor->attachShape(*Capsule);
+        if (Capsule)
+        {
+            Actor->attachShape(*Capsule);
+        }
     }
 }
 
@@ -675,10 +683,13 @@ PxShape* FPhysicsManager::CreateBoxShape(const PxVec3& Pos, const PxQuat& Quat, 
 {
     // Box 모양 생성
     PxShape* Result = Physics->createShape(PxBoxGeometry(HalfExtents), *Material);
-    
-    // 위치와 회전을 모두 적용한 Transform 생성
-    PxTransform LocalTransform(Pos, Quat);
-    Result->setLocalPose(LocalTransform);
+
+    if (Result)
+    {
+        // 위치와 회전을 모두 적용한 Transform 생성
+        PxTransform LocalTransform(Pos, Quat);
+        Result->setLocalPose(LocalTransform);
+    }
     
     return Result;
 }
@@ -687,10 +698,13 @@ PxShape* FPhysicsManager::CreateSphereShape(const PxVec3& Pos, const PxQuat& Qua
 {
     // Sphere 모양 생성 (구는 회전에 영향받지 않지만 일관성을 위해 적용)
     PxShape* Result = Physics->createShape(PxSphereGeometry(Radius), *Material);
-    
-    // 위치와 회전을 모두 적용한 Transform 생성
-    PxTransform LocalTransform(Pos, Quat);
-    Result->setLocalPose(LocalTransform);
+
+    if (Result)
+    {
+        // 위치와 회전을 모두 적용한 Transform 생성
+        PxTransform LocalTransform(Pos, Quat);
+        Result->setLocalPose(LocalTransform);
+    }
     
     return Result;
 }
@@ -699,10 +713,13 @@ PxShape* FPhysicsManager::CreateCapsuleShape(const PxVec3& Pos, const PxQuat& Qu
 {
     // Capsule 모양 생성
     PxShape* Result = Physics->createShape(PxCapsuleGeometry(Radius, HalfHeight), *Material);
-    
-    // 위치와 회전을 모두 적용한 Transform 생성
-    PxTransform LocalTransform(Pos, Quat);
-    Result->setLocalPose(LocalTransform);
+
+    if (Result)
+    {
+        // 위치와 회전을 모두 적용한 Transform 생성
+        PxTransform LocalTransform(Pos, Quat);
+        Result->setLocalPose(LocalTransform);
+    }
     
     return Result;
 }
