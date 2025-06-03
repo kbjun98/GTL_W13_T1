@@ -29,7 +29,7 @@ public:
     virtual FVector GetActorForwardVector() const override;
     virtual FVector GetActorRightVector() const override;
 
-    void Jump();
+    virtual void Jump() override;
 
     void ZoomIn(float DeltaTime);
     void ZoomOut(float DeltaTime);

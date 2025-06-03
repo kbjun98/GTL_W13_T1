@@ -699,10 +699,13 @@ PxShape* FPhysicsManager::CreateSphereShape(const PxVec3& Pos, const PxQuat& Qua
 {
     // Sphere 모양 생성 (구는 회전에 영향받지 않지만 일관성을 위해 적용)
     PxShape* Result = Physics->createShape(PxSphereGeometry(Radius), *Material);
-    
-    // 위치와 회전을 모두 적용한 Transform 생성
-    PxTransform LocalTransform(Pos, Quat);
-    Result->setLocalPose(LocalTransform);
+
+    if (Result)
+    {
+        // 위치와 회전을 모두 적용한 Transform 생성
+        PxTransform LocalTransform(Pos, Quat);
+        Result->setLocalPose(LocalTransform);
+    }
     
     return Result;
 }
@@ -711,10 +714,13 @@ PxShape* FPhysicsManager::CreateCapsuleShape(const PxVec3& Pos, const PxQuat& Qu
 {
     // Capsule 모양 생성
     PxShape* Result = Physics->createShape(PxCapsuleGeometry(Radius, HalfHeight), *Material);
-    
-    // 위치와 회전을 모두 적용한 Transform 생성
-    PxTransform LocalTransform(Pos, Quat);
-    Result->setLocalPose(LocalTransform);
+
+    if (Result)
+    {
+        // 위치와 회전을 모두 적용한 Transform 생성
+        PxTransform LocalTransform(Pos, Quat);
+        Result->setLocalPose(LocalTransform);
+    }
     
     return Result;
 }

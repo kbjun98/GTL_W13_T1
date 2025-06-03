@@ -34,6 +34,8 @@ public:
     void SetAnimState(ERabbitAnimState State) { AnimState = State; }
 
     virtual bool SetActorLocation(const FVector& NewLocation) override;
+
+    virtual void Jump();
     
 protected:
     URabbitMovementComponent* MovementComponent;

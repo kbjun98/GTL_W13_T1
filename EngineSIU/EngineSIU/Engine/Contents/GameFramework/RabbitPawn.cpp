@@ -99,6 +99,14 @@ bool ARabbitPawn::SetActorLocation(const FVector& NewLocation)
     return true;
 }
 
+void ARabbitPawn::Jump()
+{
+    if (URabbitMovementComponent* RabbitMoveComp = Cast<URabbitMovementComponent>(GetMovementComponent()))
+    {
+        RabbitMoveComp->Jump();
+    }
+}
+
 void ARabbitPawn::OnRabbitBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp)
 {
 }
