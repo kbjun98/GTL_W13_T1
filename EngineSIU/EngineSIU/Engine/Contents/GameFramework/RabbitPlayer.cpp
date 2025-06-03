@@ -25,6 +25,7 @@ void ARabbitPlayer::PostSpawnInitialize()
     if (SkeletalMeshComp)
     {
         SkeletalMeshComp->bHidden = true;
+        SkeletalMeshComp->bSimulate = false;
     }
 }
 
@@ -107,10 +108,7 @@ std::shared_ptr<RabbitCamera> ARabbitPlayer::GetRabbitCamera()
 
 void ARabbitPlayer::Jump()
 {
-    if (URabbitMovementComponent* RabbitMoveComp = Cast<URabbitMovementComponent>(GetMovementComponent()))
-    {
-        RabbitMoveComp->Jump();
-    }
+    Super::Jump();
 }
 
 void ARabbitPlayer::ZoomIn(float DeltaTime)

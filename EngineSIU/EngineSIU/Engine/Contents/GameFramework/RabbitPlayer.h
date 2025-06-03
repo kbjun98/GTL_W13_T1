@@ -29,7 +29,7 @@ public:
     virtual FVector GetActorForwardVector() const override;
     virtual FVector GetActorRightVector() const override;
 
-    void Jump();
+    virtual void Jump() override;
 
     void ZoomIn(float DeltaTime);
     void ZoomOut(float DeltaTime);
@@ -44,6 +44,8 @@ public:
     void EndADS();
 
     void ResetPlayer();
+    
+    FOnPlayerDiedSignature OnPlayerDied;
 
 protected:
     void SetFOV(float FOV);
@@ -73,7 +75,6 @@ private:
     UCameraShakeBase* CameraShakeInstance = nullptr;
 
     bool bIsDied = false;
-    FOnPlayerDiedSignature OnPlayerDied;
 
     void OnDeath();
 };

@@ -4,6 +4,9 @@
 #include "Engine/Contents/GameFramework/RabbitController.h"
 #include <Engine/Engine.h>
 #include "World/World.h"
+#include "UnrealEd/UnrealEd.h"
+#include <PropertyEditor/RabbitGameUIPanel.h>
+#include "SoundManager.h"
 
 ARabbitGameMode::ARabbitGameMode()
 {
@@ -14,6 +17,8 @@ ARabbitGameMode::ARabbitGameMode()
     PlayerControllerClass = ARabbitController::StaticClass();
 
     EPhotoTypeSize = static_cast<int>(EPhotoType::END) - 1;
+
+    EndEffectLastTime = EndEffectLastTimeInit;
 }
 
 void ARabbitGameMode::Tick(float DeltaTime)
@@ -24,6 +29,7 @@ void ARabbitGameMode::Tick(float DeltaTime)
 
         if (EndEffectLastTime <= 0)
         {
+            EndEffectLastTime = EndEffectLastTimeInit;
             IsEndEffectOn = false;
             FEngineLoop::TimeScale = 1.0f;
         }
@@ -38,6 +44,13 @@ void ARabbitGameMode::BeginPlay()
     {
         if (ARabbitPlayer* Rabbit = Cast<ARabbitPlayer>(PlayerController->GetPawn()))
         {
+            Rabbit->OnPlayerDied.BindLambda(
+                [this]
+                {
+                    this->OnPlayerDeath();
+                }
+            );
+
             if (std::shared_ptr<RabbitCamera> Camera = Rabbit->GetRabbitCamera())
             {
                 Camera->InitPictureArraySize(EPhotoTypeSize);
@@ -51,6 +64,13 @@ void ARabbitGameMode::BeginPlay()
             }
         }
     }
+}
+
+void ARabbitGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+    Super::EndPlay(EndPlayReason);
+
+    ClearUIDeathTimer();
 }
 
 void ARabbitGameMode::JudgeCapturedPhoto(UPrimitiveComponent* CapturedComp, RabbitCamera* RabbitCam)
@@ -77,14 +97,75 @@ void ARabbitGameMode::JudgeCapturedPhoto(UPrimitiveComponent* CapturedComp, Rabb
         }
     }
 
-    bool IsEnd = CapturedPhotoTypes.Num() == EPhotoTypeSize;
+    bool WasAlreadyComplete = IsPictureComplete;
+    bool IsNowComplete = CapturedPhotoTypes.Num() == EPhotoTypeSize;
 
-    RabbitCam->PlayCameraSound(IsEnd);
-
-    if (IsEnd)
+    // 사진 사운드 재생
+    if (!WasAlreadyComplete)
     {
-        IsEndEffectOn=true;
-        FEngineLoop::TimeScale = .3f;
+        RabbitCam->PlayCameraSound(IsNowComplete);
+    }
+    else
+    {
+        RabbitCam->PlayCameraSound(false); // 그냥 일반 셔터음 또는 안 나게 하고 싶으면 생략
+    }
+
+    // 처음으로 완성된 경우에만 효과 발동
+    if (!WasAlreadyComplete && IsNowComplete)
+    {
+        IsPictureComplete = true;
+        IsEndEffectOn = true;
+        FEngineLoop::TimeScale = 0.3f;
+        StartUIPictureEnd();
     }
    
+}
+
+void ARabbitGameMode::StartUIPictureEnd()
+{
+    auto Panel = GEngineLoop.GetUnrealEditor()->GetEditorPanel("RabbitGameUIPanel");
+    auto RabbitPanel = std::dynamic_pointer_cast<RabbitGameUIPanel>(Panel);
+
+    RabbitPanel->OnPictureEndUI();
+    FSoundManager::GetInstance().PlaySound("Shoong");
+}
+
+void ARabbitGameMode::StartUIDeathTimer()
+{
+    auto Panel = GEngineLoop.GetUnrealEditor()->GetEditorPanel("RabbitGameUIPanel");
+    auto RabbitPanel = std::dynamic_pointer_cast<RabbitGameUIPanel>(Panel);
+    
+    RabbitPanel->StartDeathTimer();
+    
+    FSoundManager::GetInstance().PlaySound("GameOver");
+}
+
+void ARabbitGameMode::ClearUIDeathTimer()
+{
+    auto Panel = GEngineLoop.GetUnrealEditor()->GetEditorPanel("RabbitGameUIPanel");
+    auto RabbitPanel = std::dynamic_pointer_cast<RabbitGameUIPanel>(Panel);
+    
+    RabbitPanel->ClearDeathTimer();
+}
+
+void ARabbitGameMode::OnPlayerDeath()
+{
+    StartUIDeathTimer();
+}
+
+void ARabbitGameMode::Restart()
+{
+    FTransform SpawnTransform = GetPlayerStartTransform();
+    
+    if (APlayerController* PlayerController = GEngine->ActiveWorld->GetPlayerController())
+    {
+        if (ARabbitPlayer* Rabbit = Cast<ARabbitPlayer>(PlayerController->GetPawn()))
+        {
+            Rabbit->ResetPlayer();
+            Rabbit->SetActorLocation(SpawnTransform.GetTranslation());
+            CapturedPhotoTypes.Empty();
+            Rabbit->GetRabbitCamera()->ResetRabbitCamera(EPhotoTypeSize);
+            IsPictureComplete = false;
+        }
+    }
 }

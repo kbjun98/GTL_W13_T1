@@ -30,9 +30,13 @@ public:
     int32 GetCurrentHealth() const { return CurrentHealth; }
     void SetCurrentHealth(int32 Value);
 
-    ERabbitAnimState GetAnimState() { return AnimState; }
+    ERabbitAnimState GetAnimState() const { return AnimState; }
     void SetAnimState(ERabbitAnimState State) { AnimState = State; }
 
+    virtual bool SetActorLocation(const FVector& NewLocation) override;
+
+    virtual void Jump();
+    
 protected:
     URabbitMovementComponent* MovementComponent;
     USkeletalMeshComponent* SkeletalMeshComp;
@@ -45,7 +49,7 @@ protected:
 
     float RotateSpeed = 100.0f;
     
-    ERabbitAnimState AnimState = ERabbitAnimState::EAttack;
+    ERabbitAnimState AnimState = ERabbitAnimState::Attack;
     float MoveSpeed = 100.0f; // 이동 속도
     
     UPROPERTY(EditAnywhere, int32, MaxHealth, = 100)

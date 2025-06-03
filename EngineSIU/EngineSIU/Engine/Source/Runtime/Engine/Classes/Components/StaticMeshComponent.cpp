@@ -12,7 +12,6 @@
 
 UStaticMeshComponent::UStaticMeshComponent()
 {
-    SetStMeshType(EStaticMeshType::NONE);
 }
 
 UObject* UStaticMeshComponent::Duplicate(UObject* InOuter)
