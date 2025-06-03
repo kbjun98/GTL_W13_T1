@@ -44,7 +44,7 @@ void ARabbitGameMode::BeginPlay()
             Rabbit->OnPlayerDied.BindLambda(
                 [this]
                 {
-                    StartUIDeathTimer();
+                    this->OnPlayerDeath();
                 }
             );
 
@@ -122,4 +122,23 @@ void ARabbitGameMode::ClearUIDeathTimer()
     auto RabbitPanel = std::dynamic_pointer_cast<RabbitGameUIPanel>(Panel);
     
     RabbitPanel->ClearDeathTimer();
+}
+
+void ARabbitGameMode::OnPlayerDeath()
+{
+    StartUIDeathTimer();
+}
+
+void ARabbitGameMode::Restart()
+{
+    FTransform SpawnTransform = GetPlayerStartTransform();
+    
+    if (APlayerController* PlayerController = GEngine->ActiveWorld->GetPlayerController())
+    {
+        if (ARabbitPlayer* Rabbit = Cast<ARabbitPlayer>(PlayerController->GetPawn()))
+        {
+            Rabbit->ResetPlayer();
+            Rabbit->SetActorLocation(SpawnTransform.GetTranslation());
+        }
+    }
 }

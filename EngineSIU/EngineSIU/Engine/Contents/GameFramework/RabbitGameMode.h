@@ -29,11 +29,15 @@ public:
     void StartUIDeathTimer();
     
     void ClearUIDeathTimer();
+    
+    void Restart();
 
 private:
     TSet<EPhotoType> CapturedPhotoTypes;
     int32 EPhotoTypeSize;
     bool IsEndEffectOn = false;
     float EndEffectLastTime = 3.f;
+
+    void OnPlayerDeath();
 };
 

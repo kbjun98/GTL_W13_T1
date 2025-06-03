@@ -29,6 +29,8 @@ public:
     virtual FVector GetActorForwardVector() const override;
     virtual FVector GetActorRightVector() const override;
 
+    virtual bool SetActorLocation(const FVector& NewLocation) override;
+
     void Jump();
 
     void ZoomIn(float DeltaTime);

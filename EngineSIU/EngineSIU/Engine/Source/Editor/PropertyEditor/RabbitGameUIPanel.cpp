@@ -8,6 +8,7 @@
 #include "World/World.h"
 #include "LevelEditor/SLevelEditor.h"
 #include "Editor/UnrealEd/EditorViewportClient.h"
+#include "GameFramework/RabbitGameMode.h"
 
 inline ImVec2 operator*(const ImVec2& lhs, float rhs) {
     return ImVec2(lhs.x * rhs, lhs.y * rhs);
@@ -43,12 +44,9 @@ void RabbitGameUIPanel::Restart()
 {
     ClearDeathTimer();
 
-    if (APlayerController* PlayerController = GEngine->ActiveWorld->GetPlayerController())
+    if (ARabbitGameMode* RabbitGameMode = Cast<ARabbitGameMode>(GEngine->ActiveWorld->GetGameMode()))
     {
-        if (ARabbitPlayer* Rabbit = Cast<ARabbitPlayer>(PlayerController->GetPawn()))
-        {
-            Rabbit->ResetPlayer();
-        }
+        RabbitGameMode->Restart();
     }
 }
 

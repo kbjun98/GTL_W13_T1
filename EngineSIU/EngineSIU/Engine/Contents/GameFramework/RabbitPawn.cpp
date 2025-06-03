@@ -26,7 +26,6 @@ void ARabbitPawn::PostSpawnInitialize()
     SkeletalMeshComp->AnimClass = RabbitAnimInstance::StaticClass();
 
     MovementComponent = AddComponent<URabbitMovementComponent>("RabbitMoveComp_0");
-
 }
 
 UObject* ARabbitPawn::Duplicate(UObject* InOuter)

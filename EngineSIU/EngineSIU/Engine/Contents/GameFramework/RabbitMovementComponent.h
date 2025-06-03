@@ -28,6 +28,8 @@ public:
 
     void Jump();
 
+    void SetLocation(const FVector& NewLocation);
+
 protected:
     bool bGravity;
     
