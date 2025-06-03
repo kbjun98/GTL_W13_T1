@@ -169,5 +169,5 @@ public:
     
     void SetAnimInstanceClass(class UClass* NewClass);
 
-    void EnableRagdoll();
+    void EnableRagdoll(bool bEnable);
 };

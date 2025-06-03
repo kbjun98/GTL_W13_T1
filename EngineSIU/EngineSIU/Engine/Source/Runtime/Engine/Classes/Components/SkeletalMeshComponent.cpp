@@ -221,6 +221,10 @@ void USkeletalMeshComponent::EndPhysicsTickComponent(float DeltaTime)
 
         for (int32 i = 0; i < RefSkeleton.GetRawBoneNum(); ++i)
         {
+            if (RigidBodyType == ERigidBodyType::KINEMATIC && i == 0)
+            {
+                continue;
+            }
             const int32 ParentIndex = RefSkeleton.GetParentIndex(i);
             FMatrix ParentMatrix = FMatrix::Identity;
             if (ParentIndex == INDEX_NONE)
@@ -796,12 +800,25 @@ void USkeletalMeshComponent::SetAnimInstanceClass(class UClass* NewClass)
     }
 }
 
-void USkeletalMeshComponent::EnableRagdoll()
+void USkeletalMeshComponent::EnableRagdoll(bool bEnable)
 {
-    for (FBodyInstance* BodyInstance : Bodies)
+    if (bEnable)
     {
-        BodyInstance->BIGameObject->DynamicRigidBody->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
-        BodyInstance->BIGameObject->DynamicRigidBody->wakeUp();
+        RigidBodyType = ERigidBodyType::DYNAMIC;
+        for (FBodyInstance* BodyInstance : Bodies)
+        {
+            BodyInstance->BIGameObject->DynamicRigidBody->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
+            BodyInstance->BIGameObject->DynamicRigidBody->wakeUp();
+        }
+        if (AttachParent)
+        {
+            FTransform Transform = AttachParent->GetComponentTransform();
+            SetWorldTransform(Transform);
+        }
+    }
+    else
+    {
+        
     }
 }
 

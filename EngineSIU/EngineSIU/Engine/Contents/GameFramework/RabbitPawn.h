@@ -37,6 +37,9 @@ protected:
     URabbitMovementComponent* MovementComponent;
     USkeletalMeshComponent* SkeletalMeshComp;
 
+    virtual void OnRabbitBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp);
+    virtual void OnRabbitEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp);
+
     float HalfHeight = 40.f;
     float Radius = 20.f;
 

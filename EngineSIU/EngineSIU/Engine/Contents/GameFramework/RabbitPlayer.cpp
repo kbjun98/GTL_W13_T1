@@ -24,20 +24,7 @@ void ARabbitPlayer::PostSpawnInitialize()
 
     if (SkeletalMeshComp)
     {
-        USkeletalMesh* MeshAsset = Cast<USkeletalMesh>(UAssetManager::Get().GetAsset(EAssetType::SkeletalMesh, "Contents/Bunny/Bunny2"));
-        SkeletalMeshComp->SetSkeletalMeshAsset(MeshAsset);
-        SkeletalMeshComp->SetAnimationMode(EAnimationMode::AnimationSingleNode);
         SkeletalMeshComp->bHidden = true;
-
-        SkeletalMeshComp->RigidBodyType = ERigidBodyType::KINEMATIC;
-        SkeletalMeshComp->bApplyGravity = true;
-        SkeletalMeshComp->bSimulate = true;
-
-        UObject* Obj = UAssetManager::Get().GetAsset(EAssetType::PhysicsAsset, "Contents/PhysicsAsset/Bunny2");
-        if (UPhysicsAsset* PhysicsAsset = Cast<UPhysicsAsset>(Obj))
-        {
-            SkeletalMeshComp->GetSkeletalMeshAsset()->SetPhysicsAsset(PhysicsAsset);
-        }
     }
 }
 
@@ -262,4 +249,37 @@ ARabbitController* ARabbitPlayer::GetRabbitController() const
         return RC;
     }
     return nullptr;
+}
+
+void ARabbitPlayer::OnRabbitBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp)
+{
+    Super::OnRabbitBeginOverlap(OverlappedComp, OtherActor, OtherComp);
+
+    if (SkeletalMeshComp)
+    {
+        USkeletalMesh* MeshAsset = Cast<USkeletalMesh>(UAssetManager::Get().GetAsset(EAssetType::SkeletalMesh, "Contents/Bunny/Bunny2"));
+        SkeletalMeshComp->SetSkeletalMeshAsset(MeshAsset);
+        SkeletalMeshComp->SetAnimationMode(EAnimationMode::AnimationSingleNode);
+        SkeletalMeshComp->SetRelativeLocation(FVector(0.f, 0.f, 100.f));
+
+        SkeletalMeshComp->RigidBodyType = ERigidBodyType::KINEMATIC;
+        SkeletalMeshComp->bApplyGravity = true;
+        SkeletalMeshComp->bSimulate = true;
+
+        UObject* Obj = UAssetManager::Get().GetAsset(EAssetType::PhysicsAsset, "Contents/PhysicsAsset/Bunny2");
+        if (UPhysicsAsset* PhysicsAsset = Cast<UPhysicsAsset>(Obj))
+        {
+            SkeletalMeshComp->GetSkeletalMeshAsset()->SetPhysicsAsset(PhysicsAsset);
+        }
+
+        SkeletalMeshComp->CreatePhysXGameObject();
+        
+        SkeletalMeshComp->EnableRagdoll(true);
+        SkeletalMeshComp->bHidden = false;
+    }
+}
+
+void ARabbitPlayer::OnRabbitEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp)
+{
+    Super::OnRabbitEndOverlap(OverlappedComp, OtherActor, OtherComp);
 }

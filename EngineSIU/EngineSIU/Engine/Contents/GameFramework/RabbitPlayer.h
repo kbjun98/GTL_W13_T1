@@ -46,6 +46,9 @@ protected:
     float GetFOV() const;
 
     ARabbitController* GetRabbitController() const;
+
+    virtual void OnRabbitBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp) override;
+    virtual void OnRabbitEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp) override;
     
 private:
     UCameraMeshComponent* CameraMesh = nullptr;
