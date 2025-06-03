@@ -24,6 +24,7 @@ git submodule update --init --recursive
 ### 조작 키
 
 * W, A, S, D: 이동
+* Space: 점프
 * 마우스 이동: 시야 회전
 * 마우스 우클릭 홀드: 카메라 모드 전환
 * 마우스 좌클릭: 촬영
