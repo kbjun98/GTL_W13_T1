@@ -316,8 +316,8 @@ void APlayerCameraManager::DoUpdateFocalLength(float DeltaTime)
     const FRotator& ControlRotation = PCOwner->GetControlRotation();
     const FVector Direction = ControlRotation.ToVector();
 
-    const FVector RayOrigin = PCOwner->GetPawn()->GetActorLocation();
-    const FVector RayEnd = RayOrigin + Direction;
+    const FVector WorldRayOrigin = PCOwner->GetPawn()->GetActorLocation();
+    const FVector WorldRayDir = WorldRayOrigin + Direction;
 
     float MinDistance = 10000.f;
     FVector Normal;
@@ -332,16 +332,20 @@ void APlayerCameraManager::DoUpdateFocalLength(float DeltaTime)
         const FMatrix WorldMatrix = Iter->GetWorldMatrix();
         const FMatrix InverseMatrix = FMatrix::Inverse(WorldMatrix);
         
-        FVector LocalRayOrigin = InverseMatrix.TransformPosition(RayOrigin);
-        FVector LocalRayEnd = InverseMatrix.TransformPosition(RayEnd);
+        FVector LocalRayOrigin = InverseMatrix.TransformPosition(WorldRayOrigin);
+        FVector LocalRayEnd = InverseMatrix.TransformPosition(WorldRayDir);
         FVector LocalRayDir = (LocalRayEnd - LocalRayOrigin).GetSafeNormal();
 
         // TODO: AABB만 테스트하게 최적화 가능
-        float Distance = 10000.f;
-        int32 HitCnt = Iter->CheckRayIntersection(LocalRayOrigin, LocalRayDir, Distance, Normal);
-        if (HitCnt > 0)
+        float LocalDistance = 10000.f;
+        int32 HitCnt = Iter->CheckRayIntersection(LocalRayOrigin, LocalRayDir, LocalDistance, Normal);
+        if (HitCnt > 0 && !FMath::IsNearlyZero(LocalDistance))
         {
-            MinDistance = FMath::Min(MinDistance, Distance);
+            FVector LocalHitPoint = LocalRayOrigin + LocalRayDir * LocalDistance;
+            FVector WorldHitPoint = WorldMatrix.TransformPosition(LocalHitPoint);
+            float WorldDistance = (WorldHitPoint - WorldRayOrigin).Size();
+            
+            MinDistance = FMath::Min(MinDistance, WorldDistance);
         }
     }
     
