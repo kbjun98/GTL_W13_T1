@@ -203,13 +203,17 @@ void ControlEditorPanel::CreateMenuButton(const ImVec2 ButtonSize, ImFont* IconF
             ImGui::End();
             return;
         }
+        FGridMap* GridMap = GEngine->ActiveWorld->GetGridMap();
+
+        FString  GridMapFileName = FileName + FString(".mapgrid");
+        GridMap->SaveToBinaryFile(GridMapFileName);
+
         if (UEditorEngine* EditorEngine = Cast<UEditorEngine>(GEngine))
         {
-            FGridMap* GridMap = GEngine->ActiveWorld->GetGridMap();
             
             EditorEngine->NewLevel();
             EditorEngine->LoadLevel(FileName);
-            GridMap->LoadFromBinaryFile(FileName);
+            GridMap->LoadFromBinaryFile(GridMapFileName);
 
         }
     }
