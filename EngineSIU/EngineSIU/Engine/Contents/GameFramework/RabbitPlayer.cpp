@@ -28,6 +28,8 @@ void ARabbitPlayer::PostSpawnInitialize()
         SkeletalMeshComp->SetSkeletalMeshAsset(MeshAsset);
         SkeletalMeshComp->SetAnimationMode(EAnimationMode::AnimationSingleNode);
         SkeletalMeshComp->bHidden = true;
+
+        SkeletalMeshComp->RigidBodyType = ERigidBodyType::KINEMATIC;
     }
 }
 

@@ -236,29 +236,6 @@ void USkeletalMeshComponent::EndPhysicsTickComponent(float DeltaTime)
             BonePoseContext.Pose[i] = FTransform(CurrentLocalMatrix);
         }
         
-        //for (FBodyInstance* BI : Bodies)
-        //{
-        //    if (RigidBodyType != ERigidBodyType::STATIC)
-        //    {
-        //        BI->BIGameObject->UpdateFromPhysics(GEngine->PhysicsManager->GetScene(GEngine->ActiveWorld));
-        //        XMMATRIX DXMatrix = BI->BIGameObject->WorldMatrix;
-        //        XMFLOAT4X4 dxMat;
-        //        XMStoreFloat4x4(&dxMat, DXMatrix);
-
-        //        FMatrix WorldMatrix;
-        //        for (int32 Row = 0; Row < 4; ++Row)
-        //        {
-        //            for (int32 Col = 0; Col < 4; ++Col)
-        //            {
-        //                WorldMatrix.M[Row][Col] = *(&dxMat._11 + Row * 4 + Col);
-        //            }
-        //        }
-
-        //        BonePoseContext.Pose[BI->BoneIndex] = FTransform(WorldMatrix) * GetComponentTransform().Inverse();
-
-        //    }
-        //}
-        
         CPUSkinning();
     }
 }
