@@ -240,6 +240,11 @@ void RabbitCamera::Tick(float DeltaTime)
     CurrentApertureProgress = std::max(0.0f, std::min(1.0f, CurrentApertureProgress));
 }
 
+void RabbitCamera::ResetRabbitCamera(int Size)
+{
+    InitPictureArraySize(Size);
+}
+
 float RabbitCamera::GetCurrentApertureProgress() const
 {
     return CurrentApertureProgress;
@@ -263,7 +268,7 @@ UPrimitiveComponent* RabbitCamera::CheckSubject()
     FVector PlayerPosition = Player->GetActorLocation();
 
 
-    float MaxRange = 100.f; // 최대 거리
+   
     float FOV = FMath::Cos(FMath::DegreesToRadians(45.f)); // 느슨한 시야각 (총 30도)
 
     UStaticMeshComponent* HitComponent = nullptr;

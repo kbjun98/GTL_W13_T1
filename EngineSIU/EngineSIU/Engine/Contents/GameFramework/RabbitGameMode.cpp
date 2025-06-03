@@ -17,6 +17,8 @@ ARabbitGameMode::ARabbitGameMode()
     PlayerControllerClass = ARabbitController::StaticClass();
 
     EPhotoTypeSize = static_cast<int>(EPhotoType::END) - 1;
+
+    EndEffectLastTime = EndEffectLastTimeInit;
 }
 
 void ARabbitGameMode::Tick(float DeltaTime)
@@ -27,6 +29,7 @@ void ARabbitGameMode::Tick(float DeltaTime)
 
         if (EndEffectLastTime <= 0)
         {
+            EndEffectLastTime = EndEffectLastTimeInit;
             IsEndEffectOn = false;
             FEngineLoop::TimeScale = 1.0f;
         }
@@ -44,7 +47,14 @@ void ARabbitGameMode::BeginPlay()
             Rabbit->OnPlayerDied.BindLambda(
                 [this]
                 {
-                    OnDieUIPanel();
+                    this->OnPlayerDeath();
+                }
+            );
+
+            Rabbit->OnPlayerSucceed.BindLambda(
+                [this]
+                {
+                    this->OnPlayerSucceed();
                 }
             );
 
@@ -61,6 +71,13 @@ void ARabbitGameMode::BeginPlay()
             }
         }
     }
+}
+
+void ARabbitGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+    Super::EndPlay(EndPlayReason);
+
+    ClearUIDeathTimer();
 }
 
 void ARabbitGameMode::JudgeCapturedPhoto(UPrimitiveComponent* CapturedComp, RabbitCamera* RabbitCam)
@@ -87,22 +104,93 @@ void ARabbitGameMode::JudgeCapturedPhoto(UPrimitiveComponent* CapturedComp, Rabb
         }
     }
 
-    bool IsEnd = CapturedPhotoTypes.Num() == EPhotoTypeSize;
+    bool WasAlreadyComplete = IsPictureComplete;
+    bool IsNowComplete = CapturedPhotoTypes.Num() == EPhotoTypeSize;
 
-    RabbitCam->PlayCameraSound(IsEnd);
-
-    if (IsEnd)
+    // 사진 사운드 재생
+    if (!WasAlreadyComplete)
     {
-        IsEndEffectOn=true;
-        FEngineLoop::TimeScale = .3f;
+        RabbitCam->PlayCameraSound(IsNowComplete);
+    }
+    else
+    {
+        RabbitCam->PlayCameraSound(false); // 그냥 일반 셔터음 또는 안 나게 하고 싶으면 생략
+    }
+
+    // 처음으로 완성된 경우에만 효과 발동
+    if (!WasAlreadyComplete && IsNowComplete)
+    {
+        IsPictureComplete = true;
+        IsEndEffectOn = true;
+        FEngineLoop::TimeScale = 0.3f;
+        StartUIPictureEnd();
     }
    
 }
 
-void ARabbitGameMode::OnDieUIPanel()
+void ARabbitGameMode::StartUIPictureEnd()
 {
     auto Panel = GEngineLoop.GetUnrealEditor()->GetEditorPanel("RabbitGameUIPanel");
     auto RabbitPanel = std::dynamic_pointer_cast<RabbitGameUIPanel>(Panel);
-    RabbitPanel->OnDeathUI();
+
+    RabbitPanel->OnPictureEndUI();
+    FSoundManager::GetInstance().StopAllSounds();
+    FSoundManager::GetInstance().PlaySound("Hurry");
+    FSoundManager::GetInstance().PlaySound("Shoong");
+}
+
+void ARabbitGameMode::StartUIDeathTimer()
+{
+    auto Panel = GEngineLoop.GetUnrealEditor()->GetEditorPanel("RabbitGameUIPanel");
+    auto RabbitPanel = std::dynamic_pointer_cast<RabbitGameUIPanel>(Panel);
+    
+    RabbitPanel->StartDeathTimer();
+    FSoundManager::GetInstance().StopAllSounds();
     FSoundManager::GetInstance().PlaySound("GameOver");
+}
+
+void ARabbitGameMode::ClearUIDeathTimer()
+{
+    auto Panel = GEngineLoop.GetUnrealEditor()->GetEditorPanel("RabbitGameUIPanel");
+    auto RabbitPanel = std::dynamic_pointer_cast<RabbitGameUIPanel>(Panel);
+    
+    RabbitPanel->ClearDeathTimer();
+}
+
+void ARabbitGameMode::OnPlayerDeath()
+{
+
+    StartUIDeathTimer();
+}
+
+void ARabbitGameMode::OnPlayerSucceed()
+{
+    auto Panel = GEngineLoop.GetUnrealEditor()->GetEditorPanel("RabbitGameUIPanel");
+    auto RabbitPanel = std::dynamic_pointer_cast<RabbitGameUIPanel>(Panel);
+
+    RabbitPanel->StartSuccessEffect();
+
+    FSoundManager::GetInstance().StopAllSounds();
+    FSoundManager::GetInstance().PlaySound("Success");
+  
+}
+
+void ARabbitGameMode::Restart()
+{
+    FTransform SpawnTransform = GetPlayerStartTransform();
+    
+    if (APlayerController* PlayerController = GEngine->ActiveWorld->GetPlayerController())
+    {
+        if (ARabbitPlayer* Rabbit = Cast<ARabbitPlayer>(PlayerController->GetPawn()))
+        {
+            Rabbit->ResetPlayer();
+            Rabbit->SetActorLocation(SpawnTransform.GetTranslation());
+            CapturedPhotoTypes.Empty();
+            Rabbit->GetRabbitCamera()->ResetRabbitCamera(EPhotoTypeSize);
+            IsPictureComplete = false;
+        }
+    }
+
+    FSoundManager::GetInstance().StopAllSounds();
+    FSoundManager::GetInstance().PlaySound("MainBGM");
 }

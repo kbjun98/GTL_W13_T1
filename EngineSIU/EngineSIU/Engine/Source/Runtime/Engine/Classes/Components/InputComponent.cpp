@@ -189,6 +189,7 @@ void UInputComponent::InputKey(const FKeyEvent& InKeyEvent)
     }
     case VK_SPACE: // Space 키
         {
+            KeyBindDelegate[FString("SPACE_Down")].Broadcast(0);
             if (InKeyEvent.GetInputEvent() == IE_Pressed)
             {
                 PressedKeys.Add(EKeys::SpaceBar);

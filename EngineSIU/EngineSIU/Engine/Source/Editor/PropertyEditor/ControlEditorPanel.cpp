@@ -40,13 +40,14 @@
 #include "Renderer/CompositingPass.h"
 #include <Engine/FbxLoader.h>
 #include "Engine/Classes/Engine/AssetManager.h"
-#include "GameFramework/TestVolume.h"
+#include "GameFramework/DeathVolume.h"
 #include "Particles/ParticleSystemComponent.h"
 #include <Engine/Contents/Actors/GridMapActor.h>
 #include "Engine/Contents/GameFramework/RabbitEnemy.h"
 
 #include "GameFramework/PlayerStart.h"
 #include "GameFramework/RabbitPlayer.h"
+#include "GameFramework/SuccessVolume.h"
 
 ControlEditorPanel::ControlEditorPanel()
 {
@@ -203,14 +204,19 @@ void ControlEditorPanel::CreateMenuButton(const ImVec2 ButtonSize, ImFont* IconF
             ImGui::End();
             return;
         }
+        FGridMap* GridMap = GEngine->ActiveWorld->GetGridMap();
+
+        FString  GridMapFileName = FileName + FString(".mapgrid");
+
         if (UEditorEngine* EditorEngine = Cast<UEditorEngine>(GEngine))
         {
+            
             EditorEngine->NewLevel();
             EditorEngine->LoadLevel(FileName);
+            GridMap->LoadFromBinaryFile(GridMapFileName);
+
         }
     }
-
-    ImGui::Separator();
 
     if (ImGui::MenuItem("Save Level"))
     {
@@ -224,10 +230,62 @@ void ControlEditorPanel::CreateMenuButton(const ImVec2 ButtonSize, ImFont* IconF
         }
         if (const UEditorEngine* EditorEngine = Cast<UEditorEngine>(GEngine))
         {
+            FGridMap* GridMap = GEngine->ActiveWorld->GetGridMap();
+
+            GridMap->InitializeGridMap();
+
+            FString  GridMapFileName = FileName + FString(".mapgrid");
+            GridMap->SaveToBinaryFile(GridMapFileName);
+
             EditorEngine->SaveLevel(FileName);
+
         }
 
         tinyfd_messageBox("알림", "저장되었습니다.", "ok", "info", 1);
+    }
+
+    ImGui::Separator();
+
+    
+
+    if (ImGui::MenuItem("Save Map Grid Data"))
+    {
+        char const* lFilterPatterns[1] = { "*.mapgrid" };
+        const char* FileName = tinyfd_saveFileDialog("Save Map Grid Data File", "", 1, lFilterPatterns, "MapGrid(.mapgrid) file");
+
+        if (FileName == nullptr)
+        {
+            ImGui::End();
+            return;
+        }
+
+        FGridMap* GridMap = GEngine->ActiveWorld->GetGridMap();
+        if (const UEditorEngine* EditorEngine = Cast<UEditorEngine>(GEngine))
+        {
+            GridMap->InitializeGridMap();
+            GridMap->SaveToBinaryFile(FileName);
+        }
+
+        tinyfd_messageBox("알림", "저장되었습니다.", "ok", "info", 1);
+    }
+
+    if (ImGui::MenuItem("Load Map Grid Data"))
+    {
+        char const* lFilterPatterns[1] = { "*.mapgrid" };
+        const char* FileName = tinyfd_openFileDialog("Open Map Grid Data File", "", 1, lFilterPatterns, "MapGrid (.mapgrid) file", 0);
+
+        if (FileName == nullptr)
+        {
+            tinyfd_messageBox("Error", "파일을 불러올 수 없습니다.", "ok", "error", 1);
+            ImGui::End();
+            return;
+        }
+        if (UEditorEngine* EditorEngine = Cast<UEditorEngine>(GEngine))
+        {
+            FGridMap* GridMap = GEngine->ActiveWorld->GetGridMap();
+            GridMap->LoadFromBinaryFile(FileName);
+            GridMap->DebugPrint();
+        }
     }
 
     ImGui::Separator();
@@ -382,7 +440,8 @@ void ControlEditorPanel::CreateModifyButton(const ImVec2 ButtonSize, ImFont* Ico
             { .Label = "PlayerStart",       .OBJ = OBJ_PLAYERSTART },
             { .Label = "RabbitPlayer",      .OBJ = OBJ_RABBITPLAYER },
             { .Label = "RabbitEnemy",       .OBJ = OBJ_RABBITENEMY },
-            { .Label = "TestVolume",        .OBJ = OBJ_TESTVOLUME }
+            { .Label = "DeathVolume",        .OBJ = OBJ_DEATHVOLUME },
+            {.Label = "SuccessVolume",        .OBJ = OBJ_SUCCESSVOLUME },
         };
 
         for (const auto& primitive : primitives)
@@ -411,10 +470,16 @@ void ControlEditorPanel::CreateModifyButton(const ImVec2 ButtonSize, ImFont* Ico
                     SpawnedActor->SetActorLabel(TEXT("OBJ_RABBITENEMY"));
                     break;
                 }
-                case OBJ_TESTVOLUME:
+                case OBJ_DEATHVOLUME:
                 {
-                    SpawnedActor = World->SpawnActor<ATestVolume>();
-                    SpawnedActor->SetActorLabel(TEXT("OBJ_TESTVOLUME"));
+                    SpawnedActor = World->SpawnActor<ADeathVolume>();
+                    SpawnedActor->SetActorLabel(TEXT("OBJ_DeathVolume"));
+                    break;
+                }                
+                case OBJ_SUCCESSVOLUME:
+                {
+                    SpawnedActor = World->SpawnActor<ASuccessVolume>();
+                    SpawnedActor->SetActorLabel(TEXT("OBJ_SuccessVolume"));
                     break;
                 }
                 case OBJ_SPHERE:

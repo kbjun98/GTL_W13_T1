@@ -8,6 +8,8 @@
 #include "Components/CameraMeshComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/SkeletalMesh.h"
+#include "DeathVolume.h"
+#include "SuccessVolume.h"
 
 void ARabbitPlayer::PostSpawnInitialize()
 {
@@ -108,10 +110,7 @@ std::shared_ptr<RabbitCamera> ARabbitPlayer::GetRabbitCamera()
 
 void ARabbitPlayer::Jump()
 {
-    if (URabbitMovementComponent* RabbitMoveComp = Cast<URabbitMovementComponent>(GetMovementComponent()))
-    {
-        RabbitMoveComp->Jump();
-    }
+    Super::Jump();
 }
 
 void ARabbitPlayer::ZoomIn(float DeltaTime)
@@ -227,7 +226,6 @@ void ARabbitPlayer::ResetPlayer()
         USkeletalMesh* MeshAsset = Cast<USkeletalMesh>(UAssetManager::Get().GetAsset(EAssetType::SkeletalMesh, "Contents/Bunny/Bunny2"));
         SkeletalMeshComp->SetSkeletalMeshAsset(MeshAsset);
         SkeletalMeshComp->SetAnimationMode(EAnimationMode::AnimationSingleNode);
-        SkeletalMeshComp->SetRelativeLocation(FVector(0.f, 0.f, 100.f));
 
         SkeletalMeshComp->RigidBodyType = ERigidBodyType::KINEMATIC;
         SkeletalMeshComp->bApplyGravity = true;
@@ -247,6 +245,11 @@ void ARabbitPlayer::ResetPlayer()
     if (CameraMesh)
     {
         CameraMesh->bHidden = false;
+    }
+
+    if (UCameraComponent* CameraComp = GetComponentByClass<UCameraComponent>())
+    {
+        CameraComp->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
     }
 
     if (GetPlayerController())
@@ -297,7 +300,16 @@ void ARabbitPlayer::OnRabbitBeginOverlap(UPrimitiveComponent* OverlappedComp, AA
 {
     Super::OnRabbitBeginOverlap(OverlappedComp, OtherActor, OtherComp);
 
-    OnDeath();
+    if (Cast<ADeathVolume>(OtherActor))
+    {
+        OnDeath();
+    }
+
+    if (Cast<ASuccessVolume>(OtherActor))
+    {
+        OnPlayerSucceed.ExecuteIfBound();
+    }
+    
 }
 
 void ARabbitPlayer::OnRabbitEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp)
@@ -317,7 +329,7 @@ void ARabbitPlayer::OnDeath()
         USkeletalMesh* MeshAsset = Cast<USkeletalMesh>(UAssetManager::Get().GetAsset(EAssetType::SkeletalMesh, "Contents/Bunny/Bunny2"));
         SkeletalMeshComp->SetSkeletalMeshAsset(MeshAsset);
         SkeletalMeshComp->SetAnimationMode(EAnimationMode::AnimationSingleNode);
-        SkeletalMeshComp->SetRelativeLocation(FVector(0.f, 0.f, 100.f));
+        SkeletalMeshComp->SetRelativeLocation(FVector(0.f, 0.f, 3.f));
 
         SkeletalMeshComp->RigidBodyType = ERigidBodyType::KINEMATIC;
         SkeletalMeshComp->bApplyGravity = true;
@@ -338,6 +350,24 @@ void ARabbitPlayer::OnDeath()
     if (CameraMesh)
     {
         CameraMesh->bHidden = true;
+    }
+
+    if (UCameraComponent* CameraComp = GetComponentByClass<UCameraComponent>())
+    {
+        CameraComp->SetRelativeLocation(FVector(-100.f, 0.f, 50.f));
+
+        const FVector WorldLocation = CameraComp->GetComponentLocation();
+        const FVector TargetLocation = GetActorLocation();
+        const FVector Direction = (TargetLocation - WorldLocation).GetSafeNormal();
+
+        const float Pitch = FMath::RadiansToDegrees(FMath::Asin(Direction.Z));
+
+        if (APlayerController* PC = GetPlayerController())
+        {
+            FRotator ControlRotation = PC->GetControlRotation();
+            ControlRotation.Pitch = Pitch;
+            PC->SetControlRotation(ControlRotation);
+        }
     }
 
     OnPlayerDied.ExecuteIfBound();

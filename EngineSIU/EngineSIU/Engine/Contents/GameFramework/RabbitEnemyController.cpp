@@ -4,6 +4,7 @@
 #include "Engine/Engine.h"
 #include "World/World.h"
 #include "Engine/Contents/Navigation/PathFinder.h"
+#include <Engine/EditorEngine.h>
 void ARabbitEnemyController::PostSpawnInitialize()
 {
     Super::PostSpawnInitialize();
@@ -23,10 +24,10 @@ void ARabbitEnemyController::ProcessEnemyMovement(float DeltaTime)
     switch (CurrentState)
     {
     case EnemyState::IDLE:
-        Enemy->SetAnimState(ERabbitAnimState::EIDLE);
+        Enemy->SetAnimState(ERabbitAnimState::Idle);
         break;
     case EnemyState::PATROL:
-        Enemy->SetAnimState(ERabbitAnimState::EWALK);
+        Enemy->SetAnimState(ERabbitAnimState::Walk);
         // Patrol 경로 기반 이동 등 로직을 작성
         // 경로 따라 이동
         if (!CurrentPath.IsEmpty() && CurrentPathIndex < CurrentPath.Num())
@@ -65,7 +66,12 @@ void ARabbitEnemyController::ProcessEnemyMovement(float DeltaTime)
         MoveTo(CurrentPath[CurrentPathIndex]);
         break;*/
 
-        Enemy->SetAnimState(ERabbitAnimState::EWALK);
+        if (ARabbitPawn* Rabbit = Cast<ARabbitPawn>(GetPossessedPawn()))
+        {
+            Rabbit->Jump();
+        }
+        
+        Enemy->SetAnimState(ERabbitAnimState::Chase);
 
         // 경로 기반으로 이동
         if (!CurrentPath.IsEmpty() && CurrentPathIndex < CurrentPath.Num())
@@ -105,7 +111,7 @@ void ARabbitEnemyController::ProcessEnemyMovement(float DeltaTime)
         }
         break;
     case EnemyState::ATTACK:
-        Enemy->SetAnimState(ERabbitAnimState::EAttack);
+        Enemy->SetAnimState(ERabbitAnimState::Attack);
         break;
     default:
         break;
@@ -208,7 +214,12 @@ ARabbitEnemy* ARabbitEnemyController::GetPossesedRabbitEnemy()
 
 void ARabbitEnemyController::UpdatePatrolPath()
 {
+    UEditorEngine* Engine = Cast<UEditorEngine>(GEngine);
+
+    FGridMap* GridMap = GEngine->ActiveWorld->GetGridMap();
+    
     ARabbitEnemy* Enemy = GetPossesedRabbitEnemy();
+    
     if (!Enemy || Enemy->PatrolTargets.Num() == 0) return;
 
     USceneComponent* TargetComp = Enemy->PatrolTargets[CurPatrolIndex];

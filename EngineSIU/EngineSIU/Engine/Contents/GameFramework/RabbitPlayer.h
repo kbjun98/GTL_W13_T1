@@ -8,6 +8,7 @@ class UCameraMeshComponent;
 class UCameraShakeBase;
 
 DECLARE_DELEGATE(FOnPlayerDiedSignature);
+DECLARE_DELEGATE(FOnPlayerSucceed);
 
 class ARabbitPlayer : public ARabbitPawn
 {
@@ -29,7 +30,7 @@ public:
     virtual FVector GetActorForwardVector() const override;
     virtual FVector GetActorRightVector() const override;
 
-    void Jump();
+    virtual void Jump() override;
 
     void ZoomIn(float DeltaTime);
     void ZoomOut(float DeltaTime);
@@ -46,7 +47,7 @@ public:
     void ResetPlayer();
     
     FOnPlayerDiedSignature OnPlayerDied;
-
+    FOnPlayerSucceed OnPlayerSucceed;
 protected:
     void SetFOV(float FOV);
     float GetFOV() const;

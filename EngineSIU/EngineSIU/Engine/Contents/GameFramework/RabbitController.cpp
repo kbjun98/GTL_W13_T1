@@ -49,7 +49,7 @@ void ARabbitController::SetupInputComponent()
     InputComponent->BindAction("E", [this](float DeltaTime) { ZoomIn(DeltaTime); });
     InputComponent->BindAction("Q", [this](float DeltaTime) { ZoomOut(DeltaTime); });
 
-    InputComponent->BindAction("SPACE_Pressed", [this](float DeltaTime) { Jump(); });
+    InputComponent->BindAction("SPACE_Down", [this](float DeltaTime) { Jump(); });
 
     InputComponent->BindAxis("MouseX", [this](float Value) { AddYawInput(Value); });
     InputComponent->BindAxis("MouseY", [this](float Value) { AddPitchInput(-Value); });

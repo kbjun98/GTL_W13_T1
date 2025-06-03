@@ -23,7 +23,7 @@ public:
     virtual void OnMoveCompleted();
 
 protected:
-    FGridMap* GridMap;
+    //FGridMap* GridMap;
 
     FPathFinder* PathFinder;
 

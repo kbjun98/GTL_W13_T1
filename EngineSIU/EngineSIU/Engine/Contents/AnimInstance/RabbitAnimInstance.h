@@ -121,6 +121,8 @@ public:
     UAnimationAsset* Idle;
     UAnimationAsset* Walk;
     UAnimationAsset* Attack;
+    UAnimationAsset* Chase;
+    
 private:
     float PrevAnimTimeSnapshot;
     float ElapsedTime;
