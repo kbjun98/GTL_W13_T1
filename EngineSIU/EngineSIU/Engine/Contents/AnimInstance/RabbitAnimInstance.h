@@ -20,6 +20,8 @@ public:
 
     void AddAttackNotify(ARabbitEnemy* OutEnemy);
 
+    void RemoveAllNotify();
+
     void SetPlaying(bool bIsPlaying)
     {
         bPlaying = bIsPlaying;

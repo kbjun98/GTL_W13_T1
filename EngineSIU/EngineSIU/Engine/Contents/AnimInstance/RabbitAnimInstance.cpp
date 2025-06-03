@@ -46,7 +46,7 @@ RabbitAnimInstance::RabbitAnimInstance()
 void RabbitAnimInstance::NativeInitializeAnimation()
 {
     Super::NativeInitializeAnimation();
-    AddSoundNotify();
+    //AddSoundNotify();
     //AddAttackNotify();
 }
 
@@ -256,6 +256,16 @@ void RabbitAnimInstance::AddAttackNotify(ARabbitEnemy* OutEnemy)
         }
     }
 
+}
+
+void RabbitAnimInstance::RemoveAllNotify()
+{
+    UAnimSequence* AnimSequence = Cast<UAnimSequence>(Attack);
+    int TrackNum = AnimSequence->AnimNotifyTracks.Num();
+    for (int i = 0; i < TrackNum; ++i)
+    {
+        AnimSequence->RemoveNotifyTrack(i);
+    }
 }
 
 void RabbitAnimInstance::SetAnimState(EAnimState InAnimState)
