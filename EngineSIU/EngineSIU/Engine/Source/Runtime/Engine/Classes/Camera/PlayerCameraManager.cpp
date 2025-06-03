@@ -1,6 +1,7 @@
 #include "PlayerCameraManager.h"
 
 #include "CameraModifier.h"
+#include "WindowsPlatformTime.h"
 #include "GameFramework/PlayerController.h"
 #include "Camera/CameraModifier_CameraShake.h"
 #include "World/World.h"
@@ -70,7 +71,7 @@ APlayerCameraManager::APlayerCameraManager()
     ViewRollMax = 89.9f;
 
     F_Stop = 1.2f;
-    SensorWidth = 50.f; // mm
+    SensorWidth = 36.f; // mm
     FocalDistance = 0.f; // cm
 }
 
@@ -105,7 +106,7 @@ void APlayerCameraManager::UpdateCamera(float DeltaTime)
     {
         DoUpdateCamera(DeltaTime);
 
-        DoUpdateFocalLength(DeltaTime);
+        DoUpdateFocalDistance(DeltaTime);
     }
 }
 
@@ -292,7 +293,7 @@ void APlayerCameraManager::DoUpdateCamera(float DeltaTime)
     LastFrameViewTarget.POV = NewPOV;
 }
 
-bool APlayerCameraManager::ShouldUpdateFocalLength() const
+bool APlayerCameraManager::ShouldUpdateFocalDistance() const
 {
     if (PCOwner && PCOwner->GetPawn())
     {
@@ -304,13 +305,36 @@ bool APlayerCameraManager::ShouldUpdateFocalLength() const
     return false;
 }
 
-void APlayerCameraManager::DoUpdateFocalLength(float DeltaTime)
+void APlayerCameraManager::DoUpdateFocalDistance(float DeltaTime)
 {
-    if (!ShouldUpdateFocalLength())
+    if (!ShouldUpdateFocalDistance())
     {
         FocalDistance = 0.f;
+        bIsUpdatingFocalDistance = false;
         return;
     }
+
+    if (!bIsUpdatingFocalDistance)
+    {
+        bIsUpdatingFocalDistance = true;
+        PrevFocalDistCheckTime = 0.f;
+        AccumulatedFocalDistCheckTime = 0.f;
+    }
+
+    // Begin Interp
+    const float CurrentFocalDistance = FocalDistance;
+    const float NextFocalDistance = FMath::FInterpTo(CurrentFocalDistance, TargetFocalDistance, DeltaTime, FocalDistInterpSpeed);
+    FocalDistance = NextFocalDistance;
+    // End Interp
+
+    AccumulatedFocalDistCheckTime += DeltaTime;
+
+    if (0.f < AccumulatedFocalDistCheckTime && AccumulatedFocalDistCheckTime < PrevFocalDistCheckTime + FocalDistCheckInterval)
+    {
+        return;
+    }
+
+    PrevFocalDistCheckTime = AccumulatedFocalDistCheckTime;
     
     // Focal Distance Update
     const FRotator& ControlRotation = PCOwner->GetControlRotation();
@@ -348,8 +372,8 @@ void APlayerCameraManager::DoUpdateFocalLength(float DeltaTime)
             MinDistance = FMath::Min(MinDistance, WorldDistance);
         }
     }
-    
-    FocalDistance = MinDistance;
+
+    TargetFocalDistance = MinDistance;
 }
 
 void APlayerCameraManager::SetViewTarget(class AActor* NewTarget, struct FViewTargetTransitionParams TransitionParams)
