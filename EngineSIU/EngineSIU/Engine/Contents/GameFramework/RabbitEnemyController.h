@@ -45,7 +45,7 @@ private:
     void SetState(EEnemyState NewState);
     float AttackElapsedTime = 0.f;
     bool bAttacked = false;
-    float AttackTime = 0.35f;
+    float AttackTime = 0.3f;
     float AnimTime = 1.1666666f;
     
     EEnemyState CurrentState = EEnemyState::IDLE; // 현재 상태

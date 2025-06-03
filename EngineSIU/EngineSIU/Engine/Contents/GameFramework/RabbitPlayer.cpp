@@ -10,6 +10,7 @@
 #include "Engine/SkeletalMesh.h"
 #include "DeathVolume.h"
 #include "SuccessVolume.h"
+#include "Objects/HitCameraShake.h"
 
 void ARabbitPlayer::PostSpawnInitialize()
 {
@@ -393,10 +394,14 @@ void ARabbitPlayer::OnAttacked()
     const int32 NextHealth = CurrentHealth - 40;
     SetCurrentHealth(NextHealth);
 
-    UE_LOGFMT(ELogLevel::Display, "Health: {}", GetCurrentHealth());
+    if (APlayerController* PC = GetPlayerController())
+    {
+        PC->ClientStartCameraShake(UHitCameraShake::StaticClass());
+    }
     
     if (GetCurrentHealth() < 1)
     {
+        EndADS();
         OnDeath();
     }
 }
