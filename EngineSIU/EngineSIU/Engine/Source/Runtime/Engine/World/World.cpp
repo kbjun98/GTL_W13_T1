@@ -93,7 +93,7 @@ void UWorld::SpawnEssentialActors()
         GameMode = this->SpawnActor<ARabbitGameMode>();
         GameMode->SetActorLabel(TEXT("OBJ_GAMEMODE"));
 
-        CreateChaserRabbitSpawner();
+        //CreateChaserRabbitSpawner();
     }
 }
 

@@ -43,6 +43,7 @@
 #include "GameFramework/TestVolume.h"
 #include "Particles/ParticleSystemComponent.h"
 #include <Engine/Contents/Actors/GridMapActor.h>
+#include "Engine/Contents/GameFramework/RabbitEnemy.h"
 
 #include "GameFramework/PlayerStart.h"
 #include "GameFramework/RabbitPlayer.h"
@@ -406,7 +407,7 @@ void ControlEditorPanel::CreateModifyButton(const ImVec2 ButtonSize, ImFont* Ico
                 }
                 case OBJ_RABBITENEMY:
                 {
-                    SpawnedActor = World->SpawnActor<ARabbitPawn>();
+                    SpawnedActor = World->SpawnActor<ARabbitEnemy>();
                     SpawnedActor->SetActorLabel(TEXT("OBJ_RABBITENEMY"));
                     break;
                 }

@@ -16,6 +16,7 @@ private:
     void OnResize(HWND hWnd) override;
     void RenderGallery();
     bool RegisterPlayerCamera();
+    void RenderCameraCool();
 
     float Width;
     float Height;

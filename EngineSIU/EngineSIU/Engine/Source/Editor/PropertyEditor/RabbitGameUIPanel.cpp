@@ -4,6 +4,7 @@
 #include <Engine/Contents/GameFramework/RabbitPawn.h>
 #include <UObject/UObjectIterator.h>
 #include "Engine/Contents/GameFramework/RabbitPlayer.h"
+#include <Engine/Engine.h>
 
 
 inline ImVec2 operator*(const ImVec2& lhs, float rhs) {
@@ -26,40 +27,12 @@ RabbitGameUIPanel::RabbitGameUIPanel()
 
 void RabbitGameUIPanel::Render()
 {
+
     if (!RegisterPlayerCamera())
     {
         return;
     }
-
-   float progress = 1.0f - (PlayerCam->GetCameraCoolTime() / PlayerCam->GetCameraCoolTimeInit());
-
-   ImVec2 screen_size = ImGui::GetIO().DisplaySize;
-   float radius = 60.0f;
-   ImVec2 padding(40.0f, 40.0f);
-   ImVec2 center = ImVec2(radius + padding.x, screen_size.y - radius - padding.y);
-
-   ImDrawList* draw_list = ImGui::GetBackgroundDrawList(); // 또는 ForegroundDrawList
-
-   // 배경 원
-   draw_list->AddCircle(center, radius, IM_COL32(100, 100, 100, 255), 64, 2.0f);
-
-   // 진행 원호
-   draw_list->PathClear();
-   int segments = 64;
-   for (int i = 0; i <= segments * progress; ++i)
-   {
-       float angle = (i / (float)segments) * 2 * IM_PI - IM_PI / 2;
-       draw_list->PathLineTo(center + ImVec2(cosf(angle), sinf(angle)) * radius);
-   }
-   draw_list->PathStroke(IM_COL32(100, 255, 100, 255), false, 4.0f);
-
-   // 텍스트 (남은 시간)
-   char buffer[32];
-   snprintf(buffer, sizeof(buffer), "%.1fs", PlayerCam->GetCameraCoolTime());
-   ImVec2 text_size = ImGui::CalcTextSize(buffer);
-   draw_list->AddText(center - text_size * 0.5f, IM_COL32_WHITE, buffer);
-
-
+    RenderCameraCool();
    RenderGallery();
 }
 
@@ -74,128 +47,91 @@ void RabbitGameUIPanel::OnResize(HWND hWnd)
 
 void RabbitGameUIPanel::RenderGallery()
 {
-  TArray<FRenderTargetRHI*> Pictures;
-  Pictures = PlayerCam->GetPicturesRHI();
+    TArray<FRenderTargetRHI*> Pictures = PlayerCam->GetPicturesRHI();
 
-  if (Pictures.Num() <= 0)
-  {
-      ImGui::Text("No pictures available.");
-      ImGui::Separator();
-      return;
-  }
+    constexpr float THUMBNAIL_SIZE = 128.0f;
+    constexpr float spacing = 15.0f;
+    constexpr int32 MaxSlots = 3;
+    constexpr float totalWidth = (THUMBNAIL_SIZE * MaxSlots) + (spacing * (MaxSlots - 1))+40.f;
+    constexpr float panelHeight = THUMBNAIL_SIZE +30.f;
 
-  // 큰 화면 보기 모달
-  if (showLargeView && selectedPicture && selectedPicture->SRV)
-  {
-      ImGui::SetNextWindowSize(ImVec2(800, 600), ImGuiCond_FirstUseEver);
-      if (ImGui::Begin("Picture Viewer", &showLargeView, ImGuiWindowFlags_NoCollapse))
-      {
-          ImVec2 windowSize = ImGui::GetContentRegionAvail();
-          float maxSize = FMath::Min(windowSize.x, windowSize.y) - 20.0f;
+    ImGuiViewport* viewport = ImGui::GetMainViewport();
+    ImVec2 panelPos = ImVec2(
+        viewport->WorkPos.x + (viewport->WorkSize.x - totalWidth) * 0.4f,
+        viewport->WorkPos.y + viewport->WorkSize.y - panelHeight - 5.0f // 바닥에서 살짝 띄움
+    );
 
-          // 중앙 배치
-          ImVec2 imageSize(maxSize, maxSize);
-          ImVec2 cursorPos = ImGui::GetCursorPos();
-          ImVec2 centerPos = ImVec2(
-              cursorPos.x + (windowSize.x - imageSize.x) * 0.5f,
-              cursorPos.y + (windowSize.y - imageSize.y) * 0.5f
-          );
-          ImGui::SetCursorPos(centerPos);
+    ImGui::SetNextWindowPos(panelPos, ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(totalWidth, panelHeight));
+    ImGui::Begin("PhotoSlots", nullptr,
+        ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoFocusOnAppearing);
 
-          ImGui::Image(reinterpret_cast<ImTextureID>(selectedPicture->SRV), imageSize);
+    for (int32 slotIdx = 0; slotIdx < MaxSlots; ++slotIdx)
+    {
+        ImGui::PushID(slotIdx);
 
-          // 닫기 버튼 (우상단)
-          ImGui::SetCursorPos(ImVec2(windowSize.x - 80, 10));
-          if (ImGui::Button("Close", ImVec2(70, 30)))
-          {
-              showLargeView = false;
-              selectedPicture = nullptr;
-              selectedPhotoIndex = -1;
-          }
-      }
+        if (slotIdx < Pictures.Num())
+        {
+            const FRenderTargetRHI* picturePtr = Pictures[slotIdx];
+            if (picturePtr && picturePtr->SRV)
+            {
+                if (ImGui::ImageButton("##thumbnail", reinterpret_cast<ImTextureID>(picturePtr->SRV), ImVec2(THUMBNAIL_SIZE, THUMBNAIL_SIZE)))
+                {
+                    showLargeView = true;
+                    selectedPhotoIndex = slotIdx;
+                    selectedPicture = picturePtr;
+                }
+            }
+            else
+            {
+                ImGui::Button("Empty", ImVec2(THUMBNAIL_SIZE, THUMBNAIL_SIZE));
+            }
+        }
+        else
+        {
+            ImGui::Button("Empty", ImVec2(THUMBNAIL_SIZE, THUMBNAIL_SIZE));
+        }
 
+        ImGui::PopID();
 
-      float progress = 1.0f - (PlayerCam->GetCameraCoolTime() / PlayerCam->GetCameraCoolTimeInit()); // 0~1범위
-      ImVec2 center = ImVec2(ImGui::GetCursorScreenPos().x + 40, ImGui::GetCursorScreenPos().y + 40);
-      float radius = 30.0f;
-      ImDrawList* draw_list = ImGui::GetWindowDrawList();
+        if (slotIdx < MaxSlots - 1)
+        {
+            ImGui::SameLine(0.0f, spacing);
+        }
+    }
 
-      // 배경 원
-      draw_list->AddCircle(center, radius, IM_COL32(100, 100, 100, 255), 64, 2.0f);
+    ImGui::End();
 
-      // 진행 원호
-      draw_list->PathClear();
-      int segments = 64;
-      for (int i = 0; i <= segments * progress; ++i)
-      {
-          float angle = (i / (float)segments) * 2 * IM_PI - IM_PI / 2; // -90도부터 시작
-          draw_list->PathLineTo(center + ImVec2(cosf(angle), sinf(angle)) * radius);
-      }
-      draw_list->PathStroke(IM_COL32(100, 255, 100, 255), false, 4.0f);
+    // 확대 보기 모달
+    if (showLargeView && selectedPicture && selectedPicture->SRV)
+    {
+        ImGui::SetNextWindowSize(ImVec2(800, 600), ImGuiCond_FirstUseEver);
+        if (ImGui::Begin("Picture Viewer", &showLargeView, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize))
+        {
+            ImVec2 available = ImGui::GetContentRegionAvail();
+            float size = FMath::Min(available.x, available.y);
 
-      // 텍스트 (남은 시간)
-      char buffer[32];
-      snprintf(buffer, sizeof(buffer), "%.1fs", PlayerCam->GetCameraCoolTime());
-      ImVec2 text_size = ImGui::CalcTextSize(buffer);
-      draw_list->AddText(center - text_size * 0.5f, IM_COL32_WHITE, buffer);
+            ImVec2 centerPos = ImVec2(
+                (available.x - size) * 0.45f,
+                (available.y - size) * 0.45f
+            );
+            ImGui::SetCursorPos(centerPos);
+            ImGui::Image(reinterpret_cast<ImTextureID>(selectedPicture->SRV), ImVec2(size, size));
 
-
-      ImGui::End();
-  }
-
-  // 썸네일 설정
-  constexpr float THUMBNAIL_SIZE = 128.0f;
-  constexpr ImVec2 UV0(0.0f, 0.0f);
-  constexpr ImVec2 UV1(1.0f, 1.0f);
-
-  // 한 줄에 표시할 썸네일 개수 계산
-  const float availableWidth = ImGui::GetContentRegionAvail().x;
-  const float itemSpacing = ImGui::GetStyle().ItemSpacing.x;
-  const int photosPerLine = FMath::Max(1, static_cast<int>(availableWidth / (THUMBNAIL_SIZE + itemSpacing)));
-
-  int validPhotoCount = 0;
-
-  for (int32 photoIdx = 0; photoIdx < Pictures.Num(); ++photoIdx)
-  {
-      const FRenderTargetRHI* picturePtr = Pictures[photoIdx];
-
-      // 유효성 검사
-      if (!picturePtr || !picturePtr->SRV)
-      {
-          continue;
-      }
-
-      // 썸네일 렌더링 (고정 크기)
-      ImGui::PushID(photoIdx);
-
-      if (ImGui::ImageButton("##thumbnail", reinterpret_cast<ImTextureID>(picturePtr->SRV), ImVec2(THUMBNAIL_SIZE, THUMBNAIL_SIZE),UV0, UV1))
-      {
-          // 클릭 시 큰 화면으로 보기
-          showLargeView = true;
-          selectedPhotoIndex = photoIdx;
-          selectedPicture = picturePtr;
-      }
-
-      ImGui::PopID();
-
-      // 줄바꿈 처리
-      validPhotoCount++;
-      if (validPhotoCount % photosPerLine != 0 && photoIdx < Pictures.Num() - 1)
-      {
-          ImGui::SameLine();
-      }
-  }
-
-  // 사진이 하나도 유효하지 않은 경우
-  if (validPhotoCount == 0)
-  {
-      ImGui::Text("No valid pictures to display.");
-  }
-
-
-
-  ImGui::Separator();
+            // 닫기 버튼
+            if (ImGui::Button("Close"))
+            {
+                showLargeView = false;
+                selectedPicture = nullptr;
+                selectedPhotoIndex = -1;
+            }
+        }
+        ImGui::End();
+    }
 }
+
 
 bool RabbitGameUIPanel::RegisterPlayerCamera()
 {
@@ -211,4 +147,38 @@ bool RabbitGameUIPanel::RegisterPlayerCamera()
     }
 
     return Registered;
+}
+
+void RabbitGameUIPanel::RenderCameraCool()
+{
+
+    float progress = 1.0f - (PlayerCam->GetCameraCoolTime() / PlayerCam->GetCameraCoolTimeInit());
+
+    ImVec2 screen_size = ImGui::GetIO().DisplaySize;
+    float radius = 60.0f;
+    ImVec2 padding(40.0f, 40.0f);
+    ImVec2 center = ImVec2(radius + padding.x, screen_size.y - radius - padding.y);
+
+    ImDrawList* draw_list = ImGui::GetBackgroundDrawList(); // 또는 ForegroundDrawList
+
+    // 배경 원
+    draw_list->AddCircle(center, radius, IM_COL32(100, 100, 100, 255), 64, 2.0f);
+
+    // 진행 원호
+    draw_list->PathClear();
+    int segments = 64;
+    for (int i = 0; i <= segments * progress; ++i)
+    {
+        float angle = (i / (float)segments) * 2 * IM_PI - IM_PI / 2;
+        draw_list->PathLineTo(center + ImVec2(cosf(angle), sinf(angle)) * radius);
+    }
+    draw_list->PathStroke(IM_COL32(100, 255, 100, 255), false, 4.0f);
+
+    // 텍스트 (남은 시간)
+    char buffer[32];
+    snprintf(buffer, sizeof(buffer), "%.1fs", PlayerCam->GetCameraCoolTime());
+    ImVec2 text_size = ImGui::CalcTextSize(buffer);
+    draw_list->AddText(center - text_size * 0.5f, IM_COL32_WHITE, buffer);
+
+
 }

@@ -1,3 +1,4 @@
+#include "Animation/AnimSequenceBase.h"
 #include "RabbitAnimInstance.h"
 #include <Engine/AssetManager.h>
 #include "Animation/AnimStateMachine.h"
@@ -7,6 +8,12 @@
 #include "Engine/SkeletalMesh.h"
 #include <Animation/AnimationRuntime.h>
 #include <Animation/RabbitAnimStateMachine.h>
+#include <GameFramework/RabbitPawn.h>
+#include "Animation/AnimData/AnimDataModel.h"
+#include "Animation/AnimTypes.h"
+#include <Animation/AnimSoundNotify.h>
+
+
 
 RabbitAnimInstance::RabbitAnimInstance()
     : PrevAnim(nullptr)
@@ -21,13 +28,16 @@ RabbitAnimInstance::RabbitAnimInstance()
     , CurrentKey(0)
     , BlendAlpha(0.f)
     , BlendStartTime(0.f)
-    , BlendDuration(0.2f)
+    , BlendDuration(1.f)
     , bIsBlending(false)
 {
+    PrevAnimTimeSnapshot = 0.f;
     StateMachine = FObjectFactory::ConstructObject<RabbitAnimStateMachine>(this);
     Idle = UAssetManager::Get().GetAnimation(FString("Contents/Bunny/Idle"));
     Walk = UAssetManager::Get().GetAnimation(FString("Contents/Bunny/Walk"));
     Attack = UAssetManager::Get().GetAnimation(FString("Contents/Bunny/Attack"));
+
+    AddSoundNotify();
 
     CurrAnim = Cast<UAnimSequence>(Idle);
     PrevAnim = Cast<UAnimSequence>(Idle);
@@ -38,16 +48,26 @@ void RabbitAnimInstance::NativeInitializeAnimation()
 
 }
 
-float temp = 0.f;
+float GetNormalizedAnimTime(UAnimSequence* Anim, float ElapsedTime)
+{
+    if (!Anim) return 0.f;
+
+    float AnimLength = Anim->GetPlayLength();
+    if (AnimLength <= 0.f) return 0.f;
+
+    // 루프를 고려한 정규화된 시간
+    return FMath::Fmod(ElapsedTime, AnimLength);
+}
 
 void RabbitAnimInstance::NativeUpdateAnimation(float DeltaSeconds, FPoseContext& OutPose)
 {
     UAnimInstance::NativeUpdateAnimation(DeltaSeconds, OutPose);
-    StateMachine->ProcessState();
+    USkeletalMeshComponent* SkeletalMeshComp = GetSkelMeshComponent();
+    ARabbitPawn* RabbitPawn = Cast<ARabbitPawn>(SkeletalMeshComp->GetOwner());
+   StateMachine->ProcessState(RabbitPawn->GetAnimState());
 
 #pragma region MyAnim
-    USkeletalMeshComponent* SkeletalMeshComp = GetSkelMeshComponent();
-
+  
     if (!PrevAnim || !CurrAnim || !SkeletalMeshComp->GetSkeletalMeshAsset() || !SkeletalMeshComp->GetSkeletalMeshAsset()->GetSkeleton() || !bPlaying)
     {
         return;
@@ -73,6 +93,22 @@ void RabbitAnimInstance::NativeUpdateAnimation(float DeltaSeconds, FPoseContext&
     // TODO: FPoseContext의 BoneContainer로 바꾸기
     const FReferenceSkeleton& RefSkeleton = this->GetCurrentSkeleton()->GetReferenceSkeleton();
 
+
+    // 애니메이션 길이 가져오기
+    float AnimLength = CurrAnim->GetPlayLength()/30 / 30;
+
+    // 현재 시간을 애니메이션 길이로 정규화
+    float NormalizedTime = FMath::Fmod(ElapsedTime, AnimLength);
+
+    // 이전 시간도 정규화 (루프 경계 처리를 위해)
+    float NormalizedPreviousTime = FMath::Fmod(PreviousTime, AnimLength);
+
+    // 노티파이 평가
+    CurrAnim->EvaluateAnimNotifies(CurrAnim->Notifies, NormalizedTime, NormalizedPreviousTime, DeltaSeconds, SkeletalMeshComp, CurrAnim, bLooping);
+
+    // 이전 시간 업데이트
+    PreviousTime = ElapsedTime;
+
     if (PrevAnim->GetSkeleton()->GetReferenceSkeleton().GetRawBoneNum() != RefSkeleton.RawRefBoneInfo.Num() || CurrAnim->GetSkeleton()->GetReferenceSkeleton().GetRawBoneNum() != RefSkeleton.RawRefBoneInfo.Num())
     {
         return;
@@ -89,14 +125,70 @@ void RabbitAnimInstance::NativeUpdateAnimation(float DeltaSeconds, FPoseContext&
         CurrPose.Pose[BoneIdx] = RefSkeleton.RawRefBonePose[BoneIdx];
     }
 
-    FAnimExtractContext ExtractA(GetElapsedTime(), false);
-    FAnimExtractContext ExtractB(GetElapsedTime(), false);
+    
+    if (bIsBlending)
+    {
+        float BlendElapsed = ElapsedTime - BlendStartTime;
+        float CurrAnimLength = CurrAnim->GetPlayLength();
+        float CurrAnimTime = FMath::Fmod(BlendElapsed, CurrAnimLength);
 
-    PrevAnim->GetAnimationPose(PrevPose, ExtractA);
-    CurrAnim->GetAnimationPose(CurrPose, ExtractB);
+        FAnimExtractContext ExtractA(PrevAnimTimeSnapshot, false); // 저장된 시간 사용
+        FAnimExtractContext ExtractB(CurrAnimTime, false);
+
+        PrevAnim->GetAnimationPose(PrevPose, ExtractA);
+        CurrAnim->GetAnimationPose(CurrPose, ExtractB);
+    }
+    else
+    {
+        float CurrAnimLength = CurrAnim->GetPlayLength();
+        float CurrAnimTime = FMath::Fmod(ElapsedTime, CurrAnimLength);
+
+        FAnimExtractContext ExtractA(CurrAnimTime, false);
+        FAnimExtractContext ExtractB(CurrAnimTime, false);
+        PrevAnim->GetAnimationPose(PrevPose, ExtractA);
+        CurrAnim->GetAnimationPose(CurrPose, ExtractB);
+    }
+
 
     FAnimationRuntime::BlendTwoPosesTogether(CurrPose.Pose, PrevPose.Pose, BlendAlpha, OutPose.Pose);
 #pragma endregion
+}
+
+void RabbitAnimInstance::AddSoundNotify()
+{
+    int32 AttackTrackIndex;
+    bool bTrackAdded = Cast<UAnimSequence>(Attack)->AddNotifyTrack(FName("AttackTrack"), AttackTrackIndex);
+
+    UAnimSequence* AnimSequence = Cast<UAnimSequence>(Attack);
+
+    if (bTrackAdded)
+    {
+        // 공격 시작 Notify 추가
+        int32 AttackStartIndex;
+        AnimSequence->AddNotifyEvent(
+            AttackTrackIndex,
+            0.25f,           // 0.25초에 발생
+            0.0f,           // 즉시 Notify
+            FName("Attack"),
+            AttackStartIndex
+        );
+    }
+
+    // Notify 이벤트 가져오기 및 타입 설정
+    FAnimNotifyEvent* NotifyEvent = AnimSequence->GetNotifyEvent(0);
+    NotifyEvent->SetAnimNotify(FObjectFactory::ConstructObject<UAnimSoundNotify>(nullptr));
+
+    if (NotifyEvent)
+    {
+        UAnimNotify* BaseNotify = NotifyEvent->GetNotify();
+        UAnimSoundNotify* SoundNotify = Cast<UAnimSoundNotify>(BaseNotify);
+
+        if (SoundNotify)
+        {
+            // 사운드 이름 설정
+            SoundNotify->SetSoundName(FName("Attack"));
+        }
+    }
 }
 
 void RabbitAnimInstance::SetAnimState(EAnimState InAnimState)

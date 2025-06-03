@@ -4,27 +4,51 @@
 #include "Engine/Contents/Navigation/MapData.h"
 #include "Engine/Contents/Components/GridMapComponent.h"
 #include "Classes/GameFramework/Pawn.h"
+void AAIController::PostSpawnInitialize()
+{
+    Super::PostSpawnInitialize();
+    GridMap = new FGridMap();
+    PathFinder = new FPathFinder();
+    GridMap->InitializeGridMap();
+}
+
+UObject* AAIController::Duplicate(UObject* InOuter)
+{
+    ThisClass* NewComponent = Cast<ThisClass>(Super::Duplicate(InOuter));
+    return NewComponent;
+}
+
 void AAIController::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-    if (IsPathValid())
+    PathUpdateTimer += DeltaTime;
+    if (PathUpdateTimer >= PathUpdateInterval)
     {
-        MoveAlongPath(DeltaTime);
+        PathUpdateTimer = 0.0f;
+        //UpdatePath();
     }
 }
 
-void AAIController::RequestMove()
+void AAIController::UpdatePath()
 {
-    // 경로 갱신 - default : 갱신 X
-    UpdatePath();
+    if (TargetPawn && PossessedPawn)
+    {
+        FVector StartLocation = PossessedPawn->GetActorLocation();
+        FVector TargetLocation = TargetPawn->GetActorLocation();;
+
+        CurrentPath = PathFinder->FindWorlPosPathByWorldPos(
+            *GridMap, StartLocation, TargetLocation);
+        CurrentPathIndex = 0;
+    }
+    else
+    {
+        CurrentPath.Empty();
+    }
 }
-
-
 
 void AAIController::OnMoveCompleted()
 {
     bMoving = false;
-
 }
 
 void AAIController::MoveAlongPath(float DeltaTime)
@@ -54,6 +78,27 @@ void AAIController::MoveAlongPath(float DeltaTime)
             OnMoveCompleted();
         }
     }
+}
+
+FVector AAIController::GetNextLocation()
+{
+    FVector TargetDirection = CurrentPath[CurrentPathIndex] - PossessedPawn->GetActorLocation();
+    TargetDirection.Z = 0.0f; // Z축 방향은 무시
+    FVector DirNormal = TargetDirection.GetSafeNormal();
+    if (DirNormal.Size() <0.01f)
+    {
+        CurrentPathIndex++;
+        UE_LOG(ELogLevel::Error, "CurrentPathIndex : %d", CurrentPathIndex);
+    }
+    if (CurrentPathIndex < CurrentPath.Num())
+    {
+        return CurrentPath[CurrentPathIndex];
+    }
+    else {
+        UE_LOG(ELogLevel::Error, "Invalid currentPathIndex");
+        return FVector::ZeroVector;
+    }
+    
 }
 
 bool AAIController::IsPathValid() const

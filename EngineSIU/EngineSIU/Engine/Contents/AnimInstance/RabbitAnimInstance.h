@@ -8,13 +8,14 @@ class RabbitAnimInstance : public UAnimInstance
 {
     DECLARE_CLASS(RabbitAnimInstance, UAnimInstance)
 
-
 public:
     RabbitAnimInstance();
 
     virtual void NativeInitializeAnimation() override;
 
     virtual void NativeUpdateAnimation(float DeltaSeconds, FPoseContext& OutPose) override;
+  
+    void AddSoundNotify();
 
     void SetPlaying(bool bIsPlaying)
     {
@@ -114,12 +115,14 @@ public:
     void SetBlendStartTime(float Time) { BlendStartTime = Time; }
 
     void SetIsBlending(bool State) { bIsBlending = State; }
+    void SetPrevAnimTimeSnapshot(float TimeSnapshot) { PrevAnimTimeSnapshot = TimeSnapshot; }
+    float GetPrevAnimTimeSnapshot() const { return PrevAnimTimeSnapshot; }
 
     UAnimationAsset* Idle;
     UAnimationAsset* Walk;
     UAnimationAsset* Attack;
 private:
-
+    float PrevAnimTimeSnapshot;
     float ElapsedTime;
 
     float PlayRate;
@@ -145,7 +148,7 @@ private:
     float BlendStartTime;
 
     float BlendDuration;
-
+    float PreviousTime;
     bool bIsBlending;
 
     RabbitAnimStateMachine* StateMachine;

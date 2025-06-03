@@ -30,4 +30,5 @@ public:
     int GetHeight() const;
 
     FGridNode& GetNode(int X, int Y);
+
 };
