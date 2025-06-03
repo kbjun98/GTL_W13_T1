@@ -11,9 +11,9 @@ UPointLightComponent::UPointLightComponent()
 
     PointLightInfo.LightColor = FLinearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-    PointLightInfo.Intensity = 1000.f;
+    PointLightInfo.Intensity = 100000.f;
     PointLightInfo.Type = ELightType::POINT_LIGHT;
-    PointLightInfo.Attenuation = 20.0f;
+    PointLightInfo.Attenuation = 100000.f;
 
     // CubeMap이므로 6개의 ShadowMap을 생성합니다.
     // constexpr int32 ShadowMapCreationCount = 6;  

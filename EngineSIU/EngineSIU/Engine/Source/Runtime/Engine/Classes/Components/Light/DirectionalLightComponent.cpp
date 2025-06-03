@@ -9,9 +9,10 @@ UDirectionalLightComponent::UDirectionalLightComponent()
 {
 
     DirectionalLightInfo.Direction = GetDirection();
-    DirectionalLightInfo.Intensity = 10.0f;
+    DirectionalLightInfo.Intensity = 0.4f;
 
     DirectionalLightInfo.LightColor = FLinearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    DirectionalLightInfo.CastShadows = false;
 }
 
 UObject* UDirectionalLightComponent::Duplicate(UObject* InOuter)
@@ -20,6 +21,7 @@ UObject* UDirectionalLightComponent::Duplicate(UObject* InOuter)
     if (NewComponent)
     {
         NewComponent->DirectionalLightInfo = DirectionalLightInfo;
+        NewComponent->SetCastShadows(GetCastShadows());
     }
     
     return NewComponent;
