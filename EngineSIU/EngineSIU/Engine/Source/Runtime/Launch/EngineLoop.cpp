@@ -112,6 +112,13 @@ int32 FEngineLoop::Init(HINSTANCE hInstance)
   
     UpdateUI();
 
+#ifdef NDEBUG
+    if (UEditorEngine* EdEngine = Cast<UEditorEngine>(GEngine))
+    {
+        EdEngine->StartPIE();
+    }
+#endif
+
     return 0;
 }
 
@@ -186,9 +193,11 @@ void FEngineLoop::Tick()
         UIManager->BeginFrame();
         UnrealEditor->Render();
 
+#ifndef NDEBUG
         FConsole::GetInstance().Draw();
         EngineProfiler.Render(GraphicDevice.DeviceContext, GraphicDevice.ScreenWidth, GraphicDevice.ScreenHeight);
-
+#endif
+        
         UIManager->EndFrame();
         FSoundManager::GetInstance().Update();
         // Pending 처리된 오브젝트 제거

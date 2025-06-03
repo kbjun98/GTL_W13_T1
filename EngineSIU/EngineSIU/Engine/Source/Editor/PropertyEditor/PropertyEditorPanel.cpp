@@ -49,7 +49,12 @@
 
 PropertyEditorPanel::PropertyEditorPanel()
 {
-    SetSupportedWorldTypes(EWorldTypeBitFlag::Editor| EWorldTypeBitFlag::PIE);
+    SetSupportedWorldTypes(
+    EWorldTypeBitFlag::Editor
+#ifndef NDEBUG
+        | EWorldTypeBitFlag::PIE
+#endif
+    );
 }
 
 // Pictures TArray에서 SRV를 가져와서 ImGui로 렌더링하는 개선된 코드
