@@ -16,10 +16,10 @@ public:
     
 public:
     UPROPERTY(EditAnywhere,
-        float, SightFOV, = 30.0f;
+        float, SightFOV, = 50.0f;
     )
     UPROPERTY(EditAnywhere,
-        float, AcceptanceRadius, = 50.0f; // 목표 위치에 도달하기 위한 허용 반경
+        float, AcceptanceRadius, = 80.0f; // 목표 위치에 도달하기 위한 허용 반경
     )
     UPROPERTY(EditAnywhere,
         float, FailureRadius, = 500.0f; // 추적 실패 반경
