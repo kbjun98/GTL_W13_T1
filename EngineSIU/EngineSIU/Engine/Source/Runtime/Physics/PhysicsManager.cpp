@@ -490,7 +490,28 @@ void FPhysicsManager::ApplyShapeCollisionSettings(PxShape* Shape, const FBodyIns
     Shape->setSimulationFilterData(FilterData);
     Shape->setQueryFilterData(FilterData);
 
+    // 충돌 필터링 설정 추가
+    FilterData.word0 = 1;  // 자신의 그룹
+    FilterData.word1 = 0xFFFFFFFF;  // 모든 그룹과 충돌
+    FilterData.word2 = 0;  // 사용자 데이터 1
+    FilterData.word3 = 0;  // 사용자 데이터 2
+
+    Shape->setSimulationFilterData(FilterData);
+    Shape->setQueryFilterData(FilterData);
+
+    Shape->setContactOffset(0.02f);     // 충돌 감지 거리 설정
+    Shape->setRestOffset(0.0f);         // 충돌 해결 거리 설정
+
     Shape->setFlags(ShapeFlags);
+
+    // 릴리즈 빌드에서 추가 설정
+    #ifdef NDEBUG
+    // 릴리즈 빌드에서는 충돌이 항상 작동하도록 강제 설정
+    if(BodyInstance->bSimulatePhysics)
+    {
+        Shape->setFlags(ShapeFlags | PxShapeFlag::eSIMULATION_SHAPE);
+    }
+    #endif
 }
 
 // // === 런타임 설정 변경 함수들 === TODO : 필요하면 GameObject 안으로 옮기기
