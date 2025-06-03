@@ -2,5 +2,5 @@
 
 void UAnimAttackNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
 {
-    OnAttackDelegate.Broadcast();
+    OnAttackDelegate.Broadcast(MeshComp);
 }

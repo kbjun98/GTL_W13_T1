@@ -46,8 +46,8 @@ RabbitAnimInstance::RabbitAnimInstance()
 void RabbitAnimInstance::NativeInitializeAnimation()
 {
     Super::NativeInitializeAnimation();
-    //AddSoundNotify();
-    //AddAttackNotify();
+    AddSoundNotify();
+    AddAttackNotify();
 }
 
 float GetNormalizedAnimTime(UAnimSequence* Anim, float ElapsedTime)
@@ -193,13 +193,18 @@ void RabbitAnimInstance::AddSoundNotify()
     }
 }
 
-void RabbitAnimInstance::AddAttackNotify(ARabbitEnemy* OutEnemy)
+void RabbitAnimInstance::AddAttackNotify()
 {
+    USkeletalMeshComponent* SkelMeshComp = GetSkelMeshComponent();
+    AActor* Owner = GetSkelMeshComponent()->GetOwner();
+    ARabbitEnemy* RabbitEnemy = Cast<ARabbitEnemy>(Owner);
+
     int32 OverlapTrack;
-    bool bTrackAdded = Cast<UAnimSequence>(Attack)->AddNotifyTrack(OutEnemy->GetFName(), OverlapTrack);
+    bool bTrackAdded = Cast<UAnimSequence>(Attack)->AddNotifyTrack(Owner->GetName(), OverlapTrack);
     UAnimSequence* AnimSequence = Cast<UAnimSequence>(Attack);
     int32 AttackStartIndex;
     int32 AttackEndIndex;
+    if (!bTrackAdded) return;
     if (bTrackAdded)
     {
         // 공격 시작 Notify 추가
@@ -225,10 +230,7 @@ void RabbitAnimInstance::AddAttackNotify(ARabbitEnemy* OutEnemy)
     UAnimAttackNotify* AttackNotifyEvent = FObjectFactory::ConstructObject<UAnimAttackNotify>(this);
     NotifyEvent->SetAnimNotify(AttackNotifyEvent);
 
-    USkeletalMeshComponent* SkelMeshComp = GetSkelMeshComponent();
-    AActor* Owner = GetSkelMeshComponent()->GetOwner();
-    //ARabbitEnemy* RabbitEnemy = Cast<ARabbitEnemy>(Owner);
-    ARabbitEnemy* RabbitEnemy = OutEnemy;
+    //ARabbitEnemy* RabbitEnemy = OutEnemy;
 
     if (NotifyEvent)
     {

@@ -18,7 +18,7 @@ public:
   
     void AddSoundNotify();
 
-    void AddAttackNotify(ARabbitEnemy* OutEnemy);
+    void AddAttackNotify();
 
     void RemoveAllNotify();
 

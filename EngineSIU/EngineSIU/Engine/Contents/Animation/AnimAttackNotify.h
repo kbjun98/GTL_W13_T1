@@ -2,8 +2,7 @@
 #include "Animation/AnimNotify.h"
 #include "Delegates/DelegateCombination.h"
 
-DECLARE_MULTICAST_DELEGATE(FOnAttackDelegate) 
-
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnAttackDelegate, USkeletalMeshComponent*)
 
 class UAnimAttackNotify : public UAnimNotify
 {

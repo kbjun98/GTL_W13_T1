@@ -1,6 +1,8 @@
 #pragma once
 #include "RabbitPawn.h"
 
+class USkeletalMeshComponent;
+
 class ARabbitEnemy : public ARabbitPawn
 {
     DECLARE_CLASS(ARabbitEnemy, ARabbitPawn)
@@ -10,12 +12,11 @@ public:
     virtual UObject* Duplicate(UObject* InOuter) override;
     virtual void Tick(float DeltaTime) override;
     virtual void BeginPlay() override;
-    virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 public:
     void SetTargetLocation(const FVector& Location) { TargetLocation = Location; }
     void RoatateToTarget(const FVector& Location, float DeltaTime);
-    void OnAttackNotify();
-    void OnAttackEndNotify();
+    void OnAttackNotify(USkeletalMeshComponent* NotifySkeletal);
+    void OnAttackEndNotify(USkeletalMeshComponent* NotifySkeletal);
 public:
     UPROPERTY(EditAnywhere,
         float, SightFOV, = 30.0f;
@@ -38,9 +39,6 @@ public:
 private:
     FVector TargetLocation = FVector::ZeroVector; // 적의 목표 위치
     const uint32 PatrolTargetNum = 2;
-
-private:
-    void SetAnimNotify();
 
 };
 
