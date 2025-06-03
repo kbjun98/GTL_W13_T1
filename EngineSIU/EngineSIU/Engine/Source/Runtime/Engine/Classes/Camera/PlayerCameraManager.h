@@ -136,6 +136,7 @@ public:
 protected:
     virtual void DoUpdateCamera(float DeltaTime);
 
+    // Begin Focal Distance
     bool ShouldUpdateFocalDistance() const;
     
     virtual void DoUpdateFocalDistance(float DeltaTime);
@@ -149,6 +150,7 @@ protected:
     float FocalDistInterpSpeed = 5.f;
 
     float TargetFocalDistance = 0.f;
+    // End Focal Distance
 
     virtual void UpdateViewTarget(FTViewTarget& OutVT, float DeltaTime);
     
