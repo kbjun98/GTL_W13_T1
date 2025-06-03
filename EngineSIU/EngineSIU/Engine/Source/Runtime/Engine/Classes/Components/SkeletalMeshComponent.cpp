@@ -658,11 +658,22 @@ void USkeletalMeshComponent::RemovePhysXGameObject()
     
     for (auto Body : Bodies)
     {
-        Body->BIGameObject->DynamicRigidBody->release();
-        Body->BIGameObject->DynamicRigidBody = nullptr;
+        if (!Body)
+        {
+            continue;
+        }
         
-        Body->BIGameObject->StaticRigidBody->release();
-        Body->BIGameObject->StaticRigidBody = nullptr;
+        if (Body->BIGameObject->DynamicRigidBody)
+        {
+            Body->BIGameObject->DynamicRigidBody->release();
+            Body->BIGameObject->DynamicRigidBody = nullptr;
+        }
+
+        if (Body->BIGameObject->StaticRigidBody)
+        {
+            Body->BIGameObject->StaticRigidBody->release();
+            Body->BIGameObject->StaticRigidBody = nullptr;
+        }
         
         delete Body->BIGameObject;
         Body->BIGameObject = nullptr;

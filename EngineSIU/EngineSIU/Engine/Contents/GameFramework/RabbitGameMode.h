@@ -21,8 +21,14 @@ public:
 
     /** Actor가 게임에 배치되거나 스폰될 때 호출됩니다. */
     virtual void BeginPlay() override;
+
+    virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+    
     void JudgeCapturedPhoto(UPrimitiveComponent* CapturedComp,RabbitCamera* RabbitCam);
-    void OnDieUIPanel();
+    
+    void StartUIDeathTimer();
+    
+    void ClearUIDeathTimer();
 
 private:
     TSet<EPhotoType> CapturedPhotoTypes;

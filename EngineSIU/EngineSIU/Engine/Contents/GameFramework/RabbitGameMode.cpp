@@ -44,7 +44,7 @@ void ARabbitGameMode::BeginPlay()
             Rabbit->OnPlayerDied.BindLambda(
                 [this]
                 {
-                    OnDieUIPanel();
+                    StartUIDeathTimer();
                 }
             );
 
@@ -61,6 +61,13 @@ void ARabbitGameMode::BeginPlay()
             }
         }
     }
+}
+
+void ARabbitGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+    Super::EndPlay(EndPlayReason);
+
+    ClearUIDeathTimer();
 }
 
 void ARabbitGameMode::JudgeCapturedPhoto(UPrimitiveComponent* CapturedComp, RabbitCamera* RabbitCam)
@@ -99,10 +106,20 @@ void ARabbitGameMode::JudgeCapturedPhoto(UPrimitiveComponent* CapturedComp, Rabb
    
 }
 
-void ARabbitGameMode::OnDieUIPanel()
+void ARabbitGameMode::StartUIDeathTimer()
 {
     auto Panel = GEngineLoop.GetUnrealEditor()->GetEditorPanel("RabbitGameUIPanel");
     auto RabbitPanel = std::dynamic_pointer_cast<RabbitGameUIPanel>(Panel);
-    RabbitPanel->OnDeathUI();
+    
+    RabbitPanel->StartDeathTimer();
+    
     FSoundManager::GetInstance().PlaySound("GameOver");
+}
+
+void ARabbitGameMode::ClearUIDeathTimer()
+{
+    auto Panel = GEngineLoop.GetUnrealEditor()->GetEditorPanel("RabbitGameUIPanel");
+    auto RabbitPanel = std::dynamic_pointer_cast<RabbitGameUIPanel>(Panel);
+    
+    RabbitPanel->ClearDeathTimer();
 }
