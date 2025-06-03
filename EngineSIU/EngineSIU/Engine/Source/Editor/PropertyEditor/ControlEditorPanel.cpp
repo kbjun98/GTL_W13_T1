@@ -201,20 +201,17 @@ void ControlEditorPanel::CreateMenuButton(const ImVec2 ButtonSize, ImFont* IconF
         if (FileName == nullptr)
         {
             tinyfd_messageBox("Error", "파일을 불러올 수 없습니다.", "ok", "error", 1);
-            ImGui::End();
+            // ImGui::End(); // 이 줄을 제거합니다.
             return;
         }
         FGridMap* GridMap = GEngine->ActiveWorld->GetGridMap();
-
-        FString  GridMapFileName = FileName + FString(".mapgrid");
+        FString  GridMapFileName = FString(FileName) + FString(".mapgrid"); // FString으로 변환
 
         if (UEditorEngine* EditorEngine = Cast<UEditorEngine>(GEngine))
         {
-            
             EditorEngine->NewLevel();
             EditorEngine->LoadLevel(FileName);
             GridMap->LoadFromBinaryFile(GridMapFileName);
-
         }
     }
 
@@ -225,28 +222,22 @@ void ControlEditorPanel::CreateMenuButton(const ImVec2 ButtonSize, ImFont* IconF
 
         if (FileName == nullptr)
         {
-            ImGui::End();
+            // ImGui::End(); // 이 줄을 제거합니다.
             return;
         }
         if (const UEditorEngine* EditorEngine = Cast<UEditorEngine>(GEngine))
         {
             FGridMap* GridMap = GEngine->ActiveWorld->GetGridMap();
+            GridMap->InitializeGridMap(); // 저장 전에 초기화가 필요한지 확인 필요
 
-            GridMap->InitializeGridMap();
-
-            FString  GridMapFileName = FileName + FString(".mapgrid");
+            FString  GridMapFileName = FString(FileName) + FString(".mapgrid"); // FString으로 변환
             GridMap->SaveToBinaryFile(GridMapFileName);
-
             EditorEngine->SaveLevel(FileName);
-
         }
-
         tinyfd_messageBox("알림", "저장되었습니다.", "ok", "info", 1);
     }
 
     ImGui::Separator();
-
-    
 
     if (ImGui::MenuItem("Save Map Grid Data"))
     {
@@ -255,17 +246,16 @@ void ControlEditorPanel::CreateMenuButton(const ImVec2 ButtonSize, ImFont* IconF
 
         if (FileName == nullptr)
         {
-            ImGui::End();
+            // ImGui::End(); // 이 줄을 제거합니다.
             return;
         }
 
         FGridMap* GridMap = GEngine->ActiveWorld->GetGridMap();
-        if (const UEditorEngine* EditorEngine = Cast<UEditorEngine>(GEngine))
+        if (const UEditorEngine* EditorEngine = Cast<UEditorEngine>(GEngine)) // EditorEngine 사용 여부 확인
         {
-            GridMap->InitializeGridMap();
-            GridMap->SaveToBinaryFile(FileName);
+            GridMap->InitializeGridMap(); // 저장 전에 초기화가 필요한지 확인 필요
+            GridMap->SaveToBinaryFile(FileName); // FString으로 변환할 필요 없음, tinyfd가 char* 반환
         }
-
         tinyfd_messageBox("알림", "저장되었습니다.", "ok", "info", 1);
     }
 
@@ -277,13 +267,13 @@ void ControlEditorPanel::CreateMenuButton(const ImVec2 ButtonSize, ImFont* IconF
         if (FileName == nullptr)
         {
             tinyfd_messageBox("Error", "파일을 불러올 수 없습니다.", "ok", "error", 1);
-            ImGui::End();
+            // ImGui::End(); // 이 줄을 제거합니다.
             return;
         }
-        if (UEditorEngine* EditorEngine = Cast<UEditorEngine>(GEngine))
+        if (UEditorEngine* EditorEngine = Cast<UEditorEngine>(GEngine)) // EditorEngine 사용 여부 확인
         {
             FGridMap* GridMap = GEngine->ActiveWorld->GetGridMap();
-            GridMap->LoadFromBinaryFile(FileName);
+            GridMap->LoadFromBinaryFile(FileName); // FString으로 변환할 필요 없음
             GridMap->DebugPrint();
         }
     }
@@ -297,17 +287,22 @@ void ControlEditorPanel::CreateMenuButton(const ImVec2 ButtonSize, ImFont* IconF
             char const* lFilterPatterns[1] = { "*.obj" };
             const char* FileName = tinyfd_openFileDialog("Open OBJ File", "", 1, lFilterPatterns, "Wavefront(.obj) file", 0);
 
-            if (FileName != nullptr)
+            if (FileName == nullptr) // 취소 시 아무것도 안하거나, 메시지 박스 후 return
+            {
+                // 여기에 ImGui::End()를 넣으면 안 됩니다.
+                // 필요하다면 메시지 박스를 표시할 수 있습니다.
+                // tinyfd_messageBox("알림", "OBJ 파일 로드가 취소되었습니다.", "ok", "info", 0);
+                // return; // MenuItem 함수의 로직을 여기서 끝내려면 return 사용
+            }
+            else
             {
                 std::cout << FileName << '\n';
-
                 if (FObjManager::CreateStaticMesh(FileName) == nullptr)
                 {
                     tinyfd_messageBox("Error", "파일을 불러올 수 없습니다.", "ok", "error", 1);
                 }
             }
         }
-
         ImGui::EndMenu();
     }
 
@@ -315,7 +310,7 @@ void ControlEditorPanel::CreateMenuButton(const ImVec2 ButtonSize, ImFont* IconF
 
     if (ImGui::MenuItem("Quit"))
     {
-        bOpenModal = true;
+        bOpenModal = true; // 이 부분은 모달 창을 여는 로직이므로 그대로 둡니다.
     }
 }
 

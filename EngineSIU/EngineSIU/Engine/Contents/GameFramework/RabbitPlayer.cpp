@@ -10,6 +10,7 @@
 #include "Engine/SkeletalMesh.h"
 #include "DeathVolume.h"
 #include "SuccessVolume.h"
+#include "Objects/HitCameraShake.h"
 
 void ARabbitPlayer::PostSpawnInitialize()
 {
@@ -236,6 +237,8 @@ void ARabbitPlayer::ResetPlayer()
 {
     bIsDied = false;
 
+    SetCurrentHealth(GetMaxHealth());
+
     if (SkeletalMeshComp)
     {
         USkeletalMesh* MeshAsset = Cast<USkeletalMesh>(UAssetManager::Get().GetAsset(EAssetType::SkeletalMesh, "Contents/Bunny/Bunny2"));
@@ -397,5 +400,23 @@ void ARabbitPlayer::OnDeath()
     if (GetRabbitController())
     {
         GetRabbitController()->SetInputMode(EInputMode::UIOnly);
+    }
+}
+
+void ARabbitPlayer::OnAttacked()
+{
+    const int32 CurrentHealth = GetCurrentHealth();
+    const int32 NextHealth = CurrentHealth - 40;
+    SetCurrentHealth(NextHealth);
+
+    if (APlayerController* PC = GetPlayerController())
+    {
+        PC->ClientStartCameraShake(UHitCameraShake::StaticClass());
+    }
+    
+    if (GetCurrentHealth() < 1)
+    {
+        EndADS();
+        OnDeath();
     }
 }

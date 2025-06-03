@@ -44,13 +44,21 @@ public:
     void StartADS();
     void EndADS();
 
-    bool GetIsCaptureAll() { return IsCaptureAll; }
+    bool GetIsCaptureAll() const { return IsCaptureAll; }
     void SetIsCaptureAll(bool State) { IsCaptureAll = State; }
 
     void ResetPlayer();
+
+    void OnDeath();
+
+    void OnAttacked();
+
+    bool IsDead() const { return bIsDied; }
     
     FOnPlayerDiedSignature OnPlayerDied;
     FOnPlayerSucceed OnPlayerSucceed;
+
+
 protected:
     void SetFOV(float FOV);
     float GetFOV() const;
@@ -59,8 +67,6 @@ protected:
 
     virtual void OnRabbitBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp) override;
     virtual void OnRabbitEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp) override;
-
-   
 
 private:
     UCameraMeshComponent* CameraMesh = nullptr;
@@ -83,6 +89,5 @@ private:
     bool bIsDied = false;
     bool IsCaptureAll=false;
 
-    void OnDeath();
 };
 

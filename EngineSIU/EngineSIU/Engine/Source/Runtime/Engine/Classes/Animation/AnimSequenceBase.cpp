@@ -54,9 +54,11 @@ bool UAnimSequenceBase::AddNotifyTrack(const FName& TrackName, int32& OutNewTrac
     {
         return false;
     }
-    if (FindNotifyTrackIndex(TrackName) != INDEX_NONE)
+    int32 ExistingTrackIndex = FindNotifyTrackIndex(TrackName);
+    if (ExistingTrackIndex != INDEX_NONE)
     {
-        return false;
+        OutNewTrackIndex = ExistingTrackIndex;
+        return true;
     }
     FAnimNotifyTrack NewTrack(TrackName);
     OutNewTrackIndex = AnimNotifyTracks.Add(NewTrack);
