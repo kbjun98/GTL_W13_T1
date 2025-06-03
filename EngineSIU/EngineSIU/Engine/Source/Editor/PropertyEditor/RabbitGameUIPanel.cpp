@@ -370,7 +370,11 @@ void RabbitGameUIPanel::RenderGallery()
 
     ImGuiViewport* viewport = ImGui::GetMainViewport();
     ImVec2 panelPos = ImVec2(
+#ifdef NDEBUG
+        viewport->WorkPos.x + (viewport->WorkSize.x - totalWidth) * 0.5f,
+#else
         viewport->WorkPos.x + (viewport->WorkSize.x - totalWidth) * 0.4f,
+#endif
         viewport->WorkPos.y + viewport->WorkSize.y - panelHeight - 5.0f // 바닥에서 살짝 띄움
     );
 
@@ -427,15 +431,35 @@ void RabbitGameUIPanel::RenderGallery()
         ImGui::SetNextWindowSize(ImVec2(800, 600), ImGuiCond_FirstUseEver);
         if (ImGui::Begin("Picture Viewer", &showLargeView, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize))
         {
-            ImVec2 available = ImGui::GetContentRegionAvail();
-            float size = FMath::Min(available.x, available.y);
+            D3D11_TEXTURE2D_DESC Desc;
+            selectedPicture->Texture2D->GetDesc(&Desc);
 
-            ImVec2 centerPos = ImVec2(
-                (available.x - size) * 0.45f,
-                (available.y - size) * 0.45f
-            );
-            ImGui::SetCursorPos(centerPos);
-            ImGui::Image(reinterpret_cast<ImTextureID>(selectedPicture->SRV), ImVec2(size, size));
+            const float TextureWidth = static_cast<float>(Desc.Width);
+            const float TextureHeight = static_cast<float>(Desc.Height);
+
+            ImVec2 available = ImGui::GetContentRegionAvail();
+
+            float AspectRatio = TextureWidth / TextureHeight;
+
+            float DisplayWidth = available.x;
+            float DisplayHeight = DisplayWidth / AspectRatio;
+            if (DisplayHeight > available.y)
+            {
+                DisplayHeight = available.y;
+                DisplayWidth = DisplayHeight * AspectRatio;
+            }
+            if (DisplayWidth > available.x)
+            {
+                DisplayWidth = available.x;
+                DisplayHeight = DisplayWidth / AspectRatio;
+            }
+
+            float cursorX = (available.x - DisplayWidth) * 0.5f;
+            float cursorY = (available.y - DisplayHeight) * 0.5f;
+
+            ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + cursorX, ImGui::GetCursorPos().y + cursorY));
+            
+            ImGui::Image(reinterpret_cast<ImTextureID>(selectedPicture->SRV), ImVec2(DisplayWidth, DisplayHeight));
 
             if (ImGui::Button("Close"))
             {
