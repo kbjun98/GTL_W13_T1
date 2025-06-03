@@ -134,11 +134,11 @@ void RabbitCamera::TakePicture()
     OnPictureTaken.Execute(this, HitComp, OwnerLocation);
 }
 
-void RabbitCamera::PlayCameraSound(bool IsSlow)
+void RabbitCamera::PlayCameraSound(bool IsEnd)
 {
-    if (IsSlow)
+    if (IsEnd)
     {
-        FSoundManager::GetInstance().PlaySound("Shutter");
+        FSoundManager::GetInstance().PlaySound("SlowShutter");
     }
     else
     {
@@ -193,9 +193,6 @@ void RabbitCamera::StorePicture(EPhotoType Type)
         PicturesRHI[Index - 1] = CapturedSource;
         StoredPictureNum++;
     }
-    
-    bool IsEnd = StoredPictureNum != PicturesRHI.Num();
-    PlayCameraSound(IsEnd);
 }
 
 void RabbitCamera::Tick(float DeltaTime)

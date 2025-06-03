@@ -20,7 +20,7 @@ void ARabbitGameMode::Tick(float DeltaTime)
 {
     if (IsEndEffectOn)
     {
-        EndEffectLastTime -= DeltaTime*2.5f;
+        EndEffectLastTime -= DeltaTime*3.3f;
 
         if (EndEffectLastTime <= 0)
         {
@@ -77,10 +77,14 @@ void ARabbitGameMode::JudgeCapturedPhoto(UPrimitiveComponent* CapturedComp, Rabb
         }
     }
 
-    if (CapturedPhotoTypes.Num() == EPhotoTypeSize)
+    bool IsEnd = CapturedPhotoTypes.Num() == EPhotoTypeSize;
+
+    RabbitCam->PlayCameraSound(IsEnd);
+
+    if (IsEnd)
     {
         IsEndEffectOn=true;
-        FEngineLoop::TimeScale = .4f;
+        FEngineLoop::TimeScale = .3f;
     }
    
 }

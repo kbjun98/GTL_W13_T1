@@ -44,7 +44,7 @@ void UStaticMeshComponent::GetProperties(TMap<FString, FString>& OutProperties) 
 
         FWString PathWString2 = PathFString.ToWideString();
 
-        
+        OutProperties.Add(TEXT("PhotoType"), FString::FromInt(static_cast<uint8>(PhotoType)));
         OutProperties.Add(TEXT("StaticMeshPath"), PathFString);
         OutProperties.Add(TEXT("StaticMeshType"), FString::FromInt(static_cast<uint8>(MeshType)));
     } else
@@ -100,6 +100,11 @@ void UStaticMeshComponent::SetProperties(const TMap<FString, FString>& InPropert
     if (InProperties.Contains(TEXT("StaticMeshType")))
     {
         MeshType = static_cast<EStaticMeshType>(FString::ToInt(InProperties[TEXT("StaticMeshType")]));
+    }
+
+    if (InProperties.Contains(TEXT("PhotoType")))
+    {
+        PhotoType = static_cast<EPhotoType>(FString::ToInt(InProperties[TEXT("PhotoType")]));
     }
 }
 
