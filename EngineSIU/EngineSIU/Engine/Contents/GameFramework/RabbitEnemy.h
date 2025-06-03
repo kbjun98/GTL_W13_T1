@@ -1,5 +1,6 @@
 #pragma once
 #include "RabbitPawn.h"
+
 class ARabbitEnemy : public ARabbitPawn
 {
     DECLARE_CLASS(ARabbitEnemy, ARabbitPawn)
@@ -9,6 +10,7 @@ public:
     virtual UObject* Duplicate(UObject* InOuter) override;
     virtual void Tick(float DeltaTime) override;
     virtual void BeginPlay() override;
+    virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 public:
     void SetTargetLocation(const FVector& Location) { TargetLocation = Location; }
     void RoatateToTarget(const FVector& Location, float DeltaTime);
@@ -37,7 +39,8 @@ private:
     FVector TargetLocation = FVector::ZeroVector; // 적의 목표 위치
     const uint32 PatrolTargetNum = 2;
 
-
+private:
+    void SetAnimNotify();
 
 };
 

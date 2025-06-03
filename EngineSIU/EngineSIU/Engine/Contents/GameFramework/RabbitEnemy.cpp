@@ -2,7 +2,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/Contents/GameFramework/RabbitMovementComponent.h"
 #include "Components/SphereComponent.h"
-
+#include "Engine/Contents/AnimInstance/RabbitAnimInstance.h"
 void ARabbitEnemy::PostSpawnInitialize()
 {
     Super::PostSpawnInitialize();
@@ -43,6 +43,15 @@ void ARabbitEnemy::BeginPlay()
     Super::BeginPlay();    
     URabbitMovementComponent* MovementComponent = GetComponentByClass<URabbitMovementComponent>();
     MovementComponent->MaxSpeed = 200.0f; // 적의 이동 속도 설정    
+    GetComponentByClass<USphereComponent>()->bIsOverlapEnabled = false;
+    SetAnimNotify();
+}
+
+void ARabbitEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+    USkeletalMeshComponent* SkeletalMeshComp = GetComponentByClass<USkeletalMeshComponent>();
+    RabbitAnimInstance* AnimInstance = Cast<RabbitAnimInstance>(SkeletalMeshComp->GetAnimInstance());
+    AnimInstance->RemoveAllNotify();
 }
 
 void ARabbitEnemy::RoatateToTarget(const FVector& Location, float DeltaTime)
@@ -72,12 +81,22 @@ void ARabbitEnemy::RoatateToTarget(const FVector& Location, float DeltaTime)
 
 void ARabbitEnemy::OnAttackNotify()
 {
-    GetComponentByClass<USphereComponent>()->bIsOverlapEnabled = true;
-    UE_LOG(ELogLevel::Error, TEXT("Attack Start Notify Triggered!"));
+    USphereComponent* SphereComp = this->GetComponentByClass<USphereComponent>();
+    this->GetComponentByClass<USphereComponent>()->bIsOverlapEnabled = true;
+    UE_LOG(ELogLevel::Error, TEXT("Attack Start Notify Triggered! %s"), GetName().ToAnsiString().c_str());
 }
 
 void ARabbitEnemy::OnAttackEndNotify()
 {
-    GetComponentByClass<USphereComponent>()->bIsOverlapEnabled = false;
-    UE_LOG(ELogLevel::Error, TEXT("Attack End Notify Triggered!"));
+    UShapeComponent* SphereComp = this->GetComponentByClass<USphereComponent>();
+    this->GetComponentByClass<USphereComponent>()->bIsOverlapEnabled = false;
+    UE_LOG(ELogLevel::Error, TEXT("Attack End Notify Triggered! %s"), GetName().ToAnsiString().c_str());
+}
+
+void ARabbitEnemy::SetAnimNotify()
+{
+    USkeletalMeshComponent* SkeletalMeshComp = GetComponentByClass<USkeletalMeshComponent>();
+    RabbitAnimInstance* AnimInstance = Cast<RabbitAnimInstance>(SkeletalMeshComp->GetAnimInstance());
+    AnimInstance->AddAttackNotify(this);
+    AnimInstance->AddSoundNotify();
 }

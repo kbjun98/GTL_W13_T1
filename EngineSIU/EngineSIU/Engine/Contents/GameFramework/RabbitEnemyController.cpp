@@ -4,6 +4,7 @@
 #include "Engine/Engine.h"
 #include "World/World.h"
 #include "Engine/Contents/Navigation/PathFinder.h"
+#include "Components/SphereComponent.h"
 void ARabbitEnemyController::PostSpawnInitialize()
 {
     Super::PostSpawnInitialize();
@@ -168,6 +169,11 @@ void ARabbitEnemyController::CheckStateChange(float DeltaTime)
         break;
     default:
         break;
+    }
+    
+    if (CurrentState != EnemyState::ATTACK)
+    {
+        //Enemy->GetComponentByClass<USphereComponent>()->bIsOverlapEnabled = false;
     }
 }
 
