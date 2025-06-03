@@ -51,6 +51,13 @@ void ARabbitGameMode::BeginPlay()
                 }
             );
 
+            Rabbit->OnPlayerSucceed.BindLambda(
+                [this]
+                {
+                    this->OnPlayerSucceed();
+                }
+            );
+
             if (std::shared_ptr<RabbitCamera> Camera = Rabbit->GetRabbitCamera())
             {
                 Camera->InitPictureArraySize(EPhotoTypeSize);
@@ -127,6 +134,8 @@ void ARabbitGameMode::StartUIPictureEnd()
     auto RabbitPanel = std::dynamic_pointer_cast<RabbitGameUIPanel>(Panel);
 
     RabbitPanel->OnPictureEndUI();
+    FSoundManager::GetInstance().StopAllSounds();
+    FSoundManager::GetInstance().PlaySound("Hurry");
     FSoundManager::GetInstance().PlaySound("Shoong");
 }
 
@@ -136,7 +145,7 @@ void ARabbitGameMode::StartUIDeathTimer()
     auto RabbitPanel = std::dynamic_pointer_cast<RabbitGameUIPanel>(Panel);
     
     RabbitPanel->StartDeathTimer();
-    
+    FSoundManager::GetInstance().StopAllSounds();
     FSoundManager::GetInstance().PlaySound("GameOver");
 }
 
@@ -150,7 +159,20 @@ void ARabbitGameMode::ClearUIDeathTimer()
 
 void ARabbitGameMode::OnPlayerDeath()
 {
+
     StartUIDeathTimer();
+}
+
+void ARabbitGameMode::OnPlayerSucceed()
+{
+    auto Panel = GEngineLoop.GetUnrealEditor()->GetEditorPanel("RabbitGameUIPanel");
+    auto RabbitPanel = std::dynamic_pointer_cast<RabbitGameUIPanel>(Panel);
+
+    RabbitPanel->StartSuccessEffect();
+
+    FSoundManager::GetInstance().StopAllSounds();
+    FSoundManager::GetInstance().PlaySound("Success");
+  
 }
 
 void ARabbitGameMode::Restart()
@@ -168,4 +190,7 @@ void ARabbitGameMode::Restart()
             IsPictureComplete = false;
         }
     }
+
+    FSoundManager::GetInstance().StopAllSounds();
+    FSoundManager::GetInstance().PlaySound("MainBGM");
 }

@@ -5,8 +5,9 @@
 enum class EPhotoType
 {
     NONE,
+    ESlave,
+    ELab,
     ECarrotField,
-    ERabbit,
     END,
 };
 
@@ -42,5 +43,6 @@ private:
     float EndEffectLastTimeInit = 3.0f;
     bool IsPictureComplete=false;
     void OnPlayerDeath();
+    void OnPlayerSucceed();
 };
 

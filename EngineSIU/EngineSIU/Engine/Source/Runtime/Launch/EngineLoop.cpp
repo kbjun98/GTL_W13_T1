@@ -104,9 +104,12 @@ int32 FEngineLoop::Init(HINSTANCE hInstance)
     FSoundManager::GetInstance().LoadSound("sizzle", "Contents/Sounds/sizzle.mp3");
     FSoundManager::GetInstance().LoadSound("GameOver", "Contents/Rabbit/Sound/GameOver.mp3");
     FSoundManager::GetInstance().LoadSound("Shoong", "Contents/Rabbit/Sound/Shoong.mp3");
+    FSoundManager::GetInstance().LoadSound("Success", "Contents/Rabbit/Sound/Success.mp3");
+    FSoundManager::GetInstance().LoadSound("MainBGM", "Contents/Rabbit/Sound/MainBGM.mp3",true);
+    FSoundManager::GetInstance().LoadSound("Hurry", "Contents/Rabbit/Sound/Hurry.mp3", true);
     //FSoundManager::GetInstance().PlaySound("fishdream");
 
-
+  
     UpdateUI();
 
     return 0;

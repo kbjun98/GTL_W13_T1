@@ -88,10 +88,13 @@ public:
     void Restart();
     
     void StartDeathTimer();
-
     void ClearDeathTimer();
     
+    void StartSuccessEffect();
+    bool IsSucceed=false;
+
     void RenderDeathUI();
+    void RenderSuceessUI();
     void OnPictureEndUI();
 private:
     virtual void OnResize(HWND hWnd) override;
