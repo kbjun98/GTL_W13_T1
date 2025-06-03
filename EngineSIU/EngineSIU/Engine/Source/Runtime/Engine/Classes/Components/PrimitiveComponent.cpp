@@ -548,12 +548,16 @@ void UPrimitiveComponent::CreatePhysXGameObject()
     BodyInstance->CollisionEnabled = ECollisionEnabled::QueryAndPhysics;  // 물리와 쿼리 모두 활성화
     BodyInstance->bUseCCD = true;                                        // CCD 활성화
     BodyInstance->bStartAwake = true;                                    // 항상 깨어있는 상태로 시작
-    BodyInstance->PositionSolverIterationCount = 8;                    // 릴리즈 빌드를 위해 더 높은 값으로 설정
-    BodyInstance->VelocitySolverIterationCount = 4;                     // 릴리즈 빌드를 위해 더 높은 값으로 설정
 
-    // 릴리즈 빌드에서 추가 조정
+    // 솔버 반복 횟수 설정 - 안정적인 시뮬레이션을 위해 적절한 값 사용
     #ifdef NDEBUG
-    BodyInstance->bUseCCD = true;                                        // Release 모드에서 CCD 강제 활성화
+    // 릴리즈 빌드에서는 더 높은 값 사용
+    BodyInstance->PositionSolverIterationCount = 8;
+    BodyInstance->VelocitySolverIterationCount = 4;
+    #else
+    // 디버그 빌드에서는 낮은 값 사용
+    BodyInstance->PositionSolverIterationCount = 8;
+    BodyInstance->VelocitySolverIterationCount = 4;
     #endif
     
     FVector Location = GetComponentLocation();
