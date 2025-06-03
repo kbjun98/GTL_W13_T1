@@ -43,16 +43,18 @@ void ARabbitPawn::BeginPlay()
     if (UCapsuleComponent* Collision = Cast<UCapsuleComponent>(RootComponent))
     {
         Collision->OnComponentBeginOverlap.AddLambda(
-            [](UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Hit)
+            [this](UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Hit)
             {
                 UE_LOG(ELogLevel::Display, TEXT("Begin Overlap!"));
+                this->OnRabbitBeginOverlap(OverlappedComponent, OtherActor, OtherComp);
             }
         );
 
         Collision->OnComponentEndOverlap.AddLambda(
-            [](UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+            [this](UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
             {
                 UE_LOG(ELogLevel::Display, TEXT("End Overlap!"));
+                this->OnRabbitEndOverlap(OverlappedComponent, OtherActor, OtherComp);
             }
         );
     }
@@ -84,4 +86,12 @@ void ARabbitPawn::SetMaxHealth(int32 Value)
 void ARabbitPawn::SetCurrentHealth(int32 Value)
 {
     CurrentHealth = FMath::Min(Value, MaxHealth);
+}
+
+void ARabbitPawn::OnRabbitBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp)
+{
+}
+
+void ARabbitPawn::OnRabbitEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp)
+{
 }

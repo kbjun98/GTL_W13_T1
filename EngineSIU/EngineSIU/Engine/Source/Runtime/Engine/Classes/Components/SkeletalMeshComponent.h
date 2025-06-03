@@ -124,6 +124,7 @@ public:
     virtual void InitAnim();
 
     virtual void CreatePhysXGameObject() override;
+    void RemovePhysXGameObject();
 
     TArray<FBodyInstance*>& GetBodies() { return Bodies; }
     TArray<FConstraintInstance*>& GetConstraints() { return Constraints; }
@@ -168,4 +169,6 @@ public:
     UClass* GetAnimClass() const;
     
     void SetAnimInstanceClass(class UClass* NewClass);
+
+    void EnableRagdoll(bool bEnable);
 };

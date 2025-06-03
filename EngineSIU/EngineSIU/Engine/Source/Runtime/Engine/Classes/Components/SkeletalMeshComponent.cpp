@@ -221,6 +221,10 @@ void USkeletalMeshComponent::EndPhysicsTickComponent(float DeltaTime)
 
         for (int32 i = 0; i < RefSkeleton.GetRawBoneNum(); ++i)
         {
+            if (RigidBodyType == ERigidBodyType::KINEMATIC && i == 0)
+            {
+                continue;
+            }
             const int32 ParentIndex = RefSkeleton.GetParentIndex(i);
             FMatrix ParentMatrix = FMatrix::Identity;
             if (ParentIndex == INDEX_NONE)
@@ -235,29 +239,6 @@ void USkeletalMeshComponent::EndPhysicsTickComponent(float DeltaTime)
             const FMatrix CurrentLocalMatrix = CurrentWorldMatrix * FMatrix::Inverse(ParentMatrix);
             BonePoseContext.Pose[i] = FTransform(CurrentLocalMatrix);
         }
-        
-        //for (FBodyInstance* BI : Bodies)
-        //{
-        //    if (RigidBodyType != ERigidBodyType::STATIC)
-        //    {
-        //        BI->BIGameObject->UpdateFromPhysics(GEngine->PhysicsManager->GetScene(GEngine->ActiveWorld));
-        //        XMMATRIX DXMatrix = BI->BIGameObject->WorldMatrix;
-        //        XMFLOAT4X4 dxMat;
-        //        XMStoreFloat4x4(&dxMat, DXMatrix);
-
-        //        FMatrix WorldMatrix;
-        //        for (int32 Row = 0; Row < 4; ++Row)
-        //        {
-        //            for (int32 Col = 0; Col < 4; ++Col)
-        //            {
-        //                WorldMatrix.M[Row][Col] = *(&dxMat._11 + Row * 4 + Col);
-        //            }
-        //        }
-
-        //        BonePoseContext.Pose[BI->BoneIndex] = FTransform(WorldMatrix) * GetComponentTransform().Inverse();
-
-        //    }
-        //}
         
         CPUSkinning();
     }
@@ -666,6 +647,32 @@ void USkeletalMeshComponent::CreatePhysXGameObject()
     }
 }
 
+void USkeletalMeshComponent::RemovePhysXGameObject()
+{
+    for (auto Constraint : Constraints)
+    {
+        Constraint->ConstraintData->release();
+        Constraint->ConstraintData = nullptr;
+    }
+    Constraints.Empty();
+    
+    for (auto Body : Bodies)
+    {
+        Body->BIGameObject->DynamicRigidBody->release();
+        Body->BIGameObject->DynamicRigidBody = nullptr;
+        
+        Body->BIGameObject->StaticRigidBody->release();
+        Body->BIGameObject->StaticRigidBody = nullptr;
+        
+        delete Body->BIGameObject;
+        Body->BIGameObject = nullptr;
+        
+        Body->RigidActorSync = nullptr;
+        Body->RigidActorAsync = nullptr;
+    }
+    Bodies.Empty();
+}
+
 void USkeletalMeshComponent::AddBodyInstance(FBodyInstance* BodyInstance)
 {
     Bodies.Add(BodyInstance);
@@ -816,6 +823,23 @@ void USkeletalMeshComponent::SetAnimInstanceClass(class UClass* NewClass)
         // @todo is this it?
         AnimClass = nullptr;
         ClearAnimScriptInstance();
+    }
+}
+
+void USkeletalMeshComponent::EnableRagdoll(bool bEnable)
+{
+    if (bEnable)
+    {
+        RigidBodyType = ERigidBodyType::DYNAMIC;
+        for (FBodyInstance* BodyInstance : Bodies)
+        {
+            BodyInstance->BIGameObject->DynamicRigidBody->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
+            BodyInstance->BIGameObject->DynamicRigidBody->wakeUp();
+        }
+    }
+    else
+    {
+        
     }
 }
 

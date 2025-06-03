@@ -26,6 +26,8 @@ public:
 
     float MouseSensitivityCurrent;
     
+    void SetInputMode(EInputMode NewInputMode);
+    
 protected:
     virtual void SetupInputComponent() override;
     
@@ -43,7 +45,6 @@ private:
     virtual void AddYawInput(float Value) override;
     virtual void AddPitchInput(float Value) override;
 
-    void SetInputMode(EInputMode NewInputMode);
     void OnESCPressed();
 
     void TakePicture();
@@ -60,5 +61,7 @@ private:
     float MouseSensitivityBase = 0.4f;
     float MouseSensitivityMin = 0.08f;
     float MouseSensitivityMax = 0.3f;
+
+    bool ShouldIgnoreInput() const;
 };
 

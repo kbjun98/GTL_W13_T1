@@ -55,6 +55,9 @@ public:
     virtual void AddYawInput(float Value);
 
     FRotator GetControlRotation() const { return ControlRotation; }
+
+    void SetInputEnabled(bool bEnable) { bInputEnabled = bEnable; }
+    bool IsInputEnabled() const { return bInputEnabled; }
     
 protected:
     UPROPERTY(UInputComponent*, InputComponent, = nullptr)
@@ -68,5 +71,7 @@ protected:
     FRotator RotationInput = FRotator(0, 0, 0);
 
     FRotator ControlRotation = FRotator(0, 0, 0);
+
+    bool bInputEnabled = true;
 };
 
