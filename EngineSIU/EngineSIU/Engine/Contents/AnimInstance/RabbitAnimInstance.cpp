@@ -200,7 +200,8 @@ void RabbitAnimInstance::AddAttackNotify()
     ARabbitEnemy* RabbitEnemy = Cast<ARabbitEnemy>(Owner);
 
     int32 OverlapTrack;
-    bool bTrackAdded = Cast<UAnimSequence>(Attack)->AddNotifyTrack(Owner->GetName(), OverlapTrack);
+    //bool bTrackAdded = Cast<UAnimSequence>(Attack)->AddNotifyTrack(Owner->GetName(), OverlapTrack);
+    bool bTrackAdded = Cast<UAnimSequence>(Attack)->AddNotifyTrack("AttackOverlap", OverlapTrack);
     UAnimSequence* AnimSequence = Cast<UAnimSequence>(Attack);
     int32 AttackStartIndex;
     int32 AttackEndIndex;
