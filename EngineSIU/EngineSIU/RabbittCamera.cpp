@@ -293,7 +293,6 @@ UPrimitiveComponent* RabbitCamera::CheckSubject()
         {
             if (!bPrintedTooFar)
             {
-                std::cout << "너무 멀다야\n";
                 bPrintedTooFar = true;
             }
             continue;
@@ -312,7 +311,6 @@ UPrimitiveComponent* RabbitCamera::CheckSubject()
         {
             if (!bPrintedOutOfFOV)
             {
-                std::cout << "거기 아니야~\n";
                 bPrintedOutOfFOV = true;
             }
         }
