@@ -29,3 +29,4 @@ git submodule update --init --recursive
 * 마우스 우클릭 홀드: 카메라 모드 전환
 * 마우스 좌클릭: 촬영
 * E, Q: 카메라 줌 인, 아웃
+* Tab: 마우스 커서 표시

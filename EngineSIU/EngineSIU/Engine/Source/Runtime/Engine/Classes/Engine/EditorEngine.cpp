@@ -21,6 +21,7 @@
 #include "PhysicsEngine/PhysicsAsset.h"
 #include "Particles/ParticleSystem.h"
 #include "SoundManager.h"
+#include "Navigation/MapData.h"
 
 extern FEngineLoop GEngineLoop;
 
@@ -48,8 +49,13 @@ void UEditorEngine::Init()
     ActiveWorld = EditorWorld;
 
     EditorPlayer = FObjectFactory::ConstructObject<AEditorPlayer>(this);
-    
+
+#ifndef NDEBUG
     LoadLevel("Saved/AutoSaves.scene");
+#else
+    LoadLevel("Engine/Contents/Resources/MapDesignLevel.scene");
+    ActiveWorld->GetGridMap()->LoadFromBinaryFile("Engine/Contents/Resources/MapDesignLevel.scene.mapgrid");
+#endif
 }
 
 void UEditorEngine::Release()

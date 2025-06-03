@@ -187,6 +187,19 @@ void UInputComponent::InputKey(const FKeyEvent& InKeyEvent)
         }
         break;
     }
+    case VK_TAB:
+    {
+        if (InKeyEvent.GetInputEvent() == IE_Pressed)
+        {
+            PressedKeys.Add(EKeys::Tab);
+            KeyBindDelegate[FString("TAB_Pressed")].Broadcast(0);
+        }
+        else if (InKeyEvent.GetInputEvent() == IE_Released)
+        {
+            PressedKeys.Remove(EKeys::Tab);
+        }
+        break;
+    }
     case VK_SPACE: // Space 키
         {
             KeyBindDelegate[FString("SPACE_Down")].Broadcast(0);

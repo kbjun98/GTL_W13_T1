@@ -55,6 +55,7 @@ void ARabbitController::SetupInputComponent()
     InputComponent->BindAxis("MouseY", [this](float Value) { AddPitchInput(-Value); });
 
     InputComponent->BindAction("ESC_Pressed", [this](float DeltaTime) { OnESCPressed(); });
+    InputComponent->BindAction("TAB_Pressed", [this](float DeltaTime) { OnESCPressed(); });
 
     //마우스 클릭
     InputComponent->BindAction("L_Pressed", [this](float DeltaTime) { TakePicture();});

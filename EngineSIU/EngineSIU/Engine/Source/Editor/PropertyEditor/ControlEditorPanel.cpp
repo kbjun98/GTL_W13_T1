@@ -51,7 +51,14 @@
 
 ControlEditorPanel::ControlEditorPanel()
 {
-    SetSupportedWorldTypes(EWorldTypeBitFlag::Editor | EWorldTypeBitFlag::PIE | EWorldTypeBitFlag::SkeletalViewer | EWorldTypeBitFlag::PhysicsAssetViewer);
+    SetSupportedWorldTypes(
+        EWorldTypeBitFlag::Editor
+#ifndef NDEBUG
+        | EWorldTypeBitFlag::PIE
+#endif
+        | EWorldTypeBitFlag::SkeletalViewer
+        | EWorldTypeBitFlag::PhysicsAssetViewer
+    );
 }
 
 void ControlEditorPanel::Render()

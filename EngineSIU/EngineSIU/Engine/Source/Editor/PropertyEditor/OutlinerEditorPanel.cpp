@@ -6,7 +6,12 @@
 
 OutlinerEditorPanel::OutlinerEditorPanel()
 {
-    SetSupportedWorldTypes(EWorldTypeBitFlag::Editor | EWorldTypeBitFlag::PIE );
+    SetSupportedWorldTypes(
+    EWorldTypeBitFlag::Editor
+#ifndef NDEBUG
+        | EWorldTypeBitFlag::PIE
+#endif
+    );
 }
 
 void OutlinerEditorPanel::Render()
