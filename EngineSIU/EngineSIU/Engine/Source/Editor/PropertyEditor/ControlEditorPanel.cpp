@@ -40,13 +40,14 @@
 #include "Renderer/CompositingPass.h"
 #include <Engine/FbxLoader.h>
 #include "Engine/Classes/Engine/AssetManager.h"
-#include "GameFramework/TestVolume.h"
+#include "GameFramework/DeathVolume.h"
 #include "Particles/ParticleSystemComponent.h"
 #include <Engine/Contents/Actors/GridMapActor.h>
 #include "Engine/Contents/GameFramework/RabbitEnemy.h"
 
 #include "GameFramework/PlayerStart.h"
 #include "GameFramework/RabbitPlayer.h"
+#include "GameFramework/SuccessVolume.h"
 
 ControlEditorPanel::ControlEditorPanel()
 {
@@ -382,7 +383,8 @@ void ControlEditorPanel::CreateModifyButton(const ImVec2 ButtonSize, ImFont* Ico
             { .Label = "PlayerStart",       .OBJ = OBJ_PLAYERSTART },
             { .Label = "RabbitPlayer",      .OBJ = OBJ_RABBITPLAYER },
             { .Label = "RabbitEnemy",       .OBJ = OBJ_RABBITENEMY },
-            { .Label = "TestVolume",        .OBJ = OBJ_TESTVOLUME }
+            { .Label = "DeathVolume",        .OBJ = OBJ_DEATHVOLUME },
+            {.Label = "SuccessVolume",        .OBJ = OBJ_SUCCESSVOLUME },
         };
 
         for (const auto& primitive : primitives)
@@ -411,10 +413,16 @@ void ControlEditorPanel::CreateModifyButton(const ImVec2 ButtonSize, ImFont* Ico
                     SpawnedActor->SetActorLabel(TEXT("OBJ_RABBITENEMY"));
                     break;
                 }
-                case OBJ_TESTVOLUME:
+                case OBJ_DEATHVOLUME:
                 {
-                    SpawnedActor = World->SpawnActor<ATestVolume>();
-                    SpawnedActor->SetActorLabel(TEXT("OBJ_TESTVOLUME"));
+                    SpawnedActor = World->SpawnActor<ADeathVolume>();
+                    SpawnedActor->SetActorLabel(TEXT("OBJ_DeathVolume"));
+                    break;
+                }                
+                case OBJ_SUCCESSVOLUME:
+                {
+                    SpawnedActor = World->SpawnActor<ASuccessVolume>();
+                    SpawnedActor->SetActorLabel(TEXT("OBJ_SuccessVolume"));
                     break;
                 }
                 case OBJ_SPHERE:

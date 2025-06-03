@@ -1651,6 +1651,25 @@
     <ClCompile Include="Engine\Source\Runtime\Engine\Classes\GameFramework\AIController.cpp" />
     <ClCompile Include="Engine\Contents\GameFramework\RabbitMovementComponent.cpp" />
     <ClCompile Include="Engine\Source\Runtime\Engine\Classes\GameFramework\MovementComponent.cpp" />
+    <ClCompile Include="Engine\Contents\Actors\ChaserRabbitSpawner.cpp" />
+    <ClCompile Include="Engine\Contents\Components\CameraMeshComponent.cpp" />
+    <ClCompile Include="Engine\Contents\GameFramework\ChasePawn.cpp" />
+    <ClCompile Include="Engine\Contents\GameFramework\ChaserController.cpp" />
+    <ClCompile Include="Engine\Contents\GameFramework\ChaserGameMode.cpp" />
+    <ClCompile Include="Engine\Contents\Objects\IdleCameraShake.cpp" />
+    <ClCompile Include="Engine\Contents\Renderer\CameraRenderPass.cpp" />
+    <ClCompile Include="Engine\Contents\GameFramework\DeathVolume.cpp" />
+    <ClCompile Include="Engine\Source\Runtime\Engine\Classes\GameFramework\Controller.cpp" />
+    <ClCompile Include="Engine\Source\Runtime\Engine\Classes\GameFramework\PlayerStart.cpp" />
+    <ClCompile Include="Engine\Contents\GameFramework\SuccessVolume.cpp" />
+    <ClCompile Include="Engine\Contents\AnimInstance\RabbitAnimInstance.cpp" />
+    <ClCompile Include="RabbitCamera.cpp" />
+    <ClCompile Include="Engine\Contents\GameFramework\RabbitPlayer.cpp" />
+    <ClCompile Include="Engine\Contents\GameFramework\RabbitEnemy.cpp" />
+    <ClCompile Include="Engine\Contents\GameFramework\RabbitEnemyController.cpp" />
+    <ClCompile Include="Engine\Source\Runtime\Engine\Classes\Animation\RabbitAnimStateMachine.cpp" />
+    <ClCompile Include="RabbittCamera.cpp" />
+    <ClCompile Include="Engine\Source\Editor\PropertyEditor\RabbitGameUIPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="EngineSIU.natvis" />
@@ -1784,6 +1803,25 @@
     <ClInclude Include="Engine\Source\Runtime\Engine\Classes\GameFramework\AIController.h" />
     <ClInclude Include="Engine\Contents\GameFramework\RabbitMovementComponent.h" />
     <ClInclude Include="Engine\Source\Runtime\Engine\Classes\GameFramework\MovementComponent.h" />
+    <ClInclude Include="Engine\Contents\Actors\ChaserRabbitSpawner.h" />
+    <ClInclude Include="Engine\Contents\Components\CameraMeshComponent.h" />
+    <ClInclude Include="Engine\Contents\GameFramework\ChasePawn.h" />
+    <ClInclude Include="Engine\Contents\GameFramework\ChaserController.h" />
+    <ClInclude Include="Engine\Contents\GameFramework\ChaserGameMode.h" />
+    <ClInclude Include="Engine\Contents\Objects\IdleCameraShake.h" />
+    <ClInclude Include="Engine\Contents\Renderer\CameraRenderPass.h" />
+    <ClInclude Include="Engine\Contents\Runtime\Core\StaticMeshTypes.h" />
+    <ClInclude Include="Engine\Contents\GameFramework\DeathVolume.h" />
+    <ClInclude Include="Engine\Source\Runtime\Engine\Classes\GameFramework\Controller.h" />
+    <ClInclude Include="Engine\Source\Runtime\Engine\Classes\GameFramework\PlayerStart.h" />
+    <ClInclude Include="Engine\Contents\AnimInstance\RabbitAnimInstance.h" />
+    <ClInclude Include="RabbitCamera.h" />
+    <ClInclude Include="Engine\Source\Editor\PropertyEditor\RabbitGameUIPanel.h" />
+    <ClInclude Include="Engine\Contents\GameFramework\RabbitPlayer.h" />
+    <ClInclude Include="Engine\Contents\GameFramework\RabbitEnemy.h" />
+    <ClInclude Include="Engine\Contents\GameFramework\RabbitEnemyController.h" />
+    <ClInclude Include="Engine\Source\Runtime\Engine\Classes\Animation\RabbitAnimStateMachine.h" />
+    <ClInclude Include="Engine\Contents\GameFramework\SuccessVolume.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\CompositingShader.hlsl" />
@@ -1816,6 +1854,7 @@
     <None Include="Shaders\GaussianBlurShader.hlsl" />
     <None Include="Shaders\DepthOfFieldShader.hlsl" />
     <None Include="Shaders\FullScreenQuadVertexShader.hlsl" />
+    <None Include="Shaders\W13\W13CameraShader.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Engine\Contents\Resources\Map.txt" />

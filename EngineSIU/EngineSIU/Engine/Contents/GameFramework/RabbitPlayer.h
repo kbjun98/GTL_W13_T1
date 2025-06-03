@@ -8,6 +8,7 @@ class UCameraMeshComponent;
 class UCameraShakeBase;
 
 DECLARE_DELEGATE(FOnPlayerDiedSignature);
+DECLARE_DELEGATE(FOnPlayerSucceed);
 
 class ARabbitPlayer : public ARabbitPawn
 {
@@ -46,7 +47,7 @@ public:
     void ResetPlayer();
     
     FOnPlayerDiedSignature OnPlayerDied;
-
+    FOnPlayerSucceed OnPlayerSucceed;
 protected:
     void SetFOV(float FOV);
     float GetFOV() const;

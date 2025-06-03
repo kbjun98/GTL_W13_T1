@@ -8,6 +8,8 @@
 #include "Components/CameraMeshComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/SkeletalMesh.h"
+#include "DeathVolume.h"
+#include "SuccessVolume.h"
 
 void ARabbitPlayer::PostSpawnInitialize()
 {
@@ -294,7 +296,16 @@ void ARabbitPlayer::OnRabbitBeginOverlap(UPrimitiveComponent* OverlappedComp, AA
 {
     Super::OnRabbitBeginOverlap(OverlappedComp, OtherActor, OtherComp);
 
-    OnDeath();
+    if (Cast<ADeathVolume>(OtherActor))
+    {
+        OnDeath();
+    }
+
+    if (Cast<ASuccessVolume>(OtherActor))
+    {
+        OnPlayerSucceed.ExecuteIfBound();
+    }
+    
 }
 
 void ARabbitPlayer::OnRabbitEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp)
