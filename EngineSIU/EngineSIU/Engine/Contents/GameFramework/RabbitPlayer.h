@@ -52,6 +52,8 @@ public:
     void OnDeath();
 
     void OnAttacked();
+
+    bool IsDead() const { return bIsDied; }
     
     FOnPlayerDiedSignature OnPlayerDied;
     FOnPlayerSucceed OnPlayerSucceed;

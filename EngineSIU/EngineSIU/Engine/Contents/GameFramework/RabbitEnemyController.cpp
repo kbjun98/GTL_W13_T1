@@ -202,8 +202,13 @@ void ARabbitEnemyController::CheckStateChange(float DeltaTime)
 
 bool ARabbitEnemyController::IsTargetInFOV(float FOV)
 {
+    ARabbitPlayer* Target = GetTargetRabbitPlayer();
+    if (Target->IsDead())
+    {
+        return false;
+    }
+    
     ARabbitEnemy* Enemy = GetPossessedRabbitEnemy();
-    ARabbitPawn* Target = GetTargetRabbitPlayer();
     FVector Forward = Enemy->GetComponentByClass<USkeletalMeshComponent>()->GetForwardVector();
     FVector ToTarget = Target->GetActorLocation() - Enemy->GetActorLocation();
     float Dot = FVector::DotProduct(Forward.GetSafeNormal(), ToTarget.GetSafeNormal());
@@ -218,8 +223,13 @@ bool ARabbitEnemyController::IsTargetInSight(float Min, float Max)
 
 bool ARabbitEnemyController::IsTargetInRange(float Min, float Max)
 {
+    ARabbitPlayer* Target = GetTargetRabbitPlayer();
+    if (Target->IsDead())
+    {
+        return false;
+    }
+    
     ARabbitEnemy* Enemy = GetPossessedRabbitEnemy();
-    ARabbitPawn* Target = GetTargetRabbitPlayer();
     FVector Distance = Target->GetActorLocation() - Enemy->GetActorLocation();
     return Distance.Length2D() <= Max && Distance.Length2D() >= Min;
 }
