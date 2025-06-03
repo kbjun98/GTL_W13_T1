@@ -1,8 +1,8 @@
-﻿#include "TestVolume.h"
+#include "DeathVolume.h"
 
 #include "Components/BoxComponent.h"
 
-void ATestVolume::PostSpawnInitialize()
+void ADeathVolume::PostSpawnInitialize()
 {
     Super::PostSpawnInitialize();
 

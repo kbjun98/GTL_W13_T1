@@ -219,7 +219,7 @@ xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\FBX\lib\x64\$
     <ClCompile Include="Engine\Contents\GameFramework\RabbitGameMode.cpp" />
     <ClCompile Include="Engine\Contents\GameFramework\RabbitMovementComponent.cpp" />
     <ClCompile Include="Engine\Contents\GameFramework\RabbitPawn.cpp" />
-    <ClCompile Include="Engine\Contents\GameFramework\TestVolume.cpp" />
+    <ClCompile Include="Engine\Contents\GameFramework\DeathVolume.cpp" />
     <ClCompile Include="Engine\Contents\Components\GridMapComponent.cpp" />
     <ClCompile Include="Engine\Contents\Navigation\MapData.cpp" />
     <ClCompile Include="Engine\Contents\Navigation\PathFinder.cpp" />
@@ -456,6 +456,7 @@ xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\FBX\lib\x64\$
     <ClCompile Include="Engine\Source\ThirdParty\ImGui\include\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Engine\Source\ThirdParty\tinyfiledialogs\include\tinyfiledialogs.cpp" />
     <ClCompile Include="LuaScripts\LuaScriptComponent.cpp" />
+    <ClCompile Include="Engine\Contents\GameFramework\SuccessVolume.cpp" />
     <None Include="Shaders\ParticleSpriteVertexShader.hlsl" />
     <None Include="Shaders\ParticleSpritePixelShader.hlsl" />
     <None Include="Shaders\ParticleMeshVertexShader.hlsl" />
@@ -560,7 +561,7 @@ xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\FBX\lib\x64\$
     <ClInclude Include="Engine\Contents\GameFramework\RabbitGameMode.h" />
     <ClInclude Include="Engine\Contents\GameFramework\RabbitMovementComponent.h" />
     <ClInclude Include="Engine\Contents\GameFramework\RabbitPawn.h" />
-    <ClInclude Include="Engine\Contents\GameFramework\TestVolume.h" />
+    <ClInclude Include="Engine\Contents\GameFramework\DeathVolume.h" />
     <ClInclude Include="Engine\Contents\Components\GridMapComponent.h" />
     <ClInclude Include="Engine\Contents\Navigation\MapData.h" />
     <ClInclude Include="Engine\Contents\Navigation\PathFinder.h" />
@@ -913,6 +914,7 @@ xcopy /y /d "$(SolutionDir)$(ProjectName)\Engine\Source\ThirdParty\FBX\lib\x64\$
     <ClInclude Include="Engine\Contents\GameFramework\RabbitEnemyController.h" />
     <ClInclude Include="Engine\Source\Runtime\Engine\Classes\Animation\RabbitAnimStateMachine.h" />
     <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="Engine\Contents\GameFramework\SuccessVolume.h" />
     <None Include="Shaders\EditorShaderConstants.hlsli">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
