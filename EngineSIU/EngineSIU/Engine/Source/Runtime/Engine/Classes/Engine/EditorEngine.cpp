@@ -564,6 +564,8 @@ void UEditorEngine::SetPhysXScene(UWorld* World)
 
 void UEditorEngine::EndPIE()
 {
+    FSoundManager::GetInstance().StopAllSounds();
+
     ViewerType = EViewerType::EVT_Editor;
 
     PhysicsManager->CleanupScene();
