@@ -38,7 +38,7 @@ RabbitAnimInstance::RabbitAnimInstance()
     Attack = UAssetManager::Get().GetAnimation(FString("Contents/Bunny/Attack"));
     Chase = UAssetManager::Get().GetAnimation(FString("Contents/Bunny/FastRun"));
 
-    AddSoundNotify();
+    AddNotify();
 
     CurrAnim = Cast<UAnimSequence>(Idle);
     PrevAnim = Cast<UAnimSequence>(Idle);
@@ -155,7 +155,7 @@ void RabbitAnimInstance::NativeUpdateAnimation(float DeltaSeconds, FPoseContext&
 #pragma endregion
 }
 
-void RabbitAnimInstance::AddSoundNotify()
+void RabbitAnimInstance::AddNotify()
 {
     int32 AttackTrackIndex;
     bool bTrackAdded = Cast<UAnimSequence>(Attack)->AddNotifyTrack(FName("AttackTrack"), AttackTrackIndex);

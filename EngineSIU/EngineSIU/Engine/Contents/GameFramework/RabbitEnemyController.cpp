@@ -36,7 +36,7 @@ void ARabbitEnemyController::ProcessEnemyMovement(float DeltaTime)
             FVector ToNext = NextPathPoint - Enemy->GetActorLocation();
             ToNext.Z = 0.0f;
 
-            if (ToNext.Size() < Enemy->AcceptanceRadius)
+            if (ToNext.Length2DSquared() < Enemy->AcceptanceRadius * Enemy->AcceptanceRadius)
             {
                 CurrentPathIndex++;
                 if (CurrentPathIndex >= CurrentPath.Num())
@@ -84,7 +84,7 @@ void ARabbitEnemyController::ProcessEnemyMovement(float DeltaTime)
             TargetDirection.Z = 0.0f;
 
             // 거의 도착했다면 다음 경로로 넘어감
-            if (TargetDirection.Size() < Enemy->AcceptanceRadius)
+            if (TargetDirection.Length2DSquared() < Enemy->AcceptanceRadius * Enemy->AcceptanceRadius)
             {
                 CurrentPathIndex++;
                 if (CurrentPathIndex >= CurrentPath.Num())
@@ -198,7 +198,7 @@ bool ARabbitEnemyController::IsTargetInRange(float Min, float Max)
     ARabbitEnemy* Enemy = GetPossesedRabbitEnemy();
     ARabbitPawn* Target = GetTargetRabbitPlayer();
     FVector Distance = Target->GetActorLocation() - Enemy->GetActorLocation();
-    return Distance.Size() <= Max && Distance.Size() >= Min;
+    return Distance.Length2D() <= Max && Distance.Length2D() >= Min;
 }
 
 ARabbitPlayer* ARabbitEnemyController::GetTargetRabbitPlayer()
@@ -208,7 +208,6 @@ ARabbitPlayer* ARabbitEnemyController::GetTargetRabbitPlayer()
 
 ARabbitEnemy* ARabbitEnemyController::GetPossesedRabbitEnemy()
 {
-
     return Cast<ARabbitEnemy>(PossessedPawn);
 }
 

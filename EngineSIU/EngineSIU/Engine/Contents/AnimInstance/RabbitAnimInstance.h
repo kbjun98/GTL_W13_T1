@@ -15,7 +15,7 @@ public:
 
     virtual void NativeUpdateAnimation(float DeltaSeconds, FPoseContext& OutPose) override;
   
-    void AddSoundNotify();
+    void AddNotify();
 
     void SetPlaying(bool bIsPlaying)
     {

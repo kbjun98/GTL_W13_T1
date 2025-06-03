@@ -205,6 +205,8 @@ public:
     bool AllComponentsEqual(float Tolerance = KINDA_SMALL_NUMBER) const;
 
     float Length() const;
+    float Length2D() const { return FMath::Sqrt(Length2DSquared()); }
+    float Length2DSquared() const { return X * X + Y * Y; }
     float Size() const { return Length(); }
     float SquaredLength() const;
     float SizeSquared() const { return SquaredLength(); }
