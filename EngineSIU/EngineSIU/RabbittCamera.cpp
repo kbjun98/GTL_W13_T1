@@ -16,6 +16,8 @@ RabbitCamera::RabbitCamera()
     FSoundManager::GetInstance().LoadSound("Shutter", "Contents/Rabbit/Sound/Shutter.mp3");
     FSoundManager::GetInstance().LoadSound("Error", "Contents/Rabbit/Sound/Error.mp3");
     FSoundManager::GetInstance().LoadSound("Attack", "Contents/Rabbit/Sound/RabbitAttack.mp3");
+    FSoundManager::GetInstance().LoadSound("SlowShutter", "Contents/Rabbit/Sound/SlowShutter.mp3");
+
     CameraCoolTime = CameraCoolTimeInit;
 
 }
@@ -118,7 +120,6 @@ void RabbitCamera::TakePicture()
         return;
     }
    
-    FSoundManager::GetInstance().PlaySound("Shutter");
     CanTakePicture = false;
     TriggerShutterEffect();
 
@@ -131,6 +132,19 @@ void RabbitCamera::TakePicture()
     }
     
     OnPictureTaken.Execute(this, HitComp, OwnerLocation);
+}
+
+void RabbitCamera::PlayCameraSound(bool IsSlow)
+{
+    if (IsSlow)
+    {
+        FSoundManager::GetInstance().PlaySound("Shutter");
+    }
+    else
+    {
+        FSoundManager::GetInstance().PlaySound("Shutter");
+    }
+    
 }
 
 void RabbitCamera::ReleasePictures()
@@ -176,8 +190,12 @@ void RabbitCamera::StorePicture(EPhotoType Type)
     if (CapturedSource)
     {
         int Index = static_cast<int>(Type);
-        PicturesRHI[Index-1] = CapturedSource;
+        PicturesRHI[Index - 1] = CapturedSource;
+        StoredPictureNum++;
     }
+    
+    bool IsEnd = StoredPictureNum != PicturesRHI.Num();
+    PlayCameraSound(IsEnd);
 }
 
 void RabbitCamera::Tick(float DeltaTime)

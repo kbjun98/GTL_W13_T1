@@ -16,6 +16,7 @@ public:
     ~RabbitCamera();
 
 private:
+    int StoredPictureNum = 0;
     TArray<FRenderTargetRHI*> PicturesRHI;
     bool  bIsShutterAnimating = false;
     float ShutterTimer = 0.0f;
@@ -38,6 +39,7 @@ public:
     void SetCurrentApertureProgress(float value);
     void InitPictureArraySize(int Size);
     void TakePicture();
+    void PlayCameraSound(bool IsSlow);
 
     TArray<FRenderTargetRHI*> GetPicturesRHI() const;
 

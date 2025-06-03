@@ -25,7 +25,7 @@ UPrimitiveDrawBatch FEngineLoop::PrimitiveDrawBatch;
 FResourceManager FEngineLoop::ResourceManager;
 uint32 FEngineLoop::TotalAllocationBytes = 0;
 uint32 FEngineLoop::TotalAllocationCount = 0;
-
+float FEngineLoop::TimeScale = 1.0f;
 
 FEngineLoop::FEngineLoop()
     : AppWnd(nullptr)
@@ -172,7 +172,7 @@ void FEngineLoop::Tick()
             }
         }
 
-        const float DeltaTime = static_cast<float>(ElapsedTime / 1000.f);
+        const float DeltaTime = static_cast<float>(ElapsedTime / 1000.f) * TimeScale;
 
         GEngine->Tick(DeltaTime);
         LevelEditor->Tick(DeltaTime);

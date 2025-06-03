@@ -16,6 +16,20 @@ ARabbitGameMode::ARabbitGameMode()
     EPhotoTypeSize = static_cast<int>(EPhotoType::END) - 1;
 }
 
+void ARabbitGameMode::Tick(float DeltaTime)
+{
+    if (IsEndEffectOn)
+    {
+        EndEffectLastTime -= DeltaTime*2.5f;
+
+        if (EndEffectLastTime <= 0)
+        {
+            IsEndEffectOn = false;
+            FEngineLoop::TimeScale = 1.0f;
+        }
+    }
+}
+
 void ARabbitGameMode::BeginPlay()
 {
     Super::BeginPlay();
@@ -65,7 +79,8 @@ void ARabbitGameMode::JudgeCapturedPhoto(UPrimitiveComponent* CapturedComp, Rabb
 
     if (CapturedPhotoTypes.Num() == EPhotoTypeSize)
     {
-        std::cout << "다찍었다 드가자~";
+        IsEndEffectOn=true;
+        FEngineLoop::TimeScale = .4f;
     }
    
 }
