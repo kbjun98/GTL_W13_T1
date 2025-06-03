@@ -125,6 +125,12 @@ void ARabbitPlayer::ZoomIn(float DeltaTime)
     NextFOV = FMath::Clamp(NextFOV, MinFOV_ADS, MaxFOV_ADS);
     SetFOV(NextFOV);
 
+    float t = (NextFOV - 30.f) / (90.f - 30.f);  // 30 → 0, 90 → 1
+    float Range = FMath::Lerp(800.f, 300.f, t);  // t가 작을수록 Range 큼
+    GetRabbitCamera()->SetMaxRange(Range);
+
+    std::cout << GetRabbitCamera()->GetMaxRange() << std::endl;
+
     if (ARabbitController* RC = GetRabbitController())
     {
         float ZoomRatio = (NextFOV - MinFOV_ADS) / (MaxFOV_ADS - MinFOV_ADS);
@@ -144,6 +150,13 @@ void ARabbitPlayer::ZoomOut(float DeltaTime)
     float NextFOV = CurrentFOV + FOVChangeSpeed * DeltaTime;
     NextFOV = FMath::Clamp(NextFOV, MinFOV_ADS, MaxFOV_ADS);
     SetFOV(NextFOV);
+
+
+    float t = (NextFOV - 30.f) / (90.f - 30.f);  // 동일한 방식
+    float Range = FMath::Lerp(800.f, 300.f, t);  // 동일하게 적용
+    GetRabbitCamera()->SetMaxRange(Range);
+
+    std::cout << GetRabbitCamera()->GetMaxRange() << std::endl;
 
     if (ARabbitController* RC = GetRabbitController())
     {
@@ -183,6 +196,8 @@ void ARabbitPlayer::StartADS()
     bIsADS = true;
     
     CameraShakeInstance = GetPlayerController()->PlayerCameraManager->StartCameraShake(IdleCameraShake);
+
+    GetRabbitCamera()->SetMaxRange(300.f);
 
     if (auto CameraMeshComp = GetComponentByClass<UCameraMeshComponent>())
     {

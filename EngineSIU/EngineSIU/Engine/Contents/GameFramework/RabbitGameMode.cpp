@@ -39,7 +39,12 @@ void ARabbitGameMode::Tick(float DeltaTime)
 void ARabbitGameMode::BeginPlay()
 {
     Super::BeginPlay();
- 
+    auto Panel = GEngineLoop.GetUnrealEditor()->GetEditorPanel("RabbitGameUIPanel");
+    auto RabbitPanel = std::dynamic_pointer_cast<RabbitGameUIPanel>(Panel);
+    RabbitPanel->Restart();
+
+    FEngineLoop::TimeScale = 1.0f;
+
     if (APlayerController* PlayerController = GEngine->ActiveWorld->GetPlayerController())
     {
         if (ARabbitPlayer* Rabbit = Cast<ARabbitPlayer>(PlayerController->GetPawn()))

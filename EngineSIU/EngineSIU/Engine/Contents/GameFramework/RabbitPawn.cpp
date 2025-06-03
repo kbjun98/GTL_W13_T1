@@ -39,6 +39,7 @@ void ARabbitPawn::BeginPlay()
 {
     APawn::BeginPlay();
 
+
     if (UCapsuleComponent* Collision = Cast<UCapsuleComponent>(RootComponent))
     {
         Collision->OnComponentBeginOverlap.AddLambda(

@@ -269,7 +269,7 @@ UPrimitiveComponent* RabbitCamera::CheckSubject()
 
 
    
-    float FOV = FMath::Cos(FMath::DegreesToRadians(45.f)); // 느슨한 시야각 (총 30도)
+    float FOV = FMath::Cos(FMath::DegreesToRadians(60.f)); // 느슨한 시야각 (총 30도)
 
     UStaticMeshComponent* HitComponent = nullptr;
     float MinHitDistance = MaxRange;
