@@ -33,6 +33,8 @@ public:
     ERabbitAnimState GetAnimState() const { return AnimState; }
     void SetAnimState(ERabbitAnimState State) { AnimState = State; }
 
+    virtual bool SetActorLocation(const FVector& NewLocation) override;
+    
 protected:
     URabbitMovementComponent* MovementComponent;
     USkeletalMeshComponent* SkeletalMeshComp;

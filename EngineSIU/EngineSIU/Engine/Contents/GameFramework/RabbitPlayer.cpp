@@ -101,18 +101,6 @@ FVector ARabbitPlayer::GetActorRightVector() const
     return Super::GetActorRightVector();
 }
 
-bool ARabbitPlayer::SetActorLocation(const FVector& NewLocation)
-{
-    Super::SetActorLocation(NewLocation);
-
-    if (MovementComponent)
-    {
-        MovementComponent->SetLocation(NewLocation);
-    }
-
-    return true;
-}
-
 std::shared_ptr<RabbitCamera> ARabbitPlayer::GetRabbitCamera()
 {
     return RabbitCam;
