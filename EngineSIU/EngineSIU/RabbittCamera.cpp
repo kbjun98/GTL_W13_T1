@@ -240,6 +240,11 @@ void RabbitCamera::Tick(float DeltaTime)
     CurrentApertureProgress = std::max(0.0f, std::min(1.0f, CurrentApertureProgress));
 }
 
+void RabbitCamera::ResetRabbitCamera(int Size)
+{
+    InitPictureArraySize(Size);
+}
+
 float RabbitCamera::GetCurrentApertureProgress() const
 {
     return CurrentApertureProgress;

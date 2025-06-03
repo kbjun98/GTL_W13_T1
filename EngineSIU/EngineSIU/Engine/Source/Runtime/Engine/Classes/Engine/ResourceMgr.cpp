@@ -37,6 +37,8 @@ void FResourceManager::Initialize(FRenderer* Renderer, FGraphicsDevice* Device)
     LoadTextureFromFile(Device->Device, L"Contents/Texture/CameraViewFinder.png");
     LoadTextureFromFile(Device->Device, L"Assets/Texture/DeathBG.png");
     LoadTextureFromFile(Device->Device, L"Assets/Texture/RestartButton.png");
+    LoadTextureFromFile(Device->Device, L"Assets/Texture/PictureEnd.png");
+    
     
 }
 

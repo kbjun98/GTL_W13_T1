@@ -32,7 +32,7 @@ private:
 public:
     void ReleasePictures();
     void Tick(float deltaTime);
-    
+    void ResetRabbitCamera(int Size);
     float GetCameraCoolTime();
     float GetCameraCoolTimeInit();
     float GetCurrentApertureProgress() const;

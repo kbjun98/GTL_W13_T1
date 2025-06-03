@@ -218,20 +218,29 @@ void FPhysicsManager::AttachShapesToActor(PxRigidActor* Actor, UBodySetup* BodyS
     // Sphere 추가
     for (const auto& Sphere : BodySetup->AggGeom.SphereElems)
     {
-    
-        Actor->attachShape(*Sphere);
+        if (Sphere)
+        {
+            Actor->attachShape(*Sphere);
+        }
+      
     }
 
     // Box 추가
     for (const auto& Box : BodySetup->AggGeom.BoxElems)
     {
-        Actor->attachShape(*Box);
+        if (Box)
+        {
+            Actor->attachShape(*Box);
+        }
     }
 
     // Capsule 추가
     for (const auto& Capsule : BodySetup->AggGeom.CapsuleElems)
     {
-        Actor->attachShape(*Capsule);
+        if (Capsule)
+        {
+            Actor->attachShape(*Capsule);
+        }
     }
 }
 
@@ -677,9 +686,12 @@ PxShape* FPhysicsManager::CreateBoxShape(const PxVec3& Pos, const PxQuat& Quat, 
     PxShape* Result = Physics->createShape(PxBoxGeometry(HalfExtents), *Material);
     
     // 위치와 회전을 모두 적용한 Transform 생성
-    PxTransform LocalTransform(Pos, Quat);
-    Result->setLocalPose(LocalTransform);
-    
+    if (Result)
+    {
+        PxTransform LocalTransform(Pos, Quat);
+        Result->setLocalPose(LocalTransform);
+    }
+
     return Result;
 }
 

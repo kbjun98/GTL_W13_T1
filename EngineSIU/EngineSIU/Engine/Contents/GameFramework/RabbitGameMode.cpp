@@ -17,6 +17,8 @@ ARabbitGameMode::ARabbitGameMode()
     PlayerControllerClass = ARabbitController::StaticClass();
 
     EPhotoTypeSize = static_cast<int>(EPhotoType::END) - 1;
+
+    EndEffectLastTime = EndEffectLastTimeInit;
 }
 
 void ARabbitGameMode::Tick(float DeltaTime)
@@ -27,6 +29,7 @@ void ARabbitGameMode::Tick(float DeltaTime)
 
         if (EndEffectLastTime <= 0)
         {
+            EndEffectLastTime = EndEffectLastTimeInit;
             IsEndEffectOn = false;
             FEngineLoop::TimeScale = 1.0f;
         }
@@ -94,16 +97,36 @@ void ARabbitGameMode::JudgeCapturedPhoto(UPrimitiveComponent* CapturedComp, Rabb
         }
     }
 
-    bool IsEnd = CapturedPhotoTypes.Num() == EPhotoTypeSize;
+    bool WasAlreadyComplete = IsPictureComplete;
+    bool IsNowComplete = CapturedPhotoTypes.Num() == EPhotoTypeSize;
 
-    RabbitCam->PlayCameraSound(IsEnd);
-
-    if (IsEnd)
+    // 사진 사운드 재생
+    if (!WasAlreadyComplete)
     {
-        IsEndEffectOn=true;
-        FEngineLoop::TimeScale = .3f;
+        RabbitCam->PlayCameraSound(IsNowComplete);
+    }
+    else
+    {
+        RabbitCam->PlayCameraSound(false); // 그냥 일반 셔터음 또는 안 나게 하고 싶으면 생략
+    }
+
+    // 처음으로 완성된 경우에만 효과 발동
+    if (!WasAlreadyComplete && IsNowComplete)
+    {
+        IsPictureComplete = true;
+        IsEndEffectOn = true;
+        FEngineLoop::TimeScale = 0.3f;
+        StartUIPictureEnd();
     }
    
+}
+
+void ARabbitGameMode::StartUIPictureEnd()
+{
+    auto Panel = GEngineLoop.GetUnrealEditor()->GetEditorPanel("RabbitGameUIPanel");
+    auto RabbitPanel = std::dynamic_pointer_cast<RabbitGameUIPanel>(Panel);
+
+    RabbitPanel->OnPictureEndUI();
 }
 
 void ARabbitGameMode::StartUIDeathTimer()
@@ -139,6 +162,9 @@ void ARabbitGameMode::Restart()
         {
             Rabbit->ResetPlayer();
             Rabbit->SetActorLocation(SpawnTransform.GetTranslation());
+            CapturedPhotoTypes.Empty();
+            Rabbit->GetRabbitCamera()->ResetRabbitCamera(EPhotoTypeSize);
+            IsPictureComplete = false;
         }
     }
 }

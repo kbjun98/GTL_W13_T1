@@ -29,10 +29,14 @@ RabbitGameUIPanel::RabbitGameUIPanel()
 }
 
 
-
 void RabbitGameUIPanel::ShowBouncingWindow(float DeltaTime)
 {
-    constexpr float downDuration = 1.2f;
+    if (!bShowPictureEndUI)
+    {
+        return;
+    }
+
+    constexpr float downDuration = 1.7f;
     constexpr float waitDuration = 2.5f;
     constexpr float upDuration = 0.8f;
 
@@ -72,7 +76,7 @@ void RabbitGameUIPanel::ShowBouncingWindow(float DeltaTime)
         ViewPort.TopLeftY + ViewPort.Height * 0.4f
     );
 
-    ImVec2 windowSize(300, 120);
+    ImVec2 windowSize(388, 197);
     float currentX = 0.0f;
 
     if (bounceState == BounceState::Down)
@@ -104,22 +108,29 @@ void RabbitGameUIPanel::ShowBouncingWindow(float DeltaTime)
 
     ImVec2 windowPos(currentX - windowSize.x * 0.5f, center.y - windowSize.y * 0.5f);
 
+    ImTextureID textureID = (ImTextureID)FEngineLoop::ResourceManager.GetTexture(L"Assets/Texture/PictureEnd.png")->TextureSRV;
+
+    // 방법 1: 완전히 테두리 없는 윈도우
     ImGui::SetNextWindowPos(windowPos, ImGuiCond_Always);
     ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
 
-    ImTextureID textureID = (ImTextureID)FEngineLoop::ResourceManager.GetTexture(L"Assets/Texture/DeathBG.png")->TextureSRV;
-
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 20.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);  // 테두리 크기 0
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));  // 패딩 제거
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, 0));
+    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));  // 테두리 색상 투명
+    ImGui::PushStyleColor(ImGuiCol_BorderShadow, ImVec4(0, 0, 0, 0));  // 그림자 제거
 
-    ImGui::Begin("📷 Bounced", nullptr,
+    ImGui::Begin("📷 PictureEnd", nullptr,
         ImGuiWindowFlags_NoCollapse |
         ImGuiWindowFlags_NoResize |
-        ImGuiWindowFlags_NoTitleBar);
+        ImGuiWindowFlags_NoTitleBar |
+        ImGuiWindowFlags_NoBackground);  // 배경 제거 플래그 추가
 
     ImVec2 imagePos = ImGui::GetWindowPos();
     ImDrawList* drawList = ImGui::GetWindowDrawList();
 
+    // SRV 이미지만 그리기
     drawList->AddImage(
         textureID,
         imagePos,
@@ -128,28 +139,15 @@ void RabbitGameUIPanel::ShowBouncingWindow(float DeltaTime)
         ImVec2(1, 1)
     );
 
-    ImVec2 textPos(
-        (windowSize.x - ImGui::CalcTextSize("모든 사진을 찍었습니다!").x) * 0.5f,
-        windowSize.y * 0.4f
-    );
-
-    ImVec2 bgMin = ImGui::GetWindowPos() + textPos - ImVec2(5, 3);
-    ImVec2 bgMax = bgMin + ImGui::CalcTextSize("모든 사진을 찍었습니다!") + ImVec2(10, 6);
-
-    // 배경 사각형 (검은색, 반투명)
-    drawList->AddRectFilled(bgMin, bgMax, IM_COL32(0, 0, 0, 150), 5.0f);
-
-    ImGui::SetCursorPos(textPos);
-    ImGui::Text("모든 사진을 찍었습니다!");
-
     ImGui::End();
-    ImGui::PopStyleColor();
-    ImGui::PopStyleVar();
+    ImGui::PopStyleColor(3);
+    ImGui::PopStyleVar(3);
 }
 
 void RabbitGameUIPanel::Restart()
 {
     ClearDeathTimer();
+    ResetBounce();
 
     if (ARabbitGameMode* RabbitGameMode = Cast<ARabbitGameMode>(GEngine->ActiveWorld->GetGameMode()))
     {
@@ -410,6 +408,19 @@ void RabbitGameUIPanel::RenderCameraCool()
 
 }
 
+void RabbitGameUIPanel::ResetBounce()
+{
+    bounce.Reset();
+    bounceState = BounceState::Idle;
+    waitTimer = 0.0f;
+    bShowPictureEndUI = false;
+}
+
+void RabbitGameUIPanel::OnPictureEndUI()
+{
+    bShowPictureEndUI = true;
+}
+
 void RabbitGameUIPanel::Render()
 {
 
@@ -421,5 +432,7 @@ void RabbitGameUIPanel::Render()
     RenderDeathUI();
     RenderCameraCool();
     RenderGallery();
+
+
     ShowBouncingWindow(FEngineLoop::DeltaTime);
 }

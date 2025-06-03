@@ -12,6 +12,13 @@ struct BounceTween {
     float Duration = 1.0f;
     bool Playing = false;
 
+    void Reset() {
+        Elapsed = 0.0f;
+        Duration = 1.0f;
+        Playing = false;
+        CurrentEase = &BounceTween::EaseOutBounce; // 기본값으로 초기화 (선택사항)
+    }
+
     float EaseOutBounce(float t) {
         if (t < (1 / 2.75f)) {
             return 7.5625f * t * t;
@@ -85,7 +92,7 @@ public:
     void ClearDeathTimer();
     
     void RenderDeathUI();
-    
+    void OnPictureEndUI();
 private:
     virtual void OnResize(HWND hWnd) override;
     
@@ -94,11 +101,15 @@ private:
     bool RegisterPlayerCamera();
     
     void RenderCameraCool();
+
+    void ResetBounce();
+
+   
     
     float Width;
     float Height;
 
-
+    bool bShowPictureEndUI=false;
     // 전역 또는 static 변수
     BounceTween bounce;
     bool hasStarted = false;
@@ -108,7 +119,7 @@ private:
     bool bDeathTriggered = false;  // 죽음이 트리거되었는지
     float deathUIDelay = 4.5f;     // 지연 시간 (초)
     float deathTimer = 0.0f;       // 현재 타이머
-
+    float DeathTimer = 0.0f;
     std::shared_ptr<RabbitCamera> PlayerCam;
 
     bool showLargeView = false;
