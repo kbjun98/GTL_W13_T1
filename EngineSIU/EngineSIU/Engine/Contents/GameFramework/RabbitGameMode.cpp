@@ -137,6 +137,14 @@ void ARabbitGameMode::StartUIPictureEnd()
     FSoundManager::GetInstance().StopAllSounds();
     FSoundManager::GetInstance().PlaySound("Hurry");
     FSoundManager::GetInstance().PlaySound("Shoong");
+
+    if (APlayerController* PlayerController = GEngine->ActiveWorld->GetPlayerController())
+    {
+        if (ARabbitPlayer* Rabbit = Cast<ARabbitPlayer>(PlayerController->GetPawn()))
+        {
+            Rabbit->SetIsCaptureAll(true);
+        }
+    }
 }
 
 void ARabbitGameMode::StartUIDeathTimer()
@@ -188,6 +196,14 @@ void ARabbitGameMode::Restart()
             CapturedPhotoTypes.Empty();
             Rabbit->GetRabbitCamera()->ResetRabbitCamera(EPhotoTypeSize);
             IsPictureComplete = false;
+        }
+    }
+
+    if (APlayerController* PlayerController = GEngine->ActiveWorld->GetPlayerController())
+    {
+        if (ARabbitPlayer* Rabbit = Cast<ARabbitPlayer>(PlayerController->GetPawn()))
+        {
+            Rabbit->SetIsCaptureAll(false);
         }
     }
 
