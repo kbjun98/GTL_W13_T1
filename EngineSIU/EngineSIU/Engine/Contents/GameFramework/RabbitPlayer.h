@@ -45,9 +45,13 @@ public:
     void EndADS();
 
     void ResetPlayer();
+
+    void OnDeath();
     
     FOnPlayerDiedSignature OnPlayerDied;
     FOnPlayerSucceed OnPlayerSucceed;
+
+
 protected:
     void SetFOV(float FOV);
     float GetFOV() const;
@@ -77,6 +81,5 @@ private:
 
     bool bIsDied = false;
 
-    void OnDeath();
 };
 

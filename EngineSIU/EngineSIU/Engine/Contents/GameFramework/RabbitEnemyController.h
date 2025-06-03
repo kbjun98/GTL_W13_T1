@@ -42,5 +42,7 @@ private:
     EnemyState CurrentState = EnemyState::IDLE; // 현재 상태
     uint32 CurPatrolIndex = 0;
     float IdleTime = 0.0f;
+    float AttackRange = 50.0f; // 공격 범위
+
 };
 

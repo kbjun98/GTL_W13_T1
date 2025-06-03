@@ -112,8 +112,21 @@ void ARabbitEnemyController::ProcessEnemyMovement(float DeltaTime)
         }
         break;
     case EnemyState::ATTACK:
+    {
+        APawn* MainPalyer = GEngine->ActiveWorld->GetMainPlayer();
+        ARabbitPlayer* RabbitPlayer = Cast<ARabbitPlayer>(MainPalyer);
+        
+        FVector TargetLocation = RabbitPlayer->GetActorLocation();
+        FVector EnemyLocation = Enemy->GetActorLocation();
+        FVector Direction = TargetLocation - EnemyLocation;
+        float RangeSqure = AttackRange * AttackRange;
+        if (Direction.Dot(Direction) < RangeSqure)
+        {
+            RabbitPlayer->OnDeath();
+        }
         Enemy->SetAnimState(ERabbitAnimState::Attack);
         break;
+    }
     default:
         break;
     }
