@@ -25,6 +25,7 @@ void ARabbitPlayer::PostSpawnInitialize()
     if (SkeletalMeshComp)
     {
         SkeletalMeshComp->bHidden = true;
+        SkeletalMeshComp->bSimulate = false;
     }
 }
 
