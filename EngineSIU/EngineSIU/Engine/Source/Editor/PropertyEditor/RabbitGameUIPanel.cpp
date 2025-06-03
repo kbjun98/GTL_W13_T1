@@ -149,6 +149,7 @@ void RabbitGameUIPanel::Restart()
 {
     ClearDeathTimer();
     ResetBounce();
+    IsSucceed = false;
 
     if (ARabbitGameMode* RabbitGameMode = Cast<ARabbitGameMode>(GEngine->ActiveWorld->GetGameMode()))
     {
@@ -168,6 +169,11 @@ void RabbitGameUIPanel::ClearDeathTimer()
     bDeathTriggered = false;
     DeathTimer = 0.0f;
     bShowDeathUI = false;
+}
+
+void RabbitGameUIPanel::StartSuccessEffect()
+{
+    IsSucceed = true;
 }
 
 void RabbitGameUIPanel::RenderDeathUI()
@@ -262,6 +268,81 @@ void RabbitGameUIPanel::RenderDeathUI()
     ImGui::PopStyleVar();
 }
 
+void RabbitGameUIPanel::RenderSuceessUI()
+{
+    if (!IsSucceed)
+    {
+        return;
+    }
+
+    auto ViewPort = GEngineLoop.GetLevelEditor()->GetActiveViewportClient()->GetViewport()->GetD3DViewport();
+    // 뷰포트 중심 계산
+    ImVec2 centerPos(
+        ViewPort.TopLeftX + ViewPort.Width * 0.5f,
+        ViewPort.TopLeftY + ViewPort.Height * 0.5f
+    );
+    // 창 크기 및 위치
+    ImVec2 windowSize(1536, 1150);
+    ImVec2 windowPos(
+        centerPos.x - windowSize.x * 0.5f,
+        centerPos.y - windowSize.y * 0.45f
+    );
+    ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
+    ImGui::SetNextWindowPos(windowPos, ImGuiCond_Always);
+    // 스타일 설정
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 15.0f);
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, 0)); // 완전 투명
+    ImGui::Begin("💀 DeathUI", nullptr,
+        ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoTitleBar |
+        ImGuiWindowFlags_NoScrollbar);
+    ImVec2 imagePos = ImGui::GetWindowPos();
+    ImDrawList* drawList = ImGui::GetWindowDrawList();
+    ImTextureID textureID = (ImTextureID)FEngineLoop::ResourceManager.GetTexture(L"Assets/Texture/Success.png")->TextureSRV;
+    // 배경 이미지 그리기
+    drawList->AddImage(textureID,
+        imagePos,
+        ImVec2(imagePos.x + windowSize.x, imagePos.y + windowSize.y),
+        ImVec2(0, 0), ImVec2(1, 1)
+    );
+
+
+    // 커스텀 이미지 버튼
+    ImVec2 buttonSize(250, 100);
+    ImVec2 buttonPos(
+        imagePos.x + (windowSize.x - buttonSize.x) * 0.5f,
+        imagePos.y + windowSize.y - 200.f
+    );
+
+    // 버튼 배경 이미지 그리기
+    ImTextureID buttonTextureID = (ImTextureID)FEngineLoop::ResourceManager.GetTexture(L"Assets/Texture/RestartButton.png")->TextureSRV;
+
+    // 마우스 호버 체크
+    ImVec2 mousePos = ImGui::GetMousePos();
+    bool isHovered = (mousePos.x >= buttonPos.x && mousePos.x <= buttonPos.x + buttonSize.x &&
+        mousePos.y >= buttonPos.y && mousePos.y <= buttonPos.y + buttonSize.y);
+
+    // 호버 상태에 따른 색상 조정 (선택사항)
+    ImU32 buttonTint = isHovered ? IM_COL32(255, 255, 255, 200) : IM_COL32(255, 255, 255, 255);
+
+    drawList->AddImage(buttonTextureID,
+        buttonPos,
+        ImVec2(buttonPos.x + buttonSize.x, buttonPos.y + buttonSize.y),
+        ImVec2(0, 0), ImVec2(1, 1),
+        buttonTint
+    );
+
+    // 클릭 감지
+    if (isHovered && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+    {
+        Restart();
+    }
+    ImGui::End();
+    ImGui::PopStyleColor();
+    ImGui::PopStyleVar();
+}
+
 void RabbitGameUIPanel::OnResize(HWND hWnd)
 {
     RECT ClientRect;
@@ -275,11 +356,17 @@ void RabbitGameUIPanel::RenderGallery()
 {
     TArray<FRenderTargetRHI*> Pictures = PlayerCam->GetPicturesRHI();
 
+    // 각 사진의 작은 아이콘 SRV를 담을 변수 (직접 연결하세요)
+    auto Icon1 = (ImTextureID)FEngineLoop::ResourceManager.GetTexture(L"Assets/Texture/Slave.png")->TextureSRV;
+    auto Icon2 = (ImTextureID)FEngineLoop::ResourceManager.GetTexture(L"Assets/Texture/Lab.png")->TextureSRV;
+    auto Icon3 = (ImTextureID)FEngineLoop::ResourceManager.GetTexture(L"Assets/Texture/Carrot.png")->TextureSRV;
+    ImTextureID OverlayIcons[3] = { Icon1,Icon2,Icon3 };
+
     constexpr float THUMBNAIL_SIZE = 128.0f;
     constexpr float spacing = 15.0f;
     constexpr int32 MaxSlots = 3;
-    constexpr float totalWidth = (THUMBNAIL_SIZE * MaxSlots) + (spacing * (MaxSlots - 1))+40.f;
-    constexpr float panelHeight = THUMBNAIL_SIZE +30.f;
+    constexpr float totalWidth = (THUMBNAIL_SIZE * MaxSlots) + (spacing * (MaxSlots - 1)) + 40.0f;
+    constexpr float panelHeight = THUMBNAIL_SIZE + 30.0f;
 
     ImGuiViewport* viewport = ImGui::GetMainViewport();
     ImVec2 panelPos = ImVec2(
@@ -298,26 +385,29 @@ void RabbitGameUIPanel::RenderGallery()
     {
         ImGui::PushID(slotIdx);
 
-        if (slotIdx < Pictures.Num())
+        const FRenderTargetRHI* picturePtr = (slotIdx < Pictures.Num()) ? Pictures[slotIdx] : nullptr;
+        ImTextureID baseTexture = picturePtr && picturePtr->SRV
+            ? reinterpret_cast<ImTextureID>(picturePtr->SRV)
+            : OverlayIcons[slotIdx]; // 없으면 아이콘으로 대체
+
+        if (baseTexture)
         {
-            const FRenderTargetRHI* picturePtr = Pictures[slotIdx];
-            if (picturePtr && picturePtr->SRV)
+            if (ImGui::ImageButton("##thumbnail", baseTexture, ImVec2(THUMBNAIL_SIZE, THUMBNAIL_SIZE)))
             {
-                if (ImGui::ImageButton("##thumbnail", reinterpret_cast<ImTextureID>(picturePtr->SRV), ImVec2(THUMBNAIL_SIZE, THUMBNAIL_SIZE)))
+                if (picturePtr && picturePtr->SRV)
                 {
                     showLargeView = true;
                     selectedPhotoIndex = slotIdx;
                     selectedPicture = picturePtr;
                 }
             }
-            else
-            {
-                ImGui::Button("Empty", ImVec2(THUMBNAIL_SIZE, THUMBNAIL_SIZE));
-            }
         }
         else
         {
-            ImGui::Button("Empty", ImVec2(THUMBNAIL_SIZE, THUMBNAIL_SIZE));
+            // 아이콘도 없을 경우 빈 배경 (선택사항)
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
+            ImGui::Button("##empty", ImVec2(THUMBNAIL_SIZE, THUMBNAIL_SIZE));
+            ImGui::PopStyleColor();
         }
 
         ImGui::PopID();
@@ -327,6 +417,7 @@ void RabbitGameUIPanel::RenderGallery()
             ImGui::SameLine(0.0f, spacing);
         }
     }
+
 
     ImGui::End();
 
@@ -346,7 +437,6 @@ void RabbitGameUIPanel::RenderGallery()
             ImGui::SetCursorPos(centerPos);
             ImGui::Image(reinterpret_cast<ImTextureID>(selectedPicture->SRV), ImVec2(size, size));
 
-            // 닫기 버튼
             if (ImGui::Button("Close"))
             {
                 showLargeView = false;
@@ -357,6 +447,7 @@ void RabbitGameUIPanel::RenderGallery()
         ImGui::End();
     }
 }
+
 
 
 bool RabbitGameUIPanel::RegisterPlayerCamera()
@@ -433,7 +524,7 @@ void RabbitGameUIPanel::Render()
     RenderDeathUI();
     RenderCameraCool();
     RenderGallery();
-
+    RenderSuceessUI();
 
     ShowBouncingWindow(FEngineLoop::DeltaTime);
 }

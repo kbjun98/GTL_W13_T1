@@ -20,6 +20,7 @@
 #include "SkeletalMesh.h"
 #include "PhysicsEngine/PhysicsAsset.h"
 #include "Particles/ParticleSystem.h"
+#include "SoundManager.h"
 
 extern FEngineLoop GEngineLoop;
 
@@ -281,7 +282,7 @@ void UEditorEngine::StartPIE()
     SetPhysXScene(PIEWorld);
     
     PIEWorld->BeginPlay();
-    
+    FSoundManager::GetInstance().PlaySound("MainBGM");
     // 여기서 Actor들의 BeginPlay를 해줄지 안에서 해줄 지 고민.
     // WorldList.Add(GetWorldContextFromWorld(PIEWorld));
 }
@@ -563,6 +564,8 @@ void UEditorEngine::SetPhysXScene(UWorld* World)
 
 void UEditorEngine::EndPIE()
 {
+    FSoundManager::GetInstance().StopAllSounds();
+
     ViewerType = EViewerType::EVT_Editor;
 
     PhysicsManager->CleanupScene();

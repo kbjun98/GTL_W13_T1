@@ -96,6 +96,22 @@
             "ActorTickInEditor": "false",
             "Components": [
                 {
+                    "ComponentClass": "USceneComponent",
+                    "ComponentID": "PatrolTargetComp_",
+                    "Properties": {
+                        "AttachParentID": "Collision_0",
+                        "ComponentClass": "USceneComponent",
+                        "ComponentName": "PatrolTargetComp_",
+                        "ComponentOwner": "ARabbitEnemy_275",
+                        "ComponentOwnerClass": "ARabbitEnemy",
+                        "RelativeLocation": "X=163.881 Y=-231.111 Z=-103.179",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                },
+                {
                     "ComponentClass": "UCapsuleComponent",
                     "ComponentID": "Collision_0",
                     "Properties": {
@@ -117,6 +133,22 @@
                         "bIsActive": "true",
                         "bSimulate": "true",
                         "m_Type": ""
+                    }
+                },
+                {
+                    "ComponentClass": "USceneComponent",
+                    "ComponentID": "atrolTargetComp_",
+                    "Properties": {
+                        "AttachParentID": "Collision_0",
+                        "ComponentClass": "USceneComponent",
+                        "ComponentName": "atrolTargetComp_",
+                        "ComponentOwner": "ARabbitEnemy_275",
+                        "ComponentOwnerClass": "ARabbitEnemy",
+                        "RelativeLocation": "X=151.065 Y=-49.995 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
                     }
                 },
                 {
@@ -152,38 +184,6 @@
                         "ComponentName": "RabbitMoveComp_0",
                         "ComponentOwner": "ARabbitEnemy_275",
                         "ComponentOwnerClass": "ARabbitEnemy",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
-                    }
-                },
-                {
-                    "ComponentClass": "USceneComponent",
-                    "ComponentID": "PatrolTargetComp_",
-                    "Properties": {
-                        "AttachParentID": "Collision_0",
-                        "ComponentClass": "USceneComponent",
-                        "ComponentName": "PatrolTargetComp_",
-                        "ComponentOwner": "ARabbitEnemy_275",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=163.881 Y=-231.111 Z=-103.179",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
-                    }
-                },
-                {
-                    "ComponentClass": "USceneComponent",
-                    "ComponentID": "atrolTargetComp_",
-                    "Properties": {
-                        "AttachParentID": "Collision_0",
-                        "ComponentClass": "USceneComponent",
-                        "ComponentName": "atrolTargetComp_",
-                        "ComponentOwner": "ARabbitEnemy_275",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=151.065 Y=-49.995 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
                         "bIsActive": "true"
                     }
@@ -485,11 +485,59 @@
             "Components": [
                 {
                     "ComponentClass": "USceneComponent",
-                    "ComponentID": "USceneComponent_337",
+                    "ComponentID": "USceneComponent_345",
                     "Properties": {
                         "AttachParentID": "USceneComponent_567",
                         "ComponentClass": "USceneComponent",
-                        "ComponentName": "USceneComponent_337",
+                        "ComponentName": "USceneComponent_345",
+                        "ComponentOwner": "AActor_566",
+                        "ComponentOwnerClass": "AActor",
+                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                },
+                {
+                    "ComponentClass": "USceneComponent",
+                    "ComponentID": "USceneComponent_369",
+                    "Properties": {
+                        "AttachParentID": "USceneComponent_567",
+                        "ComponentClass": "USceneComponent",
+                        "ComponentName": "USceneComponent_369",
+                        "ComponentOwner": "AActor_566",
+                        "ComponentOwnerClass": "AActor",
+                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                },
+                {
+                    "ComponentClass": "USceneComponent",
+                    "ComponentID": "USceneComponent_392",
+                    "Properties": {
+                        "AttachParentID": "USceneComponent_567",
+                        "ComponentClass": "USceneComponent",
+                        "ComponentName": "USceneComponent_392",
+                        "ComponentOwner": "AActor_566",
+                        "ComponentOwnerClass": "AActor",
+                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                },
+                {
+                    "ComponentClass": "USceneComponent",
+                    "ComponentID": "USceneComponent_355",
+                    "Properties": {
+                        "AttachParentID": "USceneComponent_567",
+                        "ComponentClass": "USceneComponent",
+                        "ComponentName": "USceneComponent_355",
                         "ComponentOwner": "AActor_566",
                         "ComponentOwnerClass": "AActor",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
@@ -514,6 +562,38 @@
                         "bAutoActive": "true",
                         "bIsActive": "true"
                     }
+                },
+                {
+                    "ComponentClass": "USceneComponent",
+                    "ComponentID": "USceneComponent_516",
+                    "Properties": {
+                        "AttachParentID": "USceneComponent_567",
+                        "ComponentClass": "USceneComponent",
+                        "ComponentName": "USceneComponent_516",
+                        "ComponentOwner": "AActor_566",
+                        "ComponentOwnerClass": "AActor",
+                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                },
+                {
+                    "ComponentClass": "USceneComponent",
+                    "ComponentID": "USceneComponent_337",
+                    "Properties": {
+                        "AttachParentID": "USceneComponent_567",
+                        "ComponentClass": "USceneComponent",
+                        "ComponentName": "USceneComponent_337",
+                        "ComponentOwner": "AActor_566",
+                        "ComponentOwnerClass": "AActor",
+                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
                 }
             ],
             "RootComponentID": "USceneComponent_567"
@@ -524,6 +604,70 @@
             "ActorLabel": "OBJ_SPHERE_570",
             "ActorTickInEditor": "false",
             "Components": [
+                {
+                    "ComponentClass": "USceneComponent",
+                    "ComponentID": "USceneComponent_353",
+                    "Properties": {
+                        "AttachParentID": "USceneComponent_571",
+                        "ComponentClass": "USceneComponent",
+                        "ComponentName": "USceneComponent_353",
+                        "ComponentOwner": "AActor_570",
+                        "ComponentOwnerClass": "AActor",
+                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                },
+                {
+                    "ComponentClass": "USceneComponent",
+                    "ComponentID": "USceneComponent_521",
+                    "Properties": {
+                        "AttachParentID": "USceneComponent_571",
+                        "ComponentClass": "USceneComponent",
+                        "ComponentName": "USceneComponent_521",
+                        "ComponentOwner": "AActor_570",
+                        "ComponentOwnerClass": "AActor",
+                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                },
+                {
+                    "ComponentClass": "USceneComponent",
+                    "ComponentID": "USceneComponent_377",
+                    "Properties": {
+                        "AttachParentID": "USceneComponent_571",
+                        "ComponentClass": "USceneComponent",
+                        "ComponentName": "USceneComponent_377",
+                        "ComponentOwner": "AActor_570",
+                        "ComponentOwnerClass": "AActor",
+                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                },
+                {
+                    "ComponentClass": "USceneComponent",
+                    "ComponentID": "USceneComponent_398",
+                    "Properties": {
+                        "AttachParentID": "USceneComponent_571",
+                        "ComponentClass": "USceneComponent",
+                        "ComponentName": "USceneComponent_398",
+                        "ComponentOwner": "AActor_570",
+                        "ComponentOwnerClass": "AActor",
+                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                },
                 {
                     "ComponentClass": "USceneComponent",
                     "ComponentID": "USceneComponent_340",
@@ -547,6 +691,38 @@
                         "AttachParentID": "nullptr",
                         "ComponentClass": "USceneComponent",
                         "ComponentName": "USceneComponent_571",
+                        "ComponentOwner": "AActor_570",
+                        "ComponentOwnerClass": "AActor",
+                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                },
+                {
+                    "ComponentClass": "USceneComponent",
+                    "ComponentID": "USceneComponent_359",
+                    "Properties": {
+                        "AttachParentID": "USceneComponent_571",
+                        "ComponentClass": "USceneComponent",
+                        "ComponentName": "USceneComponent_359",
+                        "ComponentOwner": "AActor_570",
+                        "ComponentOwnerClass": "AActor",
+                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                },
+                {
+                    "ComponentClass": "USceneComponent",
+                    "ComponentID": "USceneComponent_352",
+                    "Properties": {
+                        "AttachParentID": "USceneComponent_571",
+                        "ComponentClass": "USceneComponent",
+                        "ComponentName": "USceneComponent_352",
                         "ComponentOwner": "AActor_570",
                         "ComponentOwnerClass": "AActor",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
@@ -587,6 +763,22 @@
                         "bIsActive": "true",
                         "bSimulate": "true",
                         "m_Type": ""
+                    }
+                },
+                {
+                    "ComponentClass": "USceneComponent",
+                    "ComponentID": "atrolTargetComp_",
+                    "Properties": {
+                        "AttachParentID": "Collision_0",
+                        "ComponentClass": "USceneComponent",
+                        "ComponentName": "atrolTargetComp_",
+                        "ComponentOwner": "ARabbitEnemy_463",
+                        "ComponentOwnerClass": "ARabbitEnemy",
+                        "RelativeLocation": "X=-30.271 Y=275.624 Z=-300.529",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
                     }
                 },
                 {
@@ -641,22 +833,6 @@
                         "bAutoActive": "true",
                         "bIsActive": "true"
                     }
-                },
-                {
-                    "ComponentClass": "USceneComponent",
-                    "ComponentID": "atrolTargetComp_",
-                    "Properties": {
-                        "AttachParentID": "Collision_0",
-                        "ComponentClass": "USceneComponent",
-                        "ComponentName": "atrolTargetComp_",
-                        "ComponentOwner": "ARabbitEnemy_463",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=-30.271 Y=275.624 Z=-300.529",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
-                    }
                 }
             ],
             "RootComponentID": "Collision_0"
@@ -668,13 +844,17 @@
             "ActorTickInEditor": "false",
             "Components": [
                 {
-                    "ComponentClass": "URabbitMovementComponent",
-                    "ComponentID": "RabbitMoveComp_0",
+                    "ComponentClass": "USceneComponent",
+                    "ComponentID": "PatrolTargetComp_",
                     "Properties": {
-                        "ComponentClass": "URabbitMovementComponent",
-                        "ComponentName": "RabbitMoveComp_0",
+                        "AttachParentID": "Collision_0",
+                        "ComponentClass": "USceneComponent",
+                        "ComponentName": "PatrolTargetComp_",
                         "ComponentOwner": "ARabbitEnemy_474",
                         "ComponentOwnerClass": "ARabbitEnemy",
+                        "RelativeLocation": "X=285.026 Y=-486.640 Z=-329.369",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
                         "bIsActive": "true"
                     }
@@ -704,22 +884,6 @@
                     }
                 },
                 {
-                    "ComponentClass": "USceneComponent",
-                    "ComponentID": "atrolTargetComp_",
-                    "Properties": {
-                        "AttachParentID": "Collision_0",
-                        "ComponentClass": "USceneComponent",
-                        "ComponentName": "atrolTargetComp_",
-                        "ComponentOwner": "ARabbitEnemy_474",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=-335.052 Y=-26.104 Z=-324.662",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
-                    }
-                },
-                {
                     "ComponentClass": "USkeletalMeshComponent",
                     "ComponentID": "Mesh_0",
                     "Properties": {
@@ -745,15 +909,27 @@
                     }
                 },
                 {
+                    "ComponentClass": "URabbitMovementComponent",
+                    "ComponentID": "RabbitMoveComp_0",
+                    "Properties": {
+                        "ComponentClass": "URabbitMovementComponent",
+                        "ComponentName": "RabbitMoveComp_0",
+                        "ComponentOwner": "ARabbitEnemy_474",
+                        "ComponentOwnerClass": "ARabbitEnemy",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                },
+                {
                     "ComponentClass": "USceneComponent",
-                    "ComponentID": "PatrolTargetComp_",
+                    "ComponentID": "atrolTargetComp_",
                     "Properties": {
                         "AttachParentID": "Collision_0",
                         "ComponentClass": "USceneComponent",
-                        "ComponentName": "PatrolTargetComp_",
+                        "ComponentName": "atrolTargetComp_",
                         "ComponentOwner": "ARabbitEnemy_474",
                         "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=285.026 Y=-486.640 Z=-329.369",
+                        "RelativeLocation": "X=-335.052 Y=-26.104 Z=-324.662",
                         "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
@@ -769,6 +945,47 @@
             "ActorLabel": "OBJ_RABBITENEMY_743",
             "ActorTickInEditor": "false",
             "Components": [
+                {
+                    "ComponentClass": "USceneComponent",
+                    "ComponentID": "atrolTargetComp_",
+                    "Properties": {
+                        "AttachParentID": "Collision_0",
+                        "ComponentClass": "USceneComponent",
+                        "ComponentName": "atrolTargetComp_",
+                        "ComponentOwner": "ARabbitEnemy_743",
+                        "ComponentOwnerClass": "ARabbitEnemy",
+                        "RelativeLocation": "X=275.790 Y=-14.083 Z=-328.585",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                },
+                {
+                    "ComponentClass": "USkeletalMeshComponent",
+                    "ComponentID": "Mesh_0",
+                    "Properties": {
+                        "AABB_max": "X=16.736 Y=22.754 Z=79.466",
+                        "AABB_min": "X=-16.353 Y=-22.754 Z=-0.179",
+                        "AnimClass": "RabbitAnimInstance",
+                        "AnimationMode": "0",
+                        "AttachParentID": "Collision_0",
+                        "ComponentClass": "USkeletalMeshComponent",
+                        "ComponentName": "Mesh_0",
+                        "ComponentOwner": "ARabbitEnemy_743",
+                        "ComponentOwnerClass": "ARabbitEnemy",
+                        "RelativeLocation": "X=0.000 Y=0.000 Z=-40.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "RigidBodyType": "1",
+                        "SkeletalMeshKey": "Contents/Bunny/Bunny1",
+                        "bApplyGravity": "false",
+                        "bAutoActive": "true",
+                        "bIsActive": "true",
+                        "bSimulate": "false",
+                        "m_Type": ""
+                    }
+                },
                 {
                     "ComponentClass": "UCapsuleComponent",
                     "ComponentID": "Collision_0",
@@ -794,31 +1011,6 @@
                     }
                 },
                 {
-                    "ComponentClass": "USkeletalMeshComponent",
-                    "ComponentID": "Mesh_0",
-                    "Properties": {
-                        "AABB_max": "X=16.736 Y=22.754 Z=79.466",
-                        "AABB_min": "X=-16.353 Y=-22.754 Z=-0.179",
-                        "AnimClass": "RabbitAnimInstance",
-                        "AnimationMode": "0",
-                        "AttachParentID": "Collision_0",
-                        "ComponentClass": "USkeletalMeshComponent",
-                        "ComponentName": "Mesh_0",
-                        "ComponentOwner": "ARabbitEnemy_743",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=0.000 Y=0.000 Z=-40.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "RigidBodyType": "1",
-                        "SkeletalMeshKey": "Contents/Bunny/Bunny1",
-                        "bApplyGravity": "false",
-                        "bAutoActive": "true",
-                        "bIsActive": "true",
-                        "bSimulate": "false",
-                        "m_Type": ""
-                    }
-                },
-                {
                     "ComponentClass": "URabbitMovementComponent",
                     "ComponentID": "RabbitMoveComp_0",
                     "Properties": {
@@ -840,22 +1032,6 @@
                         "ComponentOwner": "ARabbitEnemy_743",
                         "ComponentOwnerClass": "ARabbitEnemy",
                         "RelativeLocation": "X=0.000 Y=113.281 Z=-336.527",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
-                    }
-                },
-                {
-                    "ComponentClass": "USceneComponent",
-                    "ComponentID": "atrolTargetComp_",
-                    "Properties": {
-                        "AttachParentID": "Collision_0",
-                        "ComponentClass": "USceneComponent",
-                        "ComponentName": "atrolTargetComp_",
-                        "ComponentOwner": "ARabbitEnemy_743",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=275.790 Y=-14.083 Z=-328.585",
                         "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
