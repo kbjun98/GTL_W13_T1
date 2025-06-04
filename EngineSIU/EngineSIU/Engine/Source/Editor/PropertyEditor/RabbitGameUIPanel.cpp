@@ -357,9 +357,9 @@ void RabbitGameUIPanel::RenderGallery()
     TArray<FRenderTargetRHI*> Pictures = PlayerCam->GetPicturesRHI();
 
     // 각 사진의 작은 아이콘 SRV를 담을 변수 (직접 연결하세요)
-    auto Icon1 = (ImTextureID)FEngineLoop::ResourceManager.GetTexture(L"Assets/Texture/Slave.png")->TextureSRV;
-    auto Icon2 = (ImTextureID)FEngineLoop::ResourceManager.GetTexture(L"Assets/Texture/Lab.png")->TextureSRV;
-    auto Icon3 = (ImTextureID)FEngineLoop::ResourceManager.GetTexture(L"Assets/Texture/Carrot.png")->TextureSRV;
+    auto Icon1 = (ImTextureID)FEngineLoop::ResourceManager.GetTexture(L"Assets/Texture/NoHuman.png")->TextureSRV;
+    auto Icon2 = (ImTextureID)FEngineLoop::ResourceManager.GetTexture(L"Assets/Texture/Slave.png")->TextureSRV;
+    auto Icon3 = (ImTextureID)FEngineLoop::ResourceManager.GetTexture(L"Assets/Texture/Lab.png")->TextureSRV;
     auto Icon4 = (ImTextureID)FEngineLoop::ResourceManager.GetTexture(L"Assets/Texture/Carrot.png")->TextureSRV;
     ImTextureID OverlayIcons[4] = { Icon1,Icon2,Icon3,Icon4 };
 

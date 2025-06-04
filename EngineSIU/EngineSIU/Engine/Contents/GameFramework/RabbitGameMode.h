@@ -5,6 +5,7 @@
 enum class EPhotoType
 {
     NONE,
+    ENoHuman,
     ESlave,
     ELab,
     ECarrotField,

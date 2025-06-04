@@ -42,7 +42,8 @@ void FResourceManager::Initialize(FRenderer* Renderer, FGraphicsDevice* Device)
     LoadTextureFromFile(Device->Device, L"Assets/Texture/Lab.png");
     LoadTextureFromFile(Device->Device, L"Assets/Texture/Slave.png");
     LoadTextureFromFile(Device->Device, L"Assets/Texture/Carrot.png");
-    
+
+    LoadTextureFromFile(Device->Device, L"Assets/Texture/NoHuman.png");
     LoadTextureFromFile(Device->Device, L"Assets/Texture/Success.png");
 }
 

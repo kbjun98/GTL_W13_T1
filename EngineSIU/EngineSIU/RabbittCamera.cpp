@@ -10,6 +10,7 @@
 #include "World/World.h"
 #include "GameFramework/Pawn.h"
 #include <GameFramework/RabbitGameMode.h>
+#include "GameFramework/RabbitPawn.h"
 
 RabbitCamera::RabbitCamera()
 {
@@ -156,7 +157,6 @@ void RabbitCamera::ReleasePictures()
             Picture->Release();
         }
     }
-
     PicturesRHI.Empty();
 }
 
@@ -262,14 +262,17 @@ void RabbitCamera::InitPictureArraySize(int Size)
 
 UPrimitiveComponent* RabbitCamera::CheckSubject()
 {
-    auto Player = GEngine->ActiveWorld->GetMainPlayer();
+    auto Player = Cast<ARabbitPawn>(GetOwner());
 
-    FVector PlayerForward = Player->GetActorForwardVector();
+   FRotator Rot = Cast<ARabbitPawn>(GetOwner())->GetPlayerController()->GetControlRotation();
+    FVector PlayerForward = Rot.ToVector();
     FVector PlayerPosition = Player->GetActorLocation();
 
-
+  
+ 
+    //GetPlayerController()->GetControlRotation();
    
-    float FOV = FMath::Cos(FMath::DegreesToRadians(60.f)); // 느슨한 시야각 (총 30도)
+    float FOV = FMath::Cos(FMath::DegreesToRadians(30.f)); // 느슨한 시야각 (총 30도)
 
     UStaticMeshComponent* HitComponent = nullptr;
     float MinHitDistance = MaxRange;
@@ -284,8 +287,7 @@ UPrimitiveComponent* RabbitCamera::CheckSubject()
         {
             continue;
         }
-
-        FVector ObjectLocation = CurrentComponent->GetComponentLocation();
+        FVector ObjectLocation = CurrentComponent->GetOwner()->GetActorLocation();
         FVector ToObject = ObjectLocation - PlayerPosition;
         float DistanceToObject = ToObject.Length();
 
@@ -299,7 +301,9 @@ UPrimitiveComponent* RabbitCamera::CheckSubject()
         }
 
         FVector ToObjectDir = ToObject.GetSafeNormal();
-        float Dot = FVector::DotProduct(PlayerForward, ToObjectDir);
+        FVector PlayerDir = PlayerForward.GetSafeNormal();
+
+        float Dot = FVector::DotProduct(PlayerDir, ToObjectDir);
 
         if (Dot >= FOV) {
             if (DistanceToObject < MinHitDistance) {
@@ -313,6 +317,7 @@ UPrimitiveComponent* RabbitCamera::CheckSubject()
             {
                 bPrintedOutOfFOV = true;
             }
+
         }
     }
 
