@@ -5,21 +5,21 @@
 UHitCameraShake::UHitCameraShake()
 {
     UWaveOscillatorCameraShakePattern* Pattern = new UWaveOscillatorCameraShakePattern();
-    Pattern->Duration = 0.5f;
+    Pattern->Duration = 0.3f;
     Pattern->BlendInTime = 0.f;
-    Pattern->BlendOutTime = 0.f;
+    Pattern->BlendOutTime = 0.2f;
 
     // Rotation
     Pattern->RotationAmplitudeMultiplier = 1.f;
     Pattern->RotationFrequencyMultiplier = 1.f;
     
-    Pattern->Yaw.Amplitude = 0.4f;
-    Pattern->Yaw.Frequency = 0.2f;
+    Pattern->Yaw.Amplitude = 3.f;
+    Pattern->Yaw.Frequency = 10.f;
 
-    Pattern->Pitch.Amplitude = 0.0f;
-    Pattern->Pitch.Frequency = 1.f;
+    Pattern->Pitch.Amplitude = 8.0f;
+    Pattern->Pitch.Frequency = 6.f;
 
-    Pattern->Roll.Amplitude = 0.3f;
+    Pattern->Roll.Amplitude = 1.0f;
     Pattern->Roll.Frequency = 12.f;
 
     // Location
