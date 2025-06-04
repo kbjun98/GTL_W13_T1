@@ -126,9 +126,9 @@ void ARabbitPlayer::ZoomIn(float DeltaTime)
     NextFOV = FMath::Clamp(NextFOV, MinFOV_ADS, MaxFOV_ADS);
     SetFOV(NextFOV);
 
-    float t = (NextFOV - 30.f) / (90.f - 30.f);  // 30 → 0, 90 → 1
-    float Range = FMath::Lerp(800.f, 300.f, t);  // t가 작을수록 Range 큼
-    GetRabbitCamera()->SetMaxRange(Range);
+  //  float t = (NextFOV - 30.f) / (90.f - 30.f);  // 30 → 0, 90 → 1
+  //  float Range = FMath::Lerp(800.f, 300.f, t);  // t가 작을수록 Range 큼
+ //   GetRabbitCamera()->SetMaxRange(Range);
 
 
     if (ARabbitController* RC = GetRabbitController())
@@ -152,9 +152,9 @@ void ARabbitPlayer::ZoomOut(float DeltaTime)
     SetFOV(NextFOV);
 
 
-    float t = (NextFOV - 30.f) / (90.f - 30.f);  // 동일한 방식
-    float Range = FMath::Lerp(800.f, 300.f, t);  // 동일하게 적용
-    GetRabbitCamera()->SetMaxRange(Range);
+  //  float t = (NextFOV - 30.f) / (90.f - 30.f);  // 동일한 방식
+  //  float Range = FMath::Lerp(800.f, 300.f, t);  // 동일하게 적용
+  //  GetRabbitCamera()->SetMaxRange(Range);
 
 
     if (ARabbitController* RC = GetRabbitController())

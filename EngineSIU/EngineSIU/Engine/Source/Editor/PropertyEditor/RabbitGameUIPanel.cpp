@@ -207,10 +207,10 @@ void RabbitGameUIPanel::RenderDeathUI()
         ViewPort.TopLeftY + ViewPort.Height * 0.5f
     );
     // 창 크기 및 위치
-    ImVec2 windowSize(1536, 1150);
+    ImVec2 windowSize(1920, 1187);
     ImVec2 windowPos(
         centerPos.x - windowSize.x * 0.5f,
-        centerPos.y - windowSize.y * 0.45f
+        centerPos.y - windowSize.y * 0.52f
     );
     ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
     ImGui::SetNextWindowPos(windowPos, ImGuiCond_Always);
@@ -282,10 +282,10 @@ void RabbitGameUIPanel::RenderSuceessUI()
         ViewPort.TopLeftY + ViewPort.Height * 0.5f
     );
     // 창 크기 및 위치
-    ImVec2 windowSize(1536, 1150);
+    ImVec2 windowSize(1920, 1187);
     ImVec2 windowPos(
         centerPos.x - windowSize.x * 0.5f,
-        centerPos.y - windowSize.y * 0.45f
+        centerPos.y - windowSize.y * 0.52f
     );
     ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
     ImGui::SetNextWindowPos(windowPos, ImGuiCond_Always);
