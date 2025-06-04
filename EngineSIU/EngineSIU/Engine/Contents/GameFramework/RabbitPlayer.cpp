@@ -186,8 +186,7 @@ void ARabbitPlayer::StartADS()
     
     CameraShakeInstance = GetPlayerController()->PlayerCameraManager->StartCameraShake(IdleCameraShake);
 
-    GetRabbitCamera()->SetMaxRange(300.f);
-
+ 
     if (auto CameraMeshComp = GetComponentByClass<UCameraMeshComponent>())
     {
         CameraMeshComp->bHidden = true;
