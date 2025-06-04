@@ -8,7 +8,8 @@ enum class EPhotoType
     ESlave,
     ELab,
     ECarrotField,
-    END,
+    EPhotoFrame,
+    END
 };
 
 class ARabbitGameMode : public AGameMode
