@@ -58,9 +58,9 @@ private:
     EInputMode CurrentInputMode = EInputMode::GameOnly;
     FVector2D MousePinPosition;
 
-    float MouseSensitivityBase = 0.4f;
-    float MouseSensitivityMin = 0.08f;
-    float MouseSensitivityMax = 0.3f;
+    float MouseSensitivityBase = 1.0f;
+    float MouseSensitivityMin = 0.2f;
+    float MouseSensitivityMax = 0.8f;
 
     bool ShouldIgnoreInput() const;
 };

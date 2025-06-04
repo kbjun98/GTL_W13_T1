@@ -320,7 +320,7 @@ void FSlateAppMessageHandler::ProcessMessage(HWND hWnd, uint32 Msg, WPARAM wPara
     case WM_NCMOUSEMOVE: // 비클라이언트 영역(창 제목 표시줄 등)에서 마우스가 움직였을 때 발생하는 메시지
     case WM_MOUSEMOVE:   // 클라이언트 영역에서 마우스가 움직였을 때 발생하는 메시지
     {
-        UpdateCursorPosition(FWindowsCursor::GetPosition());
+        //UpdateCursorPosition(FWindowsCursor::GetPosition());
         OnMouseMove(); // TODO: UE [WindowsApplication.cpp:2286]
         return;
     }
@@ -658,32 +658,42 @@ void FSlateAppMessageHandler::OnRawMouseInput(const RAWMOUSE& RawMouseInput)
     // 버튼과 관련없는 이벤트
     else [[likely]]
     {
-        // 그냥 마우스를 움직일 때 발생
         if (RawMouseInput.usFlags == MOUSE_MOVE_RELATIVE) [[likely]]
         {
+            FVector2D Delta(
+                static_cast<float>(RawMouseInput.lLastX),
+                static_cast<float>(RawMouseInput.lLastY)
+            );
+
+            // LastRawMouseDelta = Delta; // 디버깅용
+
+            // 중요: Raw Input의 델타를 사용하여 CurrentPosition 및 PreviousPosition 업데이트
+            // UpdateCursorPosition 함수는 내부적으로 PreviousPosition = CurrentPosition; CurrentPosition = NewPos; 를 수행합니다.
+            UpdateCursorPosition(GetCursorPos() + Delta);
+
             EffectingButton = EKeys::Invalid;
             InputEventType = IE_Axis;
+
+            OnRawMouseInputDelegate.Broadcast(FPointerEvent{
+                GetCursorPos(),         // 이제 이 Raw Input 이벤트에 의해 업데이트된 최신 위치
+                GetLastCursorPos(),     // 이전 위치
+                Delta,                  // 이번 Raw Input 이벤트의 실제 델타값
+                WheelDelta,             // 이 경로는 WheelDelta가 0이어야 함 (위에서 처리됨)
+                EffectingButton,
+                PressedMouseButtons,
+                GetModifierKeys(),
+                InputEventType,
+            });
         }
         else if (RawMouseInput.usFlags & MOUSE_MOVE_ABSOLUTE)
         {
-            // 태블릿, 터치스크린, 고급 트랙패드 같은 장치들에서 이벤트 발생
-            // TODO: 언젠가 구?현 하기
             //UE_LOG(ELogLevel::Warning, "Absolute mouse movement detected (currently not fully supported).");
+            // 절대 이동의 경우, lParam에서 직접 좌표를 가져와 UpdateCursorPosition을 호출할 수 있습니다.
+            // (예: POINT absPos = {RawMouseInput.lLastX, RawMouseInput.lLastY};)
+            // 하지만 일반적으로 게임에서는 MOUSE_MOVE_RELATIVE를 주로 사용합니다.
+            // 만약 절대 이동도 중요하다면, 해당 로직을 추가해야 합니다.
+            // 현재는 상대 이동에 집중하여 수정합니다.
         }
-
-        OnRawMouseInputDelegate.Broadcast(FPointerEvent{
-            GetCursorPos(),
-            GetLastCursorPos(),
-            FVector2D{
-                static_cast<float>(RawMouseInput.lLastX),
-                static_cast<float>(RawMouseInput.lLastY)
-            },
-            WheelDelta,
-            EffectingButton,
-            PressedMouseButtons,
-            GetModifierKeys(),
-            InputEventType,
-        });
     }
 }
 
