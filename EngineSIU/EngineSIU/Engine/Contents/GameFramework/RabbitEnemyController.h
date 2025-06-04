@@ -52,5 +52,7 @@ private:
     uint32 CurPatrolIndex = 0;
     float IdleTime = 0.0f;
     float AttackRange = 90.0f; // 공격 범위
+    float PathRecalcTime = 0.0f;
+    float PatRecalcCoolTIme = 0.1f;
 };
 

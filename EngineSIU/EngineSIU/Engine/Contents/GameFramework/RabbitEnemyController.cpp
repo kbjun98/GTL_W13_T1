@@ -70,6 +70,14 @@ void ARabbitEnemyController::ProcessEnemyMovement(float DeltaTime)
         }
         break;
     case EEnemyState::CHASE:
+        PathRecalcTime += DeltaTime;
+        
+        if (PathRecalcTime > 1.0f) // 1초마다 경로 갱신
+        {
+            UpdatePath();
+            PathRecalcTime = 0.0f;
+        }
+        
         if (ARabbitPawn* Rabbit = Cast<ARabbitPawn>(GetPossessedPawn()))
         {
             Rabbit->Jump();
@@ -286,6 +294,11 @@ void ARabbitEnemyController::SetState(EEnemyState NewState)
     if (CurrentState == EEnemyState::ATTACK)
     {
         AttackElapsedTime = 0.f;
+    }
+
+    if (CurrentState == EEnemyState::CHASE)
+    {
+        PathRecalcTime = 0.f;
     }
 }
 

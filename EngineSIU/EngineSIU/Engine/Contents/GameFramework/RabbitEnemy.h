@@ -26,7 +26,7 @@ public:
         float, AcceptanceRadius, = 90.0f; // 목표 위치에 도달하기 위한 허용 반경
     )
     UPROPERTY(EditAnywhere,
-        float, FailureRadius, = 500.0f; // 추적 실패 반경
+        float, FailureRadius, = 600.0f; // 추적 실패 반경
     )
     UPROPERTY(EditAnywhere,
         float, ChaseRangeMax, = 1000.0f;
