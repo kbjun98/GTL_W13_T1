@@ -10,7 +10,7 @@
 USpotLightComponent::USpotLightComponent()
 {
     SpotLightInfo.Position = GetComponentLocation();
-    SpotLightInfo.Radius = 30.0f;
+    SpotLightInfo.Radius = 3000.0f;
     SpotLightInfo.Direction = GetForwardVector();
     SpotLightInfo.LightColor = FLinearColor(1.0f, 1.0f, 1.0f, 1.0f);
     SpotLightInfo.Intensity = 1000000.0f;

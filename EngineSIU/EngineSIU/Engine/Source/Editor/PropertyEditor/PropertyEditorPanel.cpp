@@ -924,7 +924,7 @@ void PropertyEditorPanel::RenderForPointLightComponent(UPointLightComponent* Poi
         }
 
         float Radius = PointlightComponent->GetRadius();
-        if (ImGui::SliderFloat("Radius", &Radius, 0.01f, 200.f, "%.1f"))
+        if (ImGui::SliderFloat("Radius", &Radius, 1.f, 20000.f, "%.1f"))
         {
             PointlightComponent->SetRadius(Radius);
         }
@@ -978,7 +978,7 @@ void PropertyEditorPanel::RenderForSpotLightComponent(USpotLightComponent* SpotL
         }
 
         float Radius = SpotLightComponent->GetRadius();
-        if (ImGui::SliderFloat("Radius", &Radius, 0.01f, 200.f, "%.1f"))
+        if (ImGui::SliderFloat("Radius", &Radius, 1.f, 20000.f, "%.1f"))
         {
             SpotLightComponent->SetRadius(Radius);
         }

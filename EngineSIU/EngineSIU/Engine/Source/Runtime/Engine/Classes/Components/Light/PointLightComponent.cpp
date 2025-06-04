@@ -7,7 +7,7 @@
 UPointLightComponent::UPointLightComponent()
 {
     PointLightInfo.Position = GetComponentLocation();
-    PointLightInfo.Radius = 30.f;
+    PointLightInfo.Radius = 3000.f;
 
     PointLightInfo.LightColor = FLinearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
