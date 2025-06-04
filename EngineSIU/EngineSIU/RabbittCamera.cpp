@@ -138,7 +138,7 @@ void RabbitCamera::PlayCameraSound(bool IsEnd)
 {
     if (IsEnd)
     {
-        FSoundManager::GetInstance().PlaySound("SlowShutter");
+       // FSoundManager::GetInstance().PlaySound("SlowShutter");
     }
     else
     {

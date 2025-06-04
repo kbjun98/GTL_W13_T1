@@ -7,6 +7,7 @@
 #include "Engine/Engine.h"
 #include "GameFramework/Pawn.h"
 #include "UObject/Casts.h"
+#include "RabbitPlayer.h"
 
 URabbitMovementComponent::URabbitMovementComponent()
     : bGravity(true)
@@ -126,6 +127,7 @@ void URabbitMovementComponent::PerformMovement(float DeltaTime)
 
         if (!bPrevIsGrounded && bIsGrounded)
         {
+            if(Cast<ARabbitPlayer>(GetOwner()))
             FSoundManager::GetInstance().PlaySound("footprint");
         }
         
@@ -210,6 +212,7 @@ void URabbitMovementComponent::PlaySound(float DeltaTime)
         float Delta = SoundVal - PrevSoundVal;
         if (Delta < 0.f && !bSoundPlayed)
         {
+            if (Cast<ARabbitPlayer>(GetOwner()))
             FSoundManager::GetInstance().PlaySound("footprint");
             bSoundPlayed = true;
         }

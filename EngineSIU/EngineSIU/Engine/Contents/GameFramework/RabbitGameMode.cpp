@@ -137,6 +137,7 @@ void ARabbitGameMode::StartUIPictureEnd()
 
     RabbitPanel->OnPictureEndUI();
     FSoundManager::GetInstance().StopAllSounds();
+    FSoundManager::GetInstance().PlaySound("SlowShutter");
     FSoundManager::GetInstance().PlaySound("Hurry");
     FSoundManager::GetInstance().PlaySound("Shoong");
 

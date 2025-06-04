@@ -22,7 +22,7 @@ private:
     float ShutterTimer = 0.0f;
     const float ShutterDuration = 0.2f; // 예: 0.25초
     float CurrentApertureProgress = 0.0f;
-    float MaxRange = 300.f; // 최대 거리
+    float MaxRange = 700.f; // 최대 거리
     bool CanTakePicture = true;
     float CameraCoolTime;
     float CameraCoolTimeInit = 3;
