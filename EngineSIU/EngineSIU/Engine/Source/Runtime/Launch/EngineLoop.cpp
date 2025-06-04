@@ -61,7 +61,7 @@ int32 FEngineLoop::Init(HINSTANCE hInstance)
 
     if (!GPUTimingManager.Initialize(GraphicDevice.Device, GraphicDevice.DeviceContext))
     {
-        UE_LOG(ELogLevel::Error, TEXT("Failed to initialize GPU Timing Manager!"));
+        //UE_LOG(ELogLevel::Error, TEXT("Failed to initialize GPU Timing Manager!"));
     }
     EngineProfiler.SetGPUTimingManager(&GPUTimingManager);
 
@@ -115,7 +115,7 @@ int32 FEngineLoop::Init(HINSTANCE hInstance)
 #ifdef NDEBUG
     if (UEditorEngine* EdEngine = Cast<UEditorEngine>(GEngine))
     {
-        EdEngine->StartPIE();
+        //EdEngine->StartPIE();
     }
 #endif
 
@@ -194,8 +194,8 @@ void FEngineLoop::Tick()
         UnrealEditor->Render();
 
 #ifndef NDEBUG
-        FConsole::GetInstance().Draw();
-        EngineProfiler.Render(GraphicDevice.DeviceContext, GraphicDevice.ScreenWidth, GraphicDevice.ScreenHeight);
+        //FConsole::GetInstance().Draw();
+        //EngineProfiler.Render(GraphicDevice.DeviceContext, GraphicDevice.ScreenWidth, GraphicDevice.ScreenHeight);
 #endif
         
         UIManager->EndFrame();

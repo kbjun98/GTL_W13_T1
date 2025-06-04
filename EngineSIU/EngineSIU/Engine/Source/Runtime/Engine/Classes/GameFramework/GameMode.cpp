@@ -24,7 +24,12 @@ void AGameMode::PostSpawnInitialize()
 {
     AActor::PostSpawnInitialize();
 
-    OnGameInit.AddLambda([]() { UE_LOG(ELogLevel::Display, TEXT("Game Initialized")); });
+    OnGameInit.AddLambda(
+        []() 
+        { 
+            //UE_LOG(ELogLevel::Display, TEXT("Game Initialized"));
+        }
+    );
     
     SetActorTickInEditor(false); // PIE 모드에서만 Tick 수행
 

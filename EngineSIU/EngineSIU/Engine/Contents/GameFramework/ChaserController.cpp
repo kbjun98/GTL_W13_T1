@@ -30,7 +30,7 @@ void AChaserController::UpdatePath()
 {
     if (!GetPossesedRabbitEnemy()|| !GetTargetRabbitPlayer())
     {
-        UE_LOG(ELogLevel::Warning, "Invalid Player or ChasePawn");
+        //UE_LOG(ELogLevel::Warning, "Invalid Player or ChasePawn");
         return;
     }
     //AGridMapActor* GridMapActor = GetWorld()->GetActorByClass<AGridMapActor>();

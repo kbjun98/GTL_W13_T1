@@ -259,7 +259,7 @@ void UAnimSequenceBase::EvaluateAnimNotifies(
             {
                 if (NotifyEvent.Notify)
                 {
-                    UE_LOG(ELogLevel::Display, TEXT("[Notify] Triggered: %s at Time=%.3f"), *NotifyEvent.NotifyName.ToString(), CurrentTime);
+                    //UE_LOG(ELogLevel::Display, TEXT("[Notify] Triggered: %s at Time=%.3f"), *NotifyEvent.NotifyName.ToString(), CurrentTime);
                     NotifyEvent.Notify->Notify(MeshComp, AnimAsset);
                 }
                 NotifyEvent.bTriggered = true;
@@ -271,7 +271,7 @@ void UAnimSequenceBase::EvaluateAnimNotifies(
             {
                 if (NotifyEvent.NotifyState)
                 {
-                    UE_LOG(ELogLevel::Display, TEXT("[Notify] Begin: %s at Time=%.3f"), *NotifyEvent.NotifyName.ToString(), CurrentTime);
+                    //UE_LOG(ELogLevel::Display, TEXT("[Notify] Begin: %s at Time=%.3f"), *NotifyEvent.NotifyName.ToString(), CurrentTime);
                     NotifyEvent.NotifyState->NotifyBegin(MeshComp, AnimAsset, NotifyEvent.Duration);
                 }
                 NotifyEvent.bStateActive = true;
@@ -280,7 +280,7 @@ void UAnimSequenceBase::EvaluateAnimNotifies(
             {
                 if (NotifyEvent.NotifyState)
                 {
-                    UE_LOG(ELogLevel::Display, TEXT("[Notify] Tick: %s at Time=%.3f"), *NotifyEvent.NotifyName.ToString(), CurrentTime);
+                    //UE_LOG(ELogLevel::Display, TEXT("[Notify] Tick: %s at Time=%.3f"), *NotifyEvent.NotifyName.ToString(), CurrentTime);
                     NotifyEvent.NotifyState->NotifyTick(MeshComp, AnimAsset, DeltaTime);
                 }
             }
@@ -288,7 +288,7 @@ void UAnimSequenceBase::EvaluateAnimNotifies(
             {
                 if (NotifyEvent.NotifyState)
                 {
-                    UE_LOG(ELogLevel::Display, TEXT("[Notify] End: %s at Time=%.3f"), *NotifyEvent.NotifyName.ToString(), CurrentTime);
+                    //UE_LOG(ELogLevel::Display, TEXT("[Notify] End: %s at Time=%.3f"), *NotifyEvent.NotifyName.ToString(), CurrentTime);
                     NotifyEvent.NotifyState->NotifyEnd(MeshComp, AnimAsset);
                 }
                 NotifyEvent.bStateActive = false;

@@ -53,9 +53,6 @@ ControlEditorPanel::ControlEditorPanel()
 {
     SetSupportedWorldTypes(
         EWorldTypeBitFlag::Editor
-#ifndef NDEBUG
-        | EWorldTypeBitFlag::PIE
-#endif
         | EWorldTypeBitFlag::SkeletalViewer
         | EWorldTypeBitFlag::PhysicsAssetViewer
     );
@@ -715,7 +712,7 @@ void ControlEditorPanel::CreatePIEButton(const ImVec2 ButtonSize, ImFont* IconFo
     
     if (ImGui::Button("\ue9a8", ButtonSize)) // Play
     {
-        UE_LOG(ELogLevel::Display, TEXT("PIE Button Clicked"));
+        //UE_LOG(ELogLevel::Display, TEXT("PIE Button Clicked"));
         Engine->StartPIE();
     }
     ImGui::SameLine();
@@ -727,7 +724,7 @@ void ControlEditorPanel::CreatePIEButton(const ImVec2 ButtonSize, ImFont* IconFo
     
     if (ImGui::Button("\ue9e4", ButtonSize)) // Stop
     {
-        UE_LOG(ELogLevel::Display, TEXT("Stop Button Clicked"));
+        //UE_LOG(ELogLevel::Display, TEXT("Stop Button Clicked"));
         Engine->EndPIE();
     }
 }

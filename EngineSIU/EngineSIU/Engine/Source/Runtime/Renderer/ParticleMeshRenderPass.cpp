@@ -33,13 +33,13 @@ void FParticleMeshRenderPass::Initialize(FDXDBufferManager* InBufferManager, FGr
     HRESULT hr = ShaderManager->AddVertexShaderAndInputLayout(L"ParticleMeshVertexShader", L"Shaders/ParticleMeshVertexShader.hlsl", "main", StaticMeshLayoutDesc, ARRAYSIZE(StaticMeshLayoutDesc));
     if (FAILED(hr))
     {
-        UE_LOG(ELogLevel::Error, TEXT("Failed to create ParticleMeshVertexShader shader!"));
+        //UE_LOG(ELogLevel::Error, TEXT("Failed to create ParticleMeshVertexShader shader!"));
     }
 
     hr = ShaderManager->AddPixelShader(L"ParticleMeshPixelShader", L"Shaders/ParticleMeshPixelShader.hlsl", "main");
     if (FAILED(hr))
     {
-        UE_LOG(ELogLevel::Error, TEXT("Failed to create ParticleMeshPixelShader shader!"));
+        //UE_LOG(ELogLevel::Error, TEXT("Failed to create ParticleMeshPixelShader shader!"));
     }
 }
 

@@ -1,4 +1,4 @@
-﻿
+
 #pragma once
 #include <sol/sol.hpp>
 #include "Runtime/Core/Math/Vector.h"
@@ -122,24 +122,24 @@ namespace LuaBindingHelpers
         );
     }
     
-    // UE_LOG 바인딩 함수
+    // //UE_LOG 바인딩 함수
     inline void BindUE_LOG(sol::state& Lua)
     {
-        Lua.set_function("UE_LOG",
+        Lua.set_function("//UE_LOG",
             [](const std::string& Level, const std::string& Msg)
             {
                 FString Converted = FString(Msg.c_str());
                 if (Level == "Error")
                 {
-                    UE_LOG(ELogLevel::Error, TEXT("%s"), *Converted);
+                    //UE_LOG(ELogLevel::Error, TEXT("%s"), *Converted);
                 }
                 else if (Level == "Warning")
                 {
-                    UE_LOG(ELogLevel::Warning, TEXT("%s"), *Converted);
+                    //UE_LOG(ELogLevel::Warning, TEXT("%s"), *Converted);
                 }
                 else
                 {
-                    UE_LOG(ELogLevel::Display, TEXT("%s"), *Converted);
+                    //UE_LOG(ELogLevel::Display, TEXT("%s"), *Converted);
                 }
             }
         );
@@ -152,7 +152,7 @@ namespace LuaBindingHelpers
             [](const std::string& Msg)
             {
                 // 로그에 출력
-                UE_LOG(ELogLevel::Error, TEXT("%s"), Msg.c_str());
+                //UE_LOG(ELogLevel::Error, TEXT("%s"), Msg.c_str());
                 // 화면에 출력
                 OutputDebugStringA(Msg.c_str()); // 디버그 창에 출력
             }
@@ -205,7 +205,7 @@ namespace LuaDebugHelper
             // Before 배열에 포함되지 않은 경우만 출력
             if (!Before.Contains(name))
             {
-                UE_LOG(ELogLevel::Error,TEXT("Lua binding added: %s"), *name);
+                //UE_LOG(ELogLevel::Error,TEXT("Lua binding added: %s"), *name);
             }
         }
     }

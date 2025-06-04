@@ -8,9 +8,6 @@ OutlinerEditorPanel::OutlinerEditorPanel()
 {
     SetSupportedWorldTypes(
     EWorldTypeBitFlag::Editor
-#ifndef NDEBUG
-        | EWorldTypeBitFlag::PIE
-#endif
     );
 }
 

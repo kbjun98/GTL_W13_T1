@@ -48,7 +48,7 @@ void FGraphicsDevice::CreateDeviceAndSwapChain(HWND hWindow)
 
     uint32 Flag = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 #if _DEBUG
-    Flag |= D3D11_CREATE_DEVICE_DEBUG;
+    //Flag |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
     // 디바이스와 스왑 체인 생성
     const HRESULT Result = D3D11CreateDeviceAndSwapChain(

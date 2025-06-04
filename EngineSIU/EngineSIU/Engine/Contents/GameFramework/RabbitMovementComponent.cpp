@@ -58,7 +58,7 @@ void URabbitMovementComponent::SetUpdatedComponent(USceneComponent* NewUpdatedCo
             Controller = GEngine->PhysicsManager->CreateCapsuleController(Desc);
             if (!Controller)
             {
-                UE_LOG(ELogLevel::Error, TEXT("Failed to create capsule controller"));
+                //UE_LOG(ELogLevel::Error, TEXT("Failed to create capsule controller"));
             }
         }
     }
@@ -84,7 +84,7 @@ void URabbitMovementComponent::TickComponent(float DeltaTime)
 
 void URabbitMovementComponent::PerformMovement(float DeltaTime)
 {
-    if (UpdatedComponent == nullptr)
+    if (UpdatedComponent == nullptr || FMath::IsNearlyZero(DeltaTime))
     {
         return;
     }
@@ -113,7 +113,10 @@ void URabbitMovementComponent::PerformMovement(float DeltaTime)
         FVector DeltaLocation = Velocity * DeltaTime;
         PxVec3 disp = PxVec3(DeltaLocation.X, DeltaLocation.Y, DeltaLocation.Z);
         PxControllerFilters filters;
-        
+        filters.mCCTFilterCallback = nullptr;
+        filters.mFilterCallback = nullptr;
+        filters.mFilterData = nullptr;
+
         PxControllerCollisionFlags Flags = Controller->move(disp, 0.f, DeltaTime, filters);
         const PxExtendedVec3& Pos = Controller->getPosition();
         FVector MovedLocation = FVector(Pos.x, Pos.y, Pos.z);

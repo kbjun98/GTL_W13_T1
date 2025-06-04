@@ -12,7 +12,7 @@ void FGridMap::LoadMapFromFile(const FString FilePath)
 
     if (!File.is_open())
     {
-        UE_LOG(ELogLevel::Warning, "Cannot open MapFile");
+        //UE_LOG(ELogLevel::Warning, "Cannot open MapFile");
         return;
     }
 
@@ -54,7 +54,7 @@ FGridNode& FGridMap::GetNode(int X, int Y)
 void FGridMap::DebugPrint() const
 {
     /* 엔진 내 콘솔 출력*/
-   /* UE_LOG(ELogLevel::Display, "맵 디버그 출력 (Width = %d, Height = %d): ", Width, Height);
+   /* //UE_LOG(ELogLevel::Display, "맵 디버그 출력 (Width = %d, Height = %d): ", Width, Height);
     for (int y = 0; y < Height; ++y)
     {
         FString log;
@@ -74,7 +74,7 @@ void FGridMap::DebugPrint() const
                 }
             }
         }
-        UE_LOG(ELogLevel::Display, "%s", *log);
+        //UE_LOG(ELogLevel::Display, "%s", *log);
     }*/
     std::cout << "맵 디버그 출력 (Width = " << Width << ", Height = " << Height << "):" << std::endl;
     for (int y = 0; y < Height; ++y)
@@ -165,9 +165,9 @@ void FGridMap::InitializeGridNodeFromMeshes()
     Width = FMath::CeilToInt((MaxPoint.X - MinPoint.X) / GridMap->GridSpacing);
     Height = FMath::CeilToInt((MaxPoint.Y - MinPoint.Y) / GridMap->GridSpacing);
 
-    UE_LOG(ELogLevel::Display, TEXT("GridMap 영역: Width=%d, Height=%d"), Width, Height);
-    UE_LOG(ELogLevel::Display, TEXT("MinPoint: %s"), *MinPoint.ToString());
-    UE_LOG(ELogLevel::Display, TEXT("MaxPoint: %s"), *MaxPoint.ToString());
+    //UE_LOG(ELogLevel::Display, TEXT("GridMap 영역: Width=%d, Height=%d"), Width, Height);
+    //UE_LOG(ELogLevel::Display, TEXT("MinPoint: %s"), *MinPoint.ToString());
+    //UE_LOG(ELogLevel::Display, TEXT("MaxPoint: %s"), *MaxPoint.ToString());
 
     // GridNode 초기화
     for (int Y = 0; Y < Height; ++Y)
@@ -281,7 +281,7 @@ void FGridMap::AnalyzeWalkableFromMeshes()
         }
     }
 
-    UE_LOG(ELogLevel::Display, TEXT("Raycast + Normal 기반 장애물 분석 완료!"));
+    //UE_LOG(ELogLevel::Display, TEXT("Raycast + Normal 기반 장애물 분석 완료!"));
 }
 
 void FGridMap::SaveToBinaryFile(const FString& FilePath)
@@ -289,7 +289,7 @@ void FGridMap::SaveToBinaryFile(const FString& FilePath)
     std::ofstream OutFile(FilePath.ToAnsiString(), std::ios::binary);
     if (!OutFile.is_open())
     {
-        UE_LOG(ELogLevel::Error, "Failed to open file for saving: %s", *FilePath);
+        //UE_LOG(ELogLevel::Error, "Failed to open file for saving: %s", *FilePath);
         return;
     }
 
@@ -314,7 +314,7 @@ void FGridMap::SaveToBinaryFile(const FString& FilePath)
     }
 
     OutFile.close();
-    UE_LOG(ELogLevel::Display, "GridMap 저장 완료: %s", *FilePath);
+    //UE_LOG(ELogLevel::Display, "GridMap 저장 완료: %s", *FilePath);
 }
 
 void FGridMap::LoadFromBinaryFile(const FString& FilePath)
@@ -324,7 +324,7 @@ void FGridMap::LoadFromBinaryFile(const FString& FilePath)
     std::ifstream InFile(FilePath.ToAnsiString(), std::ios::binary);
     if (!InFile.is_open())
     {
-        UE_LOG(ELogLevel::Error, "Failed to open file for loading: %s", *FilePath);
+        //UE_LOG(ELogLevel::Error, "Failed to open file for loading: %s", *FilePath);
         return;
     }
 
@@ -350,7 +350,7 @@ void FGridMap::LoadFromBinaryFile(const FString& FilePath)
     }
 
     InFile.close();
-    UE_LOG(ELogLevel::Display, "GridMap 로드 완료: %s", *FilePath);
+    //UE_LOG(ELogLevel::Display, "GridMap 로드 완료: %s", *FilePath);
     GridMap->DebugPrint();
 }
 

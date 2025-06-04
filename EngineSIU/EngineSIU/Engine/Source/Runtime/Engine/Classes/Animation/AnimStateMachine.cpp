@@ -111,7 +111,7 @@ void UAnimStateMachine::ProcessState()
     {
         CurrentState = EAnimState::AS_Dance;
     }
-    UE_LOG(ELogLevel::Display, TEXT("Current State: %s"), *GetStateName(CurrentState));
+    //UE_LOG(ELogLevel::Display, TEXT("Current State: %s"), *GetStateName(CurrentState));
 }
 
 

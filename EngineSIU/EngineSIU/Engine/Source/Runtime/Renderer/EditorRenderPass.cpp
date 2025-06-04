@@ -713,7 +713,7 @@ void FEditorRenderPass::RenderBoxInstanced(uint64 ShowFlag)
                 {
                     FConstantBufferDebugBox b;
                     FMatrix WorldMatrix =
-                        FTransform(GeomAttribute.Rotation, GeomAttribute.Offset, GeomAttribute.Extent).ToMatrixWithScale()
+                        FTransform(GeomAttribute.Rotation, GeomAttribute.Offset, FVector::OneVector).ToMatrixWithScale()
                         * StaticComp->GetWorldMatrix().GetMatrixWithoutScale();
                     b.WorldMatrix = WorldMatrix;
                     b.Extent = GeomAttribute.Extent;
@@ -741,7 +741,7 @@ void FEditorRenderPass::RenderBoxInstanced(uint64 ShowFlag)
                 {
                     FConstantBufferDebugBox b;
                     FMatrix WorldMatrix =
-                        FTransform(Attributes.Rotation, Attributes.Offset, Attributes.Extent).ToMatrixWithScale()
+                        FTransform(Attributes.Rotation, Attributes.Offset, FVector::OneVector).ToMatrixWithScale()
                         * BoneMatrix
                         * SkelMeshComp->GetWorldMatrix().GetMatrixWithoutScale();
                     b.WorldMatrix = WorldMatrix;
@@ -817,7 +817,7 @@ void FEditorRenderPass::RenderSphereInstanced(uint64 ShowFlag)
                 {
                     FConstantBufferDebugSphere b;
                     FMatrix WorldMatrix =
-                        FTransform(GeomAttribute.Rotation, GeomAttribute.Offset, GeomAttribute.Extent).ToMatrixWithScale()
+                        FTransform(GeomAttribute.Rotation, GeomAttribute.Offset, FVector::OneVector).ToMatrixWithScale()
                         * StaticComp->GetWorldMatrix().GetMatrixWithoutScale();
                     b.Position = WorldMatrix.GetTranslationVector();
                     b.Radius = GeomAttribute.Extent.X;
@@ -845,7 +845,7 @@ void FEditorRenderPass::RenderSphereInstanced(uint64 ShowFlag)
                 {
                     FConstantBufferDebugSphere b;
                     FMatrix WorldMatrix =
-                        FTransform(Attributes.Rotation, Attributes.Offset, Attributes.Extent).ToMatrixWithScale()
+                        FTransform(Attributes.Rotation, Attributes.Offset, FVector::OneVector).ToMatrixWithScale()
                         * BoneMatrix
                         * SkelMeshComp->GetWorldMatrix().GetMatrixWithoutScale();
                     b.Position = WorldMatrix.GetTranslationVector();
@@ -925,7 +925,7 @@ void FEditorRenderPass::RenderCapsuleInstanced(uint64 ShowFlag)
                 {
                     FConstantBufferDebugCapsule b;
                     FMatrix WorldMatrix =
-                        FTransform(GeomAttribute.Rotation, GeomAttribute.Offset, GeomAttribute.Extent).ToMatrixWithScale()
+                        FTransform(GeomAttribute.Rotation, GeomAttribute.Offset, FVector::OneVector).ToMatrixWithScale()
                         * StaticComp->GetWorldMatrix().GetMatrixWithoutScale();
                     b.WorldMatrix = WorldMatrix;
                     b.Radius = GeomAttribute.Extent.X;
@@ -954,7 +954,7 @@ void FEditorRenderPass::RenderCapsuleInstanced(uint64 ShowFlag)
                 {
                     FConstantBufferDebugCapsule b;
                     FMatrix WorldMatrix =
-                        FTransform(Attributes.Rotation, Attributes.Offset, Attributes.Extent).ToMatrixWithScale()
+                        FTransform(Attributes.Rotation, Attributes.Offset, FVector::OneVector).ToMatrixWithScale()
                         * BoneMatrix
                         * SkelMeshComp->GetWorldMatrix().GetMatrixWithoutScale();
                     b.WorldMatrix = WorldMatrix;

@@ -53,7 +53,7 @@ void FPhysicsManager::InitPhysX()
     Physics = PxCreatePhysics(PX_PHYSICS_VERSION, *Foundation, PxTolerancesScale(), true, Pvd);
     if (!Physics)
     {
-        UE_LOG(ELogLevel::Error, TEXT("Failed to create PhysX Physics"));
+        //UE_LOG(ELogLevel::Error, TEXT("Failed to create PhysX Physics"));
         if (Foundation)
         {
             Foundation->release();
@@ -65,17 +65,17 @@ void FPhysicsManager::InitPhysX()
     Material = Physics->createMaterial(0.5f, 0.7f, 0.1f);
     if (!Material)
     {
-        UE_LOG(ELogLevel::Error, TEXT("Failed to create PhysX Material"));
+        //UE_LOG(ELogLevel::Error, TEXT("Failed to create PhysX Material"));
         return;
     }
 
     bool extensionsResult = PxInitExtensions(*Physics, Pvd);
     if (!extensionsResult)
     {
-        UE_LOG(ELogLevel::Warning, TEXT("PhysX Extensions initialization failed, but continuing"));
+        //UE_LOG(ELogLevel::Warning, TEXT("PhysX Extensions initialization failed, but continuing"));
     }
     
-    UE_LOG(ELogLevel::Display, TEXT("PhysX initialization completed successfully"));
+    //UE_LOG(ELogLevel::Display, TEXT("PhysX initialization completed successfully"));
 }
 
 PxScene* FPhysicsManager::CreateScene(UWorld* World)
@@ -99,7 +99,7 @@ PxScene* FPhysicsManager::CreateScene(UWorld* World)
         static bool bFirstCollisionCheck = true;
         if (bFirstCollisionCheck)
         {
-            UE_LOG(ELogLevel::Display, TEXT("Release Build: PhysX collision filter active"));
+            //UE_LOG(ELogLevel::Display, TEXT("Release Build: PhysX collision filter active"));
             bFirstCollisionCheck = false;
         }
 #endif
@@ -833,15 +833,15 @@ void FPhysicsManager::Simulate(float DeltaTime)
         static int logCounter = 0;
         if (logCounter++ % 60 == 0) // 1초마다 로깅 (60FPS 기준)
         {
-            UE_LOG(ELogLevel::Display, TEXT("Physics simulation running - DeltaTime: %.4f"), DeltaTime);
+            //UE_LOG(ELogLevel::Display, TEXT("Physics simulation running - DeltaTime: %.4f"), DeltaTime);
         }
 #else
         // Release 빌드에서만 물리 상태 확인
         static bool bFirstRun = true;
         if (bFirstRun)
         {
-            UE_LOG(ELogLevel::Display, TEXT("Release Build: Physics simulation started - DeltaTime: %.4f"), DeltaTime);
-            UE_LOG(ELogLevel::Display, TEXT("Release Build: CurrentScene valid: %s"), CurrentScene ? TEXT("YES") : TEXT("NO"));
+            //UE_LOG(ELogLevel::Display, TEXT("Release Build: Physics simulation started - DeltaTime: %.4f"), DeltaTime);
+            //UE_LOG(ELogLevel::Display, TEXT("Release Build: CurrentScene valid: %s"), CurrentScene ? TEXT("YES") : TEXT("NO"));
             bFirstRun = false;
         }
 #endif
@@ -852,7 +852,7 @@ void FPhysicsManager::Simulate(float DeltaTime)
     }
     else
     {
-        UE_LOG(ELogLevel::Error, TEXT("Physics simulation failed: CurrentScene is null"));
+        //UE_LOG(ELogLevel::Error, TEXT("Physics simulation failed: CurrentScene is null"));
     }
 }
 

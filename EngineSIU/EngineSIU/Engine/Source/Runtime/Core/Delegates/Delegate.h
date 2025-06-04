@@ -97,7 +97,7 @@ public:
                 return Func(std::forward<ParamTypes>(Params)...);
             }
 
-            UE_LOG(ELogLevel::Warning, "TDelegate executing on invalid object. Returning default value.");
+            //UE_LOG(ELogLevel::Warning, "TDelegate executing on invalid object. Returning default value.");
             return ReturnType{};
         };
     }
@@ -113,7 +113,7 @@ public:
                 return (SafeObj->*InMethod)(std::forward<ParamTypes>(Params)...);
             }
 
-            UE_LOG(ELogLevel::Warning, "TDelegate executing on invalid object. Returning default value.");
+            //UE_LOG(ELogLevel::Warning, "TDelegate executing on invalid object. Returning default value.");
             return ReturnType{};
         };
     }

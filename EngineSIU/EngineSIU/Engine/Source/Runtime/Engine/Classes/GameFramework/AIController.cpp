@@ -57,7 +57,7 @@ void AAIController::MoveAlongPath(float DeltaTime)
     if (CurrentPathIndex >= CurrentPath.Num())
     {
         OnMoveCompleted();
-        UE_LOG(ELogLevel::Display, "Reached the end of the path.");
+        //UE_LOG(ELogLevel::Display, "Reached the end of the path.");
         return;
     }
     // FIXME GridNode에서 Location Vector리턴하도록 책임 변경.
@@ -89,14 +89,14 @@ FVector AAIController::GetNextLocation()
     if (DirNormal.Size() <0.01f)
     {
         CurrentPathIndex++;
-        UE_LOG(ELogLevel::Error, "CurrentPathIndex : %d", CurrentPathIndex);
+        //UE_LOG(ELogLevel::Error, "CurrentPathIndex : %d", CurrentPathIndex);
     }
     if (CurrentPathIndex < CurrentPath.Num())
     {
         return CurrentPath[CurrentPathIndex];
     }
     else {
-        UE_LOG(ELogLevel::Error, "Invalid currentPathIndex");
+        //UE_LOG(ELogLevel::Error, "Invalid currentPathIndex");
         return FVector::ZeroVector;
     }
     

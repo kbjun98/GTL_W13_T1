@@ -299,7 +299,7 @@ HRESULT FDXDBufferManager::CreateBufferGeneric(const FString& KeyName, T* Data, 
     const HRESULT Result = DXDevice->CreateBuffer(&Desc, Data ? &InitData : nullptr, &Buffer);
     if (FAILED(Result))
     {
-        UE_LOG(ELogLevel::Error, TEXT("Error Create Constant Buffer!"));
+        //UE_LOG(ELogLevel::Error, TEXT("Error Create Constant Buffer!"));
         return Result;
     }
 
@@ -330,7 +330,7 @@ HRESULT FDXDBufferManager::CreateStructuredBufferGeneric(const FString& KeyName,
     HRESULT Result = DXDevice->CreateBuffer(&Desc, Data ? &InitData : nullptr, &Buffer);
     if (FAILED(Result))
     {
-        UE_LOG(ELogLevel::Error, TEXT("Error Create Structured Buffer!"));
+        //UE_LOG(ELogLevel::Error, TEXT("Error Create Structured Buffer!"));
         return Result;
     }
 
@@ -344,7 +344,7 @@ HRESULT FDXDBufferManager::CreateStructuredBufferGeneric(const FString& KeyName,
     Result = DXDevice->CreateShaderResourceView(Buffer, nullptr, &SRV);
     if (FAILED(Result))
     {
-        UE_LOG(ELogLevel::Error, TEXT("Error Create Structured Buffer SRV!"));
+        //UE_LOG(ELogLevel::Error, TEXT("Error Create Structured Buffer SRV!"));
         return Result;
     }
 
@@ -361,7 +361,7 @@ void FDXDBufferManager::UpdateConstantBuffer(const FString& Key, const T& Data) 
     ID3D11Buffer* Buffer = GetConstantBuffer(Key);
     if (!Buffer)
     {
-        UE_LOG(ELogLevel::Error, TEXT("UpdateConstantBuffer 호출: 키 %s에 해당하는 buffer가 없습니다."), *Key);
+        //UE_LOG(ELogLevel::Error, TEXT("UpdateConstantBuffer 호출: 키 %s에 해당하는 buffer가 없습니다."), *Key);
         return;
     }
 
@@ -369,7 +369,7 @@ void FDXDBufferManager::UpdateConstantBuffer(const FString& Key, const T& Data) 
     const HRESULT Result = DXDeviceContext->Map(Buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedResource);
     if (FAILED(Result))
     {
-        UE_LOG(ELogLevel::Error, TEXT("Buffer Map 실패, HRESULT: 0x%X"), Result);
+        //UE_LOG(ELogLevel::Error, TEXT("Buffer Map 실패, HRESULT: 0x%X"), Result);
         return;
     }
     memcpy(MappedResource.pData, &Data, sizeof(T));
@@ -382,7 +382,7 @@ void FDXDBufferManager::UpdateConstantBuffer(const FString& Key, const TArray<T>
     ID3D11Buffer* Buffer = GetConstantBuffer(Key);
     if (!Buffer)
     {
-        UE_LOG(ELogLevel::Error, TEXT("UpdateConstantBuffer 호출: 키 %s에 해당하는 buffer가 없습니다."), *Key);
+        //UE_LOG(ELogLevel::Error, TEXT("UpdateConstantBuffer 호출: 키 %s에 해당하는 buffer가 없습니다."), *Key);
         return;
     }
 
@@ -390,7 +390,7 @@ void FDXDBufferManager::UpdateConstantBuffer(const FString& Key, const TArray<T>
     const HRESULT Result = DXDeviceContext->Map(Buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedResource);
     if (FAILED(Result))
     {
-        UE_LOG(ELogLevel::Error, TEXT("Buffer Map 실패, HRESULT: 0x%X"), Result);
+        //UE_LOG(ELogLevel::Error, TEXT("Buffer Map 실패, HRESULT: 0x%X"), Result);
         return;
     }
     memcpy(MappedResource.pData, Data.GetData(), sizeof(T) * Data.Num());
@@ -403,7 +403,7 @@ void FDXDBufferManager::UpdateStructuredBuffer(const FString& Key, const TArray<
     ID3D11Buffer* Buffer = GetStructuredBuffer(Key);
     if (!Buffer)
     {
-        UE_LOG(ELogLevel::Error, TEXT("UpdateConstantBuffer 호출: 키 %s에 해당하는 buffer가 없습니다."), *Key);
+        //UE_LOG(ELogLevel::Error, TEXT("UpdateConstantBuffer 호출: 키 %s에 해당하는 buffer가 없습니다."), *Key);
         return;
     }
 
@@ -415,7 +415,7 @@ void FDXDBufferManager::UpdateStructuredBuffer(const FString& Key, const TArray<
     const HRESULT Result = DXDeviceContext->Map(Buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedResource);
     if (FAILED(Result))
     {
-        UE_LOG(ELogLevel::Error, TEXT("Buffer Map 실패, HRESULT: 0x%X"), Result);
+        //UE_LOG(ELogLevel::Error, TEXT("Buffer Map 실패, HRESULT: 0x%X"), Result);
         return;
     }
     memcpy(MappedResource.pData, Data.GetData(), sizeof(T) * ElementSize);
@@ -427,7 +427,7 @@ void FDXDBufferManager::UpdateDynamicVertexBuffer(const FString& KeyName, const 
 {
     if (!VertexBufferPool.Contains(KeyName))
     {
-        UE_LOG(ELogLevel::Error, TEXT("UpdateDynamicVertexBuffer 호출: 키 %s에 해당하는 버텍스 버퍼가 없습니다."), *KeyName);
+        //UE_LOG(ELogLevel::Error, TEXT("UpdateDynamicVertexBuffer 호출: 키 %s에 해당하는 버텍스 버퍼가 없습니다."), *KeyName);
         return;
     }
     const FVertexInfo VbInfo = VertexBufferPool[KeyName];
@@ -436,7 +436,7 @@ void FDXDBufferManager::UpdateDynamicVertexBuffer(const FString& KeyName, const 
     const HRESULT Result = DXDeviceContext->Map(VbInfo.VertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &Mapped);
     if (FAILED(Result))
     {
-        UE_LOG(ELogLevel::Error, TEXT("VertexBuffer Map 실패, HRESULT: 0x%X"), Result);
+        //UE_LOG(ELogLevel::Error, TEXT("VertexBuffer Map 실패, HRESULT: 0x%X"), Result);
         return;
     }
 

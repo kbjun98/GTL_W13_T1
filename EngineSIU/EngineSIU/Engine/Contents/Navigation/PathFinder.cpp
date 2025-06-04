@@ -37,7 +37,7 @@ TArray<FGridNode*> FPathFinder::FindNodePathByNode(FGridMap& GridMap, FGridNode&
                 // 무한루프 방지: 자기 자신을 Parent로 가진 경우
                 if (VisitedNodes.Contains(CurrentNode))
                 {
-                    UE_LOG(ELogLevel::Error, TEXT("FindNodePathByNode: 무한루프 감지! Node=(%d,%d)"), CurrentNode->X, CurrentNode->Y);
+                    //UE_LOG(ELogLevel::Error, TEXT("FindNodePathByNode: 무한루프 감지! Node=(%d,%d)"), CurrentNode->X, CurrentNode->Y);
                     break;
                 }
                 VisitedNodes.Add(CurrentNode);
@@ -45,7 +45,7 @@ TArray<FGridNode*> FPathFinder::FindNodePathByNode(FGridMap& GridMap, FGridNode&
                 // Parent가 자기 자신 가리키면 강제 종료
                 if (CurrentNode->Parent == CurrentNode)
                 {
-                    UE_LOG(ELogLevel::Error, TEXT("FindNodePathByNode: Parent가 자기 자신을 가리킴! Node=(%d,%d)"), CurrentNode->X, CurrentNode->Y);
+                    //UE_LOG(ELogLevel::Error, TEXT("FindNodePathByNode: Parent가 자기 자신을 가리킴! Node=(%d,%d)"), CurrentNode->X, CurrentNode->Y);
                     break;
                 }
 
@@ -152,22 +152,22 @@ const void FPathFinder::DebugPrint(TArray<FGridNode*>& Path) const
 {
     if (!Path.IsEmpty())
     {
-        UE_LOG(ELogLevel::Display, "=== 경로 찾기 결과 ===");
+        //UE_LOG(ELogLevel::Display, "=== 경로 찾기 결과 ===");
         for (auto* Node : Path)
         {
-            UE_LOG(ELogLevel::Display, "(%d, %d)", Node->X, Node->Y);
+            //UE_LOG(ELogLevel::Display, "(%d, %d)", Node->X, Node->Y);
         }
     }
     else {
-        UE_LOG(ELogLevel::Display, "경로를 찾지 못했습니다.");
+        //UE_LOG(ELogLevel::Display, "경로를 찾지 못했습니다.");
     }
 }
 
 const void FPathFinder::DebugWorldPosPath(TArray<FVector>& Path) const
 {
-    UE_LOG(ELogLevel::Warning, "=== WorldPositionPath ===");
+    //UE_LOG(ELogLevel::Warning, "=== WorldPositionPath ===");
 
     for (auto pos : Path) {
-        UE_LOG(ELogLevel::Display, "x : %f, / y : %f / z : %f", pos.X, pos.Y, pos.Z);
+        //UE_LOG(ELogLevel::Display, "x : %f, / y : %f / z : %f", pos.X, pos.Y, pos.Z);
     }
 }

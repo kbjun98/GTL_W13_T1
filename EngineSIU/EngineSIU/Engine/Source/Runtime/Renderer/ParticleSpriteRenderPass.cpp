@@ -19,13 +19,13 @@ void FParticleSpriteRenderPass::Initialize(FDXDBufferManager* InBufferManager, F
     HRESULT hr = ShaderManager->AddVertexShader(L"ParticleSpriteVertexShader", L"Shaders/ParticleSpriteVertexShader.hlsl", "main");
     if (FAILED(hr))
     {
-        UE_LOG(ELogLevel::Error, TEXT("Failed to create ParticleSpriteVertexShader shader!"));
+        //UE_LOG(ELogLevel::Error, TEXT("Failed to create ParticleSpriteVertexShader shader!"));
     }
 
     hr = ShaderManager->AddPixelShader(L"ParticleSpritePixelShader", L"Shaders/ParticleSpritePixelShader.hlsl", "main");
     if (FAILED(hr))
     {
-        UE_LOG(ELogLevel::Error, TEXT("Failed to create ParticleSpritePixelShader shader!"));
+        //UE_LOG(ELogLevel::Error, TEXT("Failed to create ParticleSpritePixelShader shader!"));
     }
 }
 

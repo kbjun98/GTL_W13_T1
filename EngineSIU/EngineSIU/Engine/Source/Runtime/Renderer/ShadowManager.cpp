@@ -40,7 +40,7 @@ bool FShadowManager::Initialize(FGraphicsDevice* InGraphics, FDXDBufferManager* 
 
     if (!InGraphics || !InGraphics->Device || !InGraphics->DeviceContext)
     {
-        // UE_LOG(LogTemp, Error, TEXT("FShadowManager::Initialize: Invalid GraphicsDevice provided."));
+        // //UE_LOG(LogTemp, Error, TEXT("FShadowManager::Initialize: Invalid GraphicsDevice provided."));
         return false;
     }
 
@@ -67,25 +67,25 @@ bool FShadowManager::Initialize(FGraphicsDevice* InGraphics, FDXDBufferManager* 
     // 리소스 생성 시도
     if (!CreateSpotShadowResources())
     {
-        // UE_LOG(LogTemp, Error, TEXT("Failed to create spot shadow resources!"));
+        // //UE_LOG(LogTemp, Error, TEXT("Failed to create spot shadow resources!"));
         Release();
         return false;
     }
     if (!CreatePointShadowResources()) // << 추가된 호출
     {
-        // UE_LOG(LogTemp, Error, TEXT("Failed to create point shadow resources!"));
+        // //UE_LOG(LogTemp, Error, TEXT("Failed to create point shadow resources!"));
         Release();
         return false;
     }
     if (!CreateDirectionalShadowResources())
     {
-        // UE_LOG(LogTemp, Error, TEXT("Failed to create directional shadow resources!"));
+        // //UE_LOG(LogTemp, Error, TEXT("Failed to create directional shadow resources!"));
         Release();
         return false;
     }
     if (!CreateSamplers())
     {
-        // UE_LOG(LogTemp, Error, TEXT("Failed to create shadow samplers!"));
+        // //UE_LOG(LogTemp, Error, TEXT("Failed to create shadow samplers!"));
         Release();
         return false;
     }
@@ -93,7 +93,7 @@ bool FShadowManager::Initialize(FGraphicsDevice* InGraphics, FDXDBufferManager* 
     // 방향성 광원 ViewProj 행렬 배열 크기 설정
     CascadesViewProjMatrices.SetNum(NumCascades);
 
-    // UE_LOG(LogTemp, Log, TEXT("FShadowManager Initialized Successfully."));
+    // //UE_LOG(LogTemp, Log, TEXT("FShadowManager Initialized Successfully."));
     return true;
 }
 
@@ -118,7 +118,7 @@ void FShadowManager::BeginSpotShadowPass(uint32_t sliceIndex)
     // 유효성 검사
     if (!D3DContext || sliceIndex >= (uint32_t)SpotShadowDepthRHI->ShadowDSVs.Num() || !SpotShadowDepthRHI->ShadowDSVs[sliceIndex])
     {
-        // UE_LOG(LogTemp, Warning, TEXT("BeginSpotShadowPass: Invalid slice index or DSV."));
+        // //UE_LOG(LogTemp, Warning, TEXT("BeginSpotShadowPass: Invalid slice index or DSV."));
         return;
     }
 
@@ -144,22 +144,22 @@ void FShadowManager::BeginPointShadowPass(uint32_t SliceIndex)
 {
     if (!D3DContext || !PointShadowCubeMapRHI || SliceIndex >= (uint32_t)PointShadowCubeMapRHI->ShadowDSVs.Num() || !PointShadowCubeMapRHI->ShadowDSVs[SliceIndex])
     {
-        UE_LOG(ELogLevel::Error, TEXT("BeginPointShadowPass: Invalid slice index (%u) or DSV."), SliceIndex);
+        //UE_LOG(ELogLevel::Error, TEXT("BeginPointShadowPass: Invalid slice index (%u) or DSV."), SliceIndex);
         if (!D3DContext)
         {
-            UE_LOG(ELogLevel::Error, TEXT("Invalid D3DContext"));
+            //UE_LOG(ELogLevel::Error, TEXT("Invalid D3DContext"));
         }
         else if (!PointShadowCubeMapRHI)
         {
-            UE_LOG(ELogLevel::Error, TEXT("Invalid PointShadowCubeMapRHI"));
+            //UE_LOG(ELogLevel::Error, TEXT("Invalid PointShadowCubeMapRHI"));
         }
         else if (SliceIndex >= (uint32_t)PointShadowCubeMapRHI->ShadowDSVs.Num())
         {
-            UE_LOG(ELogLevel::Error, TEXT("SliceIndex >= PointShadowCubeMapRHI->ShadowDSVs.Num(): %d"), PointShadowCubeMapRHI->ShadowDSVs.Num());
+            //UE_LOG(ELogLevel::Error, TEXT("SliceIndex >= PointShadowCubeMapRHI->ShadowDSVs.Num(): %d"), PointShadowCubeMapRHI->ShadowDSVs.Num());
         }
         else if (!PointShadowCubeMapRHI->ShadowDSVs[SliceIndex])
         {
-            UE_LOG(ELogLevel::Error, TEXT("Invalid PointShadowCubeMapRHI->ShadowDSVs[%d]"), SliceIndex);
+            //UE_LOG(ELogLevel::Error, TEXT("Invalid PointShadowCubeMapRHI->ShadowDSVs[%d]"), SliceIndex);
         }
         return; // 유효성 검사
     }
@@ -185,7 +185,7 @@ void FShadowManager::BeginDirectionalShadowCascadePass(uint32_t cascadeIndex)
     // 유효성 검사
     if (!D3DContext || cascadeIndex >= (uint32_t)DirectionalShadowCascadeDepthRHI->ShadowDSVs.Num() || !DirectionalShadowCascadeDepthRHI->ShadowDSVs[cascadeIndex])
     {
-         UE_LOG(ELogLevel::Warning, TEXT("BeginDirectionalShadowCascadePass: Invalid cascade index or DSV."));
+         //UE_LOG(ELogLevel::Warning, TEXT("BeginDirectionalShadowCascadePass: Invalid cascade index or DSV."));
         return;
     }
 
@@ -263,7 +263,7 @@ FMatrix FShadowManager::GetCascadeViewProjMatrix(int i) const
 {
     if (i < 0 || i >= CascadesViewProjMatrices.Num())
     {
-        UE_LOG(ELogLevel::Warning, TEXT("GetCascadeViewProjMatrix: Invalid cascade index."));
+        //UE_LOG(ELogLevel::Warning, TEXT("GetCascadeViewProjMatrix: Invalid cascade index."));
         return FMatrix::Identity;
     }
     return CascadesViewProjMatrices[i];
@@ -294,7 +294,7 @@ bool FShadowManager::CreateSpotShadowResources()
     HRESULT hr = D3DDevice->CreateTexture2D(&texDesc, nullptr, &SpotShadowDepthRHI->ShadowTexture);
     if (FAILED(hr))
     {
-        // UE_LOG(LogTemp, Error, TEXT("CreateTexture2D failed for SpotShadowArrayTexture (HR=0x%X)"), hr);
+        // //UE_LOG(LogTemp, Error, TEXT("CreateTexture2D failed for SpotShadowArrayTexture (HR=0x%X)"), hr);
         return false;
     }
 
@@ -310,7 +310,7 @@ bool FShadowManager::CreateSpotShadowResources()
     hr = D3DDevice->CreateShaderResourceView(SpotShadowDepthRHI->ShadowTexture, &srvDesc, &SpotShadowDepthRHI->ShadowSRV);
     if (FAILED(hr))
     {
-        // UE_LOG(LogTemp, Error, TEXT("CreateShaderResourceView failed for SpotShadowArraySRV (HR=0x%X)"), hr);
+        // //UE_LOG(LogTemp, Error, TEXT("CreateShaderResourceView failed for SpotShadowArraySRV (HR=0x%X)"), hr);
         ReleaseSpotShadowResources(); // 생성된 텍스처 정리
         return false;
     }
@@ -330,7 +330,7 @@ bool FShadowManager::CreateSpotShadowResources()
         hr = D3DDevice->CreateDepthStencilView(SpotShadowDepthRHI->ShadowTexture, &dsvDesc, &SpotShadowDepthRHI->ShadowDSVs[i]);
         if (FAILED(hr))
         {
-            // UE_LOG(LogTemp, Error, TEXT("CreateDepthStencilView failed for SpotShadowSliceDSV[%u] (HR=0x%X)"), i, hr);
+            // //UE_LOG(LogTemp, Error, TEXT("CreateDepthStencilView failed for SpotShadowSliceDSV[%u] (HR=0x%X)"), i, hr);
             ReleaseSpotShadowResources(); // 생성된 것들 정리
             return false;
         }
@@ -381,7 +381,7 @@ bool FShadowManager::CreatePointShadowResources() // << 추가된 함수 구현
     HRESULT hr = D3DDevice->CreateTexture2D(&texDesc, nullptr, &PointShadowCubeMapRHI->ShadowTexture);
     if (FAILED(hr))
     {
-        UE_LOG(ELogLevel::Error, TEXT("Failed to create Shadow Cube Map texture!"));
+        //UE_LOG(ELogLevel::Error, TEXT("Failed to create Shadow Cube Map texture!"));
         return hr;
     }
 
@@ -397,7 +397,7 @@ bool FShadowManager::CreatePointShadowResources() // << 추가된 함수 구현
     hr = D3DDevice->CreateShaderResourceView(PointShadowCubeMapRHI->ShadowTexture, &srvDesc, &PointShadowCubeMapRHI->ShadowSRV);
     if (FAILED(hr))
     {
-        // UE_LOG(LogTemp, Error, TEXT("CreateShaderResourceView failed for PointShadowCubeMap SRV (HR=0x%X)"), hr);
+        // //UE_LOG(LogTemp, Error, TEXT("CreateShaderResourceView failed for PointShadowCubeMap SRV (HR=0x%X)"), hr);
         ReleasePointShadowResources();
         return false;
     }
@@ -417,7 +417,7 @@ bool FShadowManager::CreatePointShadowResources() // << 추가된 함수 구현
         hr = D3DDevice->CreateDepthStencilView(PointShadowCubeMapRHI->ShadowTexture, &dsvDesc, &PointShadowCubeMapRHI->ShadowDSVs[i]);
         if (FAILED(hr))
         {
-            // UE_LOG(LogTemp, Error, TEXT("CreateDepthStencilView failed for PointShadowCubeMap DSV[%u] (HR=0x%X)"), i, hr);
+            // //UE_LOG(LogTemp, Error, TEXT("CreateDepthStencilView failed for PointShadowCubeMap DSV[%u] (HR=0x%X)"), i, hr);
             ReleasePointShadowResources();
             return false;
         }
@@ -444,7 +444,7 @@ bool FShadowManager::CreatePointShadowResources() // << 추가된 함수 구현
             hr = D3DDevice->CreateShaderResourceView(PointShadowCubeMapRHI->ShadowTexture, &faceSrvDesc, &PointShadowCubeMapRHI->ShadowFaceSRVs[i][j]);
             if (FAILED(hr))
             {
-                // UE_LOG(LogTemp, Error, TEXT("CreateShaderResourceView failed for PointShadow Face SRV [%u][%u] (HR=0x%X)"), i, j, hr);
+                // //UE_LOG(LogTemp, Error, TEXT("CreateShaderResourceView failed for PointShadow Face SRV [%u][%u] (HR=0x%X)"), i, j, hr);
                 // 실패 시, 지금까지 생성된 모든 리소스 정리 필요 (더 복잡한 롤백 로직 또는 단순하게 전체 해제)
                 ReleasePointShadowResources();
                 return false;
@@ -485,7 +485,7 @@ bool FShadowManager::CreateDirectionalShadowResources()
     HRESULT hr = D3DDevice->CreateTexture2D(&texDesc, nullptr, &DirectionalShadowCascadeDepthRHI->ShadowTexture);
     if (FAILED(hr))
     {
-        UE_LOG(ELogLevel::Error, TEXT("Failed to create Shadow Cube Map texture!"));
+        //UE_LOG(ELogLevel::Error, TEXT("Failed to create Shadow Cube Map texture!"));
         return hr;
     }
 
@@ -561,7 +561,7 @@ void FShadowManager::UpdateCascadeMatrices(const std::shared_ptr<FEditorViewport
 {
     if (!Viewport || !DirectionalLight || NumCascades == 0)
     {
-        UE_LOG(ELogLevel::Warning, TEXT("UpdateCascadeMatrices: Invalid input or NumCascades is zero."));
+        //UE_LOG(ELogLevel::Warning, TEXT("UpdateCascadeMatrices: Invalid input or NumCascades is zero."));
         return;
     }
 
@@ -756,7 +756,7 @@ bool FShadowManager::CreateSamplers()
     hr = D3DDevice->CreateSamplerState(&PointSamplerDesc, &ShadowPointSampler);
     if (FAILED(hr))
     {
-        // UE_LOG(ELogLevel::Error, TEXT("Failed to create Shadow Point Sampler!"));
+        // //UE_LOG(ELogLevel::Error, TEXT("Failed to create Shadow Point Sampler!"));
         ReleaseSamplers(); // 생성된 Comparison 샘플러 해제
         return false;
     }

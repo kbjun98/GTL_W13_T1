@@ -185,14 +185,14 @@ void UPrimitiveComponent::InitializeComponent()
     // OnComponentBeginOverlap.AddLambda(
     //     [](UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Hit)
     //     {
-    //         UE_LOG(ELogLevel::Display, "Component [%s] Begin overlap with [%s]", *OverlappedComponent->GetName(), *OtherComp->GetName());
+    //         //UE_LOG(ELogLevel::Display, "Component [%s] Begin overlap with [%s]", *OverlappedComponent->GetName(), *OtherComp->GetName());
     //     }
     // );
     //
     // OnComponentEndOverlap.AddLambda(
     //     [](UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
     //     {
-    //         UE_LOG(ELogLevel::Display, "Component [%s] End overlap with [%s]", *OverlappedComponent->GetName(), *OtherComp->GetName());
+    //         //UE_LOG(ELogLevel::Display, "Component [%s] End overlap with [%s]", *OverlappedComponent->GetName(), *OtherComp->GetName());
     //     }
     // );
 }
@@ -615,16 +615,16 @@ void UPrimitiveComponent::CreatePhysXGameObject()
         
         if (BodyInstance->BIGameObject)
         {
-            UE_LOG(ELogLevel::Display, TEXT("PhysX GameObject created successfully for %s"), *GetName());
+            //UE_LOG(ELogLevel::Display, TEXT("PhysX GameObject created successfully for %s"), *GetName());
         }
         else
         {
-            UE_LOG(ELogLevel::Error, TEXT("Failed to create PhysX GameObject for %s"), *GetName());
+            //UE_LOG(ELogLevel::Error, TEXT("Failed to create PhysX GameObject for %s"), *GetName());
         }
     }
     else
     {
-        UE_LOG(ELogLevel::Error, TEXT("PhysicsManager is null, cannot create PhysX GameObject for %s"), *GetName());
+        //UE_LOG(ELogLevel::Error, TEXT("PhysicsManager is null, cannot create PhysX GameObject for %s"), *GetName());
     }
     
     // Release 빌드에서 물리 오브젝트 생성 후 상태 확인
@@ -633,29 +633,31 @@ void UPrimitiveComponent::CreatePhysXGameObject()
     {
         if (BodyInstance->BIGameObject->DynamicRigidBody)
         {
-            UE_LOG(ELogLevel::Display, TEXT("Release Build: PhysX DynamicRigidBody created successfully for %s"), *GetName());
+            //UE_LOG(ELogLevel::Display, TEXT("Release Build: PhysX DynamicRigidBody created successfully for %s"), *GetName());
             
             // 물리 상태 강제 확인
             bool bIsKinematic = BodyInstance->BIGameObject->DynamicRigidBody->getRigidBodyFlags() & PxRigidBodyFlag::eKINEMATIC;
             bool bGravityDisabled = BodyInstance->BIGameObject->DynamicRigidBody->getActorFlags() & PxActorFlag::eDISABLE_GRAVITY;
             
+            /*
             UE_LOG(ELogLevel::Display, TEXT("Release Build: %s - Kinematic: %s, Gravity Disabled: %s"), 
                    *GetName(), 
                    bIsKinematic ? TEXT("YES") : TEXT("NO"),
                    bGravityDisabled ? TEXT("YES") : TEXT("NO"));
+             */
         }
         else if (BodyInstance->BIGameObject->StaticRigidBody)
         {
-            UE_LOG(ELogLevel::Display, TEXT("Release Build: PhysX StaticRigidBody created successfully for %s"), *GetName());
+            //UE_LOG(ELogLevel::Display, TEXT("Release Build: PhysX StaticRigidBody created successfully for %s"), *GetName());
         }
         else
         {
-            UE_LOG(ELogLevel::Error, TEXT("Release Build: PhysX RigidBody creation failed for %s"), *GetName());
+            //UE_LOG(ELogLevel::Error, TEXT("Release Build: PhysX RigidBody creation failed for %s"), *GetName());
         }
     }
     else
     {
-        UE_LOG(ELogLevel::Error, TEXT("Release Build: GameObject creation failed for %s"), *GetName());
+        //UE_LOG(ELogLevel::Error, TEXT("Release Build: GameObject creation failed for %s"), *GetName());
     }
     #endif
 }

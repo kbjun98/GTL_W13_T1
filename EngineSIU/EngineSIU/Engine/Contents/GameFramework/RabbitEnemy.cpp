@@ -77,7 +77,7 @@ void ARabbitEnemy::OnAttackNotify(USkeletalMeshComponent* NotifySkeletal)
     AActor* Owner = NotifySkeletal->GetOwner();
     USphereComponent* SphereComp = Owner->GetComponentByClass<USphereComponent>();
     Owner->GetComponentByClass<USphereComponent>()->bIsOverlapEnabled = true;
-    UE_LOG(ELogLevel::Error, TEXT("Attack Start Notify Triggered! %s"), GetName().ToAnsiString().c_str());
+    //UE_LOG(ELogLevel::Error, TEXT("Attack Start Notify Triggered! %s"), GetName().ToAnsiString().c_str());
 }
 
 void ARabbitEnemy::OnAttackEndNotify(USkeletalMeshComponent* NotifySkeletal)
@@ -85,5 +85,5 @@ void ARabbitEnemy::OnAttackEndNotify(USkeletalMeshComponent* NotifySkeletal)
     AActor* Owner = NotifySkeletal->GetOwner();
     UShapeComponent* SphereComp = Owner->GetComponentByClass<USphereComponent>();
     Owner->GetComponentByClass<USphereComponent>()->bIsOverlapEnabled = false;
-    UE_LOG(ELogLevel::Error, TEXT("Attack End Notify Triggered! %s"), GetName().ToAnsiString().c_str());
+    //UE_LOG(ELogLevel::Error, TEXT("Attack End Notify Triggered! %s"), GetName().ToAnsiString().c_str());
 }

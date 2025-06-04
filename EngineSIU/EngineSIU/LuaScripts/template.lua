@@ -46,7 +46,7 @@ end
 function Tick(dt)
     -- actor:SetLocation(newPos)
     -- actor:SetLocation(FVector(200, 0, 0))
-    -- UE_LOG("Error", "actor:SetLocation")
+    -- //UE_LOG("Error", "actor:SetLocation")
 
     -- actor.Location = FVector(0, 0, 0)
     -- actor.Location.X = actor.Location.X + dt

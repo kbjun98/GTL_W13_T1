@@ -297,13 +297,13 @@ void FEditorViewportClient::InputKey(const FKeyEvent& InKeyEvent)
 
                     if (Owner && Owner->GetRootComponent() != SelectedComponent)
                     {
-                        UE_LOG(ELogLevel::Display, "Delete Component - %s", *SelectedComponent->GetName());
+                        //UE_LOG(ELogLevel::Display, "Delete Component - %s", *SelectedComponent->GetName());
                         Engine->DeselectComponent(SelectedComponent);
                         SelectedComponent->DestroyComponent();
                     }
                     else if (SelectedActor)
                     {
-                        UE_LOG(ELogLevel::Display, "Delete Component - %s", *SelectedActor->GetName());
+                        //UE_LOG(ELogLevel::Display, "Delete Component - %s", *SelectedActor->GetName());
                         Engine->DeselectActor(SelectedActor);
                         Engine->DeselectComponent(SelectedComponent);
                         Engine->ActiveWorld->DestroyActor(SelectedActor);
@@ -311,7 +311,7 @@ void FEditorViewportClient::InputKey(const FKeyEvent& InKeyEvent)
                 }
                 else if (SelectedActor)
                 {
-                    UE_LOG(ELogLevel::Display, "Delete Component - %s", *SelectedActor->GetName());
+                    //UE_LOG(ELogLevel::Display, "Delete Component - %s", *SelectedActor->GetName());
                     Engine->DeselectActor(SelectedActor);
                     Engine->DeselectComponent(SelectedComponent);
                     Engine->ActiveWorld->DestroyActor(SelectedActor);
@@ -356,7 +356,7 @@ void FEditorViewportClient::ResizeViewport(FRect Top, FRect Bottom, FRect Left, 
     }
     else
     {
-        UE_LOG(ELogLevel::Error, "Viewport is nullptr");
+        //UE_LOG(ELogLevel::Error, "Viewport is nullptr");
     }
     UpdateProjectionMatrix();
     UpdateViewMatrix();

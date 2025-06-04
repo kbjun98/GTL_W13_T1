@@ -20,7 +20,7 @@ UPointLightComponent::UPointLightComponent()
     // for (int32 i = 0; i < ShadowMapCreationCount; ++i)  
     // {
     // }
-    // UE_LOG(ELogLevel::Error,
+    // //UE_LOG(ELogLevel::Error,
     //     TEXT("CreateSliceSRV 입장3: ArraySize=%u, MipLevels=%u"),
     //     dbg.ArraySize, dbg.MipLevels
     // );
@@ -33,18 +33,18 @@ UPointLightComponent::UPointLightComponent()
 //    D3D11_TEXTURE2D_DESC dbg;
 //    ShadowMaps[0].Texture2D->GetDesc(&dbg);
 //
-//    UE_LOG(ELogLevel::Error,
+//    //UE_LOG(ELogLevel::Error,
 //        TEXT("CreateSliceSRV 입장1: ArraySize=%u, MipLevels=%u"),
 //        dbg.ArraySize, ShadowMaps.Num()
 //    );
-//    UE_LOG(ELogLevel::Error,
+//    //UE_LOG(ELogLevel::Error,
 //        TEXT("CreateSliceSRV 입장1: ArraySize=%u, MipLevels=%u"),
 //        dbg.ArraySize, dbg.MipLevels
 //    );
 //    InitShadowDebugView();
 //
 //    
-//    UE_LOG(ELogLevel::Error,
+//    //UE_LOG(ELogLevel::Error,
 //        TEXT("CreateSliceSRV 입장: ArraySize=%u, MipLevels=%u"),
 //        dbg.ArraySize, dbg.MipLevels
 //    );
@@ -57,7 +57,7 @@ UPointLightComponent::UPointLightComponent()
 //            i
 //        );
 //    }
-//    UE_LOG(ELogLevel::Error,
+//    //UE_LOG(ELogLevel::Error,
 //        TEXT("CreateSliceSRV 입장3: ArraySize=%u, MipLevels=%u"),
 //        dbg.ArraySize, dbg.MipLevels
 //    );
@@ -88,7 +88,7 @@ UPointLightComponent::UPointLightComponent()
 //     hr = FEngineLoop::GraphicDevice.Device->CreateTexture2D(&CubeMapTextureDesc, nullptr, &NewResource.Texture2D);
 //     if (FAILED(hr))
 //     {
-//         UE_LOG(ELogLevel::Error, TEXT("Failed to create Shadow Cube Map texture!"));
+//         //UE_LOG(ELogLevel::Error, TEXT("Failed to create Shadow Cube Map texture!"));
 //         return hr;
 //     }
 //
@@ -101,7 +101,7 @@ UPointLightComponent::UPointLightComponent()
 //     hr = FEngineLoop::GraphicDevice.Device->CreateRenderTargetView(NewResource.Texture2D, &rtvDesc, &DepthRTVArray);
 //     if (FAILED(hr))
 //     {
-//         UE_LOG(ELogLevel::Error, TEXT("Failed to create Shadow Cube Map RTV!"));
+//         //UE_LOG(ELogLevel::Error, TEXT("Failed to create Shadow Cube Map RTV!"));
 //         return hr;
 //     }
 //
@@ -115,7 +115,7 @@ UPointLightComponent::UPointLightComponent()
 //     hr = FEngineLoop::GraphicDevice.Device->CreateShaderResourceView(NewResource.Texture2D, &CubeMapSRVDesc, &NewResource.SRV);
 //     if (FAILED(hr))
 //     {
-//         UE_LOG(ELogLevel::Error, TEXT("Failed to create Shadow Cube Map SRV!"));
+//         //UE_LOG(ELogLevel::Error, TEXT("Failed to create Shadow Cube Map SRV!"));
 //         return hr;
 //     }
 //
@@ -135,7 +135,7 @@ UPointLightComponent::UPointLightComponent()
 //     desc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE; // DSV + SRV
 //     hr = FEngineLoop::GraphicDevice.Device->CreateTexture2D(&desc, nullptr, &DSVResource.Texture2D);
 //     if (FAILED(hr) || !DSVResource.Texture2D) {
-//         UE_LOG(ELogLevel::Error, TEXT("CreateTexture2D(Depth) failed: 0x%08X"), hr);
+//         //UE_LOG(ELogLevel::Error, TEXT("CreateTexture2D(Depth) failed: 0x%08X"), hr);
 //         return hr;
 //     }
 //
@@ -148,7 +148,7 @@ UPointLightComponent::UPointLightComponent()
 //     dsvDesc.Texture2DArray.ArraySize = NUM_FACES;
 //     hr = FEngineLoop::GraphicDevice.Device->CreateDepthStencilView(DSVResource.Texture2D, &dsvDesc, &DSVResource.DSV);
 //     if (FAILED(hr) || !DSVResource.DSV) {
-//         UE_LOG(ELogLevel::Error, TEXT("CreateDepthStencilView failed: 0x%08X"), hr);
+//         //UE_LOG(ELogLevel::Error, TEXT("CreateDepthStencilView failed: 0x%08X"), hr);
 //         return hr;
 //     }
 //
@@ -160,13 +160,13 @@ UPointLightComponent::UPointLightComponent()
 //     srvDesc.TextureCube.MipLevels = 1;
 //     hr = FEngineLoop::GraphicDevice.Device->CreateShaderResourceView(DSVResource.Texture2D, &srvDesc, &DSVResource.SRV);
 //     if (FAILED(hr) || !DSVResource.SRV) {
-//         UE_LOG(ELogLevel::Error, TEXT("CreateShaderResourceView failed: 0x%08X"), hr);
+//         //UE_LOG(ELogLevel::Error, TEXT("CreateShaderResourceView failed: 0x%08X"), hr);
 //         return hr;
 //     }
 //
 //     D3D11_TEXTURE2D_DESC actual;
 //     NewResource.Texture2D->GetDesc(&actual);
-//     UE_LOG(ELogLevel::Error,
+//     //UE_LOG(ELogLevel::Error,
 //         TEXT(">> 실제 ArraySize=%u, MipLevels=%u, Format=%u, MiscFlags=0x%X"),
 //         actual.ArraySize,
 //         actual.MipLevels,
@@ -198,7 +198,7 @@ void UPointLightComponent::InitShadowDebugView()
         auto hr = FEngineLoop::GraphicDevice.Device->CreateTexture2D(&TexDesc, nullptr, &Texture);
         if (FAILED(hr))
         {
-            UE_LOG(ELogLevel::Error, TEXT("Failed to create shadow debug texture!"));
+            //UE_LOG(ELogLevel::Error, TEXT("Failed to create shadow debug texture!"));
             return;
         }
         OutputTextures.Add(Texture);
@@ -213,7 +213,7 @@ void UPointLightComponent::InitShadowDebugView()
         hr = FEngineLoop::GraphicDevice.Device->CreateShaderResourceView(Texture, &SrvDesc, &Srv);
         if (FAILED(hr))
         {
-            UE_LOG(ELogLevel::Error, TEXT("Failed to create shadow debug SRV!"));
+            //UE_LOG(ELogLevel::Error, TEXT("Failed to create shadow debug SRV!"));
             return;
         }
         OutputSRVs.Add(Srv);
@@ -438,7 +438,7 @@ void UPointLightComponent::UpdateProjectionMatrix()
 //{
 //    D3D11_TEXTURE2D_DESC ddesc;
 //    ShadowMaps[0].Texture2D->GetDesc(&ddesc);
-//    UE_LOG(ELogLevel::Error, TEXT("Cubemap.ArraySize=%u"), ddesc.ArraySize);
+//    //UE_LOG(ELogLevel::Error, TEXT("Cubemap.ArraySize=%u"), ddesc.ArraySize);
 //
 //    D3D11_SHADER_RESOURCE_VIEW_DESC desc = {};
 //    desc.Format = format;
@@ -453,7 +453,7 @@ void UPointLightComponent::UpdateProjectionMatrix()
 //        ->CreateShaderResourceView(texArray, &desc, &srv);
 //    if (FAILED(hr))
 //    {
-//        UE_LOG(ELogLevel::Error, TEXT("Failed to create slice SRV!"));
+//        //UE_LOG(ELogLevel::Error, TEXT("Failed to create slice SRV!"));
 //        return nullptr;
 //    }
 //    return srv;

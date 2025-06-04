@@ -46,5 +46,5 @@ void FUnresolvedPtrProperty::Resolve()
 
     Type = EPropertyType::Unknown;
     TypeSpecificData = std::monostate{};
-    UE_LOGFMT(ELogLevel::Error, "Unknown Property Type: {}", Name);
+    //UE_LOGFMT(ELogLevel::Error, "Unknown Property Type: {}", Name);
 }

@@ -14,7 +14,7 @@
 ATransformGizmo::ATransformGizmo()
 {
     static int GizmoCnt = 0;
-    UE_LOG(ELogLevel::Error, "Gizmo Created %d", GizmoCnt++);
+    //UE_LOG(ELogLevel::Error, "Gizmo Created %d", GizmoCnt++);
 
     SetActorTickInEditor(true);
     

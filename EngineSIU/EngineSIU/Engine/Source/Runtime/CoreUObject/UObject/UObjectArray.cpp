@@ -31,7 +31,7 @@ void FUObjectArray::ProcessPendingDestroyObjects()
         std::destroy_at(Object);
         FPlatformMemory::AlignedFree<EAT_Object>(Object, ObjectSize);
 
-        UE_LOGFMT(ELogLevel::Display, "Deleted Object: {}, Size: {}", ObjectName, ObjectSize);
+        //UE_LOGFMT(ELogLevel::Display, "Deleted Object: {}, Size: {}", ObjectName, ObjectSize);
     }
     PendingDestroyObjects.Empty();
 }

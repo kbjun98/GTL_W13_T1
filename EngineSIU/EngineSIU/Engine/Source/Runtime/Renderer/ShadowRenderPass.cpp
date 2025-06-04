@@ -382,55 +382,55 @@ void FShadowRenderPass::CreateResource()
     HRESULT hr = ShaderManager->AddVertexShader(L"DepthOnlyVS_SM", L"Shaders/DepthOnlyVS.hlsl", "mainVS_SM");
     if (FAILED(hr))
     {
-        UE_LOG(ELogLevel::Error, TEXT("Failed to create DepthOnlyVS shader!"));
+        //UE_LOG(ELogLevel::Error, TEXT("Failed to create DepthOnlyVS shader!"));
     }
     
     hr = ShaderManager->AddVertexShader(L"DepthOnlyVS_SKM", L"Shaders/DepthOnlyVS.hlsl", "mainVS_SKM");
     if (FAILED(hr))
     {
-        UE_LOG(ELogLevel::Error, TEXT("Failed to create DepthOnlyVS shader!"));
+        //UE_LOG(ELogLevel::Error, TEXT("Failed to create DepthOnlyVS shader!"));
     }
     
     hr = ShaderManager->AddVertexShader(L"DepthCubeMapVS_SM", L"Shaders/DepthCubeMapVS.hlsl", "mainVS_SM");
     if (FAILED(hr))
     {
-        UE_LOG(ELogLevel::Error, TEXT("Failed to create DepthCubeMapVS shader!"));
+        //UE_LOG(ELogLevel::Error, TEXT("Failed to create DepthCubeMapVS shader!"));
     }
 
     hr = ShaderManager->AddVertexShader(L"DepthCubeMapVS_SKM", L"Shaders/DepthCubeMapVS.hlsl", "mainVS_SKM");
     if (FAILED(hr))
     {
-        UE_LOG(ELogLevel::Error, TEXT("Failed to create DepthCubeMapVS shader!"));
+        //UE_LOG(ELogLevel::Error, TEXT("Failed to create DepthCubeMapVS shader!"));
     }
 
     hr = ShaderManager->AddGeometryShader(L"DepthCubeMapGS", L"Shaders/PointLightCubemapGS.hlsl", "mainGS");
     if (FAILED(hr))
     {
-        UE_LOG(ELogLevel::Error, TEXT("Failed to create DepthCubeMapGS shader!"));
+        //UE_LOG(ELogLevel::Error, TEXT("Failed to create DepthCubeMapGS shader!"));
     }
 
     hr = ShaderManager->AddVertexShader(L"CascadedShadowMapVS_SM", L"Shaders/CascadedShadowMap.hlsl", "mainVS_SM");
     if (FAILED(hr))
     {
-        UE_LOG(ELogLevel::Error, TEXT("Failed to create Cascaded ShadowMap Vertex shader!"));
+        //UE_LOG(ELogLevel::Error, TEXT("Failed to create Cascaded ShadowMap Vertex shader!"));
     }
 
     hr = ShaderManager->AddVertexShader(L"CascadedShadowMapVS_SKM", L"Shaders/CascadedShadowMap.hlsl", "mainVS_SKM");
     if (FAILED(hr))
     {
-        UE_LOG(ELogLevel::Error, TEXT("Failed to create Cascaded ShadowMap Vertex shader!"));
+        //UE_LOG(ELogLevel::Error, TEXT("Failed to create Cascaded ShadowMap Vertex shader!"));
     }
 
     hr = ShaderManager->AddGeometryShader(L"CascadedShadowMapGS", L"Shaders/CascadedShadowMap.hlsl", "mainGS");
     if (FAILED(hr))
     {
-        UE_LOG(ELogLevel::Error, TEXT("Failed to create Cascaded ShadowMap Geometry shader!"));
+        //UE_LOG(ELogLevel::Error, TEXT("Failed to create Cascaded ShadowMap Geometry shader!"));
     }
 
     hr = ShaderManager->AddPixelShader(L"CascadedShadowMapPS", L"Shaders/CascadedShadowMap.hlsl", "mainPS");
     if (FAILED(hr))
     {
-        UE_LOG(ELogLevel::Error, TEXT("Failed to create Cascaded ShadowMap Pixel shader!"));
+        //UE_LOG(ELogLevel::Error, TEXT("Failed to create Cascaded ShadowMap Pixel shader!"));
     }
 }
 

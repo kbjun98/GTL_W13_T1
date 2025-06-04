@@ -46,7 +46,7 @@ void ARabbitPawn::BeginPlay()
         Collision->OnComponentBeginOverlap.AddLambda(
             [this](UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Hit)
             {
-                UE_LOG(ELogLevel::Display, TEXT("Begin Overlap!"));
+                //UE_LOG(ELogLevel::Display, TEXT("Begin Overlap!"));
                 this->OnRabbitBeginOverlap(OverlappedComponent, OtherActor, OtherComp);
             }
         );
@@ -54,7 +54,7 @@ void ARabbitPawn::BeginPlay()
         Collision->OnComponentEndOverlap.AddLambda(
             [this](UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
             {
-                UE_LOG(ELogLevel::Display, TEXT("End Overlap!"));
+                //UE_LOG(ELogLevel::Display, TEXT("End Overlap!"));
                 this->OnRabbitEndOverlap(OverlappedComponent, OtherActor, OtherComp);
             }
         );

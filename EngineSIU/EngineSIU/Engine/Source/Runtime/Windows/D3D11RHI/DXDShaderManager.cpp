@@ -163,7 +163,7 @@ void FDXDShaderManager::ReloadAllShaders()
            LayoutPtr,
            static_cast<uint32>(Shader.Layout.size())
        );
-       UE_LOG(ELogLevel::Display, TEXT("%ls Updated"), Shader.Key.c_str());
+       //UE_LOG(ELogLevel::Display, TEXT("%ls Updated"), Shader.Key.c_str());
 
        // 업데이트 후, 해당 셰이더 자신과 인클루드하는 모든 파일 타임스탬프 갱신
        if (std::filesystem::exists(Shader.FilePath))
@@ -611,7 +611,7 @@ HRESULT FDXDShaderManager::AddComputeShader(const std::wstring& Key, const std::
         if (ErrorBlob)
         {
             OutputDebugStringA(static_cast<char*>(ErrorBlob->GetBufferPointer()));
-            UE_LOG(ELogLevel::Error, "%s", (char*)ErrorBlob->GetBufferPointer());
+            //UE_LOG(ELogLevel::Error, "%s", (char*)ErrorBlob->GetBufferPointer());
             ErrorBlob->Release();
         }
         return Result;
@@ -666,7 +666,7 @@ HRESULT FDXDShaderManager::AddGeometryShader(const std::wstring& Key, const std:
         if (ErrorBlob)
         {
             OutputDebugStringA(static_cast<char*>(ErrorBlob->GetBufferPointer()));
-            UE_LOG(ELogLevel::Error, "%s", (char*)ErrorBlob->GetBufferPointer());
+            //UE_LOG(ELogLevel::Error, "%s", (char*)ErrorBlob->GetBufferPointer());
             ErrorBlob->Release();
         }
         return Result;

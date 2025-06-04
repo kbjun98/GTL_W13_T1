@@ -122,5 +122,5 @@ std::string FRawInput::GetLastErrorString()
 void FRawInput::LogRawInput(ELogLevel Level, const std::string& Message)
 {
     OutputDebugStringA(("[RawInput] " + Message + "\n").c_str());
-    UE_LOG(Level, "[RawInput] %s", Message.c_str());
+    //UE_LOG(Level, "[RawInput] %s", Message.c_str());
 }

@@ -50,12 +50,8 @@ void UEditorEngine::Init()
 
     EditorPlayer = FObjectFactory::ConstructObject<AEditorPlayer>(this);
 
-#ifndef NDEBUG
-    LoadLevel("Saved/AutoSaves.scene");
-#else
     LoadLevel("Engine/Contents/Resources/MapDesignLevel.scene");
     ActiveWorld->GetGridMap()->LoadFromBinaryFile("Engine/Contents/Resources/MapDesignLevel.scene.mapgrid");
-#endif
 }
 
 void UEditorEngine::Release()
@@ -262,7 +258,7 @@ void UEditorEngine::StartPIE()
 {
     if (PIEWorld)
     {
-        UE_LOG(ELogLevel::Warning, TEXT("PIEWorld already exists!"));
+        //UE_LOG(ELogLevel::Warning, TEXT("PIEWorld already exists!"));
         return;
     }
 
@@ -301,7 +297,7 @@ void UEditorEngine::StartSkeletalMeshViewer(FName SkeletalMeshName, UAnimationAs
     }
     if (SkeletalMeshViewerWorld)
     {
-        UE_LOG(ELogLevel::Warning, TEXT("SkeletalMeshViewerWorld already exists!"));
+        //UE_LOG(ELogLevel::Warning, TEXT("SkeletalMeshViewerWorld already exists!"));
         return;
     }
 
@@ -380,7 +376,7 @@ void UEditorEngine::StartParticleViewer(UParticleSystem* ParticleSystemAsset)
     
     if (ParticleViewerWorld)
     {
-        UE_LOG(ELogLevel::Warning, TEXT("SkeletalMeshViewerWorld already exists!"));
+        //UE_LOG(ELogLevel::Warning, TEXT("SkeletalMeshViewerWorld already exists!"));
         const auto Actors = ParticleViewerWorld->GetActiveLevel()->Actors;
         for (const auto& Actor : Actors)
         {
@@ -457,7 +453,7 @@ void UEditorEngine::StartPhysicsAssetViewer(FName PreviewMeshKey, FName PhysicsA
 
     if (PhysicsAssetViewerWorld)
     {
-        UE_LOG(ELogLevel::Warning, TEXT("PhysicsAssetViewerWorld already exists!"));
+        //UE_LOG(ELogLevel::Warning, TEXT("PhysicsAssetViewerWorld already exists!"));
         const auto Actors = PhysicsAssetViewerWorld->GetActiveLevel()->Actors;
         for (const auto& Actor : Actors)
         {
@@ -511,7 +507,7 @@ void UEditorEngine::StartPhysicsAssetViewer(FName PreviewMeshKey, FName PhysicsA
     }
     else
     {
-        UE_LOG(ELogLevel::Error, TEXT("PhysicsAssetViewerWorld is null after creation attempt in StartPhysicsAssetViewer."));
+        //UE_LOG(ELogLevel::Error, TEXT("PhysicsAssetViewerWorld is null after creation attempt in StartPhysicsAssetViewer."));
     }
 
     ADirectionalLight* DirectionalLight = PhysicsAssetViewerWorld->SpawnActor<ADirectionalLight>();
@@ -706,7 +702,7 @@ void UEditorEngine::SelectActor(AActor* InActor)
 {
     if (InActor && CanSelectActor(InActor))
     {
-        UE_LOGFMT(ELogLevel::Display, "Select Actor: {}", InActor->GetName());
+        //UE_LOGFMT(ELogLevel::Display, "Select Actor: {}", InActor->GetName());
         PrivateEditorSelection::GActorSelected = InActor;
     }
 }
@@ -715,7 +711,7 @@ void UEditorEngine::DeselectActor(AActor* InActor)
 {
     if (PrivateEditorSelection::GActorSelected == InActor && InActor)
     {
-        UE_LOGFMT(ELogLevel::Display, "Deselect Actor: {}", InActor->GetName());
+        //UE_LOGFMT(ELogLevel::Display, "Deselect Actor: {}", InActor->GetName());
         PrivateEditorSelection::GActorSelected = nullptr;
         ClearComponentSelection();
     }
@@ -723,7 +719,7 @@ void UEditorEngine::DeselectActor(AActor* InActor)
 
 void UEditorEngine::ClearActorSelection()
 {
-    UE_LOGFMT(ELogLevel::Display, "Clear Actor Selection");
+    //UE_LOGFMT(ELogLevel::Display, "Clear Actor Selection");
     PrivateEditorSelection::GActorSelected = nullptr;
 }
 
@@ -760,7 +756,7 @@ void UEditorEngine::SelectComponent(USceneComponent* InComponent) const
 {
     if (InComponent && CanSelectComponent(InComponent))
     {
-        UE_LOGFMT(ELogLevel::Display, "Select Component: {}", InComponent->GetName());
+        //UE_LOGFMT(ELogLevel::Display, "Select Component: {}", InComponent->GetName());
         PrivateEditorSelection::GComponentSelected = InComponent;
     }
 }
@@ -770,14 +766,14 @@ void UEditorEngine::DeselectComponent(USceneComponent* InComponent)
     // 전달된 InComponent가 현재 선택된 컴포넌트와 같다면 선택 해제
     if (PrivateEditorSelection::GComponentSelected == InComponent && InComponent != nullptr)
     {
-        UE_LOGFMT(ELogLevel::Display, "Deselect Component: {}", InComponent->GetName());
+        //UE_LOGFMT(ELogLevel::Display, "Deselect Component: {}", InComponent->GetName());
         PrivateEditorSelection::GComponentSelected = nullptr;
     }
 }
 
 void UEditorEngine::ClearComponentSelection()
 {
-    UE_LOGFMT(ELogLevel::Display, "Clear Component Selection");
+    //UE_LOGFMT(ELogLevel::Display, "Clear Component Selection");
     PrivateEditorSelection::GComponentSelected = nullptr;
 }
 

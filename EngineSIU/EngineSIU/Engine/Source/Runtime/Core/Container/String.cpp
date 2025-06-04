@@ -58,7 +58,7 @@ bool FString::ToBool() const
 
     // 위 조건에 해당하지 않는 모든 다른 문자열은 false로 처리합니다.
     // (예: "Yes", "No", "On", "Off" 등을 추가로 지원하고 싶다면 여기에 조건을 추가할 수 있습니다.)
-    // UE_LOG(LogTemp, Warning, TEXT("FString::ToBool() : Unrecognized string '%s' treated as false."), **this); // 필요시 경고 로그
+    // //UE_LOG(LogTemp, Warning, TEXT("FString::ToBool() : Unrecognized string '%s' treated as false."), **this); // 필요시 경고 로그
     return false;
 }
 

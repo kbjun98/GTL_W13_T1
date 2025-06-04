@@ -21,13 +21,8 @@ SLevelEditor::SLevelEditor()
 
 void SLevelEditor::Initialize(uint32 InEditorWidth, uint32 InEditorHeight)
 {
-#ifdef NDEBUG
     EditorWidth = InEditorWidth;
     EditorHeight = InEditorHeight;
-#else
-    EditorWidth = InEditorWidth * 0.8f;
-    EditorHeight = InEditorHeight - 104.f;
-#endif
     
     ResizeEditor(EditorWidth, EditorHeight);
     
@@ -127,13 +122,8 @@ void SLevelEditor::ResizeEditor(uint32 InEditorWidth, uint32 InEditorHeight)
         return;
     }
 
-#ifdef NDEBUG
     EditorWidth = static_cast<uint32>(static_cast<float>(InEditorWidth));
     EditorHeight = static_cast<uint32>(static_cast<float>(InEditorHeight));
-#else
-    EditorWidth = static_cast<uint32>(static_cast<float>(InEditorWidth) * 0.8f);
-    EditorHeight = static_cast<uint32>(static_cast<float>(InEditorHeight) - 104.f);
-#endif
     if (UEditorEngine* EditorEngine = Cast<UEditorEngine>(GEngine))
     {
         const EViewerType ViewerType = EditorEngine->GetViewerType();
@@ -187,11 +177,7 @@ void SLevelEditor::ResizeViewports()
     }
     else
     {
-#ifdef NDEBUG
         ActiveViewportClient->GetViewport()->ResizeViewport(FRect(0.0f, 0.f, EditorWidth , EditorHeight ));
-#else
-        ActiveViewportClient->GetViewport()->ResizeViewport(FRect(0.0f, 72.f, EditorWidth , EditorHeight ));
-#endif
     }
 }
 

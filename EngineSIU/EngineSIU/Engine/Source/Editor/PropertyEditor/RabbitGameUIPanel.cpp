@@ -370,11 +370,7 @@ void RabbitGameUIPanel::RenderGallery()
 
     ImGuiViewport* viewport = ImGui::GetMainViewport();
     ImVec2 panelPos = ImVec2(
-#ifdef NDEBUG
         viewport->WorkPos.x + (viewport->WorkSize.x - totalWidth) * 0.5f,
-#else
-        viewport->WorkPos.x + (viewport->WorkSize.x - totalWidth) * 0.4f,
-#endif
         viewport->WorkPos.y + viewport->WorkSize.y - panelHeight - 5.0f // 바닥에서 살짝 띄움
     );
 

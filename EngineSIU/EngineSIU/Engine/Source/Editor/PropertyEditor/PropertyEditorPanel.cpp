@@ -51,9 +51,6 @@ PropertyEditorPanel::PropertyEditorPanel()
 {
     SetSupportedWorldTypes(
     EWorldTypeBitFlag::Editor
-#ifndef NDEBUG
-        | EWorldTypeBitFlag::PIE
-#endif
     );
 }
 
@@ -924,7 +921,7 @@ void PropertyEditorPanel::RenderForPointLightComponent(UPointLightComponent* Poi
         }
 
         float Radius = PointlightComponent->GetRadius();
-        if (ImGui::SliderFloat("Radius", &Radius, 1.f, 20000.f, "%.1f"))
+        if (ImGui::SliderFloat("Radius", &Radius, 1.f, 2000.f, "%.1f"))
         {
             PointlightComponent->SetRadius(Radius);
         }
@@ -978,7 +975,7 @@ void PropertyEditorPanel::RenderForSpotLightComponent(USpotLightComponent* SpotL
         }
 
         float Radius = SpotLightComponent->GetRadius();
-        if (ImGui::SliderFloat("Radius", &Radius, 1.f, 20000.f, "%.1f"))
+        if (ImGui::SliderFloat("Radius", &Radius, 1.f, 2000.f, "%.1f"))
         {
             SpotLightComponent->SetRadius(Radius);
         }
@@ -1056,7 +1053,7 @@ void PropertyEditorPanel::RenderForLightCommon(ULightComponentBase* LightCompone
         else
         {
             // 뷰포트 클라이언트를 찾을 수 없음 (오류 로그 등)
-            // UE_LOG(LogTemp, Warning, TEXT("Active Viewport Client not found."));
+            // //UE_LOG(LogTemp, Warning, TEXT("Active Viewport Client not found."));
         }
     }
     ImGui::PopStyleColor();
