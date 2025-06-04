@@ -64,6 +64,10 @@ public:
             system->playSound(it->second, nullptr, false, &newChannel);
             if (newChannel) {
                 activeChannels.push_back(newChannel);
+                if (name == "footprint")
+                {
+                    newChannel->setVolume(0.3f);
+                }
             }
         }
     }
