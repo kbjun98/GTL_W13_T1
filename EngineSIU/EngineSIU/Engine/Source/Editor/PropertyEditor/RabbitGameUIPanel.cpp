@@ -360,12 +360,13 @@ void RabbitGameUIPanel::RenderGallery()
     auto Icon1 = (ImTextureID)FEngineLoop::ResourceManager.GetTexture(L"Assets/Texture/Slave.png")->TextureSRV;
     auto Icon2 = (ImTextureID)FEngineLoop::ResourceManager.GetTexture(L"Assets/Texture/Lab.png")->TextureSRV;
     auto Icon3 = (ImTextureID)FEngineLoop::ResourceManager.GetTexture(L"Assets/Texture/Carrot.png")->TextureSRV;
-    ImTextureID OverlayIcons[3] = { Icon1,Icon2,Icon3 };
+    auto Icon4 = (ImTextureID)FEngineLoop::ResourceManager.GetTexture(L"Assets/Texture/Carrot.png")->TextureSRV;
+    ImTextureID OverlayIcons[4] = { Icon1,Icon2,Icon3,Icon4 };
 
     constexpr float THUMBNAIL_SIZE = 128.0f;
     constexpr float spacing = 15.0f;
-    constexpr int32 MaxSlots = 3;
-    constexpr float totalWidth = (THUMBNAIL_SIZE * MaxSlots) + (spacing * (MaxSlots - 1)) + 40.0f;
+    constexpr int32 MaxSlots = 4;
+    constexpr float totalWidth = (THUMBNAIL_SIZE * MaxSlots) + (spacing * (MaxSlots - 1)) + 50.0f;
     constexpr float panelHeight = THUMBNAIL_SIZE + 30.0f;
 
     ImGuiViewport* viewport = ImGui::GetMainViewport();
