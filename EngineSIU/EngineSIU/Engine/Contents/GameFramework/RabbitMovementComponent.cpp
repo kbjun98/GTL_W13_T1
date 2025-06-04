@@ -1,6 +1,7 @@
 #include "RabbitMovementComponent.h"
 
 #include "PhysicsManager.h"
+#include "SoundManager.h"
 
 #include "Components/CapsuleComponent.h"
 #include "Engine/Engine.h"
@@ -77,6 +78,8 @@ void URabbitMovementComponent::TickComponent(float DeltaTime)
     Super::TickComponent(DeltaTime);
 
     PerformMovement(DeltaTime);
+
+    PlaySound(DeltaTime);
 }
 
 void URabbitMovementComponent::PerformMovement(float DeltaTime)
@@ -114,9 +117,15 @@ void URabbitMovementComponent::PerformMovement(float DeltaTime)
         PxControllerCollisionFlags Flags = Controller->move(disp, 0.f, DeltaTime, filters);
         const PxExtendedVec3& Pos = Controller->getPosition();
         FVector MovedLocation = FVector(Pos.x, Pos.y, Pos.z);
-        
+
+        bool bPrevIsGrounded = bIsGrounded;
         bIsGrounded = Flags & PxControllerCollisionFlag::eCOLLISION_DOWN;
 
+        if (!bPrevIsGrounded && bIsGrounded)
+        {
+            FSoundManager::GetInstance().PlaySound("footprint");
+        }
+        
         if (!bIsGrounded && (Flags & PxControllerCollisionFlag::eCOLLISION_UP))
         {
             if (!bCollisionUp)
@@ -172,5 +181,44 @@ void URabbitMovementComponent::SetLocation(const FVector& NewLocation)
     {
         FVector Delta = NewLocation - UpdatedComponent->GetComponentLocation();
         MoveUpdatedComponent(Delta, GetOwner()->GetActorRotation());
+    }
+}
+
+void URabbitMovementComponent::PlaySound(float DeltaTime)
+{
+    FVector VelocityXY = FVector(Velocity.X, Velocity.Y, 0.f);
+    if (VelocityXY.SquaredLength() < 10000.f)
+    {
+        bIsMoving = false;
+    }
+    else
+    {
+        if (!bIsMoving)
+        {
+            bIsMoving = true;
+            MovingTime = 0.f;
+        }
+    }
+    
+    if (bIsMoving && bIsGrounded)
+    {
+        MovingTime += DeltaTime;
+        float SoundVal = FMath::Abs(FMath::Sin(MovingTime * 5.f - 0.2f));
+        float Delta = SoundVal - PrevSoundVal;
+        if (Delta < 0.f && !bSoundPlayed)
+        {
+            FSoundManager::GetInstance().PlaySound("footprint");
+            bSoundPlayed = true;
+        }
+        if (Delta > 0.f)
+        {
+            bSoundPlayed = false;
+        }
+        PrevSoundVal = SoundVal;
+    }
+    else
+    {
+        bSoundPlayed = false;
+        PrevSoundVal = 0.f;
     }
 }

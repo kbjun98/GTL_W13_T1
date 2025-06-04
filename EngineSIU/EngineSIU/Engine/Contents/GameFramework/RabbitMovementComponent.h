@@ -21,7 +21,7 @@ public:
     virtual void SetUpdatedComponent(USceneComponent* NewUpdatedComponent) override;
 
     virtual void DestroyComponent(bool bPromoteChildren) override;
-    
+
     virtual void TickComponent(float DeltaTime) override;
 
     virtual void PerformMovement(float DeltaTime);
@@ -41,4 +41,12 @@ protected:
     bool bCollisionUp = false;
 
     physx::PxController* Controller;
+
+
+    bool bIsMoving = false;
+    float MovingTime = 0.f;
+    bool bSoundPlayed = false;
+    float PrevSoundVal = 0.f;
+    
+    void PlaySound(float DeltaTime);
 };
