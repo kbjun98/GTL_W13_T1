@@ -493,7 +493,7 @@ void PropertyEditorPanel::RenderForStaticMesh(UStaticMeshComponent* StaticMeshCo
             ImGui::EndCombo();
         }    
 
-        const char* PhotoTypeNames[] = { "None", "ESlave", "ELab","ECarrotField"};
+        const char* PhotoTypeNames[] = { "None", "ESlave", "ELab","ECarrotField", "EPhotoFrame"};
         int32 CurrentIndex = static_cast<int32>(StaticMeshComp->GetPhotoType());
 
         if (ImGui::Combo("PhotoType", &CurrentIndex, PhotoTypeNames, IM_ARRAYSIZE(PhotoTypeNames)))

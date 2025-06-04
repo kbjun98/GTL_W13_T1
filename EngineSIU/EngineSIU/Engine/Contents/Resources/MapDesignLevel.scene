@@ -7,27 +7,6 @@
             "ActorTickInEditor": "false",
             "Components": [
                 {
-                    "ComponentClass": "UDirectionalLightComponent",
-                    "ComponentID": "UDirectionalLightComponent_0",
-                    "Properties": {
-                        "AABB_Max": "X=1.000 Y=1.000 Z=0.100",
-                        "AABB_Min": "X=-1.000 Y=-1.000 Z=-0.100",
-                        "AttachParentID": "UBillboardComponent_0",
-                        "ComponentClass": "UDirectionalLightComponent",
-                        "ComponentName": "UDirectionalLightComponent_0",
-                        "ComponentOwner": "ADirectionalLight_248",
-                        "ComponentOwnerClass": "ADirectionalLight",
-                        "Direction": "X=-1.000 Y=-0.000 Z=-0.000",
-                        "Intensity": "0.600000",
-                        "LightColor": "R=1.000 G=1.000 B=1.000 A=1.000",
-                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
-                    }
-                },
-                {
                     "ComponentClass": "UBillboardComponent",
                     "ComponentID": "UBillboardComponent_0",
                     "Properties": {
@@ -50,6 +29,27 @@
                         "bIsActive": "true",
                         "bSimulate": "false",
                         "m_Type": "UBillboardComponent"
+                    }
+                },
+                {
+                    "ComponentClass": "UDirectionalLightComponent",
+                    "ComponentID": "UDirectionalLightComponent_0",
+                    "Properties": {
+                        "AABB_Max": "X=1.000 Y=1.000 Z=0.100",
+                        "AABB_Min": "X=-1.000 Y=-1.000 Z=-0.100",
+                        "AttachParentID": "UBillboardComponent_0",
+                        "ComponentClass": "UDirectionalLightComponent",
+                        "ComponentName": "UDirectionalLightComponent_0",
+                        "ComponentOwner": "ADirectionalLight_248",
+                        "ComponentOwnerClass": "ADirectionalLight",
+                        "Direction": "X=-1.000 Y=-0.000 Z=-0.000",
+                        "Intensity": "0.600000",
+                        "LightColor": "R=1.000 G=1.000 B=1.000 A=1.000",
+                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
                     }
                 }
             ],
@@ -95,29 +95,6 @@
             "ActorLabel": "OBJ_RABBITENEMY_275",
             "ActorTickInEditor": "false",
             "Components": [
-                {
-                    "ComponentClass": "USphereComponent",
-                    "ComponentID": "Collision_Attack_0",
-                    "Properties": {
-                        "AABB_max": "X=0.000 Y=0.000 Z=0.000",
-                        "AABB_min": "X=0.000 Y=0.000 Z=0.000",
-                        "AttachParentID": "Collision_0",
-                        "ComponentClass": "USphereComponent",
-                        "ComponentName": "Collision_Attack_0",
-                        "ComponentOwner": "ARabbitEnemy_275",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=40.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "RigidBodyType": "2",
-                        "SphereRadius": "20.000000",
-                        "bApplyGravity": "false",
-                        "bAutoActive": "true",
-                        "bIsActive": "true",
-                        "bSimulate": "true",
-                        "m_Type": ""
-                    }
-                },
                 {
                     "ComponentClass": "UCapsuleComponent",
                     "ComponentID": "Collision_0",
@@ -193,6 +170,29 @@
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
                         "bIsActive": "true"
+                    }
+                },
+                {
+                    "ComponentClass": "USphereComponent",
+                    "ComponentID": "Collision_Attack_0",
+                    "Properties": {
+                        "AABB_max": "X=0.000 Y=0.000 Z=0.000",
+                        "AABB_min": "X=0.000 Y=0.000 Z=0.000",
+                        "AttachParentID": "Collision_0",
+                        "ComponentClass": "USphereComponent",
+                        "ComponentName": "Collision_Attack_0",
+                        "ComponentOwner": "ARabbitEnemy_275",
+                        "ComponentOwnerClass": "ARabbitEnemy",
+                        "RelativeLocation": "X=40.000 Y=0.000 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "RigidBodyType": "2",
+                        "SphereRadius": "20.000000",
+                        "bApplyGravity": "false",
+                        "bAutoActive": "true",
+                        "bIsActive": "true",
+                        "bSimulate": "true",
+                        "m_Type": ""
                     }
                 },
                 {
@@ -495,41 +495,6 @@
                     }
                 },
                 {
-                    "ComponentClass": "USphereComponent",
-                    "ComponentID": "Collision_Attack_0",
-                    "Properties": {
-                        "AABB_max": "X=0.000 Y=0.000 Z=0.000",
-                        "AABB_min": "X=0.000 Y=0.000 Z=0.000",
-                        "AttachParentID": "Collision_0",
-                        "ComponentClass": "USphereComponent",
-                        "ComponentName": "Collision_Attack_0",
-                        "ComponentOwner": "ARabbitEnemy_463",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=40.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "RigidBodyType": "2",
-                        "SphereRadius": "20.000000",
-                        "bApplyGravity": "false",
-                        "bAutoActive": "true",
-                        "bIsActive": "true",
-                        "bSimulate": "true",
-                        "m_Type": ""
-                    }
-                },
-                {
-                    "ComponentClass": "URabbitMovementComponent",
-                    "ComponentID": "RabbitMoveComp_0",
-                    "Properties": {
-                        "ComponentClass": "URabbitMovementComponent",
-                        "ComponentName": "RabbitMoveComp_0",
-                        "ComponentOwner": "ARabbitEnemy_463",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
-                    }
-                },
-                {
                     "ComponentClass": "USkeletalMeshComponent",
                     "ComponentID": "Mesh_0",
                     "Properties": {
@@ -556,6 +521,22 @@
                 },
                 {
                     "ComponentClass": "USceneComponent",
+                    "ComponentID": "atrolTargetComp_",
+                    "Properties": {
+                        "AttachParentID": "Collision_0",
+                        "ComponentClass": "USceneComponent",
+                        "ComponentName": "atrolTargetComp_",
+                        "ComponentOwner": "ARabbitEnemy_463",
+                        "ComponentOwnerClass": "ARabbitEnemy",
+                        "RelativeLocation": "X=-30.271 Y=473.437 Z=-300.529",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                },
+                {
+                    "ComponentClass": "USceneComponent",
                     "ComponentID": "PatrolTargetComp_",
                     "Properties": {
                         "AttachParentID": "Collision_0",
@@ -571,19 +552,38 @@
                     }
                 },
                 {
-                    "ComponentClass": "USceneComponent",
-                    "ComponentID": "atrolTargetComp_",
+                    "ComponentClass": "URabbitMovementComponent",
+                    "ComponentID": "RabbitMoveComp_0",
                     "Properties": {
-                        "AttachParentID": "Collision_0",
-                        "ComponentClass": "USceneComponent",
-                        "ComponentName": "atrolTargetComp_",
+                        "ComponentClass": "URabbitMovementComponent",
+                        "ComponentName": "RabbitMoveComp_0",
                         "ComponentOwner": "ARabbitEnemy_463",
                         "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=-30.271 Y=473.437 Z=-300.529",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
                         "bIsActive": "true"
+                    }
+                },
+                {
+                    "ComponentClass": "USphereComponent",
+                    "ComponentID": "Collision_Attack_0",
+                    "Properties": {
+                        "AABB_max": "X=0.000 Y=0.000 Z=0.000",
+                        "AABB_min": "X=0.000 Y=0.000 Z=0.000",
+                        "AttachParentID": "Collision_0",
+                        "ComponentClass": "USphereComponent",
+                        "ComponentName": "Collision_Attack_0",
+                        "ComponentOwner": "ARabbitEnemy_463",
+                        "ComponentOwnerClass": "ARabbitEnemy",
+                        "RelativeLocation": "X=40.000 Y=0.000 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "RigidBodyType": "2",
+                        "SphereRadius": "20.000000",
+                        "bApplyGravity": "false",
+                        "bAutoActive": "true",
+                        "bIsActive": "true",
+                        "bSimulate": "true",
+                        "m_Type": ""
                     }
                 }
             ],
@@ -620,18 +620,6 @@
                     }
                 },
                 {
-                    "ComponentClass": "URabbitMovementComponent",
-                    "ComponentID": "RabbitMoveComp_0",
-                    "Properties": {
-                        "ComponentClass": "URabbitMovementComponent",
-                        "ComponentName": "RabbitMoveComp_0",
-                        "ComponentOwner": "ARabbitEnemy_474",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
-                    }
-                },
-                {
                     "ComponentClass": "USkeletalMeshComponent",
                     "ComponentID": "Mesh_0",
                     "Properties": {
@@ -657,22 +645,6 @@
                     }
                 },
                 {
-                    "ComponentClass": "USceneComponent",
-                    "ComponentID": "PatrolTargetComp_",
-                    "Properties": {
-                        "AttachParentID": "Collision_0",
-                        "ComponentClass": "USceneComponent",
-                        "ComponentName": "PatrolTargetComp_",
-                        "ComponentOwner": "ARabbitEnemy_474",
-                        "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=285.026 Y=-486.640 Z=-329.369",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
-                    }
-                },
-                {
                     "ComponentClass": "USphereComponent",
                     "ComponentID": "Collision_Attack_0",
                     "Properties": {
@@ -693,6 +665,34 @@
                         "bIsActive": "true",
                         "bSimulate": "true",
                         "m_Type": ""
+                    }
+                },
+                {
+                    "ComponentClass": "URabbitMovementComponent",
+                    "ComponentID": "RabbitMoveComp_0",
+                    "Properties": {
+                        "ComponentClass": "URabbitMovementComponent",
+                        "ComponentName": "RabbitMoveComp_0",
+                        "ComponentOwner": "ARabbitEnemy_474",
+                        "ComponentOwnerClass": "ARabbitEnemy",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                },
+                {
+                    "ComponentClass": "USceneComponent",
+                    "ComponentID": "PatrolTargetComp_",
+                    "Properties": {
+                        "AttachParentID": "Collision_0",
+                        "ComponentClass": "USceneComponent",
+                        "ComponentName": "PatrolTargetComp_",
+                        "ComponentOwner": "ARabbitEnemy_474",
+                        "ComponentOwnerClass": "ARabbitEnemy",
+                        "RelativeLocation": "X=285.026 Y=-486.640 Z=-329.369",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
                     }
                 },
                 {
@@ -721,19 +721,39 @@
             "ActorTickInEditor": "false",
             "Components": [
                 {
-                    "ComponentClass": "USceneComponent",
-                    "ComponentID": "PatrolTargetComp_",
+                    "ComponentClass": "URabbitMovementComponent",
+                    "ComponentID": "RabbitMoveComp_0",
                     "Properties": {
-                        "AttachParentID": "Collision_0",
-                        "ComponentClass": "USceneComponent",
-                        "ComponentName": "PatrolTargetComp_",
+                        "ComponentClass": "URabbitMovementComponent",
+                        "ComponentName": "RabbitMoveComp_0",
                         "ComponentOwner": "ARabbitEnemy_743",
                         "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=194.692 Y=-16.391 Z=-121.715",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
                         "bIsActive": "true"
+                    }
+                },
+                {
+                    "ComponentClass": "UCapsuleComponent",
+                    "ComponentID": "Collision_0",
+                    "Properties": {
+                        "AABB_max": "X=0.000 Y=0.000 Z=0.000",
+                        "AABB_min": "X=0.000 Y=0.000 Z=0.000",
+                        "AttachParentID": "nullptr",
+                        "CapsuleHalfHeight": "40.000000",
+                        "CapsuleRadius": "20.000000",
+                        "ComponentClass": "UCapsuleComponent",
+                        "ComponentName": "Collision_0",
+                        "ComponentOwner": "ARabbitEnemy_743",
+                        "ComponentOwnerClass": "ARabbitEnemy",
+                        "RelativeLocation": "X=898.424 Y=846.644 Z=300.587",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "RigidBodyType": "2",
+                        "bApplyGravity": "false",
+                        "bAutoActive": "true",
+                        "bIsActive": "true",
+                        "bSimulate": "true",
+                        "m_Type": ""
                     }
                 },
                 {
@@ -762,37 +782,17 @@
                     }
                 },
                 {
-                    "ComponentClass": "UCapsuleComponent",
-                    "ComponentID": "Collision_0",
+                    "ComponentClass": "USceneComponent",
+                    "ComponentID": "PatrolTargetComp_",
                     "Properties": {
-                        "AABB_max": "X=0.000 Y=0.000 Z=0.000",
-                        "AABB_min": "X=0.000 Y=0.000 Z=0.000",
-                        "AttachParentID": "nullptr",
-                        "CapsuleHalfHeight": "40.000000",
-                        "CapsuleRadius": "20.000000",
-                        "ComponentClass": "UCapsuleComponent",
-                        "ComponentName": "Collision_0",
+                        "AttachParentID": "Collision_0",
+                        "ComponentClass": "USceneComponent",
+                        "ComponentName": "PatrolTargetComp_",
                         "ComponentOwner": "ARabbitEnemy_743",
                         "ComponentOwnerClass": "ARabbitEnemy",
-                        "RelativeLocation": "X=898.424 Y=846.644 Z=300.587",
+                        "RelativeLocation": "X=194.692 Y=-16.391 Z=-121.715",
                         "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "RigidBodyType": "2",
-                        "bApplyGravity": "false",
-                        "bAutoActive": "true",
-                        "bIsActive": "true",
-                        "bSimulate": "true",
-                        "m_Type": ""
-                    }
-                },
-                {
-                    "ComponentClass": "URabbitMovementComponent",
-                    "ComponentID": "RabbitMoveComp_0",
-                    "Properties": {
-                        "ComponentClass": "URabbitMovementComponent",
-                        "ComponentName": "RabbitMoveComp_0",
-                        "ComponentOwner": "ARabbitEnemy_743",
-                        "ComponentOwnerClass": "ARabbitEnemy",
                         "bAutoActive": "true",
                         "bIsActive": "true"
                     }
@@ -2318,7 +2318,7 @@
                         "ComponentName": "StaticMeshComponent_0",
                         "ComponentOwner": "ACube_2314",
                         "ComponentOwnerClass": "ACube",
-                        "PhotoType": "205",
+                        "PhotoType": "4",
                         "RelativeLocation": "X=-207.763 Y=-7.014 Z=184.612",
                         "RelativeRotation": "Pitch=11.900 Yaw=180.000 Roll=0.000",
                         "RelativeScale3D": "X=2.000 Y=2.000 Z=2.000",
@@ -3736,25 +3736,6 @@
             "ActorTickInEditor": "false",
             "Components": [
                 {
-                    "ComponentClass": "UAmbientLightComponent",
-                    "ComponentID": "UAmbientLightComponent_0",
-                    "Properties": {
-                        "AABB_Max": "X=1.000 Y=1.000 Z=0.100",
-                        "AABB_Min": "X=-1.000 Y=-1.000 Z=-0.100",
-                        "AmbientColor": "R=0.004 G=0.002 B=0.001 A=1.000",
-                        "AttachParentID": "UBillboardComponent_0",
-                        "ComponentClass": "UAmbientLightComponent",
-                        "ComponentName": "UAmbientLightComponent_0",
-                        "ComponentOwner": "AAmbientLight_1333",
-                        "ComponentOwnerClass": "AAmbientLight",
-                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
-                    }
-                },
-                {
                     "ComponentClass": "UBillboardComponent",
                     "ComponentID": "UBillboardComponent_0",
                     "Properties": {
@@ -3777,6 +3758,25 @@
                         "bIsActive": "true",
                         "bSimulate": "false",
                         "m_Type": "UBillboardComponent"
+                    }
+                },
+                {
+                    "ComponentClass": "UAmbientLightComponent",
+                    "ComponentID": "UAmbientLightComponent_0",
+                    "Properties": {
+                        "AABB_Max": "X=1.000 Y=1.000 Z=0.100",
+                        "AABB_Min": "X=-1.000 Y=-1.000 Z=-0.100",
+                        "AmbientColor": "R=0.004 G=0.002 B=0.001 A=1.000",
+                        "AttachParentID": "UBillboardComponent_0",
+                        "ComponentClass": "UAmbientLightComponent",
+                        "ComponentName": "UAmbientLightComponent_0",
+                        "ComponentOwner": "AAmbientLight_1333",
+                        "ComponentOwnerClass": "AAmbientLight",
+                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
                     }
                 }
             ],
@@ -4107,13 +4107,13 @@
                         "RelativeLocation": "X=981.411 Y=-100.697 Z=236.376",
                         "RelativeRotation": "Pitch=-0.000 Yaw=-115.822 Roll=-0.000",
                         "RelativeScale3D": "X=1.400 Y=1.400 Z=1.400",
-                        "RigidBodyType": "1",
+                        "RigidBodyType": "0",
                         "StaticMeshPath": "Contents/Slave/Slave.obj",
                         "StaticMeshType": "0",
                         "bApplyGravity": "false",
                         "bAutoActive": "true",
                         "bIsActive": "true",
-                        "bSimulate": "false",
+                        "bSimulate": "true",
                         "m_Type": ""
                     }
                 }
@@ -4141,13 +4141,13 @@
                         "RelativeLocation": "X=7.848 Y=958.008 Z=-188.360",
                         "RelativeRotation": "Pitch=0.000 Yaw=180.000 Roll=-0.000",
                         "RelativeScale3D": "X=2.000 Y=2.000 Z=2.000",
-                        "RigidBodyType": "1",
+                        "RigidBodyType": "0",
                         "StaticMeshPath": "Contents/Lab/Lab.obj",
                         "StaticMeshType": "0",
                         "bApplyGravity": "false",
                         "bAutoActive": "true",
                         "bIsActive": "true",
-                        "bSimulate": "false",
+                        "bSimulate": "true",
                         "m_Type": ""
                     }
                 }
@@ -5053,11 +5053,11 @@
             "Components": [
                 {
                     "ComponentClass": "USceneComponent",
-                    "ComponentID": "USceneComponent_858",
+                    "ComponentID": "USceneComponent_862",
                     "Properties": {
                         "AttachParentID": "UParticleSystemComponent_929",
                         "ComponentClass": "USceneComponent",
-                        "ComponentName": "USceneComponent_858",
+                        "ComponentName": "USceneComponent_862",
                         "ComponentOwner": "AActor_927",
                         "ComponentOwnerClass": "AActor",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
@@ -5065,29 +5065,6 @@
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
                         "bIsActive": "true"
-                    }
-                },
-                {
-                    "ComponentClass": "UParticleSystemComponent",
-                    "ComponentID": "UParticleSystemComponent_929",
-                    "Properties": {
-                        "AABB_max": "X=0.000 Y=0.000 Z=0.000",
-                        "AABB_min": "X=0.000 Y=0.000 Z=0.000",
-                        "AttachParentID": "nullptr",
-                        "ComponentClass": "UParticleSystemComponent",
-                        "ComponentName": "UParticleSystemComponent_929",
-                        "ComponentOwner": "AActor_927",
-                        "ComponentOwnerClass": "AActor",
-                        "RelativeLocation": "X=75.424 Y=168.589 Z=216.525",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "RigidBodyType": "1",
-                        "TemplateKey": "Contents/ParticleSystem/UParticleSystem_378",
-                        "bApplyGravity": "false",
-                        "bAutoActive": "true",
-                        "bIsActive": "true",
-                        "bSimulate": "false",
-                        "m_Type": ""
                     }
                 },
                 {
@@ -5123,12 +5100,35 @@
                     }
                 },
                 {
+                    "ComponentClass": "UParticleSystemComponent",
+                    "ComponentID": "UParticleSystemComponent_929",
+                    "Properties": {
+                        "AABB_max": "X=0.000 Y=0.000 Z=0.000",
+                        "AABB_min": "X=0.000 Y=0.000 Z=0.000",
+                        "AttachParentID": "nullptr",
+                        "ComponentClass": "UParticleSystemComponent",
+                        "ComponentName": "UParticleSystemComponent_929",
+                        "ComponentOwner": "AActor_927",
+                        "ComponentOwnerClass": "AActor",
+                        "RelativeLocation": "X=75.424 Y=168.589 Z=216.525",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "RigidBodyType": "1",
+                        "TemplateKey": "Contents/ParticleSystem/UParticleSystem_378",
+                        "bApplyGravity": "false",
+                        "bAutoActive": "true",
+                        "bIsActive": "true",
+                        "bSimulate": "false",
+                        "m_Type": ""
+                    }
+                },
+                {
                     "ComponentClass": "USceneComponent",
-                    "ComponentID": "USceneComponent_862",
+                    "ComponentID": "USceneComponent_858",
                     "Properties": {
                         "AttachParentID": "UParticleSystemComponent_929",
                         "ComponentClass": "USceneComponent",
-                        "ComponentName": "USceneComponent_862",
+                        "ComponentName": "USceneComponent_858",
                         "ComponentOwner": "AActor_927",
                         "ComponentOwnerClass": "AActor",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
@@ -5662,31 +5662,6 @@
             "ActorTickInEditor": "false",
             "Components": [
                 {
-                    "ComponentClass": "UBillboardComponent",
-                    "ComponentID": "UBillboardComponent_0",
-                    "Properties": {
-                        "AABB_max": "X=0.000 Y=0.000 Z=0.000",
-                        "AABB_min": "X=0.000 Y=0.000 Z=0.000",
-                        "AttachParentID": "nullptr",
-                        "BufferKey": "Assets/Editor/Icon/S_LightSpot.PNG",
-                        "ComponentClass": "UBillboardComponent",
-                        "ComponentName": "UBillboardComponent_0",
-                        "ComponentOwner": "ASpotLight_1847",
-                        "ComponentOwnerClass": "ASpotLight",
-                        "FinalIndexU": "0.000000",
-                        "FinalIndexV": "0.000000",
-                        "RelativeLocation": "X=349.771 Y=635.160 Z=233.348",
-                        "RelativeRotation": "Pitch=-37.695 Yaw=139.685 Roll=-7.660",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "RigidBodyType": "1",
-                        "bApplyGravity": "false",
-                        "bAutoActive": "true",
-                        "bIsActive": "true",
-                        "bSimulate": "false",
-                        "m_Type": "UBillboardComponent"
-                    }
-                },
-                {
                     "ComponentClass": "USpotLightComponent",
                     "ComponentID": "USpotLightComponent_0",
                     "Properties": {
@@ -5711,6 +5686,31 @@
                         "Type": "2",
                         "bAutoActive": "true",
                         "bIsActive": "true"
+                    }
+                },
+                {
+                    "ComponentClass": "UBillboardComponent",
+                    "ComponentID": "UBillboardComponent_0",
+                    "Properties": {
+                        "AABB_max": "X=0.000 Y=0.000 Z=0.000",
+                        "AABB_min": "X=0.000 Y=0.000 Z=0.000",
+                        "AttachParentID": "nullptr",
+                        "BufferKey": "Assets/Editor/Icon/S_LightSpot.PNG",
+                        "ComponentClass": "UBillboardComponent",
+                        "ComponentName": "UBillboardComponent_0",
+                        "ComponentOwner": "ASpotLight_1847",
+                        "ComponentOwnerClass": "ASpotLight",
+                        "FinalIndexU": "0.000000",
+                        "FinalIndexV": "0.000000",
+                        "RelativeLocation": "X=349.771 Y=635.160 Z=233.348",
+                        "RelativeRotation": "Pitch=-37.695 Yaw=139.685 Roll=-7.660",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "RigidBodyType": "1",
+                        "bApplyGravity": "false",
+                        "bAutoActive": "true",
+                        "bIsActive": "true",
+                        "bSimulate": "false",
+                        "m_Type": "UBillboardComponent"
                     }
                 }
             ],
@@ -5856,7 +5856,7 @@
                         "ComponentOwner": "ACube_907",
                         "ComponentOwnerClass": "ACube",
                         "PhotoType": "205",
-                        "RelativeLocation": "X=198.471 Y=789.133 Z=-200.262",
+                        "RelativeLocation": "X=159.143 Y=843.326 Z=-200.262",
                         "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=0.500 Y=0.500 Z=1.000",
                         "RigidBodyType": "0",
@@ -5890,7 +5890,7 @@
                         "ComponentOwner": "ACube_910",
                         "ComponentOwnerClass": "ACube",
                         "PhotoType": "205",
-                        "RelativeLocation": "X=-199.934 Y=789.133 Z=-200.262",
+                        "RelativeLocation": "X=-147.676 Y=844.645 Z=-200.262",
                         "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=0.500 Y=0.500 Z=1.000",
                         "RigidBodyType": "0",
@@ -5913,6 +5913,29 @@
             "ActorTickInEditor": "true",
             "Components": [
                 {
+                    "ComponentClass": "UParticleSystemComponent",
+                    "ComponentID": "UParticleSystemComponent_917",
+                    "Properties": {
+                        "AABB_max": "X=0.000 Y=0.000 Z=0.000",
+                        "AABB_min": "X=0.000 Y=0.000 Z=0.000",
+                        "AttachParentID": "nullptr",
+                        "ComponentClass": "UParticleSystemComponent",
+                        "ComponentName": "UParticleSystemComponent_917",
+                        "ComponentOwner": "AActor_915",
+                        "ComponentOwnerClass": "AActor",
+                        "RelativeLocation": "X=158.626 Y=844.556 Z=-74.228",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "RigidBodyType": "1",
+                        "TemplateKey": "Contents/ParticleSystem/UParticleSystem_378",
+                        "bApplyGravity": "false",
+                        "bAutoActive": "true",
+                        "bIsActive": "true",
+                        "bSimulate": "false",
+                        "m_Type": ""
+                    }
+                },
+                {
                     "ComponentClass": "USceneComponent",
                     "ComponentID": "USceneComponent_923",
                     "Properties": {
@@ -5926,29 +5949,6 @@
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
                         "bIsActive": "true"
-                    }
-                },
-                {
-                    "ComponentClass": "UParticleSystemComponent",
-                    "ComponentID": "UParticleSystemComponent_917",
-                    "Properties": {
-                        "AABB_max": "X=0.000 Y=0.000 Z=0.000",
-                        "AABB_min": "X=0.000 Y=0.000 Z=0.000",
-                        "AttachParentID": "nullptr",
-                        "ComponentClass": "UParticleSystemComponent",
-                        "ComponentName": "UParticleSystemComponent_917",
-                        "ComponentOwner": "AActor_915",
-                        "ComponentOwnerClass": "AActor",
-                        "RelativeLocation": "X=200.749 Y=786.709 Z=-89.393",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "RigidBodyType": "1",
-                        "TemplateKey": "Contents/ParticleSystem/UParticleSystem_378",
-                        "bApplyGravity": "false",
-                        "bAutoActive": "true",
-                        "bIsActive": "true",
-                        "bSimulate": "false",
-                        "m_Type": ""
                     }
                 },
                 {
@@ -6003,7 +6003,7 @@
                         "ComponentName": "UParticleSystemComponent_921",
                         "ComponentOwner": "AActor_919",
                         "ComponentOwnerClass": "AActor",
-                        "RelativeLocation": "X=-199.084 Y=786.709 Z=-80.751",
+                        "RelativeLocation": "X=-146.965 Y=849.471 Z=-75.546",
                         "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "RigidBodyType": "1",
@@ -6147,7 +6147,7 @@
                         "ComponentOwner": "ACube_944",
                         "ComponentOwnerClass": "ACube",
                         "PhotoType": "205",
-                        "RelativeLocation": "X=200.655 Y=1107.026 Z=-200.262",
+                        "RelativeLocation": "X=162.524 Y=1072.270 Z=-200.262",
                         "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=0.500 Y=0.500 Z=1.000",
                         "RigidBodyType": "0",
@@ -6181,7 +6181,7 @@
                         "ComponentOwner": "ACube_949",
                         "ComponentOwnerClass": "ACube",
                         "PhotoType": "205",
-                        "RelativeLocation": "X=-199.934 Y=1107.026 Z=-200.262",
+                        "RelativeLocation": "X=-147.926 Y=1068.964 Z=-200.262",
                         "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=0.500 Y=0.500 Z=1.000",
                         "RigidBodyType": "0",
@@ -6221,11 +6221,11 @@
                 },
                 {
                     "ComponentClass": "USceneComponent",
-                    "ComponentID": "USceneComponent_956",
+                    "ComponentID": "USceneComponent_955",
                     "Properties": {
                         "AttachParentID": "UParticleSystemComponent_957",
                         "ComponentClass": "USceneComponent",
-                        "ComponentName": "USceneComponent_956",
+                        "ComponentName": "USceneComponent_955",
                         "ComponentOwner": "AActor_954",
                         "ComponentOwnerClass": "AActor",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
@@ -6246,7 +6246,7 @@
                         "ComponentName": "UParticleSystemComponent_957",
                         "ComponentOwner": "AActor_954",
                         "ComponentOwnerClass": "AActor",
-                        "RelativeLocation": "X=200.520 Y=1101.868 Z=-75.072",
+                        "RelativeLocation": "X=161.317 Y=1075.880 Z=-75.072",
                         "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "RigidBodyType": "1",
@@ -6260,11 +6260,11 @@
                 },
                 {
                     "ComponentClass": "USceneComponent",
-                    "ComponentID": "USceneComponent_955",
+                    "ComponentID": "USceneComponent_956",
                     "Properties": {
                         "AttachParentID": "UParticleSystemComponent_957",
                         "ComponentClass": "USceneComponent",
-                        "ComponentName": "USceneComponent_955",
+                        "ComponentName": "USceneComponent_956",
                         "ComponentOwner": "AActor_954",
                         "ComponentOwnerClass": "AActor",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
@@ -6300,6 +6300,22 @@
                     }
                 },
                 {
+                    "ComponentClass": "USceneComponent",
+                    "ComponentID": "USceneComponent_961",
+                    "Properties": {
+                        "AttachParentID": "UParticleSystemComponent_962",
+                        "ComponentClass": "USceneComponent",
+                        "ComponentName": "USceneComponent_961",
+                        "ComponentOwner": "AActor_959",
+                        "ComponentOwnerClass": "AActor",
+                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                },
+                {
                     "ComponentClass": "UParticleSystemComponent",
                     "ComponentID": "UParticleSystemComponent_962",
                     "Properties": {
@@ -6310,7 +6326,7 @@
                         "ComponentName": "UParticleSystemComponent_962",
                         "ComponentOwner": "AActor_959",
                         "ComponentOwnerClass": "AActor",
-                        "RelativeLocation": "X=-199.084 Y=1103.524 Z=-80.751",
+                        "RelativeLocation": "X=-149.309 Y=1068.362 Z=-80.751",
                         "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "RigidBodyType": "1",
@@ -6329,22 +6345,6 @@
                         "AttachParentID": "UParticleSystemComponent_962",
                         "ComponentClass": "USceneComponent",
                         "ComponentName": "USceneComponent_960",
-                        "ComponentOwner": "AActor_959",
-                        "ComponentOwnerClass": "AActor",
-                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
-                    }
-                },
-                {
-                    "ComponentClass": "USceneComponent",
-                    "ComponentID": "USceneComponent_961",
-                    "Properties": {
-                        "AttachParentID": "UParticleSystemComponent_962",
-                        "ComponentClass": "USceneComponent",
-                        "ComponentName": "USceneComponent_961",
                         "ComponentOwner": "AActor_959",
                         "ComponentOwnerClass": "AActor",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
@@ -6412,13 +6412,13 @@
                         "RelativeLocation": "X=364.923 Y=859.717 Z=-214.628",
                         "RelativeRotation": "Pitch=0.000 Yaw=90.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=2.000",
-                        "RigidBodyType": "1",
+                        "RigidBodyType": "0",
                         "StaticMeshPath": "Contents/Dungeon/Pillar",
-                        "StaticMeshType": "0",
+                        "StaticMeshType": "2",
                         "bApplyGravity": "false",
                         "bAutoActive": "true",
                         "bIsActive": "true",
-                        "bSimulate": "false",
+                        "bSimulate": "true",
                         "m_Type": ""
                     }
                 }
@@ -6443,16 +6443,16 @@
                         "ComponentOwner": "ACube_972",
                         "ComponentOwnerClass": "ACube",
                         "PhotoType": "205",
-                        "RelativeLocation": "X=364.923 Y=1104.903 Z=-214.628",
+                        "RelativeLocation": "X=363.683 Y=1104.903 Z=-214.628",
                         "RelativeRotation": "Pitch=0.000 Yaw=90.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=2.000",
-                        "RigidBodyType": "1",
+                        "RigidBodyType": "0",
                         "StaticMeshPath": "Contents/Dungeon/Pillar",
-                        "StaticMeshType": "0",
+                        "StaticMeshType": "2",
                         "bApplyGravity": "false",
                         "bAutoActive": "true",
                         "bIsActive": "true",
-                        "bSimulate": "false",
+                        "bSimulate": "true",
                         "m_Type": ""
                     }
                 }
@@ -8013,40 +8013,6 @@
                         "RigidBodyType": "1",
                         "StaticMeshPath": "Contents/Dungeon/Wall3",
                         "StaticMeshType": "0",
-                        "bApplyGravity": "false",
-                        "bAutoActive": "true",
-                        "bIsActive": "true",
-                        "bSimulate": "false",
-                        "m_Type": ""
-                    }
-                }
-            ],
-            "RootComponentID": "StaticMeshComponent_0"
-        },
-        {
-            "ActorClass": "ACube",
-            "ActorID": "ACube_1197",
-            "ActorLabel": "OBJ_CUBE_1197",
-            "ActorTickInEditor": "false",
-            "Components": [
-                {
-                    "ComponentClass": "UStaticMeshComponent",
-                    "ComponentID": "StaticMeshComponent_0",
-                    "Properties": {
-                        "AABB_max": "X=50.000 Y=50.000 Z=50.000",
-                        "AABB_min": "X=-50.000 Y=-50.000 Z=-50.000",
-                        "AttachParentID": "nullptr",
-                        "ComponentClass": "UStaticMeshComponent",
-                        "ComponentName": "StaticMeshComponent_0",
-                        "ComponentOwner": "ACube_1197",
-                        "ComponentOwnerClass": "ACube",
-                        "PhotoType": "205",
-                        "RelativeLocation": "X=-203.075 Y=789.369 Z=-234.345",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
-                        "RelativeScale3D": "X=0.400 Y=0.400 Z=0.400",
-                        "RigidBodyType": "1",
-                        "StaticMeshPath": "Contents/Primitives/CubePrimitive.obj",
-                        "StaticMeshType": "2",
                         "bApplyGravity": "false",
                         "bAutoActive": "true",
                         "bIsActive": "true",
