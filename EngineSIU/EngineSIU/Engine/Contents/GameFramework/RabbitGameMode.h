@@ -9,7 +9,6 @@ enum class EPhotoType
     ESlave,
     ELab,
     ECarrotField,
-    EPhotoFrame,
     END
 };
 
